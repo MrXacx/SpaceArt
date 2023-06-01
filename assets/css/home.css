@@ -1,8 +1,0 @@
-@import url('global.css');
-
-.title{
-	margin: var(--margin_padrao);
-	filter: drop-shadow(0px 4px 4px #00000040);
-
-}
-

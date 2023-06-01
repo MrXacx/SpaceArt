@@ -45,6 +45,11 @@ body>*{
 	border-radius: .5rem;
 }
 
+.title{
+	margin: var(--margin_padrao);
+	filter: drop-shadow(0px 4px 4px #00000040);
+}
+
 input, button{
 	padding: .5rem;
 	outline: none;
