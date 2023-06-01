@@ -41,7 +41,7 @@ body>*{
 	margin: var(--margin_padrao);
 	background-color: transparent;
 	border: 1px solid var(--color_escura_principal);
-	box-shadow: 2px 5px 25px rgba(0, 0, 0, 0.55);
+	box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.55);
 	border-radius: .5rem;
 }
 
