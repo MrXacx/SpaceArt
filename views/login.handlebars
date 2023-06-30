@@ -1,0 +1,23 @@
+<div class="wrapper">
+	<link rel="stylesheet" type="text/css" href="/css/login.css">
+	<img id="bg-image" src="img/background/bannerlogin.jpg" alt="SpaceArt Background">
+	<main>
+			<header>
+				<img id="logo"  src="img/logo/spaceart.png"/>
+				<h1 class="logo-texto">SPACEART</h1>
+			</header>
+			<form id="login"action="/login/script" method="post">
+				{{#if unknownUser}}
+					<span class="erro">Usuário desconhecido</span>
+				{{/if}}
+				<input class="box" type="email" name="email" placeholder="Seu email">
+				
+				{{#if unknownPwd}}
+					<span class="erro">Senha incorreta</span>
+				{{/if}}
+				<input class="box" type="password" name="pwd" placeholder="Sua senhal">
+				<span>Esqueci minha senha</span>
+				<button type="submit" class="box">Entrar</button>
+			</form>
+	</main>
+</div>
