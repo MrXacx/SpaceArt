@@ -1,21 +1,19 @@
 # SpaceArt
 
-
 > Aplicação Web com propósito de facilitar a comunicação entre artsitas informais e estabelecimentos brasileiros a fim de contratá-los.
 
 ## Requisitos
 
 1. XAMPP: 8.0.28 ou superior
-3. PHP: 8.0 ou superior
-
+2. PHP: 8.0 ou superior
 
 ## Utilidades
 
 1. [Protótipo (Figma)](https://www.figma.com/file/kNoKnCjujr9aEvaOzqKWLC/SpaceArt-(Copy)?.type=design&node-id=19-328&t=Str6qD7EpWwXs7lp-0)
 2. [Download XAMPP](https://www.apachefriends.org/pt_br/download.html)
-3. [Download PHP](https://www.php.net/downloads) 
+3. [Download PHP](https://www.php.net/downloads)*
 
-> (Somente em caso de execução na linha de comando)
+*: somente em caso de execução na linha de comando
 
 ## Documentações
 
