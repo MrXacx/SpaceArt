@@ -23,18 +23,17 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
-CREATE TABLE user_artist (
-  id int(10) NOT NULL ,
+CREATE TABLE users (
+  id char(36) NOT NULL AUTO_INCREMENT,
   full_name varchar(30) NOT NULL,
-  email_address varchar(30) NOT NULL,
-  email_host varchar(15) NOT NULL,
+  email varchar(30) NOT NULL,
   pwd varchar(60) NOT NULL,
   document varchar(11) NOT NULL,
   cep varchar(8) NOT NULL,
-  
-  ADD PRIMARY KEY (id),
-  ADD UNIQUE KEY EMAIL (email_adress),
-  ADD UNIQUE KEY DOCUMENT (document);
+
+  UNIQUE KEY uuid (id),
+  UNIQUE KEY email_address (email),
+  UNIQUE KEY document_code (document);
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
