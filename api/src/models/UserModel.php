@@ -1,48 +1,35 @@
 <?php
-    namespace App\Models;
+
+declare(strict_types = 1);
+namespace App\Models;
+
+class UserModel{
     
-    class UserModel{
-        private string $id;
-        private string $name;
-        private string $email;
-        private string $pwd;
-        private string $documentNumber;
-        private string $cep;
-        
-        function __construct(string $name, string $email, string $pwd, string $documentNumber, string $cep){
-            $this->name = $name;
-            $this->email = $email;
-            $this->pwd = $pwd;
-            $this->documentNumber = $documentNumber;
-            $this->cep = $cep;
-        }
+    const NAME = 'full_name';
+    const PWD = 'pwd';
+    const DOCUMENT_NUMBER = 'document';
+    const EMAIL = 'email';
+    const CEP = 'cep';
 
-        public function setID(string $id): void{
-            $this->id = $id;
-        }
+    public string $id;
+    public string $name;
+    public string $email;
+    public string $pwd;
+    public string $documentNumber;
+    public string $cep;
 
-        public function getID(): string{
-            return $this->id;
-        }
-
-        public function getName(): string{
-            return $this->name;
-        }
-
-        public function getEmail(): string{
-            return $this->email;
-        }
-
-        public function getPwd(): string{
-            return $this->pwd;
-        }
-
-        public function getDocumentNumber(): string{
-            return $this->documentNumber;
-        }
-
-        public function getCEP(): string{
-            return $this->cep;
-        }
+    function __construct(string $name, string $email, string $pwd, string $documentNumber, string $cep){
+        $this->name = $name;
+        $this->email = $email;
+        $this->pwd = $pwd;
+        $this->documentNumber = $documentNumber;
+        $this->cep = $cep;
     }
+
+    public static function isColumn(string $column):bool{
+        $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP];
+        return !is_bool(array_search($column,$columns));
+    }
+}
+
 ?>

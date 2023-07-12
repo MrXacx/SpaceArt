@@ -12,19 +12,20 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_charACTER_SET_CLIENT=@@charACTER_SET_CLIENT */;
+/*!40101 SET @OLD_charACTER_SET_RESULTS=@@charACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Banco de dados: spaceart
 --
-
+CREATE DATABASE spaceart;
+USE spaceart;
 -- --------------------------------------------------------
 
-CREATE TABLE users (
-  id char(36) NOT NULL AUTO_INCREMENT,
+CREATE TABLE Users (
+  id char(36) NOT NULL,
   full_name varchar(30) NOT NULL,
   email varchar(30) NOT NULL,
   pwd varchar(60) NOT NULL,
@@ -33,10 +34,6 @@ CREATE TABLE users (
 
   UNIQUE KEY uuid (id),
   UNIQUE KEY email_address (email),
-  UNIQUE KEY document_code (document);
+  UNIQUE KEY document_code (document)
 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;

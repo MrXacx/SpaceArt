@@ -6,12 +6,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "App\\Settings\\": "src/config/",
             "App\\Utils\\": "src/utilities",
             "App\\Models\\": "src/models/",
             "App\\Controllers\\": "src/controllers/",
-            "App\\Routes\\": "src/routes/",
-            "App\\Tools\\": "src/tools/"
+            "App\\Tools\\": "src/services/"
         }
     },
     "require": {
