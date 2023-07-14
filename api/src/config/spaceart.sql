@@ -37,3 +37,16 @@ CREATE TABLE Users (
   UNIQUE KEY document_code (document)
 
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE contracts (
+  id char(36) NOT NULL,
+  hirer char(36) NOT NULL,
+  hired char(36) NOT NULL,
+  price decimal(5,2) NOT NULL,
+  date_point date NOT NULL,
+  time_interval varchar(11) NOT NULL,
+  art varchar(10) NOT NULL,
+  contract_description varchar(256) NOT NULL,
+
+  UNIQUE KEY uuid (id)
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
