@@ -51,3 +51,17 @@ CREATE TABLE Contracts (
 
   UNIQUE KEY uuid (id)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE Selections (
+  id char(36) NOT NULL,
+  owner_id char(36) NOT NULL,
+  price decimal(5,2) NOT NULL,
+  inital_date date NOT NULL,
+  final_date date NOT NULL,
+  inital_time time(0) NOT NULL,
+  final_time time(0) NOT NULL,
+  art varchar(10) NOT NULL,
+  selection_description varchar(256) NOT NULL,
+
+  UNIQUE KEY uuid (id)
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
