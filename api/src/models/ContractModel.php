@@ -10,7 +10,8 @@ class ContractModel{
     const ART = 'art';
     const DESCRIPTION = 'contract_description';
     const DATE = 'date_point';
-    const INTERVAL = 'time_interval';
+    const INITAL_TIME = 'inital_time';
+    const FINAL_TIME = 'final_time';
 
     public string $id;
     public string $price;
@@ -18,12 +19,13 @@ class ContractModel{
     public string $hirerID;
     public string $hiredID;
 
-    function __construct(string $hirerID, string $hiredID, string $price, string $date, string $interval, string $art, string $description){
+    function __construct(string $hirerID, string $hiredID, string $price, string $date, array $interval, string $art, string $description){
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
         $this->price = $price;
         $this->details['date'] = $date;
-        $this->details['interval'] = $interval;            
+        $this->details['time']['inital'] = $interval[0];
+        $this->details['time']['final'] = $interval[1];
         $this->details['art'] = $art;            
         $this->details['description'] = $description;    
     }
@@ -33,7 +35,7 @@ class ContractModel{
     }
     
     public static function isColumn(string $column):bool{
-        $columns = [self::HIRER_ID, self::HIRED_ID, self::PRICE, self::ART, self::DESCRIPTION, self::DATE, self::INTERVAL];
+        $columns = [self::HIRER_ID, self::HIRED_ID, self::PRICE, self::ART, self::DESCRIPTION, self::DATE, self::INITAL_TIME, self::FINAL_TIME];
         return !is_bool(array_search($column,$columns));
     }
 }

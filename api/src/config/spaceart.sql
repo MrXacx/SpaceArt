@@ -44,7 +44,8 @@ CREATE TABLE Contracts (
   hired char(36) NOT NULL,
   price decimal(5,2) NOT NULL,
   date_point date NOT NULL,
-  time_interval varchar(11) NOT NULL,
+  inital_time time(0) NOT NULL,
+  final_time time(0) NOT NULL,
   art varchar(10) NOT NULL,
   contract_description varchar(256) NOT NULL,
 

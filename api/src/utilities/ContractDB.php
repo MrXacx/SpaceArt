@@ -19,7 +19,7 @@ class ContractDB extends DatabaseAcess{
         $contract->price;
         $details = $contract->getDetails();
 
-        $query = parent::getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, time_interval, art, contract_description) VALUES (?,?,?,?,?,?,?,?)');
+        $query = parent::getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, inital_time, final_time, art, contract_description) VALUES (?,?,?,?,?,?,?,?,?)');
         
         $query->bindParam(1, $contract->id);
         $query->bindParam(2, $contract->hirerID);
@@ -27,9 +27,10 @@ class ContractDB extends DatabaseAcess{
         $query->bindParam(4, $contract->price);
 
         $query->bindParam(5, $details['date']);
-        $query->bindParam(6, $details['interval']);
-        $query->bindParam(7, $details['art']);
-        $query->bindParam(8, $details['description']);
+        $query->bindParam(6, $details['time']['inital']);
+        $query->bindParam(7, $details['time']['final']);
+        $query->bindParam(8, $details['art']);
+        $query->bindParam(9, $details['description']);
 
         return $query->execute() ? $query->rowCount() : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
