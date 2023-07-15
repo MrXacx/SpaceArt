@@ -38,21 +38,18 @@ class ContractDB extends DatabaseAcess{
         if(ContractModel::isColumn($column)){
             
             // Obtém todos os dado de uma coluna específica;
-            $query = parent::getConnection()->prepare("SELECT $column FROM Contracts WHERE id = ?");;
+            $query = parent::getConnection()->prepare("SELECT $column FROM Contracts WHERE id = ?");
             $query->bindParam(1, $id);
-            $query->execute();
             
-            $result = parent::filterReading($query->fetch());
-            
-            if(count($result) == 0){
-                $message = 'OPERAÇÃO FALHOU!';
-                goto error;
+            if($query->execute()){
+                return parent::filterReading($query->fetch())[$column];
             }
-            return $result[$column];
+        }
+        else{
+            $message = "$column NÃO É UMA COLUNA DA TABELA Contracts";
         }
         
-        $message = "$column NÃO É UMA COLUNA DA TABELA Contracts";
-        error: new ExceptionModel($message, __FILE__, __FUNCTION__);
+        return new ExceptionModel($message ?? 'OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
     
     public function readContract(string $id): array|ExceptionModel{

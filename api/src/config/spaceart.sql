@@ -38,7 +38,7 @@ CREATE TABLE Users (
 
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE contracts (
+CREATE TABLE Contracts (
   id char(36) NOT NULL,
   hirer char(36) NOT NULL,
   hired char(36) NOT NULL,
