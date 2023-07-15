@@ -40,6 +40,17 @@ class SelectionModel{
         $columns = [self::OWNER_ID, self::PRICE, self::ART, self::DESCRIPTION, self::INITAL_DATE, self::INITAL_DATE, self::INITAL_TIME, self::FINAL_TIME];
         return !is_bool(array_search($column,$columns));
     }
+
+    public static function get(array $attr): SelectionModel{
+        return new SelectionModel(
+            $attr[SelectionModel::OWNER_ID],
+            $attr[SelectionModel::PRICE],
+            [$attr[SelectionModel::INITAL_DATE], SelectionModel::FINAL_DATE],
+            [$attr[SelectionModel::INITAL_TIME], SelectionModel::FINAL_TIME],
+            $attr[SelectionModel::ART],
+            $attr[SelectionModel::DESCRIPTION]
+        );
+    }
 }
 
 ?>

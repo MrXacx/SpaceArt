@@ -51,12 +51,12 @@ class SelectionDB extends DatabaseAcess{
         return new ExceptionModel($message ?? 'OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
     
-    public function readSelection(string $id): array|ExceptionModel{
+    public function readSelection(string $id): SelectionModel|ExceptionModel{
         // Obtém todos os dados da seleção com o id passado
         $query = parent::getConnection()->prepare('SELECT * FROM Selections WHERE id = ?');
         $query->bindParam(1, $id);
 
-        return $query->execute() ? parent::filterReading($query->fetch()) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
+        return $query->execute() ? SelectionModel::get(parent::filterReading($query->fetch())) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
 
     public function update(string $column, string $value, string $id): int|ExceptionModel{

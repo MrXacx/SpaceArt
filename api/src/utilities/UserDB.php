@@ -54,12 +54,11 @@ class UserDB extends DatabaseAcess{
         return $query->execute() ? parent::filterReading($query->fetch())['id'] : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
     
-    public function readUser(string $id): array|ExceptionModel{
+    public function readUser(string $id): UserModel|ExceptionModel{
         // Obtém todos os dados do usuário com o id passado
         $query = parent::getConnection()->prepare('SELECT * FROM Users WHERE id = ?');
         $query->bindParam(1, $id);
-
-        return $query->execute() ? parent::filterReading($query->fetch()) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
+        return $query->execute() ? UserModel::get(parent::filterReading($query->fetch())) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
 
     public function update(string $column, string $value, string $id): int|ExceptionModel{
@@ -70,15 +69,16 @@ class UserDB extends DatabaseAcess{
             $query->bindParam(1, $value);
             $query->bindParam(2, $id);
 
-            if(!$query->execute()){
-                $message = "OPERAÇÃO FALHOU!";
+            if($query->execute()){
+                return ($query->rowCount());
             }
+            $message = "OPERAÇÃO FALHOU!";
         }
         else{
             $message = "$column NÃO É UMA COLUNA DA TABELA Users";
         }
         
-        return $query->rowCount() ?? new ExceptionModel($message, __FILE__, __FUNCTION__);
+        return  new ExceptionModel($message, __FILE__, __FUNCTION__);
     }
 
     public function delete(string $id): int|ExceptionModel{

@@ -50,12 +50,12 @@ class ContractDB extends DatabaseAcess{
         return new ExceptionModel($message ?? 'OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
     
-    public function readContract(string $id): array|ExceptionModel{
+    public function readContract(string $id): ContractModel|ExceptionModel{
         // Obtém todos os dados do contrato com o id passado
         $query = parent::getConnection()->prepare('SELECT * FROM Contracts WHERE id = ?');
         $query->bindParam(1, $id);
 
-        return $query->execute() ? parent::filterReading($query->fetch()) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
+        return $query->execute() ? ContractModel::get(parent::filterReading($query->fetch())) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
 
     public function update(string $column, string $value, string $id): int|ExceptionModel{

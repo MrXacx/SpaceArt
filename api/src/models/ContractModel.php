@@ -38,6 +38,18 @@ class ContractModel{
         $columns = [self::HIRER_ID, self::HIRED_ID, self::PRICE, self::ART, self::DESCRIPTION, self::DATE, self::INITAL_TIME, self::FINAL_TIME];
         return !is_bool(array_search($column,$columns));
     }
+
+    public static function get(array $attr): ContractModel{
+        return new ContractModel(
+            $attr[ContractModel::HIRER_ID],
+            $attr[ContractModel::HIRED_ID],
+            $attr[ContractModel::PRICE],
+            $attr[ContractModel::DATE], 
+            [$attr[ContractModel::INITAL_TIME], ContractModel::FINAL_TIME],
+            $attr[ContractModel::ART],
+            $attr[ContractModel::DESCRIPTION]
+        );
+    }
 }
 
 ?>
