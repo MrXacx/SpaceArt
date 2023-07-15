@@ -14,12 +14,12 @@ class ContractModel{
     const FINAL_TIME = 'final_time';
 
     public string $id;
-    public string $price;
+    public float $price;
     private array $details;
     public string $hirerID;
     public string $hiredID;
 
-    function __construct(string $hirerID, string $hiredID, string $price, string $date, array $interval, string $art, string $description){
+    function __construct(string $hirerID, string $hiredID, float $price, string $date, array $interval, string $art, string $description){
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
         $this->price = $price;

@@ -7,9 +7,8 @@
 
     use PDO;
     use PDOException;
-    use App\Models\ExceptionModel;   
+    use App\Models\ExceptionModel;    
     use Ramsey\Uuid\Uuid;
-
 
     abstract class DatabaseAcess{
         private PDO $connection;

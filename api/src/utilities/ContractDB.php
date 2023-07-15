@@ -14,9 +14,6 @@ class ContractDB extends DatabaseAcess{
     public function create(object $contract): int|ExceptionModel{
         // Insere novo usuário no banco
         $contract->id = parent::getRandomID();
-        $contract->hirerID;
-        $contract->hiredID;
-        $contract->price;
         $details = $contract->getDetails();
 
         $query = parent::getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, inital_time, final_time, art, contract_description) VALUES (?,?,?,?,?,?,?,?,?)');
@@ -82,7 +79,7 @@ class ContractDB extends DatabaseAcess{
     }
 
     public function delete(string $id): int|ExceptionModel{
-        // Deleta usuário do banco
+        // Deleta contrato do banco
         $query = parent::getConnection()->prepare('DELETE FROM Contracts WHERE id = ?');
         $query->bindParam(1, $id);
         return $query->execute() ? $query->rowCount() : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);

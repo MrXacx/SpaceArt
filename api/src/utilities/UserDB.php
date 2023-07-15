@@ -16,6 +16,7 @@ class UserDB extends DatabaseAcess{
         $query = parent::getConnection()->prepare('INSERT INTO Users (id, full_name, email, pwd, document, cep) VALUES (?,?,?,?,?,?)');
         
         $user->id = parent::getRandomID();
+
         $query->bindParam(1, $user->id);
         $query->bindParam(2, $user->name);
         $query->bindParam(3, $user->email);

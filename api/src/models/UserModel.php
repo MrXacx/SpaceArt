@@ -26,6 +26,22 @@ class UserModel{
         $this->cep = $cep;
     }
 
+    public function getName(): string{
+        return $this->name;
+    }
+    public function getEmail(): string{
+        return $this->email;
+    }
+    public function getPassword(): string{
+        return $this->pwd;
+    }
+    public function getDocumentNumber(): string{
+        return $this->documentNumber;
+    }
+    public function getCEP(): string{
+        return $this->cep;
+    }
+
     public static function isColumn(string $column):bool{
         $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP];
         return !is_bool(array_search($column,$columns));
