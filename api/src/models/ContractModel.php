@@ -8,7 +8,7 @@ class ContractModel{
     const HIRED_ID = 'hired';
     const PRICE = 'price';
     const ART = 'art';
-    const DESCRIPTION = 'description';
+    const DESCRIPTION = 'contract_description';
     const DATE = 'date_point';
     const INTERVAL = 'time_interval';
 
@@ -18,7 +18,7 @@ class ContractModel{
     public string $hirerID;
     public string $hiredID;
 
-    function __construct(string $hirerID, string $hiredID, string $price, array $date, string $interval, string $art, string $description){
+    function __construct(string $hirerID, string $hiredID, string $price, string $date, string $interval, string $art, string $description){
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
         $this->price = $price;

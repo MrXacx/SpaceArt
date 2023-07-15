@@ -30,6 +30,14 @@
             return Uuid::uuid7()->toString();
         }
 
+        protected function filterReading(array $readingResult = ['fail' => null]): array{
+            return array_filter(
+                $readingResult,
+                fn($key) => is_string($key),
+                ARRAY_FILTER_USE_KEY
+            );
+        }
+
         function __destruct(){
             unset($this->connection);
         }

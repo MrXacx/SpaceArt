@@ -33,52 +33,32 @@ class UserDB extends DatabaseAcess{
             // Obtém todos os dado de uma coluna específica;
             $query = parent::getConnection()->prepare("SELECT $column FROM Users WHERE id = ?");
             $query->bindParam(1, $id);
-            $query->execute();
             
-            if(!$query->execute()){
-                $message = 'OPERAÇÃO FALHOU!';
-            }
-            
-            $result = $query->fetch();
-
-            if(false === $result){
-                $message = 'BUSCA SEM RETORNO!';
-                $result = null;
+            if($query->execute()){
+                return parent::filterReading($query->fetch())[$column];
             }
         }
         else{
             $message = "$column NÃO É UMA COLUNA DA TABELA Users";
         }
         
-        return $result[$column] ?? new ExceptionModel($message, __FILE__, __FUNCTION__);
+        return new ExceptionModel($message ?? 'OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
 
     public function readID(string $email): string{
         // Obtém ID do usuário com o email inserido
         $query = parent::getConnection()->prepare('SELECT id FROM Users WHERE email = ?');
         $query->bindParam(1, $email);
-        $query->execute();
-        $result = $query->fetch();
-        
-        if(count($result) == 0){
-            new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
-        }
-        
-        return $result['id'];
+
+        return $query->execute() ? parent::filterReading($query->fetch())['id'] : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
     
-    public function readUser(string $id): array{
+    public function readUser(string $id): array|ExceptionModel{
         // Obtém todos os dados do usuário com o id passado
         $query = parent::getConnection()->prepare('SELECT * FROM Users WHERE id = ?');
         $query->bindParam(1, $id);
-        $query->execute();
-        $result = $query->fetch();
 
-        if(count($result) == 0){
-            new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
-        }
-
-        return $result;
+        return $query->execute() ? parent::filterReading($query->fetch()) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
 
     public function update(string $column, string $value, string $id): int|ExceptionModel{

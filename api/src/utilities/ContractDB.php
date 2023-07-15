@@ -11,7 +11,7 @@ use App\Models\ContractModel;
 
 class ContractDB extends DatabaseAcess{
 
-    public function create(ContractModel $contract): int|ExceptionModel{
+    public function create(object $contract): int|ExceptionModel{
         // Insere novo usuário no banco
         $contract->id = parent::getRandomID();
         $contract->hirerID;
@@ -19,7 +19,7 @@ class ContractDB extends DatabaseAcess{
         $contract->price;
         $details = $contract->getDetails();
 
-        $query = parent::getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, interval, art, contract_description) VALUES (?,?,?,?,?,?,?,?)');
+        $query = parent::getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, time_interval, art, contract_description) VALUES (?,?,?,?,?,?,?,?)');
         
         $query->bindParam(1, $contract->id);
         $query->bindParam(2, $contract->hirerID);
@@ -38,57 +38,36 @@ class ContractDB extends DatabaseAcess{
         if(ContractModel::isColumn($column)){
             
             // Obtém todos os dado de uma coluna específica;
-            $query = parent::getConnection()->prepare('SELECT :col FROM Contracts WHERE id = ?');
-            $query->bindValue(':col', $column);
+            $query = parent::getConnection()->prepare("SELECT $column FROM Contracts WHERE id = ?");;
             $query->bindParam(1, $id);
             $query->execute();
             
-            $result = $query->fetch();
+            $result = parent::filterReading($query->fetch());
             
             if(count($result) == 0){
                 $message = 'OPERAÇÃO FALHOU!';
                 goto error;
             }
-            return $result;
+            return $result[$column];
         }
         
         $message = "$column NÃO É UMA COLUNA DA TABELA Contracts";
         error: new ExceptionModel($message, __FILE__, __FUNCTION__);
     }
-
-    public function readID(string $email): string|ExceptionModel{
-        // Obtém ID do usuário com o email inserido
-        $query = parent::getConnection()->prepare('SELECT id FROM Contracts WHERE email = ?');
-        $query->bindParam(1, $email);
-        $query->execute();
-        $result = $query->fetch();
-        
-        if(count($result) == 0){
-            new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
-        }
-        return $result;
-    }
     
-    public function readUser(string $id): array|ExceptionModel{
-        // Obtém todos os dados do usuário com o id passado
+    public function readContract(string $id): array|ExceptionModel{
+        // Obtém todos os dados do contrato com o id passado
         $query = parent::getConnection()->prepare('SELECT * FROM Contracts WHERE id = ?');
         $query->bindParam(1, $id);
-        $query->execute();
-        $result = $query->fetch();
 
-        if(count($result) == 0){
-            new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
-        }
-
-        return $result;
+        return $query->execute() ? parent::filterReading($query->fetch()) : new ExceptionModel('OPERAÇÃO FALHOU!', __FILE__, __FUNCTION__);
     }
 
     public function update(string $column, string $value, string $id): int|ExceptionModel{
         // Atualiza dado da tabela selecionada
         if(ContractModel::isColumn($column)){
-            $query = parent::getConnection()->prepare('UPDATE Contracts SET :col = ? WHERE id = ?');
+            $query = parent::getConnection()->prepare("UPDATE Contracts SET $column = ? WHERE id = ?");
 
-            $query->bindValue(':col', $column);
             $query->bindParam(1, $value);
             $query->bindParam(2, $id);
             $query->execute();
