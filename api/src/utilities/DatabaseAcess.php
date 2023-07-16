@@ -100,5 +100,12 @@ abstract class DatabaseAcess{
      */
     abstract public function delete(string $id): int;
 
+    /**
+     * Confere se string é compatível com alguma coluna da tabela
+     * 
+     * @param string Coluna
+     * @return bool Retorna true se coluna for compatível
+     */
+    abstract public static function isColumn(string $column):bool;
 }
 ?>

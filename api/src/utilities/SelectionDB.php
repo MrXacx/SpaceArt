@@ -19,6 +19,53 @@ use RuntimeException;
  * @author Ariel Santos (MrXacx)
  */
 class SelectionDB extends DatabaseAcess{
+    /**
+     * Nome da coluna do ID do criador da seleção
+     * @var string
+     */
+    public const OWNER_ID = 'owner_id';
+    
+    /**
+     * Nome da coluna do valor
+     * @var string
+     */
+    public const PRICE = 'price';
+    
+    /**
+     * Nome da coluna do tipo de arte
+     * @var string
+     */
+    public const ART = 'art';
+    
+    /**
+     * Nome da coluna descrição da seleção
+     * @var string
+     */
+    public const DESCRIPTION = 'selection_description';
+    
+    /**
+     * Nome da coluna da data de início da seleção
+     * @var string
+     */
+    public const INITAL_DATE = 'inital_date';
+    
+    /**
+     * Nome da coluna da data de fim da seleção
+     * @var string
+     */
+    public const FINAL_DATE = 'final_date';
+    
+    /**
+     * Nome da coluna do horário de início da seleção
+     * @var string
+     */
+    public const INITAL_TIME = 'inital_time';
+    
+    /**
+     * Nome da coluna do horário de fim da seleção
+     * @var string
+     */
+    public const FINAL_TIME = 'final_time';
 
     /**
      * Insere seleção na tabela
@@ -71,7 +118,7 @@ class SelectionDB extends DatabaseAcess{
      */
     public function read(string $column, string $id): string{
         try{
-            if(!SelectionModel::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "$column não é uma coluna da tabela Selections"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
@@ -123,7 +170,7 @@ class SelectionDB extends DatabaseAcess{
      */
     public function update(string $column, string $value, string $id): int{
         try{
-            if(!SelectionModel::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "$column não é uma coluna da tabela Selections"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
@@ -167,6 +214,18 @@ class SelectionDB extends DatabaseAcess{
         }
         
     }
+
+    /**
+     * Confere se string é compatível com alguma coluna da tabela
+     * 
+     * @param string Coluna
+     * @return bool Retorna true se coluna for compatível
+     */
+    public static function isColumn(string $column):bool{
+        $columns = [self::OWNER_ID, self::PRICE, self::ART, self::DESCRIPTION, self::INITAL_DATE, self::INITAL_DATE, self::INITAL_TIME, self::FINAL_TIME];
+        return !is_bool(array_search($column,$columns));
+    }
+
 }
 
 ?>

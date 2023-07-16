@@ -3,49 +3,15 @@
 declare(strict_types = 1);
 namespace App\Models;
 
+require_once __DIR__.'/../vendor/autoload.php';
+use App\Utils\UserDB;
+
 /**
  * Classe modelo de usuário
  * @package Models
  * @author Ariel Santos (MrXacx)
  */
 class UserModel{
-    /**
-     * Nome da coluna de nome do usuário
-     * @var string
-     */
-    public const NAME = 'full_name';
-    
-    /**
-     * Nome da coluna de senha 
-     * @var string
-     */
-    public const PWD = 'pwd';
-    
-    /**
-     * Nome da coluna de cpf/cnpj
-     * @var string
-     */
-    public const DOCUMENT_NUMBER = 'document';
-    
-    /**
-     * Nome da coluna de email
-     * @var string
-     */
-    public const EMAIL = 'email';
-    
-    /**
-     * Nome da coluna de cep
-     * @var string
-     */
-    public const CEP = 'cep';
-    
-    /**
-     * Nome da coluna de contas seguidas
-     * @var string
-     */
-    public const FOLLOWING = 'following';
-    
-    
     /**
      * ID do usuário
      * @var string
@@ -144,17 +110,6 @@ class UserModel{
     }
 
     /**
-     * Confere se string é compatível com alguma coluna da tabela
-     * 
-     * @param string Coluna
-     * @return bool Retorna true se coluna for compatível
-     */
-    public static function isColumn(string $column):bool{
-        $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP, self::FOLLOWING];
-        return !is_bool(array_search($column,$columns));
-    }
-
-    /**
      * Obtém um modelo de usuário inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
@@ -162,15 +117,15 @@ class UserModel{
      */
     public static function get(array $attr): self{
         $model = new UserModel(
-            $attr[static::NAME],
-            $attr[static::EMAIL],
-            $attr[static::PWD],
-            $attr[static::DOCUMENT_NUMBER],
-            $attr[static::CEP]
+            $attr[UserDB::NAME],
+            $attr[UserDB::EMAIL],
+            $attr[UserDB::PWD],
+            $attr[UserDB::DOCUMENT_NUMBER],
+            $attr[UserDB::CEP]
         );
 
-        if(!empty($attr[static::FOLLOWING])){ // Adiciona lista de contas seguidas, se existir
-            $model->setFollowingList(json_decode($attr[static::FOLLOWING]));
+        if(!empty($attr[UserDB::FOLLOWING])){ // Adiciona lista de contas seguidas, se existir
+            $model->setFollowingList(json_decode($attr[UserDB::FOLLOWING]));
         }
 
         return $model;

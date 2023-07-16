@@ -3,61 +3,14 @@
 declare(strict_types = 1);
 namespace App\Models;
 require_once __DIR__.'/../../vendor/autoload.php';
+use App\Utils\SelectionDB;
 
 /**
  * Classe modelo de seleção
  * @package Models
  * @author Ariel Santos (MrXacx)
  */
-class SelectionModel{   
-    /**
-     * Nome da coluna do ID do criador da seleção
-     * @var string
-     */
-    public const OWNER_ID = 'owner_id';
-    
-    /**
-     * Nome da coluna do valor
-     * @var string
-     */
-    public const PRICE = 'price';
-    
-    /**
-     * Nome da coluna do tipo de arte
-     * @var string
-     */
-    public const ART = 'art';
-    
-    /**
-     * Nome da coluna descrição da seleção
-     * @var string
-     */
-    public const DESCRIPTION = 'selection_description';
-    
-    /**
-     * Nome da coluna da data de início da seleção
-     * @var string
-     */
-    public const INITAL_DATE = 'inital_date';
-    
-    /**
-     * Nome da coluna da data de fim da seleção
-     * @var string
-     */
-    public const FINAL_DATE = 'final_date';
-    
-    /**
-     * Nome da coluna do horário de início da seleção
-     * @var string
-     */
-    public const INITAL_TIME = 'inital_time';
-    
-    /**
-     * Nome da coluna do horário de fim da seleção
-     * @var string
-     */
-    public const FINAL_TIME = 'final_time';
-
+class SelectionModel{
     /**
      * ID da seleção
      * @var string
@@ -111,17 +64,6 @@ class SelectionModel{
     }
     
     /**
-     * Confere se string é compatível com alguma coluna da tabela
-     * 
-     * @param string Coluna
-     * @return bool Retorna true se coluna for compatível
-     */
-    public static function isColumn(string $column):bool{
-        $columns = [self::OWNER_ID, self::PRICE, self::ART, self::DESCRIPTION, self::INITAL_DATE, self::INITAL_DATE, self::INITAL_TIME, self::FINAL_TIME];
-        return !is_bool(array_search($column,$columns));
-    }
-
-    /**
      * Obtém um modelo de seleção inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
@@ -129,12 +71,12 @@ class SelectionModel{
      */
     public static function get(array $attr): self{
         return new SelectionModel(
-            $attr[static::OWNER_ID],
-            $attr[static::PRICE],
-            [$attr[static::INITAL_DATE], static::FINAL_DATE],
-            [$attr[static::INITAL_TIME], static::FINAL_TIME],
-            $attr[static::ART],
-            $attr[static::DESCRIPTION]
+            $attr[SelectionDB::OWNER_ID],
+            $attr[SelectionDB::PRICE],
+            [$attr[SelectionDB::INITAL_DATE], SelectionDB::FINAL_DATE],
+            [$attr[SelectionDB::INITAL_TIME], SelectionDB::FINAL_TIME],
+            $attr[SelectionDB::ART],
+            $attr[SelectionDB::DESCRIPTION]
         );
     }
 }

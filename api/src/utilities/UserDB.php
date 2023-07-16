@@ -18,6 +18,42 @@ use RuntimeException;
  * @author Ariel Santos (MrXacx)
  */
 class UserDB extends DatabaseAcess{
+    /**
+     * Nome da coluna de nome do usuário
+     * @var string
+     */
+    public const NAME = 'full_name';
+    
+    /**
+     * Nome da coluna de senha 
+     * @var string
+     */
+    public const PWD = 'pwd';
+    
+    /**
+     * Nome da coluna de cpf/cnpj
+     * @var string
+     */
+    public const DOCUMENT_NUMBER = 'document';
+    
+    /**
+     * Nome da coluna de email
+     * @var string
+     */
+    public const EMAIL = 'email';
+    
+    /**
+     * Nome da coluna de cep
+     * @var string
+     */
+    public const CEP = 'cep';
+    
+    /**
+     * Nome da coluna de contas seguidas
+     * @var string
+     */
+    public const FOLLOWING = 'following';
+
 
     /**
      * Insere usuário na tabela
@@ -67,7 +103,7 @@ class UserDB extends DatabaseAcess{
      */
     public function read(string $column, string $id): string{
         try{
-            if(!UserModel::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "$column não é uma coluna da tabela Users"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
@@ -144,7 +180,7 @@ class UserDB extends DatabaseAcess{
      */
     public function update(string $column, string $value, string $id): int{
         try{
-            if(!UserModel::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "$column não é uma coluna da tabela Users"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
@@ -189,6 +225,16 @@ class UserDB extends DatabaseAcess{
             ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__, $ex->getLine());
         }
 
+    }
+
+    /**
+     * Confere se string é compatível com alguma coluna da tabela
+     * 
+     * @see DatabaseAcess
+     */
+    public static function isColumn(string $column):bool{
+        $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP, self::FOLLOWING];
+        return !is_bool(array_search($column,$columns));
     }
 
 }

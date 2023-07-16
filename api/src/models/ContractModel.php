@@ -3,6 +3,9 @@
 declare(strict_types = 1);
 namespace App\Models;
 
+require_once __DIR__.'/../vendor/autoload.php';
+use App\Utils\ContractDB;
+
 /**
  * Classe modelo de contratos
  * 
@@ -10,54 +13,6 @@ namespace App\Models;
  * @author Ariel Santos (MrXacx)
  */
 class ContractModel{
-    /**
-     * Nome da coluna de contratante
-     * @var string
-     */
-    public const HIRER_ID = 'hirer';
-
-    /**
-     * Nome da coluna de contratado
-     * @var string
-     */
-    public const HIRED_ID = 'hired';
-
-    /**
-     * Nome da coluna de valor de contrato
-     * @var string
-     */
-    public const PRICE = 'price';
-
-    /**
-     * Nome da coluna de tipo de arte
-     * @var string
-     */
-    public const ART = 'art';
-
-    /**
-     * Nome da coluna de descrição do contrato
-     * @var string
-     */
-    public const DESCRIPTION = 'contract_description';
-
-    /**
-     * Nome da coluna de data do evento
-     * @var string
-     */
-    public const DATE = 'date_point';
-
-    /**
-     * Nome da coluna de horário de início
-     * @var string
-     */
-    public const INITAL_TIME = 'inital_time';
-
-    /**
-     * Nome da coluna de horário de fim
-     * @var string
-     */
-    public const FINAL_TIME = 'final_time';
-
     /**
      * ID do contrato
      * @var string
@@ -118,17 +73,6 @@ class ContractModel{
     }
     
     /**
-     * Confere se string é compatível com alguma coluna da tabela
-     * 
-     * @param string Coluna
-     * @return bool Retorna true se coluna for compatível
-     */
-    public static function isColumn(string $column):bool{
-        $columns = [self::HIRER_ID, self::HIRED_ID, self::PRICE, self::ART, self::DESCRIPTION, self::DATE, self::INITAL_TIME, self::FINAL_TIME];
-        return !is_bool(array_search($column,$columns));
-    }
-
-    /**
      * Obtém um modelo de contrato inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
@@ -136,13 +80,13 @@ class ContractModel{
      */
     public static function get(array $attr): self{
         return new ContractModel(
-            $attr[static::HIRER_ID],
-            $attr[static::HIRED_ID],
-            $attr[static::PRICE],
-            $attr[static::DATE], 
-            [$attr[static::INITAL_TIME], static::FINAL_TIME],
-            $attr[static::ART],
-            $attr[static::DESCRIPTION]
+            $attr[ContractDB::HIRER_ID],
+            $attr[ContractDB::HIRED_ID],
+            $attr[ContractDB::PRICE],
+            $attr[ContractDB::DATE], 
+            [$attr[ContractDB::INITAL_TIME], ContractDB::FINAL_TIME],
+            $attr[ContractDB::ART],
+            $attr[ContractDB::DESCRIPTION]
         );
     }
 }

@@ -19,6 +19,53 @@ use RuntimeException;
  * @author Ariel Santos (MrXacx)
  */
 class ContractDB extends DatabaseAcess{
+    /**
+     * Nome da coluna de contratante
+     * @var string
+     */
+    public const HIRER_ID = 'hirer';
+
+    /**
+     * Nome da coluna de contratado
+     * @var string
+     */
+    public const HIRED_ID = 'hired';
+
+    /**
+     * Nome da coluna de valor de contrato
+     * @var string
+     */
+    public const PRICE = 'price';
+
+    /**
+     * Nome da coluna de tipo de arte
+     * @var string
+     */
+    public const ART = 'art';
+
+    /**
+     * Nome da coluna de descrição do contrato
+     * @var string
+     */
+    public const DESCRIPTION = 'contract_description';
+
+    /**
+     * Nome da coluna de data do evento
+     * @var string
+     */
+    public const DATE = 'date_point';
+
+    /**
+     * Nome da coluna de horário de início
+     * @var string
+     */
+    public const INITAL_TIME = 'inital_time';
+
+    /**
+     * Nome da coluna de horário de fim
+     * @var string
+     */
+    public const FINAL_TIME = 'final_time';
 
     /**
      * Insere contrato na tabela
@@ -71,7 +118,7 @@ class ContractDB extends DatabaseAcess{
      */
     public function read(string $column, string $id): string{
         try{
-            if(!ContractModel::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "$column não é uma coluna da tabela Contracts"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
@@ -123,7 +170,7 @@ class ContractDB extends DatabaseAcess{
      */
     public function update(string $column, string $value, string $id): int{
         try{
-            if(!ContractModel::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "$column não é uma coluna da tabela Contracts"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
@@ -167,6 +214,18 @@ class ContractDB extends DatabaseAcess{
         }
         
     }
+
+    /**
+     * Confere se string é compatível com alguma coluna da tabela
+     * 
+     * @param string Coluna
+     * @return bool Retorna true se coluna for compatível
+     */
+    public static function isColumn(string $column):bool{
+        $columns = [static::HIRER_ID, static::HIRED_ID, static::PRICE, static::ART, static::DESCRIPTION, static::DATE, static::INITAL_TIME, static::FINAL_TIME];
+        return !is_bool(array_search($column,$columns));
+    }
+
 }
 
 ?>
