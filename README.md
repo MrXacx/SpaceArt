@@ -5,15 +5,14 @@
 ## Requisitos
 
 1. XAMPP: 8.0.28 ou superior
-2. PHP: 8.0 ou superior
+2. PHP: 8.0
 
 ## Utilidades
 
 1. [Protótipo (Figma)](https://www.figma.com/file/kNoKnCjujr9aEvaOzqKWLC/SpaceArt-(Copy)?.type=design&node-id=19-328&t=Str6qD7EpWwXs7lp-0)
 2. [Download XAMPP](https://www.apachefriends.org/pt_br/download.html)
-3. [Download PHP](https://www.php.net/downloads)*
-
-*: somente em caso de execução na linha de comando
+3. [Download PHP](https://www.php.net/downloads)
+4. [Download Composer](https://getcomposer.org/download/)
 
 ## Documentações
 
