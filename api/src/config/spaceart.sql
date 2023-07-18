@@ -31,7 +31,7 @@ CREATE TABLE Users (
   pwd varchar(60) NOT NULL,
   document varchar(11) NOT NULL,
   cep varchar(8) NOT NULL,
-  following json DEFAULT NULL;
+  following json DEFAULT NULL,
 
   UNIQUE KEY uuid (id),
   UNIQUE KEY email_address (email),

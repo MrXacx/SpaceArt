@@ -3,7 +3,6 @@
 declare(strict_types = 1);
 namespace App\Models;
 
-require_once __DIR__.'/../vendor/autoload.php';
 use App\Utils\UserDB;
 
 /**
@@ -17,7 +16,7 @@ class UserModel{
      * @var string
      */
     
-    public string $id;
+    public string $id = '';
     
     /**
      * Nome completo do usuário
@@ -53,7 +52,7 @@ class UserModel{
      * contas seguidas
      * @var array
      */
-    public array $followingList;
+    public array $followingList = [];
     
     /**
      * @param $name Nome do usuário
@@ -63,6 +62,7 @@ class UserModel{
      * @param $cep CEP do usuário
      */
     function __construct(string $name, string $email, string $pwd, string $documentNumber, string $cep){
+
         $this->name = $name;
         $this->email = $email;
         $this->pwd = $pwd;
@@ -95,7 +95,7 @@ class UserModel{
      * @param string $id ID da conta a ser inserida
      * @return void
      */
-    public function addFollower(string $id): void{
+    public function addFollowing(string $id): void{
         $this->followingList[] = $id;
     }
 
@@ -105,8 +105,13 @@ class UserModel{
      * @param string $id ID da conta a ser removida
      * @return void
      */
-    public function removeFollower(string $id): void{
-        $this->followingList = array_filter($this->followingList, fn($value) => $value != $id);
+    public function removeFollowing(string $id): void{
+        foreach($this->followingList as &$followingID){
+            if($id != $followingID){
+                $list[] = $followingID;
+            }
+        }
+        $this->followingList = $list;
     }
 
     /**

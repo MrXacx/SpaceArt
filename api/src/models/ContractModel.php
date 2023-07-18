@@ -3,7 +3,6 @@
 declare(strict_types = 1);
 namespace App\Models;
 
-require_once __DIR__.'/../vendor/autoload.php';
 use App\Utils\ContractDB;
 
 /**
