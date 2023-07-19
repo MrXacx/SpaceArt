@@ -81,3 +81,5 @@ class UserModelTest extends \PHPUnit\Framework\TestCase{
         parent::assertEquals($user, UserModel::get($arr));
     }
 }
+
+?>

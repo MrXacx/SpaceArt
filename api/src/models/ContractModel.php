@@ -22,7 +22,7 @@ class ContractModel{
      * Valor do contrato
      * @var string
      */
-    public float $price;
+    public string $price;
 
     /**
      * Detalhes do contrato
@@ -45,13 +45,13 @@ class ContractModel{
     /** 
      * @param string $hirerID ID do contratante
      * @param string $hiredID ID do contratado
-     * @param float $price Valor do contrato
+     * @param string $price Valor do contrato
      * @param string $date Data do evento
      * @param array $interval Horários de início e fim respectivamente
      * @param string $art Tipo de arte a ser exercido
      * @param string $description Descrição do contrato
      */
-    function __construct(string $hirerID, string $hiredID, float $price, string $date, array $interval, string $art, string $description){
+    function __construct(string $hirerID, string $hiredID, string $price, string $date, array $interval, string $art, string $description){
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
         $this->price = $price;
@@ -78,15 +78,18 @@ class ContractModel{
      * @return ContractModel Instância da classe
      */
     public static function get(array $attr): self{
-        return new ContractModel(
+        $model = new ContractModel(
             $attr[ContractDB::HIRER_ID],
             $attr[ContractDB::HIRED_ID],
             $attr[ContractDB::PRICE],
             $attr[ContractDB::DATE], 
-            [$attr[ContractDB::INITAL_TIME], $attr[ContractDB::FINAL_TIME]],
+            [substr($attr[ContractDB::INITAL_TIME], 0, 5), substr($attr[ContractDB::FINAL_TIME], 0, 5)],
             $attr[ContractDB::ART],
             $attr[ContractDB::DESCRIPTION]
         );
+        $model->id = $attr['id'];
+        return $model;
+        
     }
 }
 

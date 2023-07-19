@@ -124,11 +124,11 @@ class ContractDB extends DatabaseAcess{
             }
                 
             // Determina query SQL de leitura
-            $query = parent::getConnection()->prepare("SELECT $column FROM Contracts WHERE id = ?");
+            $query = parent::getConnection()->prepare("SELECT id, $column FROM Contracts WHERE id = ?");
             $query->bindParam(1, $id); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return parent::validateReading($query)[$column]; // Retorna valor que 
+                return parent::validateReading($query); // Retorna valor que 
             }
 
             // Executa em caso de falhas esperadas

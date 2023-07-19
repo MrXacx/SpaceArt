@@ -43,7 +43,7 @@ CREATE TABLE Contracts (
   id char(36) NOT NULL,
   hirer char(36) NOT NULL,
   hired char(36) NOT NULL,
-  price decimal(5,2) NOT NULL,
+  price integer(5) NOT NULL,
   date_point date NOT NULL,
   inital_time time(0) NOT NULL,
   final_time time(0) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE Contracts (
 CREATE TABLE Selections (
   id char(36) NOT NULL,
   owner_id char(36) NOT NULL,
-  price decimal(5,2) NOT NULL,
+  price integer(5) NOT NULL,
   inital_date date NOT NULL,
   final_date date NOT NULL,
   inital_time time(0) NOT NULL,
