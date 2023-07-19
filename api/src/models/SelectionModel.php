@@ -70,14 +70,17 @@ class SelectionModel{
      * @return self Instância da classe
      */
     public static function get(array $attr): self{
-        return new SelectionModel(
+        $model = new SelectionModel(
             $attr[SelectionDB::OWNER_ID],
             $attr[SelectionDB::PRICE],
-            [$attr[SelectionDB::INITAL_DATE], SelectionDB::FINAL_DATE],
-            [$attr[SelectionDB::INITAL_TIME], SelectionDB::FINAL_TIME],
+            [$attr[SelectionDB::INITAL_DATE], $attr[SelectionDB::FINAL_DATE]],
+            [$attr[SelectionDB::INITAL_TIME], $attr[SelectionDB::FINAL_TIME]],
             $attr[SelectionDB::ART],
             $attr[SelectionDB::DESCRIPTION]
         );
+
+        $model->id = $attr['id'];
+        return $model;
     }
 }
 
