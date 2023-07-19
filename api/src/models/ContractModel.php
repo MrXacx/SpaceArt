@@ -83,7 +83,7 @@ class ContractModel{
             $attr[ContractDB::HIRED_ID],
             $attr[ContractDB::PRICE],
             $attr[ContractDB::DATE], 
-            [$attr[ContractDB::INITAL_TIME], ContractDB::FINAL_TIME],
+            [$attr[ContractDB::INITAL_TIME], $attr[ContractDB::FINAL_TIME]],
             $attr[ContractDB::ART],
             $attr[ContractDB::DESCRIPTION]
         );

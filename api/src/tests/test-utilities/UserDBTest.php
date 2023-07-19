@@ -6,11 +6,9 @@ require_once __DIR__.'/../../index.php';
 
 use App\Models\UserModel;
 use App\Utils\UserDB;
-use PhpParser\Builder\Use_;
 use RuntimeException;
-use SebastianBergmann\Environment\Runtime;
 
-class UserDBTest extends \PHPUnit\Framework\TestCase{
+class ContractDBTest extends \PHPUnit\Framework\TestCase{
     private UserDB $db;
     
 
