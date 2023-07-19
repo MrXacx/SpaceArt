@@ -6,7 +6,6 @@ require_once __DIR__.'/../../index.php';
 
 use App\Models\ContractModel;
 use App\Utils\ContractDB;
-use App\Utils\UserDB;
 use RuntimeException;
 
 class ContractDBTest extends \PHPUnit\Framework\TestCase{
@@ -107,3 +106,5 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
     }
 
 }
+
+?>

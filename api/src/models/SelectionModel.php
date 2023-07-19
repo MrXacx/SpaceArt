@@ -19,9 +19,9 @@ class SelectionModel{
     
     /**
      * Valor da seleção
-     * @var float
+     * @var string
      */
-    public float $price;
+    public string $price;
     
     /**
      * Detalhes da seleção
@@ -39,17 +39,17 @@ class SelectionModel{
      * @param string $ownerID ID do criador da seleção
      * @param float $price Valor da seleção
      * @param array $date Data de início e fim da seleção
-     * @param array $interval Horário de início e fim da seleção
+     * @param array $time Horário de início e fim da seleção
      * @param string $art Arte buscada na seleção
      * @param string $description Descrição da seleção
      */
-    function __construct(string $ownerID, float $price, array $date, array $interval, string $art, string $description){
+    function __construct(string $ownerID, string $price, array $date, array $time, string $art, string $description){
         $this->ownerID = $ownerID;
         $this->price = $price;
         $this->details['date']['inital'] = $date[0];
         $this->details['date']['final'] = $date[1];
-        $this->details['time']['inital'] = $interval[0];
-        $this->details['time']['final'] = $interval[1];
+        $this->details['time']['inital'] = $time[0];
+        $this->details['time']['final'] = $time[1];
         $this->details['art'] = $art;            
         $this->details['description'] = $description;    
     }
@@ -74,7 +74,7 @@ class SelectionModel{
             $attr[SelectionDB::OWNER_ID],
             $attr[SelectionDB::PRICE],
             [$attr[SelectionDB::INITAL_DATE], $attr[SelectionDB::FINAL_DATE]],
-            [$attr[SelectionDB::INITAL_TIME], $attr[SelectionDB::FINAL_TIME]],
+            [substr($attr[SelectionDB::INITAL_TIME], 0, 5), substr($attr[SelectionDB::FINAL_TIME], 0, 5)],
             $attr[SelectionDB::ART],
             $attr[SelectionDB::DESCRIPTION]
         );

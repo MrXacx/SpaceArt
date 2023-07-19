@@ -181,3 +181,5 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         parent::assertEquals(['id'=>$user->id, UserDB::NAME=>'Xandão da Moral'], $this->db->read(UserDB::NAME, $user->id));
     }
 }
+
+?>

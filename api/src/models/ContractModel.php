@@ -47,17 +47,17 @@ class ContractModel{
      * @param string $hiredID ID do contratado
      * @param string $price Valor do contrato
      * @param string $date Data do evento
-     * @param array $interval Horários de início e fim respectivamente
+     * @param array $time Horários de início e fim respectivamente
      * @param string $art Tipo de arte a ser exercido
      * @param string $description Descrição do contrato
      */
-    function __construct(string $hirerID, string $hiredID, string $price, string $date, array $interval, string $art, string $description){
+    function __construct(string $hirerID, string $hiredID, string $price, string $date, array $time, string $art, string $description){
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
         $this->price = $price;
         $this->details['date'] = $date;
-        $this->details['time']['inital'] = $interval[0];
-        $this->details['time']['final'] = $interval[1];
+        $this->details['time']['inital'] = $time[0];
+        $this->details['time']['final'] = $time[1];
         $this->details['art'] = $art;            
         $this->details['description'] = $description;    
     }
