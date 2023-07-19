@@ -128,7 +128,7 @@ class UserModel{
             $attr[UserDB::DOCUMENT_NUMBER],
             $attr[UserDB::CEP]
         );
-
+        $model->id = $attr['id'];
         if(!empty($attr[UserDB::FOLLOWING])){ // Adiciona lista de contas seguidas, se existir
             $model->setFollowingList(json_decode($attr[UserDB::FOLLOWING]));
         }

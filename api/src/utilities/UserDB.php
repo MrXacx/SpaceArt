@@ -6,7 +6,6 @@ namespace App\Utils;
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use App\Utils\DatabaseAcess;
-use App\Tools\ExpectedException;
 use App\Models\UserModel;
 
 use PDOException;
@@ -90,7 +89,7 @@ class UserDB extends DatabaseAcess{
             error: throw new RuntimeException($message ?? 'Operação falhou!');
 
         } catch(RuntimeException|PDOException $ex){ // Captura falhas esperadas e de query
-            ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__, $ex->getLine());
+            throw new RuntimeException($ex->getMessage());
         }
         
     }
@@ -101,24 +100,24 @@ class UserDB extends DatabaseAcess{
      * @see DatabaseAcess
      * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
      */
-    public function read(string $column, string $id): string{
+    public function read(string $column, string $id): array{
         try{
             if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
-                $message = "$column não é uma coluna da tabela Users"; // Define mensagem de erro
+                $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
                 
             // Determina query SQL de leitura
-            $query = parent::getConnection()->prepare("SELECT $column FROM Users WHERE id = ?");
+            $query = parent::getConnection()->prepare("SELECT id, $column FROM Users WHERE id = ?");
             $query->bindParam(1, $id); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return parent::validateReading($query)[$column]; // Retorna valor que 
+                return parent::validateReading($query); // Retorna valor que 
             }
             
             error: throw new RuntimeException($message ?? 'Operação falhou!'); // Executa se alguma falha esperdada ocorrer
         } catch(RuntimeException|PDOException $ex){
-            ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__, $ex->getLine());
+            throw new RuntimeException($ex->getMessage());
         }
         
     }
@@ -130,21 +129,21 @@ class UserDB extends DatabaseAcess{
      * @return string ID do usuário
      * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
      */
-    public function readID(string $email): string{
+    public function readID(string $email): array{
         try{
             // Passa query SQL para leitura da coluna id
             $query = parent::getConnection()->prepare('SELECT id FROM Users WHERE email = ? ');
             $query->bindParam(1, $email); // Substitui a interrogação pelo email passado
     
             if ($query->execute()){ // Executa se a query for aceita
-                return parent::validateReading($query)['id'];
+                return parent::validateReading($query);
             }
             
             // Executa em caso de falhas esperadas
             throw new RuntimeException('Operação falhou!');
             
         } catch(RuntimeException|PDOException $ex){
-            ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__, $ex->getLine());
+            throw new RuntimeException($ex->getMessage());
         }
     }
     
@@ -168,7 +167,7 @@ class UserDB extends DatabaseAcess{
             throw new RuntimeException('Operação falhou!');
 
         } catch(RuntimeException|PDOException $ex){
-            ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__, $ex->getLine());
+            throw new RuntimeException($ex->getMessage());
         }
     }
 
@@ -181,7 +180,7 @@ class UserDB extends DatabaseAcess{
     public function update(string $column, string $value, string $id): int{
         try{
             if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
-                $message = "$column não é uma coluna da tabela Users"; // Define mensagem de erro
+                $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
 
@@ -199,7 +198,7 @@ class UserDB extends DatabaseAcess{
             // Executa caso alguma falha esperada aconteça
             error: throw new RuntimeException($message ?? 'Operação falhou!');
         } catch(RuntimeException|PDOException $ex){
-            ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__, $ex->getLine());
+            throw new RuntimeException($ex->getMessage());
         }
     }
 
@@ -222,7 +221,7 @@ class UserDB extends DatabaseAcess{
             throw new RuntimeException('Operação falhou'); // Executa em caso de falha esperada
 
         } catch(RuntimeException|PDOException $ex){
-            ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__, $ex->getLine());
+            throw new RuntimeException($ex->getMessage());
         }
 
     }

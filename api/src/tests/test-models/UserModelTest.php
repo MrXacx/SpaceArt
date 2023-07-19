@@ -71,6 +71,7 @@ class UserModelTest extends \PHPUnit\Framework\TestCase{
     public function testGetInstanceOf(){
         $user = new UserModel($this->name,$this->email,$this->pwd, $this->documentNumber, $this->cep);
 
+        $arr['id'] = $user->id;
         $arr[UserDB::CEP] = $user->cep;
         $arr[UserDB::NAME] = $user->name;
         $arr[UserDB::EMAIL] = $user->email;

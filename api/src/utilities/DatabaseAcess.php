@@ -25,7 +25,7 @@ abstract class DatabaseAcess{
         try{
             $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
         } catch(PDOException $ex){            
-            \App\Tools\ExpectedException::echo($ex->getMessage(), __FILE__, __FUNCTION__);
+            throw new \RuntimeException($ex->getMessage());
         }
     }
 
@@ -53,10 +53,19 @@ abstract class DatabaseAcess{
      * @return array|string Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
-    protected function validateReading(PDOStatement|false $query): array|string{
-        $result = $query->fetch(PDO::FETCH_ASSOC);
+    protected function validateReading(PDOStatement|false $query): array{
+        
+        $response = $query->fetch(\PDO::FETCH_ASSOC);
         unset($query);
-        return (is_array($result) XOR is_string($result)) ? $result : throw new PDOException('Leitura não retornou um valor válido!');
+
+        if(is_array($response) && !empty($response)){
+            foreach($response as $key => $value){
+                $result[$key] = $value;
+            }
+            return $result;
+        }
+        
+        return $result ?? throw new PDOException('Leitura não retornou um valor válido!');  
     }
 
     function __destruct(){
@@ -79,7 +88,7 @@ abstract class DatabaseAcess{
      * @param string $id ID do usuário
      * @return string Valor da célula
      */
-    abstract public function read(string $column, string $id): string;
+    abstract public function read(string $column, string $id): array;
 
     /**
      * Atualiza determinada célula do banco
