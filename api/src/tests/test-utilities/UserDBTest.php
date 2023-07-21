@@ -8,7 +8,7 @@ use App\Models\UserModel;
 use App\Utils\UserDB;
 use RuntimeException;
 
-class ContractDBTest extends \PHPUnit\Framework\TestCase{
+class UserDBTest extends \PHPUnit\Framework\TestCase{
     private UserDB $db;
     
 
@@ -28,6 +28,7 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Annabeth Chase',
             'test2@gmail.com',
+            '71993257464',
             '54321',
             '123456789',
             '00123578'
@@ -48,13 +49,14 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Pelé',
             'test3@gmail.com',
+            '7132912174',
             '010101',
             '123456h89',
             '00123578'
         );
 
         $this->db->create($user);
-        parent::assertEquals(1, $this->db->delete($user->id));
+        parent::assertEquals(1, $this->db->delete($user->getID()));
          
     }
 
@@ -67,6 +69,7 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Selena Gomez',
             'test832@gmail.com',
+            '45982364987',
             '010101',
             '78945612532',
             '00123578'
@@ -85,13 +88,14 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Rainha Elizabeth',
             'test23@gmail.com',
-            '010101',
+            '71985233574',
+            '010101',         
             '45454545',
             '00123578'
         );
 
         $this->db->create($user);
-        parent::assertEquals(['id' => $user->id], $this->db->readID($user->email));
+        parent::assertEquals(['id' => $user->getID()], $this->db->readID($user->getEmail()));
     }
     
     /**
@@ -103,6 +107,7 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Xerxes',
             'test84@gmail.com',
+            '7182644522',
             '010101',
             '1233456',
             '00123578'
@@ -110,8 +115,8 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
 
         $this->db->create($user);
         parent::assertEquals(
-            ['id' => $user->id, UserDB::EMAIL => $user->email],
-             $this->db->read(UserDB::EMAIL, $user->id)
+            ['id' => $user->getID(), UserDB::EMAIL => $user->getEmail()],
+             $this->db->read(UserDB::EMAIL, $user->getID())
         );
     }
     
@@ -125,13 +130,14 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Xerxes',
             'test85@gmail.com',
+            '21994751236',
             '010101',
             '121',
             '00123578'
         );
         
         $this->db->create($user);
-        $this->db->read('a', $user->id);
+        $this->db->read('a', $user->getID());
     }
     
     /**
@@ -141,6 +147,7 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Neymar',
             'tests23@gmail.com',
+            '7133613154',
             '010101',
             '123345',
             '00123578'
@@ -149,7 +156,7 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $this->db->create($user);
         parent::assertEquals(
             $user,
-            $this->db->readUser($user->id)
+            $this->db->readUser($user->getID())
         );
     }
 
@@ -171,14 +178,15 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
         $user = new UserModel(
             'Alexandre de Moraes',
             'xandy@gmail.com',
+            '50984576217',
             '12490',
             '98632',
             '00123578'
         );
 
         $this->db->create($user);
-        $this->db->update(UserDB::NAME, 'Xandão da Moral', $user->id);
-        parent::assertEquals(['id'=>$user->id, UserDB::NAME=>'Xandão da Moral'], $this->db->read(UserDB::NAME, $user->id));
+        $this->db->update(UserDB::NAME, 'Xandão da Moral', $user->getID());
+        parent::assertEquals(['id'=>$user->getID(), UserDB::NAME=>'Xandão da Moral'], $this->db->read(UserDB::NAME, $user->getID()));
     }
 }
 

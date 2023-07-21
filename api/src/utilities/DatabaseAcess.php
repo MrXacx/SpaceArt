@@ -58,7 +58,7 @@ abstract class DatabaseAcess{
         $response = $query->fetch(\PDO::FETCH_ASSOC);
         unset($query);
 
-        if(is_array($response) && !empty($response)){
+        if(is_array($response) && isset($response)){
             foreach($response as $key => $value){
                 $result[$key] = $value;
             }

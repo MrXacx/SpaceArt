@@ -28,6 +28,12 @@ class UserDB extends DatabaseAcess{
      * @var string
      */
     public const PWD = 'pwd';
+
+    /**
+     * Nome da coluna de senha 
+     * @var string
+     */
+    public const PHONE = 'telphone';
     
     /**
      * Nome da coluna de cpf/cnpj
@@ -48,10 +54,10 @@ class UserDB extends DatabaseAcess{
     public const CEP = 'cep';
     
     /**
-     * Nome da coluna de contas seguidas
+     * Site do usuário
      * @var string
      */
-    public const FOLLOWING = 'following';
+    public const SITE = 'WEBSITE';
 
 
     /**
@@ -69,17 +75,25 @@ class UserDB extends DatabaseAcess{
             }
             
             // Passa query SQL de criação
-            $query = parent::getConnection()->prepare('INSERT INTO Users (id, full_name, email, pwd, document, cep) VALUES (?,?,?,?,?,?)');
+            $query = parent::getConnection()->prepare('INSERT INTO Users (id, full_name, email, telphone, pwd, document, cep) VALUES (?,?,?,?,?,?,?)');
             
-            $user->id = parent::getRandomID(); // Gera uuid
-    
+            $user->setID(parent::getRandomID()); // Gera uuid
+            $id = $user->getID();
+            $name = $user->getName();
+            $email = $user->getEmail();
+            $phone = $user->getPhone();
+            $pwd = $user->getPassword();
+            $documentNumber = $user->getDocumentNumber();
+            $cep = $user->getCEP();
+
             // Substitui interrogações pelos valores dos atributos
-            $query->bindParam(1, $user->id);
-            $query->bindParam(2, $user->name);
-            $query->bindParam(3, $user->email);
-            $query->bindParam(4, $user->pwd);
-            $query->bindParam(5, $user->documentNumber);
-            $query->bindParam(6, $user->cep);
+            $query->bindParam(1, $id);
+            $query->bindParam(2, $name);
+            $query->bindParam(3, $email);
+            $query->bindParam(4, $phone);
+            $query->bindParam(5, $pwd);
+            $query->bindParam(6, $documentNumber);
+            $query->bindParam(7, $cep);
 
             if($query->execute()){ // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
@@ -232,7 +246,7 @@ class UserDB extends DatabaseAcess{
      * @see DatabaseAcess
      */
     public static function isColumn(string $column):bool{
-        $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP, self::FOLLOWING];
+        $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP, self::SITE, self::PHONE];
         return !is_bool(array_search($column,$columns));
     }
 

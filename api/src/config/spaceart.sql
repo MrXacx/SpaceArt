@@ -28,12 +28,14 @@ CREATE TABLE Users (
   id char(36) NOT NULL,
   full_name varchar(30) NOT NULL,
   email varchar(30) NOT NULL,
+  telphone varchar(11) NOT NULL,
   pwd varchar(60) NOT NULL,
   document varchar(11) NOT NULL,
   cep varchar(8) NOT NULL,
-  following json DEFAULT NULL,
+  website varchar(30) DEFAULT NULL,
 
   UNIQUE KEY uuid (id),
+  UNIQUE KEY telphone_number (telphone),
   UNIQUE KEY email_address (email),
   UNIQUE KEY document_code (document)
 
@@ -64,5 +66,5 @@ CREATE TABLE Selections (
   art varchar(10) NOT NULL,
   selection_description varchar(256) NOT NULL,
 
-  UNIQUE KEY uuid (id)
+  UNIQUE KEY uuid (id),
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -11,130 +11,172 @@ use App\Utils\UserDB;
  * @author Ariel Santos (MrXacx)
  */
 class UserModel{
-    /**
-     * ID do usuário
-     * @var string
-     */
-    
-    public string $id = '';
-    
-    /**
-     * Nome completo do usuário
-     * @var string
-     */
-    public string $name;
-    
-    /**
-     * Email do usuário
-     * @var string
-     */
-    public string $email;
-    
-    /**
-     * Senha do usuário
-     * @var string
-     */
-    public string $pwd;
-    
-    /**
-     * cpf/cnpj do usuário
-     * @var string
-     */
-    public string $documentNumber;
-    
-    /**
-     * cep do usuário
-     * @var string
-     */
-    public string $cep;
-    
-    /**
-     * contas seguidas
-     * @var array
-     */
-    public array $followingList = [];
-    
-    /**
-     * @param $name Nome do usuário
-     * @param $email Email do usuário
-     * @param $pwd Senha do usuário
-     * @param $documentNumber cpf/cnpj do usuário
-     * @param $cep CEP do usuário
-     */
-    function __construct(string $name, string $email, string $pwd, string $documentNumber, string $cep){
 
-        $this->name = $name;
-        $this->email = $email;
-        $this->pwd = $pwd;
-        $this->documentNumber = $documentNumber;
-        $this->cep = $cep;
+/**
+ * ID do usuário
+ * @var string
+ */
+    private string $id;
+
+/**
+ * Nome completo do usuário
+ * @var string
+ */
+private string $name;
+
+/**
+ * Email do usuário
+ * @var string
+ */
+private string $email;
+
+/**
+ * Número de telefone do usuário
+ * @var string
+ */
+private string $phone;
+
+/**
+ * Senha do usuário
+ * @var string
+ */
+private string $pwd;
+
+/**
+ * cpf/cnpj do usuário
+ * @var string
+ */
+private string $documentNumber;
+
+/**
+ * cep do usuário
+ * @var string
+ */
+private string $cep;
+
+/**
+ * site do usuário
+ * @var string
+ */
+private string $website;
+
+/**
+ * @param $name Nome do usuário
+ * @param $email Email do usuário
+ * @param $phone Email do usuário
+ * @param $pwd Senha do usuário
+ * @param $documentNumber cpf/cnpj do usuário
+ * @param $cep CEP do usuário
+ */
+function __construct(string $name, string $email, string $phone, string $pwd, string $documentNumber = '', string $cep){
+    $this->name = $name;
+    $this->email = $email;
+    $this->phone = $phone;
+    $this->pwd = $pwd;
+    $this->documentNumber = $documentNumber;
+    $this->cep = $cep;
+}
+
+/**
+ * @param string $id ID do usuário
+ */
+public function setID(string $id): void{
+    $this->id = $id;
+}
+
+/**
+ * @param string $website URL do website do usuário
+ */
+public function setWebsite(string $website): void{
+    $this->website = $website;
+}
+
+/**
+ * Obtém ID do usuário
+ * @return string ID 
+ */
+public function getID(): string{
+    return $this->id;
+}
+
+/**
+ * Obtém Nome do usuário
+ * @return string nome
+ */
+public function getName(): string{
+    return $this->name;
+}
+/**
+ * Obtém Email do usuário
+ * @return string Email 
+ */
+public function getEmail(): string{
+    return $this->email;
+}
+
+/**
+ * Obtém Número de telefone do usuário
+ * @return string Número de telefone 
+ */
+public function getPhone(): string{
+    return $this->phone;
+}
+
+/**
+ * Obtém senha do usuário
+ * @return string senha 
+ */
+public function getPassword(): string{
+    return $this->pwd;
+}
+
+/**
+ * Obtém cpf/cnpj do usuário
+ * @return string Código de cpf/cnpj 
+ */
+public function getDocumentNumber(): string{
+    return $this->documentNumber;
+}
+
+/**
+ * Obtém cep do usuário
+ * @return string cep 
+ */
+public function getCEP(): string{
+    return $this->cep;
+}
+
+/**
+ * Obtém ID do usuário
+ * @return string ID 
+ */
+public function getWebsite(): string{
+    return $this->website;
+}
+
+/**
+ * Obtém um modelo de usuário inicializado
+ * 
+ * @param array $attr Array associativo contento todas as informações do modelo
+ * @return self Instância da classe
+ */
+public static function get(array $attr): self{
+    $model = new UserModel(
+        $attr[UserDB::NAME],
+        $attr[UserDB::EMAIL],
+        $attr[UserDB::PHONE],
+        $attr[UserDB::PWD],
+        $attr[UserDB::DOCUMENT_NUMBER],
+        $attr[UserDB::CEP]
+    );
+    $model->setID($attr['id']);
+
+    if(isset($attr[UserDB::SITE])){ // Adiciona lista de contas seguidas, se existir
+        $model->setWebsite($attr[UserDB::SITE]);
     }
 
-    /**
-     * Insere array de seguidores no modelo
-     * 
-     * @param array $followingList Array de contas seguidas
-     * @return void
-     */
-    public function setFollowingList(array $followingList): void{
-        $this->followingList = $followingList;
-    }
-
-    /**
-     * Obtém array de IDs de contas seguidas
-     * 
-     * @return array Array de IDs
-     */
-    public function getFollowingList(): array{
-        return $this->followingList;
-    }
-
-    /**
-     * Adiciona ID ao array de contas seguidas
-     * 
-     * @param string $id ID da conta a ser inserida
-     * @return void
-     */
-    public function addFollowing(string $id): void{
-        $this->followingList[] = $id;
-    }
-
-    /**
-     * Remove ID ao array de contas seguidas
-     * 
-     * @param string $id ID da conta a ser removida
-     * @return void
-     */
-    public function removeFollowing(string $id): void{
-        foreach($this->followingList as &$followingID){
-            if($id != $followingID){
-                $list[] = $followingID;
-            }
-        }
-        $this->followingList = $list;
-    }
-
-    /**
-     * Obtém um modelo de usuário inicializado
-     * 
-     * @param array $attr Array associativo contento todas as informações do modelo
-     * @return self Instância da classe
-     */
-    public static function get(array $attr): self{
-        $model = new UserModel(
-            $attr[UserDB::NAME],
-            $attr[UserDB::EMAIL],
-            $attr[UserDB::PWD],
-            $attr[UserDB::DOCUMENT_NUMBER],
-            $attr[UserDB::CEP]
-        );
-        $model->id = $attr['id'];
-        if(!empty($attr[UserDB::FOLLOWING])){ // Adiciona lista de contas seguidas, se existir
-            $model->setFollowingList(json_decode($attr[UserDB::FOLLOWING]));
-        }
-
-        return $model;
-    }
+    return $model;
+}
 }
 
 ?>
