@@ -9,9 +9,9 @@
             "App\\Controllers\\": "src/controllers/",
             "App\\Models\\": "src/models/",
             "App\\Tests\\": "src/tests/",
-            "App\\Tools\\": "src/services/",
+            "App\\Tools\\": "src/services/",     
+            "App\\Tools\\Traits\\": "src/services/traits",     
             "App\\Utils\\": "src/utilities"
-            
         }
     },
     "require": {
