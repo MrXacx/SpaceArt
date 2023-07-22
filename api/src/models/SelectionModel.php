@@ -70,11 +70,13 @@ class SelectionModel{
      * @return self Instância da classe
      */
     public static function get(array $attr): self{
+        $datetime = [explode(' ', $attr[SelectionDB::INITAL_DATETIME]), explode(' ', $attr[SelectionDB::FINAL_DATETIME])];
+
         $model = new SelectionModel(
             $attr[SelectionDB::OWNER_ID],
             $attr[SelectionDB::PRICE],
-            [$attr[SelectionDB::INITAL_DATE], $attr[SelectionDB::FINAL_DATE]],
-            [substr($attr[SelectionDB::INITAL_TIME], 0, 5), substr($attr[SelectionDB::FINAL_TIME], 0, 5)],
+            [$datetime[0][0], $datetime[1][0]],
+            [substr($datetime[0][1], 0, 5), substr($datetime[1][1], 0, 5)],
             $attr[SelectionDB::ART],
             $attr[SelectionDB::DESCRIPTION]
         );

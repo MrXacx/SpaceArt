@@ -128,7 +128,7 @@ class ContractDB extends DatabaseAcess{
             $query->bindParam(1, $id); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return parent::validateReading($query); // Retorna valor que 
+                return parent::validatoreading($query); // Retorna valor que 
             }
 
             // Executa em caso de falhas esperadas
@@ -152,7 +152,7 @@ class ContractDB extends DatabaseAcess{
             $query->bindParam(1, $id); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
-                return ContractModel::get(parent::validateReading($query));
+                return ContractModel::get(parent::validatoreading($query));
             }
 
             // Executa em caso de falhas esperadas

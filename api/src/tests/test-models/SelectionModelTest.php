@@ -42,10 +42,8 @@ class SelectionModelTest extends \PHPUnit\Framework\TestCase{
         
         $arr[SelectionDB::PRICE] = $this->selection->price;
         $arr[SelectionDB::ART] = $this->art;
-        $arr[SelectionDB::INITAL_DATE] = $this->date[0];
-        $arr[SelectionDB::FINAL_DATE] = $this->date[1];
-        $arr[SelectionDB::INITAL_TIME] = $this->time[0];
-        $arr[SelectionDB::FINAL_TIME] = $this->time[1];
+        $arr[SelectionDB::INITAL_DATETIME] = $this->date[0].' '.$this->time[0];
+        $arr[SelectionDB::FINAL_DATETIME] = $this->date[1] . ' '.$this->time[1];
         $arr[SelectionDB::DESCRIPTION] = $this->description;
 
         parent::assertEquals($this->selection, SelectionModel::get($arr));

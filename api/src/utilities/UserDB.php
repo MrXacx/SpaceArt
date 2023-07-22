@@ -126,7 +126,7 @@ class UserDB extends DatabaseAcess{
             $query->bindParam(1, $id); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return parent::validateReading($query); // Retorna valor que 
+                return parent::validatoreading($query); // Retorna valor que 
             }
             
             error: throw new RuntimeException($message ?? 'Operação falhou!'); // Executa se alguma falha esperdada ocorrer
@@ -150,7 +150,7 @@ class UserDB extends DatabaseAcess{
             $query->bindParam(1, $email); // Substitui a interrogação pelo email passado
     
             if ($query->execute()){ // Executa se a query for aceita
-                return parent::validateReading($query);
+                return parent::validatoreading($query);
             }
             
             // Executa em caso de falhas esperadas
@@ -175,7 +175,7 @@ class UserDB extends DatabaseAcess{
             $query->bindParam(1, $id); // Substitui interrogação pelo ID
 
             if($query->execute()){ // Executa se a query for aceita
-                return UserModel::get(parent::validateReading($query));
+                return UserModel::get(parent::validatoreading($query));
             }
             // Executa em caso de falhas esperadas
             throw new RuntimeException('Operação falhou!');

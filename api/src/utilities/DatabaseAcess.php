@@ -53,7 +53,7 @@ abstract class DatabaseAcess{
      * @return array|string Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
-    protected function validateReading(PDOStatement|false $query): array{
+    protected function validatoreading(PDOStatement|false $query): array{
         
         $response = $query->fetch(\PDO::FETCH_ASSOC);
         unset($query);

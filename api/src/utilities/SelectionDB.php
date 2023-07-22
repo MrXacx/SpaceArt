@@ -46,25 +46,13 @@ class SelectionDB extends DatabaseAcess{
      * Nome da coluna da data de início da seleção
      * @var string
      */
-    public const INITAL_DATE = 'inital_date';
+    public const INITAL_DATETIME = 'inital_datetime';
     
     /**
      * Nome da coluna da data de fim da seleção
      * @var string
      */
-    public const FINAL_DATE = 'final_date';
-    
-    /**
-     * Nome da coluna do horário de início da seleção
-     * @var string
-     */
-    public const INITAL_TIME = 'inital_time';
-    
-    /**
-     * Nome da coluna do horário de fim da seleção
-     * @var string
-     */
-    public const FINAL_TIME = 'final_time';
+    public const FINAL_DATETIME = 'final_datetime';
 
     /**
      * Insere seleção na tabela
@@ -127,7 +115,7 @@ class SelectionDB extends DatabaseAcess{
             $query->bindParam(1, $id); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return parent::validateReading($query); // Retorna valor que 
+                return parent::validatoreading($query); // Retorna valor que 
             }
 
             // Executa em caso de falhas esperadas
@@ -151,7 +139,7 @@ class SelectionDB extends DatabaseAcess{
             $query->bindParam(1, $id); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
-                return SelectionModel::get(parent::validateReading($query));
+                return SelectionModel::get(parent::validatoreading($query));
             }
 
             // Executa em caso de falhas esperadas
@@ -221,7 +209,7 @@ class SelectionDB extends DatabaseAcess{
      * @return bool Retorna true se coluna for compatível
      */
     public static function isColumn(string $column):bool{
-        $columns = [self::OWNER_ID, self::PRICE, self::ART, self::DESCRIPTION, self::INITAL_DATE, self::INITAL_DATE, self::INITAL_TIME, self::FINAL_TIME];
+        $columns = [self::OWNER_ID, self::PRICE, self::ART, self::DESCRIPTION, self::INITAL_DATETIME, self::INITAL_DATETIME];
         return !is_bool(array_search($column,$columns));
     }
 

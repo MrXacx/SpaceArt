@@ -2,36 +2,40 @@
 
 namespace App\Tests;
 
-use App\Tools\DataValidater;
+use App\Tools\DataValidator;
 use DateInterval;
 use DateTime;
 use RuntimeException;
 
 
-class DataValidaterTest extends \PHPUnit\Framework\TestCase{
+class DataValidatorTest extends \PHPUnit\Framework\TestCase{
 
-    private DataValidater $validater;
+    /**
+     * todo: validar comprimentos dos atributos de UserModel
+     */
+
+    private DataValidator $validator;
 
     protected function setUp(): void{
-        $this->validater = new DataValidater();
+        $this->validator = new DataValidator();
     }
     
     public function testValidateFutureDateTime(){
         $dt = new DateTime();
         $dt->add(new DateInterval('P2D'));
         $dt->sub(new DateInterval('PT3H'));
-        parent::assertTrue($this->validater->isFuture($dt->format('d/m/Y'), $dt->format('H:i')));
+        parent::assertTrue($this->validator->isFuture($dt->format('d/m/Y'), $dt->format('H:i')));
     }
 
     public function testValidateCurrentDateTime(){
         $dt = new DateTime();
-        parent::assertFalse($this->validater->isFuture($dt->format('d/m/Y'), $dt->format('H:i')));
+        parent::assertFalse($this->validator->isFuture($dt->format('d/m/Y'), $dt->format('H:i')));
     }
 
     public function testValidatePastDateTime(){
         $dt = new DateTime();
         $dt->sub(new DateInterval('PT3H'));
-        parent::assertFalse($this->validater->isFuture($dt->format('d/m/Y'), $dt->format('H:i')));
+        parent::assertFalse($this->validator->isFuture($dt->format('d/m/Y'), $dt->format('H:i')));
     }
 
     public function testValidateIncorrectDate(){
@@ -39,15 +43,36 @@ class DataValidaterTest extends \PHPUnit\Framework\TestCase{
         parent::expectExceptionMessage('A data passada por parâmetro deve seguir o seguinte modelo: DD/MM/AAAA');
         $dt = new DateTime();
         $dt->add(new DateInterval('PT3H'));
-        $this->validater->isFuture('22/02/2a22', $dt->format('H:i'));
+        $this->validator->isFuture('22/02/2a22', $dt->format('H:i'));
     }
 
     public function testValidateIncorrectTime(){
         parent::expectException(RuntimeException::class);
-        parent::expectExceptionMessage('O tempo passado por parâmetro deve seguir o seguinte modelo: HH:MM');
+        parent::expectExceptionMessage('O horário passado por parâmetro deve seguir o seguinte modelo: HH:MM');
         $dt = new DateTime();
         $dt->add(new DateInterval('PT3H'));
-        $this->validater->isFuture($dt->format('d/m/Y'), '60:\'2');
+        $this->validator->isFuture($dt->format('d/m/Y'), '60:\'2');
+    }
+    
+    public function testValidateLength(){
+        parent::assertTrue($this->validator->validateVarcharLength('Churrascada', \App\Utils\UserDB::PWD));
+        parent::assertFalse($this->validator->validateVarcharLength('', \App\Utils\ContractDB::DESCRIPTION));
+        parent::assertFalse($this->validator->validateVarcharLength(str_repeat('a', 256), \App\Utils\UserDB::PWD));
+    }
+
+    public function testValidateLengthWithInvalidColumn(){
+        parent::expectException(RuntimeException::class);
+        parent::expectExceptionMessage('Coluna não encontrada');
+        $this->validator->validateVarcharLength('a', 'b');
+    }
+
+    public function testBuildDatetime(){
+        parent::assertEquals('2020-07-23 17:20:00', $this->validator->buildDatetime('23/07/2020', '17:20'));
+    }
+
+    public function testBuildDatetimeWithIncorrectsParams(){
+        parent::assertNull($this->validator->buildDatetime('23/07-2020', '17:20'));
+        parent::assertNull($this->validator->buildDatetime('23/07/2020', '25:20'));
     }
 }
 
