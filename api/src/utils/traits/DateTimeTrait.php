@@ -91,7 +91,9 @@ trait DateTimeTrait{
 
     public function buildDatetime(string $date, string $time): string|null{
         try{
-            return $this->buildDate($date) ." ".$this->buildTime($time);
+            $date = $this->buildDate($date);
+            $time = $this->buildTime($time);
+            return isset($date) && isset($time) ? "$date $time" : null;
         } catch(RuntimeException $ex){
             echo $ex->getMessage();
             return null;

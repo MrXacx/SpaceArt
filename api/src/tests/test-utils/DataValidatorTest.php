@@ -74,6 +74,21 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase{
         parent::assertNull($this->validator->buildDatetime('23/07-2020', '17:20'));
         parent::assertNull($this->validator->buildDatetime('23/07/2020', '25:20'));
     }
+
+    public function testBuildDate(){
+        parent::assertEquals('2002-08-25', $this->validator->buildDate('25/08/2002'));
+    }
+
+    public function testBuildTime(){
+        parent::assertEquals('08:26:00', $this->validator->buildTime('08:26'));
+    }
+
+    public function testValidatePrice(){
+        parent::assertTrue($this->validator->validatePrice('2752'));
+        parent::assertTrue($this->validator->validatePrice('0'));
+        parent::assertFalse($this->validator->validatePrice('1.2'));
+        parent::assertFalse($this->validator->validatePrice('a'));
+    }
 }
 
 ?>
