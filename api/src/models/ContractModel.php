@@ -3,7 +3,8 @@
 declare(strict_types = 1);
 namespace App\Models;
 
-use App\Utils\ContractDB;
+use App\DAO\ContractDB;
+use App\Utils\DataValidator;
 
 /**
  * Classe modelo de contratos
@@ -12,23 +13,14 @@ use App\Utils\ContractDB;
  * @author Ariel Santos (MrXacx)
  */
 class ContractModel{
+
+    // TODO: adicionar coluna de status(enum, se possível) e avaliação(int)
+
     /**
      * ID do contrato
      * @var string
      */
     public string $id;
-
-    /**
-     * Valor do contrato
-     * @var string
-     */
-    public string $price;
-
-    /**
-     * Detalhes do contrato
-     * @var array
-     */
-    private array $details;
 
     /**
      * ID do contratante
@@ -42,25 +34,66 @@ class ContractModel{
      */
     public string $hiredID;
 
+    /**
+     * Valor do contrato
+     * @var string
+     */
+    public string $price;
+
+    /**
+     * Detalhes do contrato
+     * @var array
+     */
+    private array $details;
+
+    private DataValidator $validator;
+
     /** 
      * @param string $hirerID ID do contratante
      * @param string $hiredID ID do contratado
      * @param string $price Valor do contrato
-     * @param string $date Data do evento
-     * @param array $time Horários de início e fim respectivamente
-     * @param string $art Tipo de arte a ser exercido
-     * @param string $description Descrição do contrato
      */
-    function __construct(string $hirerID, string $hiredID, string $price, string $date, array $time, string $art, string $description){
+    function __construct(string $hirerID, string $hiredID, int $price){
+        $this->validator = new DataValidator();
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
-        $this->price = $price;
-        $this->details['date'] = $date;
-        $this->details['time']['inital'] = $time[0];
-        $this->details['time']['final'] = $time[1];
-        $this->details['art'] = $art;            
-        $this->details['description'] = $description;    
+        $this->price = $price.'';             
     }
+
+    public function setID(string $id): void{
+        $this->id = $id;
+    }
+
+    public function setArt(string $art): void{
+        $this->details['art'] = $art;
+    }
+
+    public function setDate(string $date): void{
+        $this->details['date'] = $this->validator->buildDate($date);
+    }
+
+    public function setTime(string $inital, string $final): void{
+        $this->details['time']['inital'] = $this->validator->buildTime($inital);
+        $this->details['time']['final'] = $this->validator->buildTime($final);
+    }
+
+
+    public function getID(): string{
+        return $this->id;
+    }
+
+    public function gethirerID(): string{
+        return $this->hirerID;
+    }
+
+    public function gethiredID(): string{
+        return $this->hiredID;
+    }
+ 
+    public function getPrice(): string{
+        return $this->price;
+    }
+
 
     /**
      * Obtém array com detalhes do contrato
@@ -77,17 +110,22 @@ class ContractModel{
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return ContractModel Instância da classe
      */
-    public static function get(array $attr): self{
+    public static function getInstaceOf(array $attr): self{
         $model = new ContractModel(
             $attr[ContractDB::HIRER_ID],
             $attr[ContractDB::HIRED_ID],
-            $attr[ContractDB::PRICE],
-            $attr[ContractDB::DATE], 
-            [substr($attr[ContractDB::INITAL_TIME], 0, 5), substr($attr[ContractDB::FINAL_TIME], 0, 5)],
-            $attr[ContractDB::ART],
-            $attr[ContractDB::DESCRIPTION]
+            intval($attr[ContractDB::PRICE])
         );
         $model->id = $attr['id'];
+        $model->details = [
+            'date' => $attr[ContractDB::DATE],
+            'time' => [
+                'inital' => $attr[ContractDB::INITAL_TIME],
+                'final' => $attr[ContractDB::FINAL_TIME]
+            ],
+            ContractDB::ART => $attr[ContractDB::ART]
+        ];
+        
         return $model;
         
     }

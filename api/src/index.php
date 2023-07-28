@@ -6,7 +6,6 @@ foreach(parse_ini_file(__DIR__.'/config/.ini', true)['DEVELOPMENT'] as $key => $
     $_ENV[$key] = $value;
 }
 
-
 echo json_encode([true]);
 
 ?>

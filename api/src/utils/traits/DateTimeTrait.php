@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tools\Traits;
+namespace App\Utils\Tools;
 
 use DateTime;
 use RuntimeException;
 
-trait DateTimeTools{
+trait DateTimeTrait{
 
     /**
      * Obtém o último dia do mês
@@ -72,7 +72,7 @@ trait DateTimeTools{
     }
 
     /**
-     * Analisa se todos os elementos do vetor são iguais aos seus equivalentes do horário atual
+     * Analisa se todos os elementos do vetor são iguais aos seus equivalentes ao horário atual
      * 
      * @param array $date Vetor associativo de dos elemento de datetime
      * @param DateTime $now manipulador de datetime 
@@ -91,13 +91,30 @@ trait DateTimeTools{
 
     public function buildDatetime(string $date, string $time): string|null{
         try{
-            return ($this->isValidDateFormat($date) && $this->isValidTimeFormat($time)) ? implode('-', array_reverse(explode('/', $date))) . " $time:00" : null;
+            return $this->buildDate($date) ." ".$this->buildTime($time);
         } catch(RuntimeException $ex){
             echo $ex->getMessage();
             return null;
         }
     }
 
+    public function buildDate(string $date): string|null{
+        try{
+            return $this->isValidDateFormat($date) ? implode('-', array_reverse(explode('/', $date))) : null;
+        } catch(RuntimeException $ex){
+            echo $ex->getMessage();
+            return null;
+        }
+    }
+
+    public function buildTime(string $time): string|null{
+        try{
+            return $this->isValidTimeFormat($time) ? "$time:00" : null;
+        } catch(RuntimeException $ex){
+            echo $ex->getMessage();
+            return null;
+        }
+    }
 
     /**
      * Valida o formato da data

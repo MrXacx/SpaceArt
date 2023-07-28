@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Tools;
+namespace App\Utils;
 
-use App\Utils\ContractDB;
-use App\Utils\SelectionDB;
-use App\Utils\UserDB;
+use App\DAO\ContractDB;
+use App\DAO\SelectionDB;
+use App\DAO\UserDB;
 use RuntimeException;
 
 final class DataValidator{
-    use \App\Tools\Traits\DateTimeTools;
+    use \App\Utils\Tools\DateTimeTrait;
 
     /**
      * Valida o formato da data
@@ -48,15 +48,18 @@ final class DataValidator{
     public function validateVarcharLength(string $varchar, string $column): bool{
         $length = strlen($varchar);
         return  $length > 0 && $length <= match($column){
-            UserDB::NAME, UserDB::EMAIL, UserDB::SITE, UserDB::PWD, ContractDB::DESCRIPTION, SelectionDB::DESCRIPTION => 255,        
-            ContractDB::ART, SelectionDB::ART => 10,
+            'id' => 36,
+            UserDB::NAME, UserDB::EMAIL, UserDB::SITE, UserDB::PWD, ContractDB::ART, SelectionDB::ART => 255,
             default => throw new RuntimeException('Coluna não encontrada')
         };
     }
 
+    public function validatePrice(string $price): bool{
+        return intval($price) == $price && strlen($price) <= 5;
+    }
+
    
 }
-
 
 ?>
 

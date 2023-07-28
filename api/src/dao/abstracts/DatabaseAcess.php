@@ -1,17 +1,19 @@
 <?php
 
-    declare(strict_types = 1);    
-namespace App\Utils;
+declare(strict_types = 1);    
+namespace App\DAO\Abstract;
 
-require_once __DIR__.'/../../vendor/autoload.php';
+require_once __DIR__.'/../../../vendor/autoload.php';
 
 use PDO;
 use PDOException;
 use PDOStatement;
+use App\Utils\DataValidator;
+use Exception;
 
 /**
  * Classe de conexão com o banco de dados
- * @package Utils
+ * @package DAO
  * @author Ariel Santos (MrXacx)
  */
 abstract class DatabaseAcess{
@@ -21,10 +23,17 @@ abstract class DatabaseAcess{
      */
     private PDO $connection;
 
+    /**
+     * Objeto de validação de dados
+     * @var DataValidator
+     */
+    protected DataValidator $dataValidator;
+
     function __construct(){
         try{
             $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
-        } catch(PDOException $ex){            
+            $this->dataValidator= new DataValidator();
+        } catch(Exception $ex){            
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -38,7 +47,7 @@ abstract class DatabaseAcess{
         return $this->connection;
     }
 
-     /**
+    /**
      * Obtém uiid
      * @return String Sequência aleatória de 36 dígitos
      * 
@@ -47,7 +56,7 @@ abstract class DatabaseAcess{
         return \Ramsey\Uuid\Uuid::uuid7()->toString();
     }
 
-     /**
+    /**
      * Obtém valor consultado no banco de dados
      * @param PDOStatement|false $query Objeto de consulta à tabela
      * @return array|string Valor buscado no banco
@@ -75,39 +84,35 @@ abstract class DatabaseAcess{
     /**
      * Insere linhs na tabela
      * 
-     * @param object $model Modelo de usuário
      * @return int Número de linhas afetadas
      * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
      */
-    abstract public function create(object $model): int;
+    abstract public function create(): int;
 
     /**
      * Obtém determinada célula da tabela
      * 
      * @param string $column Nome da coluna a ser consultada 
-     * @param string $id ID do usuário
      * @return string Valor da célula
      */
-    abstract public function read(string $column, string $id): array;
+    abstract public function read(string $column): array;
 
     /**
      * Atualiza determinada célula do banco
      * 
      * @param string $column Nome da coluna que deve sofrer alterações
      * @param string $value Novo valor da coluna
-     * @param string $id ID do usuário
      * @return int Número de linhas afetadas
      */
-    abstract public function update(string $column, string $value, string $id): int;
+    abstract public function update(string $column, string $value): int;
 
     /**
      * Deleta linha do banco
      * 
-     * @param string $id ID do usuário
      * @return int Número de linhas deletadas
      * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
      */
-    abstract public function delete(string $id): int;
+    abstract public function delete(): int;
 
     /**
      * Confere se string é compatível com alguma coluna da tabela

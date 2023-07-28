@@ -20,7 +20,7 @@ USE spaceart;
 
 CREATE TABLE Users (
   id char(36) NOT NULL,
-  full_name varchar(30) NOT NULL,
+  full_name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   telphone varchar(11) NOT NULL,
   pwd varchar(255) NOT NULL,
@@ -43,8 +43,7 @@ CREATE TABLE Contracts (
   date_point date NOT NULL,
   inital_time time(0) NOT NULL,
   final_time time(0) NOT NULL,
-  art varchar(10) NOT NULL,
-  contract_description varchar(255) NOT NULL,
+  art varchar(255) NOT NULL,
 
   UNIQUE KEY uuid (id)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -55,8 +54,7 @@ CREATE TABLE Selections (
   price integer(5) NOT NULL,
   inital_datetime datetime NOT NULL,
   final_datetime datetime NOT NULL,
-  art varchar(10) NOT NULL,
-  selection_description varchar(255) NOT NULL,
+  art varchar(255) NOT NULL,
 
-  UNIQUE KEY uuid (id),
+  UNIQUE KEY uuid (id)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;

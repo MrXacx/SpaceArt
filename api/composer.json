@@ -7,11 +7,12 @@
         "psr-4": {
             "App\\": "src/",
             "App\\Controllers\\": "src/controllers/",
+            "App\\DAO\\": "src/dao/",
+            "App\\DAO\\Abstract\\": "src/dao/abstracts/",
             "App\\Models\\": "src/models/",
             "App\\Tests\\": "src/tests/",
-            "App\\Tools\\": "src/services/",     
-            "App\\Tools\\Traits\\": "src/services/traits",     
-            "App\\Utils\\": "src/utilities"
+            "App\\Utils\\": "src/utils/",      
+            "App\\Utils\\Tools\\": "src/utils/traits/"      
         }
     },
     "require": {

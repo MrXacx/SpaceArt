@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\Tools\DataValidator;
+use App\Utils\DataValidator;
 use DateInterval;
 use DateTime;
 use RuntimeException;
@@ -55,9 +55,9 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase{
     }
     
     public function testValidateLength(){
-        parent::assertTrue($this->validator->validateVarcharLength('Churrascada', \App\Utils\UserDB::PWD));
-        parent::assertFalse($this->validator->validateVarcharLength('', \App\Utils\ContractDB::DESCRIPTION));
-        parent::assertFalse($this->validator->validateVarcharLength(str_repeat('a', 256), \App\Utils\UserDB::PWD));
+        parent::assertTrue($this->validator->validateVarcharLength('Churrascada', \App\DAO\UserDB::PWD));
+        parent::assertFalse($this->validator->validateVarcharLength('', \App\DAO\ContractDB::ART));
+        parent::assertFalse($this->validator->validateVarcharLength(str_repeat('a', 256), \App\DAO\UserDB::PWD));
     }
 
     public function testValidateLengthWithInvalidColumn(){
