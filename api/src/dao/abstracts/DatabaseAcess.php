@@ -9,7 +9,6 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use App\Utils\DataValidator;
-use Exception;
 
 /**
  * Classe de conexão com o banco de dados
@@ -33,7 +32,7 @@ abstract class DatabaseAcess{
         try{
             $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
             $this->dataValidator= new DataValidator();
-        } catch(Exception $ex){            
+        } catch(\Exception $ex){            
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -62,7 +61,7 @@ abstract class DatabaseAcess{
      * @return array|string Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
-    protected function validatoreading(PDOStatement|false $query): array{
+    protected function formatResultOfRead(PDOStatement|false &$query): array{
         
         $response = $query->fetch(\PDO::FETCH_ASSOC);
         unset($query);
@@ -85,7 +84,7 @@ abstract class DatabaseAcess{
      * Insere linhs na tabela
      * 
      * @return int Número de linhas afetadas
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     abstract public function create(): int;
 
@@ -110,14 +109,14 @@ abstract class DatabaseAcess{
      * Deleta linha do banco
      * 
      * @return int Número de linhas deletadas
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     abstract public function delete(): int;
 
     /**
-     * Confere se string é compatível com alguma coluna da tabela
+     * Confere se valor é idêntico ao nome de alguma coluna da tabela
      * 
-     * @param string Coluna
+     * @param string Nome da coluna
      * @return bool Retorna true se coluna for compatível
      */
     abstract public static function isColumn(string $column):bool;

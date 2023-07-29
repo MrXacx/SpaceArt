@@ -186,8 +186,8 @@ class UserModel{
         $model->id =$attr['id'];
         $model->name = $attr[UserDB::NAME];
         $model->cep = $attr[UserDB::CEP];
-        $model->phone = $attr[UserDB::PHONE] ?? null;
-        $model->documentNumber = $attr[UserDB::DOCUMENT_NUMBER] ?? null;
+        $model->phone = $attr[UserDB::PHONE];
+        $model->documentNumber = $attr[UserDB::DOCUMENT_NUMBER];
 
         if(isset($attr[UserDB::SITE])){ // Executa se a posição existir
             $model->website = $attr[UserDB::SITE];

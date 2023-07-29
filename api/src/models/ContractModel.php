@@ -46,6 +46,10 @@ class ContractModel{
      */
     private array $details;
 
+    /**
+     * Objeto de validação de dados
+     * @var DataValidator
+     */
     private DataValidator $validator;
 
     /** 
@@ -57,53 +61,9 @@ class ContractModel{
         $this->validator = new DataValidator();
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
-        $this->price = $price.'';             
+        $this->price = $price.''; // Armazena valor como string            
     }
 
-    public function setID(string $id): void{
-        $this->id = $id;
-    }
-
-    public function setArt(string $art): void{
-        $this->details['art'] = $art;
-    }
-
-    public function setDate(string $date): void{
-        $this->details['date'] = $this->validator->isValidDateFormat($date) ? $date : null;
-    }
-
-    public function setTime(string $inital, string $final): void{
-        $this->details['time']['inital'] = $this->validator->buildTime($inital);
-        $this->details['time']['final'] = $this->validator->buildTime($final);
-    }
-
-
-    public function getID(): string{
-        return $this->id;
-    }
-
-    public function gethirerID(): string{
-        return $this->hirerID;
-    }
-
-    public function gethiredID(): string{
-        return $this->hiredID;
-    }
- 
-    public function getPrice(): string{
-        return $this->price;
-    }
-
-
-    /**
-     * Obtém array com detalhes do contrato
-     * 
-     * @return array Detalhes do contrato
-     */
-    public function getDetails(): array{
-        return $this->details;
-    }
-    
     /**
      * Obtém um modelo de contrato inicializado
      * 
@@ -129,6 +89,89 @@ class ContractModel{
         return $model;
         
     }
-}
 
+    /**
+     * Define ID do contrato
+     * 
+     * @param string $id ID do contrato
+     */
+    public function setID(string $id): void{
+        $this->id = $id;
+    }
+
+    /**
+     * Obtém ID do modelo
+     * 
+     * @return string ID
+     */
+    public function getID(): string{
+        return $this->id;
+    }
+
+    /**
+     * Obtém ID do contratante
+     * 
+     * @return string ID
+     */
+    public function gethirerID(): string{
+        return $this->hirerID;
+    }
+
+    /**
+     * Obtém ID do contratado
+     * 
+     * @return string ID
+     */
+    public function gethiredID(): string{
+        return $this->hiredID;
+    }
+
+    /**
+     * Obtém Valor do contrato
+     * 
+     * @return string Preço
+     */
+    public function getPrice(): string{
+        return $this->price;
+    }
+
+    /**
+     * Define aata do evento
+     * 
+     * @param string $date Data do evento
+     */
+    public function setDate(string $date): void{
+        $this->details['date'] = $this->validator->isValidDateFormat($date) ? $date : null;
+    }
+
+    /**
+     * Define Horários de início e fim do evento
+     * 
+     * @param string $inital Horário início
+     * @param string $inital Horário fim
+     */
+    public function setTime(string $inital, string $final): void{
+        $this->details['time']['inital'] = $this->validator->buildTime($inital);
+        $this->details['time']['final'] = $this->validator->buildTime($final);
+    }
+
+    /**
+     * Define Tipo de arte do contrato
+     * 
+     * @param string $art Tipo de arte
+     */
+    public function setArt(string $art): void{
+        $this->details['art'] = $art;
+    }
+
+    /**
+     * Obtém array com detalhes do contrato
+     * 
+     * @return array Detalhes do contrato
+     */
+    public function getDetails(): array{
+        return $this->details;
+    }
+    
+}
 ?>

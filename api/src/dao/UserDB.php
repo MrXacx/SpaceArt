@@ -3,11 +3,8 @@
 declare(strict_types = 1);
 namespace App\DAO;
 
-require_once __DIR__.'/../../vendor/autoload.php';
-
 use App\DAO\Abstract\DatabaseAcess;
 use App\Models\UserModel;
-
 use PDOException;
 use RuntimeException;
 
@@ -18,7 +15,7 @@ use RuntimeException;
  */
 class UserDB extends DatabaseAcess{
     /**
-     * Nome da coluna de nome do usuário
+     * Nome da coluna de nome
      * @var string
      */
     public const NAME = 'full_name';
@@ -30,7 +27,7 @@ class UserDB extends DatabaseAcess{
     public const PWD = 'pwd';
 
     /**
-     * Nome da coluna de senha 
+     * Nome da coluna de telefone 
      * @var string
      */
     public const PHONE = 'telphone';
@@ -54,34 +51,40 @@ class UserDB extends DatabaseAcess{
     public const CEP = 'cep';
     
     /**
-     * Site do usuário
+     * Nome da coluna de site
      * @var string
      */
     public const SITE = 'website';
 
-
+    /**
+     * Modelo de usuário a ser manipulado
+     * @var UserModel
+     */
     private UserModel $user;
 
-
-    function __construct(UserModel $user){
-        $this->user = $user;
+    /**
+     * @param UserModel $user Modelo de usuário a ser manipulado
+     */
+    function __construct(UserModel $user = null){
+        if($user instanceof UserModel){
+            $this->user = $user;
+        }
         parent::__construct();
     }
-
 
     /**
      * Insere usuário na tabela
      * 
-     * @see DatabaseAcess
+     * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha devido a conexão com o banco de dados
      */
     public function create(): int{
         try{
             
             // Passa query SQL de criação
-            $query = parent::getConnection()->prepare('INSERT INTO Users (id, full_name, email, telphone, pwd, document, cep, website) VALUES (?,?,?,?,?,?,?,?)');
+            $query = $this->getConnection()->prepare('INSERT INTO Users (id, full_name, email, telphone, pwd, document, cep, website) VALUES (?,?,?,?,?,?,?,?)');
 
-            $this->user->setID(parent::getRandomID());
+            $this->user->setID($this->getRandomID());
 
             // Substitui interrogações pelos valores dos atributos
             $query->bindValue(1, $this->user->getID());
@@ -109,8 +112,8 @@ class UserDB extends DatabaseAcess{
     /**
      * Obtém determinada célula da tabela
      * 
-     * @see DatabaseAcess
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function read(string $column): array{
         try{
@@ -120,12 +123,12 @@ class UserDB extends DatabaseAcess{
             }
                 
             // Determina query SQL de leitura
-            $query = parent::getConnection()->prepare("SELECT id, $column FROM Users WHERE id = ?");
+            $query = $this->getConnection()->prepare("SELECT id, $column FROM Users WHERE id = ?");
             
             $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return parent::validatoreading($query); // Retorna valor que 
+                return $this->formatResultOfRead($query); // Retorna valor que 
             }
             
             error: throw new RuntimeException($message ?? 'Operação falhou!'); // Executa se alguma falha esperdada ocorrer
@@ -136,20 +139,20 @@ class UserDB extends DatabaseAcess{
     }
 
     /**
-     * Obtém ID de um usuário
+     * Obtém ID do usuário
      * 
      * @param string $this->user->getEmail() Email do usuário
      * @return string ID do usuário
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function readID(): array{
         try{
             // Passa query SQL para leitura da coluna id
-            $query = parent::getConnection()->prepare('SELECT id FROM Users WHERE email = ? ');
+            $query = $this->getConnection()->prepare('SELECT id FROM Users WHERE email = ? ');
             $query->bindValue(1, $this->user->getEmail()); // Substitui a interrogação pelo email passado
     
             if ($query->execute()){ // Executa se a query for aceita
-                return parent::validatoreading($query);
+                return $this->formatResultOfRead($query);
             }
             
             // Executa em caso de falhas esperadas
@@ -163,35 +166,17 @@ class UserDB extends DatabaseAcess{
     /**
      * Obtém modelo de usuário configurado com base nos dados do banco
      * 
-     * @param string $this->user->getID() ID do usuário
      * @return UserModel Modelo do usuário
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function readUser(): UserModel{
         try{
             // Define query SQL para obter todas as colunas da linha do usuário
-            $query = parent::getConnection()->prepare('SELECT * FROM Users WHERE id = ?');
+            $query = $this->getConnection()->prepare('SELECT * FROM Users WHERE id = ?');
             $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
             if($query->execute()){ // Executa se a query for aceita
-                return UserModel::getInstaceOf(parent::validatoreading($query));
-            }
-            // Executa em caso de falhas esperadas
-            throw new RuntimeException('Operação falhou!');
-
-        } catch(RuntimeException|PDOException $ex){
-            throw new RuntimeException($ex->getMessage());
-        }
-    }
-
-    public static function readRestrictedUser(string $id): UserModel{
-        try{
-            // Define query SQL para obter todas as colunas da linha do usuário
-            $query = parent::getConnection()->prepare('SELECT id, full_name, cep, website FROM Users WHERE id = ?');
-            $query->bindValue(1, $id); // Substitui interrogação pelo ID
-
-            if($query->execute()){ // Executa se a query for aceita
-                return UserModel::getInstaceOf(parent::validatoreading($query));
+                return UserModel::getInstaceOf($this->formatResultOfRead($query));
             }
             // Executa em caso de falhas esperadas
             throw new RuntimeException('Operação falhou!');
@@ -202,10 +187,33 @@ class UserDB extends DatabaseAcess{
     }
 
     /**
-     * Atualiza determinada célula do banco
+     * Obtém dados não sensíveis de um usuário
      * 
-     * @see DatabaseAcess
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @param string $id ID do usuário a ser consultado
+     * @return array Vetor com dados do usuário
+     */
+    public function readRestrictedUser(string $id): array{
+        try{
+            // Define query SQL para obter todas as colunas da linha do usuário
+            $query = $this->getConnection()->prepare('SELECT id, full_name, cep, website FROM Users WHERE id = ?');
+            $query->bindValue(1, $id); // Substitui interrogação pelo ID
+
+            if($query->execute()){ // Executa se a query for aceita
+                return $this->formatResultOfRead($query);
+            }
+            // Executa em caso de falhas esperadas
+            throw new RuntimeException('Operação falhou!');
+
+        } catch(RuntimeException|PDOException $ex){
+            throw new RuntimeException($ex->getMessage());
+        }
+    }
+
+    /**
+     * Atualiza determinada célula da tabela
+     * 
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function update(string $column, string $value): int{
         try{
@@ -219,7 +227,7 @@ class UserDB extends DatabaseAcess{
             }
 
             // Passa query SQL de atualização
-            $query = parent::getConnection()->prepare("UPDATE Users SET $column = ? WHERE id = ?");
+            $query = $this->getConnection()->prepare("UPDATE Users SET $column = ? WHERE id = ?");
 
             // Substitui interrogações
             $query->bindValue(1, $value);
@@ -239,13 +247,13 @@ class UserDB extends DatabaseAcess{
     /**
      * Deleta usuário do banco
      * 
-     * @see DatabaseAcess
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function delete(): int{  
         try{
             // Define a query SQL de remoção
-            $query = parent::getConnection()->prepare('DELETE FROM Users WHERE id = ?');
+            $query = $this->getConnection()->prepare('DELETE FROM Users WHERE id = ?');
             $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID informado
             
             if($query->execute()){ // Executa caso a query seja aceita
@@ -261,9 +269,9 @@ class UserDB extends DatabaseAcess{
     }
 
     /**
-     * Confere se string é compatível com alguma coluna da tabela
+     * Confere se valor é idêntico ao nome de alguma coluna da tabela
      * 
-     * @see DatabaseAcess
+     * @see abstracts/DatabaseAcess.php
      */
     public static function isColumn(string $column):bool{
         $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP, self::SITE, self::PHONE];

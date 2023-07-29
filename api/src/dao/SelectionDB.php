@@ -3,11 +3,8 @@
 declare(strict_types = 1);
 namespace App\DAO;
 
-require_once __DIR__.'/../../vendor/autoload.php';
-
 use App\DAO\Abstract\DatabaseAcess;
 use App\Models\SelectionModel;
-
 use PDOException;
 use RuntimeException;
 
@@ -25,7 +22,7 @@ class SelectionDB extends DatabaseAcess{
     public const OWNER_ID = 'owner_id';
     
     /**
-     * Nome da coluna do valor
+     * Nome da coluna do preço
      * @var string
      */
     public const PRICE = 'price';
@@ -48,8 +45,15 @@ class SelectionDB extends DatabaseAcess{
      */
     public const FINAL_DATETIME = 'final_datetime';
 
+    /**
+     * Modelo de seleção a ser manipulado
+     * @var SelectionModel
+     */
     private SelectionModel $selection;
 
+    /**
+     * @param SelectionModel $selection Modelo de seleção a ser manipulado
+     */
     function __construct(SelectionModel $selection) {
         $this->selection = $selection;
         parent::__construct();
@@ -58,16 +62,17 @@ class SelectionDB extends DatabaseAcess{
     /**
      * Insere seleção na tabela
      * 
-     * @see DatabaseAcess
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function create(): int{
         try{      
 
-            $this->selection->setID(parent::getRandomID()); // Gera uuid
-            $datetime = $this->selection->getDatetime();
+            $this->selection->setID($this->getRandomID()); // Gera uuid
+            $datetime = $this->selection->getDatetime(); // Obtém datas e horários de início e fim
+
             // Passa query SQL de criação
-            $query = parent::getConnection()->prepare('INSERT INTO Selections (id, owner_id, price, inital_datetime, final_datetime, art) VALUES (?,?,?,?,?,?)');
+            $query = $this->getConnection()->prepare('INSERT INTO Selections (id, owner_id, price, inital_datetime, final_datetime, art) VALUES (?,?,?,?,?,?)');
             
             // Substitui interrogações pelos valores dos atributos
             $query->bindValue(1, $this->selection->getID());
@@ -92,8 +97,8 @@ class SelectionDB extends DatabaseAcess{
     /**
      * Obtém determinada célula da tabela
      * 
-     * @see DatabaseAcess
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function read(string $column): array{
         try{
@@ -103,11 +108,11 @@ class SelectionDB extends DatabaseAcess{
             }
                 
             // Determina query SQL de leitura
-            $query = parent::getConnection()->prepare("SELECT id, $column FROM Selections WHERE id = ?");
+            $query = $this->getConnection()->prepare("SELECT id, $column FROM Selections WHERE id = ?");
             $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return parent::validatoreading($query); // Retorna valor que 
+                return $this->formatResultOfRead($query); // Retorna valor que 
             }
 
             // Executa em caso de falhas esperadas
@@ -120,18 +125,17 @@ class SelectionDB extends DatabaseAcess{
     /**
      * Obtém modelo de seleção configurado com base nos dados do banco
      * 
-     * @param string $id ID da seleção
-     * @return UserModel Modelo da seleção
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @return SelectionModel Modelo da seleção
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function readSelection(): SelectionModel{
         try{
             // Determina query SQL de leitura
-            $query = parent::getConnection()->prepare('SELECT * FROM Selections WHERE id = ?');
+            $query = $this->getConnection()->prepare('SELECT * FROM Selections WHERE id = ?');
             $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
-                return SelectionModel::getInstaceOf(parent::validatoreading($query));
+                return SelectionModel::getInstaceOf($this->formatResultOfRead($query));
             }
 
             // Executa em caso de falhas esperadas
@@ -142,10 +146,10 @@ class SelectionDB extends DatabaseAcess{
     }
 
     /**
-     * Atualiza determinada célula do banco
+     * Atualiza determinada célula da tabela
      * 
-     * @see DatabaseAcess
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function update(string $column, string $value): int{
         try{
@@ -154,12 +158,12 @@ class SelectionDB extends DatabaseAcess{
                 $message = "\"$column\" não é uma coluna da tabela Selections"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
-            else if(!$this->dataValidator->isValidToFlag($column, $value)){
+            else if(!$this->dataValidator->isValidToFlag($column, $value)){ // Executa se o valor não conidzer com a coluna
                 return 0;
             }
 
             // Passa query SQL de atualização
-            $query = parent::getConnection()->prepare("UPDATE Selections SET $column = ? WHERE id = ?");
+            $query = $this->getConnection()->prepare("UPDATE Selections SET $column = ? WHERE id = ?");
 
             // Substitui interrogações pelos valores das variáveis
             $query->bindValue(1, $value);
@@ -179,13 +183,13 @@ class SelectionDB extends DatabaseAcess{
     /**
      * Deleta seleção da tabela
      * 
-     * @see DatabaseAcess
-     * @throws RuntimeException Falha devido parâmetros incorretos ou conexão com o banco de dados
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function delete(): int{
         try{
             // Deleta seleção do banco
-            $query = parent::getConnection()->prepare('DELETE FROM Selections WHERE id = ?');
+            $query = $this->getConnection()->prepare('DELETE FROM Selections WHERE id = ?');
             $query->bindValue(1, $this->selection->getID());
             if($query->execute()){ // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
@@ -199,16 +203,15 @@ class SelectionDB extends DatabaseAcess{
     }
 
     /**
-     * Confere se string é compatível com alguma coluna da tabela
+     * Confere se valor é idêntico ao nome de alguma coluna da tabela
      * 
-     * @param string Coluna
+     * @param string Nome da coluna
      * @return bool Retorna true se coluna for compatível
      */
     public static function isColumn(string $column):bool{
-        $columns = [self::OWNER_ID, self::PRICE, self::ART, self::INITAL_DATETIME];
+        $columns = [self::OWNER_ID, self::PRICE, self::ART, self::INITAL_DATETIME, self::FINAL_DATETIME];
         return !is_bool(array_search($column,$columns));
     }
 
 }
-
 ?>

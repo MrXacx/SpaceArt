@@ -22,6 +22,12 @@ class SelectionModel{
     private string $id;
     
     /**
+     * ID do criador da seleção
+     * @var string
+     */
+    public string $ownerID;
+
+    /**
      * Valor da seleção
      * @var string
      */
@@ -34,11 +40,9 @@ class SelectionModel{
     private array $details;
     
     /**
-     * ID do criador da seleção
-     * @var string
+     * Objeto de validação
+     * @var DataValidator
      */
-    public string $ownerID;
-
     private DataValidator $validator;
 
     /**
@@ -76,47 +80,93 @@ class SelectionModel{
         return $model;
     }
 
+    /**
+     * Define id da seleção
+     * 
+     * @param string $id ID
+     */
     public function setID(string $id){
         $this->id = $this->validator->isValidVarcharLength($id, 'id') ? $id : null;
     }
 
-    public function setPrice(string $price){
-        $this->price = $this->validator->isPrice($price) ? $price : 'null';
-    }
-
-    public function setArt(string $art){
-        $this->details['art'] = $this->validator->isValidVarcharLength($art, SelectionDB::ART) ? $art : null;
-    }
-
-    public function setDate(string $inital, string $final){
-        $this->details['date'] =  array_combine(['inital', 'final'], $this->validator->isValidDateFormat($inital) && $this->validator->isValidDateFormat($final) ? [$inital, $final] : [null, null]);
-    }
-
-    public function setTime(string $inital, string $final){
-        $this->details['time']['inital'] = $this->validator->buildTime($inital);
-        $this->details['time']['final'] = $this->validator->buildTime($final);
-    }
-
+    /**
+     * Obtém ID do modelo
+     * 
+     * @return string ID
+     */
     public function getID(): string{
         return $this->id;
     }
 
+    /**
+     * Obtém ID do criador da selção
+     *  
+     * @return string ID
+     */
     public function getOwnerID(): string{
         return $this->ownerID;
     }
- 
+
+    /**
+     * Define Valor da seleção
+     * 
+     * @param string $price Valor da seleção
+     */
+    public function setPrice(string $price){
+        $this->price = $this->validator->isPrice($price) ? $price : 'null';
+    }
+
+    /**
+     * Obtém Valor da seleção
+     * 
+     * @return string Preço
+     */
     public function getPrice(): string{
         return $this->price;
     }
 
-    public function getDatetime(): array{
+    /**
+     * Define datas de início e fim da seleção
+     * 
+     * @param string $inital Data de início
+     * @param string $inital Data de fim
+     */
+    public function setDate(string $inital, string $final){
+        $this->details['date'] =  array_combine(['inital', 'final'], $this->validator->isValidDateFormat($inital) && $this->validator->isValidDateFormat($final) ? [$inital, $final] : [null, null]);
+    }
 
+    /**
+     * Define Horários de início e fim da seleção
+     * 
+     * @param string $inital Horário de início
+     * @param string $inital Horário de fim
+     */
+    public function setTime(string $inital, string $final){
+        $this->details['time']['inital'] = $this->validator->buildTime($inital);
+        $this->details['time']['final'] = $this->validator->buildTime($final);
+    }
+    
+    /**
+     * Obtém Datas e horários de início e fim do modelo
+     * 
+     * @return array Vetor de datetimes
+     */
+    public function getDatetime(): array{
         return [
             'inital' => $this->details['date']['inital']." ".$this->details['time']['inital'],
             'final' => $this->details['date']['final']." ".$this->details['time']['final']
             ];
     }
- 
+
+    /**
+     * Define tipo de arte da seleção
+     * 
+     * @param string $art tipo de arte
+     */
+    public function setArt(string $art){
+        $this->details['art'] = $this->validator->isValidVarcharLength($art, SelectionDB::ART) ? $art : null;
+    }
+
     /**
      * Obtém tipo de arte
      * 
@@ -124,9 +174,7 @@ class SelectionModel{
      */
     public function getArt(): string{
         return $this->details['art'];
-    }
-    
-    
+    }    
 }
 
 ?>

@@ -5,6 +5,12 @@ namespace App\Utils\Tools;
 use DateTime;
 use RuntimeException;
 
+/**
+ * Ferramenta para manipulação de datetimes
+ * 
+ * @package Utils\Tools
+ * @author Ariel Santos (MrXacx)
+ */
 trait DateTimeTrait{
 
     /**
@@ -33,16 +39,15 @@ trait DateTimeTrait{
      * @throws RuntimeException Em caso de mês fora do formato DD/MM/YYYY ou horário fora do formato HH:MM
      */
     public function isFuture(string $date, string $now): bool{     
-        if($this->isValidDateFormat($date) && $this->isValidTimeFormat($now)){
+        if($this->isValidDateFormat($date) && $this->isValidTimeFormat($now)){ // Checa se datetime está num formato válido
 
-            $formats = ['Y','m','d','H','i'];
-            $values = $this->splitDateTime($date, $now);
-
-            $values = array_combine($formats, $values);
+            $formats = ['Y','m','d','H','i']; // Flags para a classe Datetime (Ano, mês, dia, hora e minuto)
+            $values = array_combine($formats, $this->splitDateTime($date, $now)); // Define formatos como chaves dos pedaços do datetiem
             
-            $now = new DateTime();
-            foreach($values as $format => $value){
-                $arr = array_slice($values, 0, array_search($format, $formats), true);
+            $now = new DateTime(); // Inicia manipulador de tempo
+
+            foreach($values as $format => $value){ // Itera datetime informado
+                $arr = array_slice($values, 0, array_search($format, $formats), true); // Obtém todos os valores das posições anteriores
                 if($value > $now->format($format) && $this->areCurrentTime($arr, $now)){ // Executa se o valor da posição atual for superior ao seu equivalente de horário e todos os anteriores forem idênticos aos seus equivalentes
                     return true;
                 }
@@ -60,7 +65,7 @@ trait DateTimeTrait{
      * @param string $date Data
      * @param string $now Horário 
      * @return array Vetor contendo valores de data e horário na seguinte ordem: ano, mês, dia, hora e minuto;
-     * @throws RuntimeException Em caso de mês fora do formato DD/MM/YYYY ou horário fora do formato HH:MM
+     * @throws RuntimeException Em caso de mês fora do formato YYYY-MM-DD ou horário fora do formato HH:MM
      */
     private function splitDateTime(string $date, string $now): array{
         $values = [];
@@ -91,13 +96,24 @@ trait DateTimeTrait{
         return true;
     }
 
+    /**
+     * Formata date e horário em datetime
+     * 
+     * @param string $date Data
+     * @param string $time Horário
+     * @return string|null Datetime no formato correto caso os valores informados sejam válidos, senão null
+     */
     public function buildDatetime(string $date, string $time): string|null{
-        
         $time = $this->buildTime($time);
         return $this->isValidDateFormat($date) && isset($time) ? "$date $time" : null;
-
     }
 
+    /**
+     * Formata horário para o modelo aceito no banco de dados
+     * 
+     * @param string $time Horário
+     * @return string|null Horário formatado se o valor informado for válido, senão null
+     */
     public function buildTime(string $time): string|null{
         return $this->isValidTimeFormat($time) ? "$time:00" : null;
     }
