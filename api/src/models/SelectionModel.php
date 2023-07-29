@@ -46,7 +46,7 @@ class SelectionModel{
      */
     function __construct(string $ownerID){
         $this->validator = new DataValidator();
-        $this->ownerID = $this->validator->validateVarcharLength($ownerID, 'id') ? $ownerID : null;;         
+        $this->ownerID = $this->validator->isValidVarcharLength($ownerID, 'id') ? $ownerID : null;;         
     }
 
     /**
@@ -77,20 +77,19 @@ class SelectionModel{
     }
 
     public function setID(string $id){
-        $this->id = $this->validator->validateVarcharLength($id, 'id') ? $id : null;
+        $this->id = $this->validator->isValidVarcharLength($id, 'id') ? $id : null;
     }
 
     public function setPrice(string $price){
-        $this->price = $this->validator->validatePrice($price) ? $price : 'null';
+        $this->price = $this->validator->isPrice($price) ? $price : 'null';
     }
 
     public function setArt(string $art){
-        $this->details['art'] = $this->validator->validateVarcharLength($art, SelectionDB::ART) ? $art : null;
+        $this->details['art'] = $this->validator->isValidVarcharLength($art, SelectionDB::ART) ? $art : null;
     }
 
     public function setDate(string $inital, string $final){
-        $this->details['date']['inital'] = $this->validator->buildDate($inital);
-        $this->details['date']['final'] = $this->validator->buildDate($final);
+        $this->details['date'] =  array_combine(['inital', 'final'], $this->validator->isValidDateFormat($inital) && $this->validator->isValidDateFormat($final) ? [$inital, $final] : [null, null]);
     }
 
     public function setTime(string $inital, string $final){

@@ -149,9 +149,13 @@ class SelectionDB extends DatabaseAcess{
      */
     public function update(string $column, string $value): int{
         try{
+
             if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Selections"; // Define mensagem de erro
                 goto error; // Pula execução do método
+            }
+            else if(!$this->dataValidator->isValidToFlag($column, $value)){
+                return 0;
             }
 
             // Passa query SQL de atualização

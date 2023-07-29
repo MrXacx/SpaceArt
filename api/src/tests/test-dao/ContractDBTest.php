@@ -15,7 +15,7 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
 
     public static function setUpBeforeClass(): void{
         self::$contract = new ContractModel('01258', '02548', 85);
-        self::$contract->setDate('22/07/2024');
+        self::$contract->setDate('2024-07-04');
         self::$contract->setTime('07:24', '08:32');
         self::$contract->setArt('escultura');
        

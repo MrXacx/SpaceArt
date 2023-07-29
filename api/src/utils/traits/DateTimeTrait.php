@@ -34,9 +34,11 @@ trait DateTimeTrait{
      */
     public function isFuture(string $date, string $now): bool{     
         if($this->isValidDateFormat($date) && $this->isValidTimeFormat($now)){
-        
+
             $formats = ['Y','m','d','H','i'];
-            $values = array_combine($formats, $this->splitDateTime($date, $now));
+            $values = $this->splitDateTime($date, $now);
+
+            $values = array_combine($formats, $values);
             
             $now = new DateTime();
             foreach($values as $format => $value){
@@ -45,9 +47,10 @@ trait DateTimeTrait{
                     return true;
                 }
             }
+
             return false;
         }
-
+        
         throw new RuntimeException("A data ou o horário não passou na validação");
     }
 
@@ -61,12 +64,11 @@ trait DateTimeTrait{
      */
     private function splitDateTime(string $date, string $now): array{
         $values = [];
-        foreach(array_reverse(explode('/', $date)) as $number){ // Itera data na ordem inversa
+
+        foreach(explode('-', $date) as $number){ // Itera data na ordem inversa
             $values[] = $number; // Insere ano, mês e dia no array
         }
-        foreach(explode(':', $now) as $number){ // Itera horário
-            $values[] = $number; // Insere hora e minuto no array
-        }
+        array_push($values, substr($now, 0, 2), substr($now, 4, 2)); // Insere hora e minuto no array
 
         return $values;
     }
@@ -90,32 +92,14 @@ trait DateTimeTrait{
     }
 
     public function buildDatetime(string $date, string $time): string|null{
-        try{
-            $date = $this->buildDate($date);
-            $time = $this->buildTime($time);
-            return isset($date) && isset($time) ? "$date $time" : null;
-        } catch(RuntimeException $ex){
-            echo $ex->getMessage();
-            return null;
-        }
-    }
+        
+        $time = $this->buildTime($time);
+        return $this->isValidDateFormat($date) && isset($time) ? "$date $time" : null;
 
-    public function buildDate(string $date): string|null{
-        try{
-            return $this->isValidDateFormat($date) ? implode('-', array_reverse(explode('/', $date))) : null;
-        } catch(RuntimeException $ex){
-            echo $ex->getMessage();
-            return null;
-        }
     }
 
     public function buildTime(string $time): string|null{
-        try{
-            return $this->isValidTimeFormat($time) ? "$time:00" : null;
-        } catch(RuntimeException $ex){
-            echo $ex->getMessage();
-            return null;
-        }
+        return $this->isValidTimeFormat($time) ? "$time:00" : null;
     }
 
     /**
@@ -124,7 +108,7 @@ trait DateTimeTrait{
      * @param string $date Data a ser analizada
      * @return bool Retorna true se a data estiver no formato correto
      */
-    abstract protected function isValidDateFormat(string $date): bool;
+    abstract public function isValidDateFormat(string $date): bool;
 
     /**
      * Valida o formato de horário
@@ -132,6 +116,6 @@ trait DateTimeTrait{
      * @param string $date Horário a ser analizada
      * @return bool Retorna true se O horário estiver no formato correto
      */
-    abstract protected function isValidTimeFormat(string $time): bool;
+    abstract public function isValidTimeFormat(string $time): bool;
 }
 ?>

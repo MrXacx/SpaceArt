@@ -52,7 +52,6 @@ class UserDBTest extends \PHPUnit\Framework\TestCase{
      * @depends testCreateValidUser
      */
     public function testReadID(){
-        var_dump(self::$user->getID());
         parent::assertEquals(['id' => self::$user->getID()], self::$db->readID());
     }
     
@@ -83,6 +82,14 @@ class UserDBTest extends \PHPUnit\Framework\TestCase{
      */
     public function testReadUser(){
         parent::assertEquals(self::$user, self::$db->readUser());
+    }
+
+    /**
+     * @depends testCreateValidUser
+     */
+    public function testReadRestrictedUser(){
+        $user = UserModel::getInstaceOf([UserDB::NAME=>self::$user->getName(), UserDB::CEP=>self::$user->getCEP(), UserDB::SITE=>self::$user->getWebsite(), 'id'=>self::$user->getID()]);
+        parent::assertEquals($user, UserDB::readRestrictedUser($user->getID()));
     }
     
     /**

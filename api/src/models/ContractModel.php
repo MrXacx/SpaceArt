@@ -69,7 +69,7 @@ class ContractModel{
     }
 
     public function setDate(string $date): void{
-        $this->details['date'] = $this->validator->buildDate($date);
+        $this->details['date'] = $this->validator->isValidDateFormat($date) ? $date : null;
     }
 
     public function setTime(string $inital, string $final): void{

@@ -184,6 +184,23 @@ class UserDB extends DatabaseAcess{
         }
     }
 
+    public static function readRestrictedUser(string $id): UserModel{
+        try{
+            // Define query SQL para obter todas as colunas da linha do usuário
+            $query = parent::getConnection()->prepare('SELECT id, full_name, cep, website FROM Users WHERE id = ?');
+            $query->bindValue(1, $id); // Substitui interrogação pelo ID
+
+            if($query->execute()){ // Executa se a query for aceita
+                return UserModel::getInstaceOf(parent::validatoreading($query));
+            }
+            // Executa em caso de falhas esperadas
+            throw new RuntimeException('Operação falhou!');
+
+        } catch(RuntimeException|PDOException $ex){
+            throw new RuntimeException($ex->getMessage());
+        }
+    }
+
     /**
      * Atualiza determinada célula do banco
      * 
@@ -192,9 +209,13 @@ class UserDB extends DatabaseAcess{
      */
     public function update(string $column, string $value): int{
         try{
+
             if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
                 goto error; // Pula execução do método
+            }
+            else if(!$this->dataValidator->isValidToFlag($column, $value)){
+                return 0;
             }
 
             // Passa query SQL de atualização

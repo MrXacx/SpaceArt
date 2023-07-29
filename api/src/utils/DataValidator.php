@@ -12,29 +12,27 @@ final class DataValidator{
 
     /**
      * Valida o formato da data
-     * 
-     * @throws RuntimeException Caso a data utilize um formato diferente de nn/nn/nnnn
      */
-    protected function isValidDateFormat(string $date): bool{      
-        if(preg_match('#\d{2}\/\d{2}\/\d{4}#', $date)){
-            $date = explode('/', $date);
-            return $date[0] >= 1 && $date[0] <= $this->getLastDayOfMonth($date[1], $date[2]);
+    public function isValidDateFormat(string $date): bool{      
+        if(preg_match('#\d{4}-\d{2}-\d{2}#', $date)){
+            $date = explode('-', $date);
+            return $date[2] >= 1 && $date[2] <= $this->getLastDayOfMonth($date[1], $date[0]);
         }
-        throw new RuntimeException('A data passada por parâmetro deve seguir o seguinte modelo: DD/MM/AAAA');     
+        
+        return false;     
     }
 
     /**
      * Valida o formato de horário
-     * 
-     * @throws RuntimeException Caso o horário utilize um formato diferente de nn:nn
      */
-    protected function isValidTimeFormat(string $time): bool{      
+    public function isValidTimeFormat(string $time): bool{
+
         if(preg_match('#\d{2}:\d{2}#', $time)){
             $time = explode(':', $time);
             return ($time[0] >= 0 && $time[0] <= 23) && ($time[1] >= 0 && $time[0] <= 59);
         }
-        
-        throw new RuntimeException('O horário passado por parâmetro deve seguir o seguinte modelo: HH:MM');     
+
+        return false;    
     }
 
     /**
@@ -45,7 +43,7 @@ final class DataValidator{
      * @return bool Retorna true se estiver entre o comprimento mínimo e máximo da coluna
      * @throws RuntimeException Caso coluna informada não for encontrada
      */
-    public function validateVarcharLength(string $varchar, string $column): bool{
+    public function isValidVarcharLength(string $varchar, string $column): bool{
         $length = strlen($varchar);
         return  $length > 0 && $length <= match($column){
             'id' => 36,
@@ -54,10 +52,43 @@ final class DataValidator{
         };
     }
 
-    public function validatePrice(string $price): bool{
+    public function isPrice(string $price): bool{
         return intval($price) == $price && strlen($price) <= 5;
     }
 
+    public function isPhone(string $phone): bool{
+        return preg_match('#[1-9]\d9(8|9)\d{7}#', $phone);
+    }
+
+    public function isCEP(string $cep): bool{
+        return preg_match('#\b\d{8}\b#', $cep);
+    }
+
+    public function isURL(string $url): bool{
+        return preg_match('#^https{0,1}://[\w\.-]+/(([\w\.-_]+)/)*(\?([\w_-]+=[\w%-]+&{0,1})+){0,1}$#', $url);
+    }
+
+    public function isDocumentNumber(string $documentNumber): bool{
+        return preg_match('#^\d{11}$#', $documentNumber);
+    }
+
+    public function isValidDatetimeFormat(string $datetime): bool{
+        $datetime = explode(" ", $datetime);
+        return $this->isValidDateFormat($datetime[0]) && $this->isValidTimeFormat($datetime[1]);
+    }
+
+    public function isValidToFlag(string $flag, string $value): bool{
+        return match($flag){
+            ContractDB::DATE => $this->isValidDateFormat($value),
+            ContractDB::INITAL_TIME, ContractDB::FINAL_TIME => $this->isValidTimeFormat($value),
+            SelectionDB::INITAL_DATETIME, SelectionDB::FINAL_DATETIME => $this->isValidDatetimeFormat($value),
+            UserDB::PHONE => $this->isPhone($value),
+            UserDB::DOCUMENT_NUMBER => $this->isDocumentNumber($value),
+            UserDB::CEP => $this->isCEP($value),
+            UserDB::SITE => $this->isURL($value),
+            default => $this->isValidVarcharLength($value, $flag)
+        };
+    }
    
 }
 
