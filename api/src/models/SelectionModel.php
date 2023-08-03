@@ -13,7 +13,7 @@ use App\Utils\DataValidator;
  */
 class SelectionModel{
 
-    // TODO: adicionar coluna de status(enum, se possível), avaliação(int) e lista de submissões
+    // TODO: adicionar coluna lista de submissões
 
     /**
      * ID da seleção
@@ -50,6 +50,12 @@ class SelectionModel{
      * @var array
      */
     private array $time;
+
+    /**
+     * Status da seleção
+     * @var bool
+     */
+    private bool $locked;
     
     /**
      * Objeto de validação
@@ -177,7 +183,15 @@ class SelectionModel{
      */
     public function getArt(): string{
         return $this->art;
-    }    
+    }
+
+    public function setLocked(bool $locked): void{
+        $this->locked = $locked;
+    }
+
+    public function isLocked(): bool{
+        return $this->locked;
+    }
 }
 
 ?>
