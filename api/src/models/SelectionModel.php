@@ -34,10 +34,22 @@ class SelectionModel{
     private string $price;
     
     /**
-     * Detalhes da seleção
+     * Tipo de arte
+     * @var string
+     */
+    private string $art;
+
+    /**
+     * Datas de início e fim
      * @var array
      */
-    private array $details;
+    private array $date;
+
+    /**
+     * Datas de início e fim
+     * @var array
+     */
+    private array $time;
     
     /**
      * Objeto de validação
@@ -60,22 +72,14 @@ class SelectionModel{
      * @return self Instância da classe
      */
     public static function getInstaceOf(array $attr): self{
-        $datetime = [explode(' ', $attr[SelectionDB::INITAL_DATETIME]), explode(' ', $attr[SelectionDB::FINAL_DATETIME])];
-
+        
         $model = new SelectionModel($attr[SelectionDB::OWNER_ID]);
         $model->id = $attr['id'];
         $model->price = $attr[SelectionDB::PRICE];
-        $model->details = [
-            'art' => $attr[SelectionDB::ART],
-            'date' => [
-                'inital' => $datetime[0][0],
-                'final' => $datetime[1][0]
-            ],
-            'time' => [
-                'inital' => $datetime[0][1],
-                'final' => $datetime[1][1]
-            ]
-        ];
+        
+        $datetime = [explode(' ', $attr[SelectionDB::INITAL_DATETIME]), explode(' ', $attr[SelectionDB::FINAL_DATETIME])];
+        $model->date = ['inital' => $datetime[0][0], 'final' => $datetime[1][0]];
+        $model->time = ['inital' => $datetime[0][1], 'final' => $datetime[1][1]];
 
         return $model;
     }
@@ -132,7 +136,7 @@ class SelectionModel{
      * @param string $inital Data de fim
      */
     public function setDate(string $inital, string $final){
-        $this->details['date'] =  array_combine(['inital', 'final'], $this->validator->isValidDateFormat($inital) && $this->validator->isValidDateFormat($final) ? [$inital, $final] : [null, null]);
+        $this->date =  array_combine(['inital', 'final'], $this->validator->isValidDateFormat($inital) && $this->validator->isValidDateFormat($final) ? [$inital, $final] : [null, null]);
     }
 
     /**
@@ -142,8 +146,7 @@ class SelectionModel{
      * @param string $inital Horário de fim
      */
     public function setTime(string $inital, string $final){
-        $this->details['time']['inital'] = $this->validator->buildTime($inital);
-        $this->details['time']['final'] = $this->validator->buildTime($final);
+        $this->time = ['inital' => $this->validator->buildTime($inital), 'final' => $this->validator->buildTime($final)];
     }
     
     /**
@@ -153,9 +156,9 @@ class SelectionModel{
      */
     public function getDatetime(): array{
         return [
-            'inital' => $this->details['date']['inital']." ".$this->details['time']['inital'],
-            'final' => $this->details['date']['final']." ".$this->details['time']['final']
-            ];
+            'inital' => $this->date['inital']." ".$this->time['inital'],
+            'final' => $this->date['final']." ".$this->time['final']
+        ];
     }
 
     /**
@@ -164,7 +167,7 @@ class SelectionModel{
      * @param string $art tipo de arte
      */
     public function setArt(string $art){
-        $this->details['art'] = $this->validator->isValidVarcharLength($art, SelectionDB::ART) ? $art : null;
+        $this->art = $this->validator->isValidVarcharLength($art, SelectionDB::ART) ? $art : null;
     }
 
     /**
@@ -173,7 +176,7 @@ class SelectionModel{
      * @return string Arte a ser praticada
      */
     public function getArt(): string{
-        return $this->details['art'];
+        return $this->art;
     }    
 }
 

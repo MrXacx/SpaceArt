@@ -32,7 +32,7 @@ class SelectionDBTest extends \PHPUnit\Framework\TestCase{
     public static function setUpBeforeClass(): void{
         // Cria modelo de seleção
         self::$selection = new SelectionModel('12345');
-        self::$selection->setDate('2023-08-31', '2023-12-31clear');
+        self::$selection->setDate('2023-08-31', '2023-12-31');
         self::$selection->setTime('09:23', '12:03');
         self::$selection->setPrice('120');
         self::$selection->setArt('música');

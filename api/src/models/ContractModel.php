@@ -41,10 +41,22 @@ class ContractModel{
     public string $price;
 
     /**
-     * Detalhes do contrato
+     * Tipo de arte
+     * @var string
+     */
+    private string $art;
+
+    /**
+     * Data do evento
+     * @var string
+     */
+    private string $date;
+
+    /**
+     * Horários de início e fim do evento
      * @var array
      */
-    private array $details;
+    private array $time;
 
     /**
      * Objeto de validação de dados
@@ -77,14 +89,9 @@ class ContractModel{
             intval($attr[ContractDB::PRICE])
         );
         $model->id = $attr['id'];
-        $model->details = [
-            'date' => $attr[ContractDB::DATE],
-            'time' => [
-                'inital' => $attr[ContractDB::INITAL_TIME],
-                'final' => $attr[ContractDB::FINAL_TIME]
-            ],
-            ContractDB::ART => $attr[ContractDB::ART]
-        ];
+        $model->date = $attr[ContractDB::DATE];
+        $model->setTime($attr[ContractDB::INITAL_TIME], $attr[ContractDB::FINAL_TIME]);
+        $model->art = $attr[ContractDB::ART];
         
         return $model;
         
@@ -136,12 +143,33 @@ class ContractModel{
     }
 
     /**
+     * Obtém tipo de arte
+     */
+    public function getArt(): string{
+        return $this->art;
+    }
+
+    /**
+     * Obtém data do evento
+     */
+    public function getDate(): string{
+        return $this->date;
+    }
+    
+    /**
+     * Obtém horários do evento
+     */
+    public function getTime(): array{
+        return $this->time;
+    }
+
+    /**
      * Define aata do evento
      * 
      * @param string $date Data do evento
      */
     public function setDate(string $date): void{
-        $this->details['date'] = $this->validator->isValidDateFormat($date) ? $date : null;
+        $this->date = $this->validator->isValidDateFormat($date) ? $date : null;
     }
 
     /**
@@ -151,8 +179,7 @@ class ContractModel{
      * @param string $inital Horário fim
      */
     public function setTime(string $inital, string $final): void{
-        $this->details['time']['inital'] = $this->validator->buildTime($inital);
-        $this->details['time']['final'] = $this->validator->buildTime($final);
+        $this->time = ['inital' => $this->validator->buildTime($inital), 'final' => $this->validator->buildTime($final)];
     }
 
     /**
@@ -161,17 +188,8 @@ class ContractModel{
      * @param string $art Tipo de arte
      */
     public function setArt(string $art): void{
-        $this->details['art'] = $art;
+        $this->art = $art;
     }
-
-    /**
-     * Obtém array com detalhes do contrato
-     * 
-     * @return array Detalhes do contrato
-     */
-    public function getDetails(): array{
-        return $this->details;
-    }
-    
+  
 }
 ?>

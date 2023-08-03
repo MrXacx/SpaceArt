@@ -80,7 +80,6 @@ class ContractDB extends DatabaseAcess{
     public function create(): int{
         try{
             $this->contract->setID($this->getRandomID()); // Gera uuid
-            $details = $this->contract->getDetails(); // Obtém array de detalhes
             
             // Passa query SQL de criação
             $query = $this->getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, inital_time, final_time, art) VALUES (?,?,?,?,?,?,?,?)');
@@ -90,17 +89,19 @@ class ContractDB extends DatabaseAcess{
             $query->bindValue(2, $this->contract->getHirerID());
             $query->bindValue(3, $this->contract->getHiredID());
             $query->bindValue(4, $this->contract->getPrice());
-            $query->bindValue(5, $details['date']);
-            $query->bindValue(6, $details['time']['inital']);
-            $query->bindValue(7, $details['time']['final']);
-            $query->bindValue(8, $details['art']);
+            $query->bindValue(5,  $this->contract->getDate());
+
+            $time = $this->contract->getTime();
+            $query->bindValue(6, $time['inital']);
+            $query->bindValue(7, $time['final']);
+            $query->bindValue(8, $this->contract->getArt());
             
             if($query->execute()){ // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
             }
 
             // Executa se houver alguma falha esperada
-            error: throw new \RuntimeException($message ?? 'Operação falhou!');
+            error: throw new \RuntimeException('Operação falhou!');
         } catch(RuntimeException|PDOException $ex){
             throw new \RuntimeException($ex->getMessage());
         }
