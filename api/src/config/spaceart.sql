@@ -58,6 +58,7 @@ CREATE TABLE Selections (
   inital_datetime datetime NOT NULL,
   final_datetime datetime NOT NULL,
   art varchar(255) NOT NULL,
+  locked boolean DEFAULT 0,
 
   UNIQUE KEY uuid (id)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
