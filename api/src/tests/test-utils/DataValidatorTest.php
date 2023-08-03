@@ -146,5 +146,11 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase{
         $this->expectExceptionMessage('Coluna não encontrada');
         $this->validator->isValidToFlag('arroz', 'passas');
     }
+
+    public function testValidateRate(){
+        parent::assertTrue($this->validator->isRate(rand(0, 5)));
+        parent::assertFalse($this->validator->isRate(rand(-500, -1)));
+        parent::assertFalse($this->validator->isRate(rand(6, 506)));
+    }
 }
 

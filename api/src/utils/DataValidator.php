@@ -127,6 +127,10 @@ final class DataValidator{
         return $this->isValidDateFormat($datetime[0]) && $this->isValidTimeFormat($datetime[1]);
     }
 
+    public function isRate(int $rate): bool{
+        return $rate >= 0 && $rate <= 5;
+    }
+
     /**
      * Checa se valor está apto a ser inserido na tabela
      * 

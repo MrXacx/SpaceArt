@@ -58,6 +58,10 @@ class ContractModel{
      */
     private array $time;
 
+    private int $rate;
+    private bool $accepted;
+    private bool $locked;
+
     /**
      * Objeto de validação de dados
      * @var DataValidator
@@ -143,10 +147,12 @@ class ContractModel{
     }
 
     /**
-     * Obtém tipo de arte
+     * Define aata do evento
+     * 
+     * @param string $date Data do evento
      */
-    public function getArt(): string{
-        return $this->art;
+    public function setDate(string $date): void{
+        $this->date = $this->validator->isValidDateFormat($date) ? $date : null;
     }
 
     /**
@@ -156,22 +162,6 @@ class ContractModel{
         return $this->date;
     }
     
-    /**
-     * Obtém horários do evento
-     */
-    public function getTime(): array{
-        return $this->time;
-    }
-
-    /**
-     * Define aata do evento
-     * 
-     * @param string $date Data do evento
-     */
-    public function setDate(string $date): void{
-        $this->date = $this->validator->isValidDateFormat($date) ? $date : null;
-    }
-
     /**
      * Define Horários de início e fim do evento
      * 
@@ -183,12 +173,50 @@ class ContractModel{
     }
 
     /**
+     * Obtém horários do evento
+     */
+    public function getTime(): array{
+        return $this->time;
+    }
+
+    /**
      * Define Tipo de arte do contrato
      * 
      * @param string $art Tipo de arte
      */
     public function setArt(string $art): void{
         $this->art = $art;
+    }
+
+    /**
+     * Obtém tipo de arte
+     */
+    public function getArt(): string{
+        return $this->art;
+    }
+
+    public function setRate(int $rate){
+        $this->rate = $this->validator->isRate($rate) ? $rate : null;
+    }
+
+    public function getRate(): int{
+        return $this->rate;
+    }
+
+    public function setAccepted(bool $accepted): void{
+        $this->accepted = $accepted;
+    }
+
+    public function isAccepted(): bool{
+        return $this->accepted;
+    }
+  
+    public function setLocked(bool $locked): void{
+        $this->locked = $locked;
+    }
+
+    public function isLocked(): bool{
+        return $this->locked;
     }
   
 }

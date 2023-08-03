@@ -44,6 +44,9 @@ CREATE TABLE Contracts (
   inital_time time(0) NOT NULL,
   final_time time(0) NOT NULL,
   art varchar(255) NOT NULL,
+  rate int(1) DEFAULT NULL,
+  accepted boolean DEFAULT 0,
+  locked boolean DEFAULT 0
 
   UNIQUE KEY uuid (id)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
