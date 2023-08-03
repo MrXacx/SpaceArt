@@ -46,6 +46,12 @@ class SelectionDB extends DatabaseAcess{
     public const FINAL_DATETIME = 'final_datetime';
 
     /**
+     * Nome da coluna de status
+     * @var bool
+     */
+    public const LOCKED = 'locked';
+
+    /**
      * Modelo de seleção a ser manipulado
      * @var SelectionModel
      */
