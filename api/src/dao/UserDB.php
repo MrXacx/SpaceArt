@@ -30,7 +30,7 @@ class UserDB extends DatabaseAcess{
      * Nome da coluna de telefone 
      * @var string
      */
-    public const PHONE = 'telphone';
+    public const PHONE = 'phone';
     
     /**
      * Nome da coluna de cpf/cnpj
@@ -82,7 +82,7 @@ class UserDB extends DatabaseAcess{
         try{
             
             // Passa query SQL de criação
-            $query = $this->getConnection()->prepare('INSERT INTO Users (id, full_name, email, telphone, pwd, document, cep, website) VALUES (?,?,?,?,?,?,?,?)');
+            $query = $this->getConnection()->prepare('INSERT INTO Users (id, full_name, email, phone, pwd, document, cep, website) VALUES (?,?,?,?,?,?,?,?)');
 
             $this->user->setID($this->getRandomID());
 

@@ -1,10 +1,10 @@
 <?php
 
-header('Content-type: application/json; charset="utf-8"');
+//header('Content-type: application/json; charset="utf-8"');
+include_once __DIR__.'/config/enviroment.php';
 
-foreach(parse_ini_file(__DIR__.'/config/.ini', true)['DEVELOPMENT'] as $key => $value){
-    $_ENV[$key] = $value;
-}
+$_ENV = array_merge($_ENV, getDatabaseSettings());
 
-echo json_encode([true]);
+
+//echo json_encode([1]);
 ?>
