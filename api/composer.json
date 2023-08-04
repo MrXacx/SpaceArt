@@ -10,9 +10,8 @@
             "App\\DAO\\": "src/dao/",
             "App\\DAO\\Abstract\\": "src/dao/abstracts/",
             "App\\Models\\": "src/models/",
-            "App\\Tests\\": "src/tests/",
             "App\\Utils\\": "src/utils/",      
-            "App\\Utils\\Tools\\": "src/utils/traits/"      
+            "App\\Utils\\Tools\\": "src/utils/traits/"
         }
     },
     "require": {

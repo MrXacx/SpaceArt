@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Tests;
 require_once __DIR__.'/../../index.php';
 
 use App\Models\UserModel;
 use App\DAO\UserDB;
-use RuntimeException;
 
 /**
  * Classe de teste de UserDB

@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Tests;
 require_once __DIR__.'/../../index.php';
 
 use App\Models\SelectionModel;
 use App\DAO\SelectionDB;
-use RuntimeException;
 
 /**
  * Classe de teste de SelectionDB

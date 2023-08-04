@@ -1,14 +1,9 @@
 <?php
 
-namespace App\Tests;
-
 use App\DAO\ContractDB;
 use App\DAO\SelectionDB;
 use App\DAO\UserDB;
 use App\Utils\DataValidator;
-use DateInterval;
-use DateTime;
-use RuntimeException;
 
 /**
  * Classe de teste do serviço DataValidator

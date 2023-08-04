@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Tests;
 require_once __DIR__.'/../../index.php';
 
 use App\Models\ContractModel;
 use App\DAO\ContractDB;
-use RuntimeException;
 
 /**
  * Classe de teste de ContractDB
