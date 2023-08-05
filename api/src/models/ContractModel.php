@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 namespace App\Models;
 
-use App\DAO\ContractDB;
+use App\DAO\ContractsDB;
 use App\Utils\DataValidator;
 
 /**
@@ -20,25 +20,25 @@ class ContractModel{
      * ID do contrato
      * @var string
      */
-    public string $id;
+    private string $id;
 
     /**
      * ID do contratante
      * @var string
      */
-    public string $hirerID;
+    private string $hirerID;
 
     /**
      * ID do contratado
      * @var string
      */
-    public string $hiredID;
+    private string $hiredID;
 
     /**
      * Valor do contrato
      * @var string
      */
-    public string $price;
+    private string $price;
 
     /**
      * Tipo de arte
@@ -88,15 +88,17 @@ class ContractModel{
      */
     public static function getInstaceOf(array $attr): self{
         $model = new ContractModel(
-            $attr[ContractDB::HIRER_ID],
-            $attr[ContractDB::HIRED_ID],
-            intval($attr[ContractDB::PRICE])
+            $attr[ContractsDB::HIRER_ID],
+            $attr[ContractsDB::HIRED_ID],
+            intval($attr[ContractsDB::PRICE])
         );
         $model->id = $attr['id'];
-        $model->date = $attr[ContractDB::DATE];
-        $model->setTime($attr[ContractDB::INITAL_TIME], $attr[ContractDB::FINAL_TIME]);
-        $model->art = $attr[ContractDB::ART];
-        
+        $model->date = $attr[ContractsDB::DATE];
+        $model->time['inital'] = $attr[ContractsDB::INITAL_TIME];
+        $model->time['final'] = $attr[ContractsDB::FINAL_TIME];
+        $model->art = $attr[ContractsDB::ART];
+        $model->locked = boolval($attr[ContractsDB::LOCKED]);
+        $model->accepted = boolval($attr[ContractsDB::ACCEPTED]);
         return $model;
         
     }
@@ -218,6 +220,19 @@ class ContractModel{
     public function isLocked(): bool{
         return $this->locked;
     }
-  
+    
+    public function toArray(): array{
+        return [
+            'id' => $this->id ?? null,
+            'hirer' => $this->hirerID,
+            'hired' => $this->hiredID,
+            'price' => $this->price ?? null,
+            'art' => $this->art ?? null,
+            'date' => $this->date ?? null,
+            'time' => $this->time ?? null,
+            'locked' => $this->locked ?? null,
+            'accepted' => $this->accepted ?? null,
+        ];
+    }
 }
 ?>

@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 namespace App\Models;
 
-use App\DAO\SelectionDB;
+use App\DAO\SelectionsDB;
 use App\Utils\DataValidator;
 
 /**
@@ -79,13 +79,14 @@ class SelectionModel{
      */
     public static function getInstaceOf(array $attr): self{
         
-        $model = new SelectionModel($attr[SelectionDB::OWNER_ID]);
+        $model = new SelectionModel($attr[SelectionsDB::OWNER_ID]);
         $model->id = $attr['id'];
-        $model->price = $attr[SelectionDB::PRICE];
-        
-        $datetime = [explode(' ', $attr[SelectionDB::INITAL_DATETIME]), explode(' ', $attr[SelectionDB::FINAL_DATETIME])];
+        $model->price = $attr[SelectionsDB::PRICE];
+        $model->art = $attr[SelectionsDB::ART];
+        $datetime = [explode(' ', $attr[SelectionsDB::INITAL_DATETIME]), explode(' ', $attr[SelectionsDB::FINAL_DATETIME])];
         $model->date = ['inital' => $datetime[0][0], 'final' => $datetime[1][0]];
         $model->time = ['inital' => $datetime[0][1], 'final' => $datetime[1][1]];
+        $model->locked = boolval($attr[SelectionsDB::LOCKED]);
 
         return $model;
     }
@@ -173,7 +174,7 @@ class SelectionModel{
      * @param string $art tipo de arte
      */
     public function setArt(string $art){
-        $this->art = $this->validator->isValidVarcharLength($art, SelectionDB::ART) ? $art : null;
+        $this->art = $this->validator->isValidVarcharLength($art, SelectionsDB::ART) ? $art : null;
     }
 
     /**
@@ -191,6 +192,18 @@ class SelectionModel{
 
     public function isLocked(): bool{
         return $this->locked;
+    }
+
+    public function toArray(): array{
+        return [
+            'id' => $this->id ?? null,
+            'owner' => $this->ownerID,
+            'price' => $this->price ?? null,
+            'art' => $this->art ?? null,
+            'date' => $this->date ?? null,
+            'time' => $this->time ?? null,
+            'locked' => boolval($this->time ?? null),
+        ];
     }
 }
 

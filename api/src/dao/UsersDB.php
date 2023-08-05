@@ -13,7 +13,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class UserDB extends DatabaseAcess{
+class UsersDB extends DatabaseAcess{
     /**
      * Nome da coluna de nome
      * @var string
@@ -115,7 +115,7 @@ class UserDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function read(string $column): array{
+    public function get(string $column): array{
         try{
             if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
@@ -128,7 +128,7 @@ class UserDB extends DatabaseAcess{
             $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return $this->formatResultOfRead($query); // Retorna valor que 
+                return $this->formatResultOfGet($query); // Retorna valor que 
             }
             
             error: throw new RuntimeException($message ?? 'Operação falhou!'); // Executa se alguma falha esperdada ocorrer
@@ -145,14 +145,14 @@ class UserDB extends DatabaseAcess{
      * @return string ID do usuário
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function readID(): array{
+    public function getID(): array{
         try{
             // Passa query SQL para leitura da coluna id
             $query = $this->getConnection()->prepare('SELECT id FROM Users WHERE email = ? ');
             $query->bindValue(1, $this->user->getEmail()); // Substitui a interrogação pelo email passado
     
             if ($query->execute()){ // Executa se a query for aceita
-                return $this->formatResultOfRead($query);
+                return $this->formatResultOfGet($query);
             }
             
             // Executa em caso de falhas esperadas
@@ -169,14 +169,14 @@ class UserDB extends DatabaseAcess{
      * @return UserModel Modelo do usuário
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function readUser(): UserModel{
+    public function getUser(): UserModel{
         try{
             // Define query SQL para obter todas as colunas da linha do usuário
             $query = $this->getConnection()->prepare('SELECT * FROM Users WHERE id = ?');
             $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
             if($query->execute()){ // Executa se a query for aceita
-                return UserModel::getInstaceOf($this->formatResultOfRead($query));
+                return UserModel::getInstaceOf($this->formatResultOfGet($query));
             }
             // Executa em caso de falhas esperadas
             throw new RuntimeException('Operação falhou!');
@@ -192,14 +192,14 @@ class UserDB extends DatabaseAcess{
      * @param string $id ID do usuário a ser consultado
      * @return array Vetor com dados do usuário
      */
-    public function readRestrictedUser(string $id): array{
+    public function getRestrictedUser(string $id): array{
         try{
             // Define query SQL para obter todas as colunas da linha do usuário
             $query = $this->getConnection()->prepare('SELECT id, full_name, cep, website FROM Users WHERE id = ?');
             $query->bindValue(1, $id); // Substitui interrogação pelo ID
 
             if($query->execute()){ // Executa se a query for aceita
-                return $this->formatResultOfRead($query);
+                return $this->formatResultOfGet($query);
             }
             // Executa em caso de falhas esperadas
             throw new RuntimeException('Operação falhou!');

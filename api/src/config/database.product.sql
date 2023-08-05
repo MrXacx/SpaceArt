@@ -1,4 +1,3 @@
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
@@ -28,11 +27,12 @@ CREATE TABLE Users (
   document VARCHAR(11) NOT NULL,
   cep VARCHAR(8) NOT NULL,
   website VARCHAR(255) DEFAULT NULL,
+  contracts JSON DEFAULT NULL,
+  selections JSON DEFAULT NULL,
 
   PRIMARY KEY (id),
   UNIQUE KEY email_address (email),
   UNIQUE KEY document_code (document)
-
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE Contracts (
@@ -47,6 +47,8 @@ CREATE TABLE Contracts (
   rate int(1) DEFAULT NULL,
   accepted BOOLEAN DEFAULT 0,
   locked BOOLEAN DEFAULT 0,
+  contracts JSON DEFAULT NULL,
+  selections JSON DEFAULT NULL,
 
   PRIMARY KEY (id),
   FOREIGN KEY (hirer) REFERENCES Users(id),
@@ -64,4 +66,17 @@ CREATE TABLE Selections (
 
   PRIMARY KEY (id),
   FOREIGN KEY (owner_id) REFERENCES Users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE Selection_Applications(
+  id CHAR(36) NOT NULL,
+  selection CHAR(36) NOT NULL,
+  artist CHAR(36) NOT NULL,
+  last_change TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY (selection) REFERENCES Selections (id),
+  FOREIGN KEY (artist) REFERENCES Users (id),
+  PRIMARY KEY (selection, artist),
+  UNIQUE KEY (id)
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

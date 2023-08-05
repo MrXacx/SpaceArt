@@ -1,22 +1,22 @@
 <?php
 
-require_once __DIR__.'/../../index.php';
+require_once __DIR__.'/../../src/index.php';
 
 use App\Models\ContractModel;
-use App\DAO\ContractDB;
+use App\DAO\ContractsDB;
 
 /**
- * Classe de teste de ContractDB
+ * Classe de teste de ContractsDB
  * 
  * @package Tests
- * @see src/dao/ContractDB.php
+ * @see src/dao/ContractsDB.php
  */
-class ContractDBTest extends \PHPUnit\Framework\TestCase{
+class ContractsDBTest extends \PHPUnit\Framework\TestCase{
     /**
      * Objeto de manipulação de tabela
-     * @var ContractDB
+     * @var ContractsDB
      */
-    private static ContractDB $db;
+    private static ContractsDB $db;
 
     /**
      * Objeto de manipulação de contrato
@@ -29,21 +29,21 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
      */
     public static function setUpBeforeClass(): void{
         // Cria modelo de teste
-        self::$contract = new ContractModel('01258', '02548', 85);
+        self::$contract = new ContractModel('1', '2', 85);
         self::$contract->setDate('2024-07-04');
         self::$contract->setTime('07:24', '08:32');
         self::$contract->setArt('escultura');
        
         // Inicia manipulado de banco
-        self::$db = new ContractDB(self::$contract);
+        self::$db = new ContractsDB(self::$contract);
     }
 
     public function testValidColumnExists(): void{
-        $this->assertTrue(ContractDB::isColumn(ContractDB::PRICE));
+        $this->assertTrue(ContractsDB::isColumn(ContractsDB::PRICE));
     }
 
     public function testInvalidColumnExists(): void{
-        $this->assertFalse(ContractDB::isColumn('0'));
+        $this->assertFalse(ContractsDB::isColumn('0'));
     }
 
     public function testCreateValidContract(): void{
@@ -53,27 +53,27 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
     /**
      * @depends testCreateValidContract
      */
-    public function testReadValidColumn(): void{
-        $this->assertEquals(['id'=> self::$contract->getID(), ContractDB::PRICE => self::$contract->price], self::$db->read(ContractDB::PRICE));
+    public function testGetValidColumn(): void{
+        $this->assertEquals(['id'=> self::$contract->getID(), ContractsDB::PRICE => self::$contract->price], self::$db->get(ContractsDB::PRICE));
     }
     
     /**
      * @depends testCreateValidContract
      */
-    public function testReadInvalidColumn(): void{
+    public function testGetInvalidColumn(): void{
         $col = 'a';
         
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("\"$col\" não é uma coluna da tabela Contracts");
 
-        self::$db->read($col);
+        self::$db->get($col);
     }
     
     /**
      * @depends testCreateValidContract
      */
-    public function testReadContract(): void{       
-        $this->assertEquals(self::$contract, self::$db->readContract());
+    public function testGetContract(): void{       
+        $this->assertEquals(self::$contract, self::$db->getContract());
     }
 
     /**
@@ -81,8 +81,8 @@ class ContractDBTest extends \PHPUnit\Framework\TestCase{
      */
     public function testUpdateColumn(): void{
         self::$db->create(self::$contract);        
-        self::$db->update(ContractDB::FINAL_TIME, '14:35');
-        $this->assertEquals(['id'=>self::$contract->getID(), ContractDB::FINAL_TIME=>'14:35:00'], self::$db->read(ContractDB::FINAL_TIME));
+        self::$db->update(ContractsDB::FINAL_TIME, '14:35');
+        $this->assertEquals(['id'=>self::$contract->getID(), ContractsDB::FINAL_TIME=>'14:35:00'], self::$db->get(ContractsDB::FINAL_TIME));
     }
     
     /**

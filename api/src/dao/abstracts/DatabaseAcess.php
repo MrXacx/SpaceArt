@@ -61,7 +61,7 @@ abstract class DatabaseAcess{
      * @return array|string Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
-    protected function formatResultOfRead(PDOStatement|false &$query): array{
+    protected function formatResultOfGet(PDOStatement|false &$query): array{
         
         $response = $query->fetch(\PDO::FETCH_ASSOC);
         unset($query);
@@ -94,7 +94,7 @@ abstract class DatabaseAcess{
      * @param string $column Nome da coluna a ser consultada 
      * @return string Valor da célula
      */
-    abstract public function read(string $column): array;
+    abstract public function get(string $column): array;
 
     /**
      * Atualiza determinada célula do banco

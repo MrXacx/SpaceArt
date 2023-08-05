@@ -2,9 +2,9 @@
 
 namespace App\Utils;
 
-use App\DAO\ContractDB;
-use App\DAO\SelectionDB;
-use App\DAO\UserDB;
+use App\DAO\ContractsDB;
+use App\DAO\SelectionsDB;
+use App\DAO\UsersDB;
 use RuntimeException;
 
 
@@ -60,7 +60,7 @@ final class DataValidator{
         $length = strlen($varchar);
         return  $length > 0 && $length <= match($column){
             'id' => 36,
-            UserDB::NAME, UserDB::EMAIL, UserDB::SITE, UserDB::PWD, ContractDB::ART, SelectionDB::ART => 255,
+            UsersDB::NAME, UsersDB::EMAIL, UsersDB::SITE, UsersDB::PWD, ContractsDB::ART, SelectionsDB::ART => 255,
             default => throw new RuntimeException('Coluna não encontrada')
         };
     }
@@ -140,13 +140,13 @@ final class DataValidator{
      */
     public function isValidToFlag(string $flag, string $value): bool{
         return match($flag){
-            ContractDB::DATE => $this->isValidDateFormat($value),
-            ContractDB::INITAL_TIME, ContractDB::FINAL_TIME => $this->isValidTimeFormat($value),
-            SelectionDB::INITAL_DATETIME, SelectionDB::FINAL_DATETIME => $this->isValidDatetimeFormat($value),
-            UserDB::PHONE => $this->isPhone($value),
-            UserDB::DOCUMENT_NUMBER => $this->isDocumentNumber($value),
-            UserDB::CEP => $this->isCEP($value),
-            UserDB::SITE => $this->isURL($value),
+            ContractsDB::DATE => $this->isValidDateFormat($value),
+            ContractsDB::INITAL_TIME, ContractsDB::FINAL_TIME => $this->isValidTimeFormat($value),
+            SelectionsDB::INITAL_DATETIME, SelectionsDB::FINAL_DATETIME => $this->isValidDatetimeFormat($value),
+            UsersDB::PHONE => $this->isPhone($value),
+            UsersDB::DOCUMENT_NUMBER => $this->isDocumentNumber($value),
+            UsersDB::CEP => $this->isCEP($value),
+            UsersDB::SITE => $this->isURL($value),
             default => $this->isValidVarcharLength($value, $flag)
         };
     }

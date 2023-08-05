@@ -1,22 +1,22 @@
 <?php
 
-require_once __DIR__.'/../../index.php';
+require_once __DIR__.'/../../src/index.php';
 
 use App\Models\SelectionModel;
-use App\DAO\SelectionDB;
+use App\DAO\SelectionsDB;
 
 /**
- * Classe de teste de SelectionDB
+ * Classe de teste de SelectionsDB
  * 
  * @package Tests
- * @see src/dao/SelectionDB.php
+ * @see src/dao/SelectionsDB.php
  */
-class SelectionDBTest extends \PHPUnit\Framework\TestCase{
+class SelectionsDBTest extends \PHPUnit\Framework\TestCase{
     /**
      * Objeto de manipulação de tabela
-     * @var ContractDB
+     * @var ContractsDB
      */
-    private static SelectionDB $db;
+    private static SelectionsDB $db;
 
     /**
      * Objeto de manipulação de seleção
@@ -29,22 +29,22 @@ class SelectionDBTest extends \PHPUnit\Framework\TestCase{
      */
     public static function setUpBeforeClass(): void{
         // Cria modelo de seleção
-        self::$selection = new SelectionModel('12345');
+        self::$selection = new SelectionModel('1');
         self::$selection->setDate('2023-08-31', '2023-12-31');
         self::$selection->setTime('09:23', '12:03');
         self::$selection->setPrice('120');
         self::$selection->setArt('música');
 
         // Inicia manipulador de tabela
-        self::$db = new SelectionDB(self::$selection);
+        self::$db = new SelectionsDB(self::$selection);
     }
 
     public function testValidColumnExists(): void{
-        $this->assertTrue(SelectionDB::isColumn(SelectionDB::INITAL_DATETIME));
+        $this->assertTrue(SelectionsDB::isColumn(SelectionsDB::INITAL_DATETIME));
     }
 
     public function testInvalidColumnExists(): void{
-        $this->assertFalse(SelectionDB::isColumn('DESC'));
+        $this->assertFalse(SelectionsDB::isColumn('DESC'));
     }
 
     public function testCreateValidSelection(): void{
@@ -54,35 +54,35 @@ class SelectionDBTest extends \PHPUnit\Framework\TestCase{
     /**
      * @depends testCreateValidSelection
      */
-    public function testReadValidColumn(): void{
-        $this->assertEquals(['id'=>self::$selection->getID(), SelectionDB::OWNER_ID=>self::$selection->getOwnerID()], self::$db->read(SelectionDB::OWNER_ID));
+    public function testGetValidColumn(): void{
+        $this->assertEquals(['id'=>self::$selection->getID(), SelectionsDB::OWNER_ID=>self::$selection->getOwnerID()], self::$db->get(SelectionsDB::OWNER_ID));
     }
     
     /**
      * @depends testCreateValidSelection
      */
-    public function testReadInvalidColumn(): void{
+    public function testGetInvalidColumn(): void{
         $col = 'a';
         
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("\"$col\" não é uma coluna da tabela Selections");
 
-        self::$db->read($col);
+        self::$db->get($col);
     }
     
     /**
      * @depends testCreateValidSelection
      */
-    public function testReadSelection(): void{       
-        $this->assertEquals(self::$selection, self::$db->readSelection());
+    public function testGetSelection(): void{       
+        $this->assertEquals(self::$selection, self::$db->getSelection());
     }
 
     /**
      * @depends testCreateValidSelection
      */
     public function testUpdateColumn(): void{      
-        self::$db->update(SelectionDB::ART, 'dança');
-        $this->assertEquals(['id'=>self::$selection->getID(), SelectionDB::ART=>'dança'], self::$db->read(SelectionDB::ART));
+        self::$db->update(SelectionsDB::ART, 'dança');
+        $this->assertEquals(['id'=>self::$selection->getID(), SelectionsDB::ART=>'dança'], self::$db->get(SelectionsDB::ART));
     }
     
     /**

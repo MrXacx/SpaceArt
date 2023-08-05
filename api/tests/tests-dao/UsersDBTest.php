@@ -1,22 +1,22 @@
 <?php
 
-require_once __DIR__.'/../../index.php';
+require_once __DIR__.'/../../src/index.php';
 
 use App\Models\UserModel;
-use App\DAO\UserDB;
+use App\DAO\UsersDB;
 
 /**
- * Classe de teste de UserDB
+ * Classe de teste de UsersDB
  * 
  * @package Tests
- * @see src/dao/UserDB.php
+ * @see src/dao/UsersDB.php
  */
-class UserDBTest extends \PHPUnit\Framework\TestCase{
+class UsersDBTest extends \PHPUnit\Framework\TestCase{
     /**
      * Objeto de manipulação de tabela
-     * @var UserDB
+     * @var UsersDB
      */
-    private static UserDB $db;
+    private static UsersDB $db;
 
     /**
      * Objeto de manipulação de usuário
@@ -37,15 +37,15 @@ class UserDBTest extends \PHPUnit\Framework\TestCase{
         self::$user->setWebsite('www.exemplo.com/');
 
         // Inicia manipulador de tabela
-        self::$db = new UserDB(self::$user);      
+        self::$db = new UsersDB(self::$user);      
     }
 
     public function testValidColumnExists(): void{
-        $this->assertTrue(UserDB::isColumn(UserDB::NAME));
+        $this->assertTrue(UsersDB::isColumn(UsersDB::NAME));
     }
 
     public function testInvalidColumnExists(): void{
-        $this->assertFalse(UserDB::isColumn('0'));
+        $this->assertFalse(UsersDB::isColumn('0'));
     }
 
     public function testCreateValidUser(): void{
@@ -60,7 +60,7 @@ class UserDBTest extends \PHPUnit\Framework\TestCase{
         $localUser->setCEP("21560375");
         $localUser->setPhone("00000120569");
         $localUser->setWebsite('www.exemplo.com/');
-        $db = new UserDB($localUser);
+        $db = new UsersDB($localUser);
         $db->create();
         $db->create();
          
@@ -69,8 +69,8 @@ class UserDBTest extends \PHPUnit\Framework\TestCase{
     /**
      * @depends testCreateValidUser
      */
-    public function testReadID(): void{
-        $this->assertEquals(['id' => self::$user->getID()], self::$db->readID());
+    public function testGetID(): void{
+        $this->assertEquals(['id' => self::$user->getID()], self::$db->getID());
     }
     
     /**
@@ -78,41 +78,41 @@ class UserDBTest extends \PHPUnit\Framework\TestCase{
      * @depends testValidColumnExists
      * @depends testInvalidColumnExists
      */
-    public function testReadValidColumn(): void{
+    public function testGetValidColumn(): void{
 
         $this->assertEquals(
-            ['id' => self::$user->getID(), UserDB::EMAIL => self::$user->getEmail()],
-             self::$db->read(UserDB::EMAIL)
+            ['id' => self::$user->getID(), UsersDB::EMAIL => self::$user->getEmail()],
+             self::$db->get(UsersDB::EMAIL)
         );
     }
     
     /**
      * @depends testCreateValidUser
      */
-    public function testReadUndefinedColumn(): void{
+    public function testGetUndefinedColumn(): void{
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("\"a\" não é uma coluna da tabela Users");
-        self::$db->read('a');
+        self::$db->get('a');
     }
     
     /**
      * @depends testCreateValidUser
      */
-    public function testReadUser(): void{
-        $this->assertEquals(self::$user, self::$db->readUser());
+    public function testGetUser(): void{
+        $this->assertEquals(self::$user, self::$db->getUser());
     }
 
     /**
      * @depends testCreateValidUser
      */
-    public function testReadRestrictedUser(): void{
+    public function testGetRestrictedUser(): void{
         $user = [
             'id' => self::$user->getID(),
-            UserDB::NAME => self::$user->getName(),
-            UserDB::CEP => self::$user->getCEP(),
-            UserDB::SITE => self::$user->getWebsite()
+            UsersDB::NAME => self::$user->getName(),
+            UsersDB::CEP => self::$user->getCEP(),
+            UsersDB::SITE => self::$user->getWebsite()
         ];
-        $this->assertEquals($user, (new UserDB())->readRestrictedUser($user['id']));
+        $this->assertEquals($user, (new UsersDB())->getRestrictedUser($user['id']));
     }
     
     /**
@@ -121,8 +121,8 @@ class UserDBTest extends \PHPUnit\Framework\TestCase{
      * @depends testInvalidColumnExists
      */
     public function testUpdateColumn(): void{
-        self::$db->update(UserDB::NAME, 'Xandão da Moral',);
-        $this->assertEquals(['id'=>self::$user->getID(), UserDB::NAME=>'Xandão da Moral'], self::$db->read(UserDB::NAME));
+        self::$db->update(UsersDB::NAME, 'Xandão da Moral',);
+        $this->assertEquals(['id'=>self::$user->getID(), UsersDB::NAME=>'Xandão da Moral'], self::$db->get(UsersDB::NAME));
     }
 
     /**

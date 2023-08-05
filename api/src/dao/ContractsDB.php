@@ -14,7 +14,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ContractDB extends DatabaseAcess{
+class ContractsDB extends DatabaseAcess{
     /**
      * Nome da coluna de contratante
      * @var string
@@ -56,6 +56,18 @@ class ContractDB extends DatabaseAcess{
      * @var string
      */
     public const FINAL_TIME = 'final_time';
+
+    /**
+     * Nome da coluna de status do contrato
+     * @var string
+     */
+    public const LOCKED = 'locked';
+
+    /**
+     * Nome da coluna de status da solicitação de contrato
+     * @var string
+     */
+    public const ACCEPTED = 'accepted';
 
     /**
      * Modelo de contrato a ser utilizado na manipulação
@@ -113,7 +125,7 @@ class ContractDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function read(string $column): array{
+    public function get(string $column): array{
         try{
             if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Contracts"; // Define mensagem de erro
@@ -125,7 +137,7 @@ class ContractDB extends DatabaseAcess{
             $query->bindValue(1, $this->contract->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return $this->formatResultOfRead($query); // Retorna valor que 
+                return $this->formatResultOfGet($query); // Retorna valor que 
             }
 
             // Executa em caso de falhas esperadas
@@ -142,14 +154,14 @@ class ContractDB extends DatabaseAcess{
      * @return UserModel Modelo do contrato
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function readContract(): ContractModel{
+    public function getContract(): ContractModel{
         try{
             // Determina query SQL de leitura
             $query = $this->getConnection()->prepare('SELECT * FROM Contracts WHERE id = ?');
             $query->bindValue(1, $this->contract->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
-                return ContractModel::getInstaceOf($this->formatResultOfRead($query));
+                return ContractModel::getInstaceOf($this->formatResultOfGet($query));
             }
 
             // Executa em caso de falhas esperadas

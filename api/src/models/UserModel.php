@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 namespace App\Models;
 
-use App\DAO\UserDB;
+use App\DAO\UsersDB;
 
 /**
  * Classe modelo de usuário
@@ -182,18 +182,30 @@ class UserModel{
      * @return self Instância da classe
      */
     public static function getInstaceOf(array $attr): self{
-        $model = new UserModel($attr[UserDB::EMAIL], $attr[UserDB::PWD]);
+        $model = new UserModel($attr[UsersDB::EMAIL], $attr[UsersDB::PWD]);
         $model->id =$attr['id'];
-        $model->name = $attr[UserDB::NAME];
-        $model->cep = $attr[UserDB::CEP];
-        $model->phone = $attr[UserDB::PHONE];
-        $model->documentNumber = $attr[UserDB::DOCUMENT_NUMBER];
+        $model->name = $attr[UsersDB::NAME];
+        $model->cep = $attr[UsersDB::CEP];
+        $model->phone = $attr[UsersDB::PHONE];
+        $model->documentNumber = $attr[UsersDB::DOCUMENT_NUMBER];
 
-        if(isset($attr[UserDB::SITE])){ // Executa se a posição existir
-            $model->website = $attr[UserDB::SITE];
+        if(isset($attr[UsersDB::SITE])){ // Executa se a posição existir
+            $model->website = $attr[UsersDB::SITE];
         }
 
         return $model;
+    }
+
+    public function toArray(): array{
+        return [
+            'id' => $this->id ?? null,
+            'hirer' => $this->email,
+            'hired' => $this->pwd,
+            'price' => $this->phone ?? null,
+            'art' => $this->documentNumber ?? null,
+            'date' => $this->cep ?? null,
+            'time' => $this->website ?? null,
+        ];
     }
 }
 

@@ -14,7 +14,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class SelectionDB extends DatabaseAcess{
+class SelectionsDB extends DatabaseAcess{
     /**
      * Nome da coluna do ID do criador da seleção
      * @var string
@@ -106,7 +106,7 @@ class SelectionDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function read(string $column): array{
+    public function get(string $column): array{
         try{
             if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Selections"; // Define mensagem de erro
@@ -118,7 +118,7 @@ class SelectionDB extends DatabaseAcess{
             $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
-                return $this->formatResultOfRead($query); // Retorna valor que 
+                return $this->formatResultOfGet($query); // Retorna valor que 
             }
 
             // Executa em caso de falhas esperadas
@@ -134,14 +134,14 @@ class SelectionDB extends DatabaseAcess{
      * @return SelectionModel Modelo da seleção
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function readSelection(): SelectionModel{
+    public function getSelection(): SelectionModel{
         try{
             // Determina query SQL de leitura
             $query = $this->getConnection()->prepare('SELECT * FROM Selections WHERE id = ?');
             $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
-                return SelectionModel::getInstaceOf($this->formatResultOfRead($query));
+                return SelectionModel::getInstaceOf($this->formatResultOfGet($query));
             }
 
             // Executa em caso de falhas esperadas
