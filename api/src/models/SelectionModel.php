@@ -13,8 +13,6 @@ use App\Utils\DataValidator;
  */
 class SelectionModel{
 
-    // TODO: adicionar coluna lista de submissões
-
     /**
      * ID da seleção
      * @var string
@@ -77,7 +75,7 @@ class SelectionModel{
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return self Instância da classe
      */
-    public static function getInstaceOf(array $attr): self{
+    public static function getInstanceOf(array $attr): self{
         
         $model = new SelectionModel($attr[SelectionsDB::OWNER_ID]);
         $model->id = $attr['id'];
@@ -206,5 +204,3 @@ class SelectionModel{
         ];
     }
 }
-
-?>

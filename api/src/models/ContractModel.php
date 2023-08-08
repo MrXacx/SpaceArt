@@ -14,8 +14,6 @@ use App\Utils\DataValidator;
  */
 class ContractModel{
 
-    // TODO: adicionar coluna de status(enum, se possível) e avaliação(int)
-
     /**
      * ID do contrato
      * @var string
@@ -57,7 +55,11 @@ class ContractModel{
      * @var array
      */
     private array $time;
-
+    
+    /**
+     * Avaliação do contrato
+     * 
+     */
     private int $rate;
     private bool $accepted;
     private bool $locked;
@@ -86,7 +88,7 @@ class ContractModel{
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return ContractModel Instância da classe
      */
-    public static function getInstaceOf(array $attr): self{
+    public static function getInstanceOf(array $attr): self{
         $model = new ContractModel(
             $attr[ContractsDB::HIRER_ID],
             $attr[ContractsDB::HIRED_ID],
@@ -235,4 +237,3 @@ class ContractModel{
         ];
     }
 }
-?>

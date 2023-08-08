@@ -103,7 +103,7 @@ class ApplicationsDB extends DatabaseAcess{
             if($query->execute()){ // Executa se a query for aceita
                 $applicationList = [];
                 foreach($query->fetchAll(\PDO::FETCH_ASSOC) as $application){
-                    $applicationList[] = ApplicationModel::getInstaceOf($application);
+                    $applicationList[] = ApplicationModel::getInstanceOf($application);
                 }
                 return $applicationList;
             }
@@ -159,4 +159,3 @@ class ApplicationsDB extends DatabaseAcess{
     }
 
 }
-?>

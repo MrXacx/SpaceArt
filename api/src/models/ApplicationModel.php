@@ -42,7 +42,7 @@ class ApplicationModel{
         $this->lastChange = $lastChange;
     }
     
-    public static function getInstaceOf(array $attr): self{
+    public static function getInstanceOf(array $attr): self{
         $model = new ApplicationModel($attr[ApplicationsDB::SELECTION]);
         $model->id = $attr['id'];
         $model->userID = $attr[ApplicationsDB::ARTIST];
@@ -60,6 +60,3 @@ class ApplicationModel{
         ];
     }
 }
-
-
-?>

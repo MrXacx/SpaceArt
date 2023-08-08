@@ -60,11 +60,14 @@ class UserModel{
      */
     private string $website;
 
+    private array $contracts = [];
+    private array $selections = [];
+
     /**
      * @param $email Email do usuário
      * @param $pwd Senha do usuário
      */
-    function __construct( string $email, string $pwd){
+    function __construct(string $email, string $pwd){
         $this->email = $email;
         $this->pwd = $pwd;
     }
@@ -175,19 +178,29 @@ class UserModel{
         return $this->website;
     }
 
+    public function setContracts(string $contractList): void{
+        $this->contracts = ($contractList);
+    }
+
+    public function setSelections(string $selectionList): void{
+        $this->selections = ($selectionList);
+    }
+
     /**
      * Obtém um modelo de usuário inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return self Instância da classe
      */
-    public static function getInstaceOf(array $attr): self{
+    public static function getInstanceOf(array $attr): self{
         $model = new UserModel($attr[UsersDB::EMAIL], $attr[UsersDB::PWD]);
         $model->id =$attr['id'];
         $model->name = $attr[UsersDB::NAME];
         $model->cep = $attr[UsersDB::CEP];
         $model->phone = $attr[UsersDB::PHONE];
         $model->documentNumber = $attr[UsersDB::DOCUMENT_NUMBER];
+        $model->setContracts($attr[UsersDB::CONTRACTS]);
+        $model->setSelections($attr[UsersDB::SELECTIONS]);
 
         if(isset($attr[UsersDB::SITE])){ // Executa se a posição existir
             $model->website = $attr[UsersDB::SITE];
@@ -199,14 +212,14 @@ class UserModel{
     public function toArray(): array{
         return [
             'id' => $this->id ?? null,
-            'hirer' => $this->email,
-            'hired' => $this->pwd,
-            'price' => $this->phone ?? null,
-            'art' => $this->documentNumber ?? null,
-            'date' => $this->cep ?? null,
-            'time' => $this->website ?? null,
+            'email' => $this->email,
+            'password' => $this->pwd,
+            'phone' => $this->phone ?? null,
+            'document_number' => $this->documentNumber ?? null,
+            'cep' => $this->cep ?? null,
+            'website' => $this->website ?? null,
+            'contractList' => $this->contracts,
+            'selectionList' => $this->selections,
         ];
     }
 }
-
-?>

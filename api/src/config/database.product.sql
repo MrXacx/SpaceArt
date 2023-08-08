@@ -68,7 +68,7 @@ CREATE TABLE Selections (
   FOREIGN KEY (owner_id) REFERENCES Users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE Selection_Applications(
+CREATE TABLE Selection_Applications (
   id CHAR(36) NOT NULL,
   selection CHAR(36) NOT NULL,
   artist CHAR(36) NOT NULL,
@@ -79,4 +79,14 @@ CREATE TABLE Selection_Applications(
   PRIMARY KEY (selection, artist),
   UNIQUE KEY (id)
   
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE Reports (
+  id CHAR(36) NOT NULL,
+  reporter CHAR(36) NOT NULL,
+  reported CHAR(36) NOT NULL,
+  reason VARCHAR(255) NOT NULL,
+  accepted BOOLEAN DEFAULT NULL,
+  
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

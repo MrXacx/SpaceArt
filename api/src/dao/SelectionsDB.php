@@ -141,7 +141,7 @@ class SelectionsDB extends DatabaseAcess{
             $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
-                return SelectionModel::getInstaceOf($this->formatResultOfGet($query));
+                return SelectionModel::getInstanceOf($this->formatResultOfGet($query));
             }
 
             // Executa em caso de falhas esperadas
@@ -220,4 +220,3 @@ class SelectionsDB extends DatabaseAcess{
     }
 
 }
-?>

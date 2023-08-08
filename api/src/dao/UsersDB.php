@@ -57,6 +57,18 @@ class UsersDB extends DatabaseAcess{
     public const SITE = 'website';
 
     /**
+     * Nome da coluna de contratos
+     * @var string
+     */
+    public const CONTRACTS = 'contracts';
+
+    /**
+     * Nome da coluna de seleções
+     * @var string
+     */
+    public const SELECTIONS = 'selections';
+
+    /**
      * Modelo de usuário a ser manipulado
      * @var UserModel
      */
@@ -82,7 +94,7 @@ class UsersDB extends DatabaseAcess{
         try{
             
             // Passa query SQL de criação
-            $query = $this->getConnection()->prepare('INSERT INTO Users (id, full_name, email, phone, pwd, document, cep, website) VALUES (?,?,?,?,?,?,?,?)');
+            $query = $this->getConnection()->prepare('INSERT INTO Users (id, full_name, email, phone, pwd, document, cep) VALUES (?,?,?,?,?,?,?)');
 
             $this->user->setID($this->getRandomID());
 
@@ -94,7 +106,7 @@ class UsersDB extends DatabaseAcess{
             $query->bindValue(5, $this->user->getPassword());
             $query->bindValue(6, $this->user->getDocumentNumber());
             $query->bindValue(7, $this->user->getCEP());
-            $query->bindValue(8, $this->user->getWebsite());
+
             
             if($query->execute()){ // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
@@ -176,7 +188,7 @@ class UsersDB extends DatabaseAcess{
             $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
             if($query->execute()){ // Executa se a query for aceita
-                return UserModel::getInstaceOf($this->formatResultOfGet($query));
+                return UserModel::getInstanceOf($this->formatResultOfGet($query));
             }
             // Executa em caso de falhas esperadas
             throw new RuntimeException('Operação falhou!');
@@ -274,10 +286,8 @@ class UsersDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      */
     public static function isColumn(string $column):bool{
-        $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP, self::SITE, self::PHONE];
+        $columns = [self::NAME, self::PWD, self::DOCUMENT_NUMBER, self::EMAIL, self::CEP, self::SITE, self::PHONE, self::CONTRACTS, self::SELECTIONS];
         return !is_bool(array_search($column,$columns));
     }
 
 }
-
-?>

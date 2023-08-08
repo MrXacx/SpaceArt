@@ -78,8 +78,10 @@ class ContractsDB extends DatabaseAcess{
     /**
      * @param ContractModel $contract Modelo de contrato a ser utilizado na manipulação
      */
-    function __construct(ContractModel $contract){
-        $this->contract = $contract;
+    function __construct(ContractModel|null $contract){
+        if(isset($contract)){
+            $this->contract = $contract;
+        }
         parent::__construct();
     }
    
@@ -161,7 +163,7 @@ class ContractsDB extends DatabaseAcess{
             $query->bindValue(1, $this->contract->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
-                return ContractModel::getInstaceOf($this->formatResultOfGet($query));
+                return ContractModel::getInstanceOf($this->formatResultOfGet($query));
             }
 
             // Executa em caso de falhas esperadas
@@ -169,6 +171,19 @@ class ContractsDB extends DatabaseAcess{
         } catch(RuntimeException|PDOException $ex){
             throw new \RuntimeException($ex->getMessage());
         }
+    }
+
+
+    public function getAll(\App\Models\UserModel $user): array{
+            $query = parent::getConnection()->prepare("SELECT id, hirer, hired, price INTO Contracts WHERE hirer = ? OR hired = ?");
+
+            $query->bindParam(1, $user->getID());
+            $query->bindParam(2, $user->getID());
+
+            $query->execute();
+
+            return $query->fetchAll(\PDO::FETCH_ASSOC);
+
     }
 
     /**
@@ -240,4 +255,3 @@ class ContractsDB extends DatabaseAcess{
     }
 
 }
-?>
