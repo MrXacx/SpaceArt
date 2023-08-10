@@ -60,8 +60,11 @@ class SelectionsDB extends DatabaseAcess{
     /**
      * @param SelectionModel $selection Modelo de seleção a ser manipulado
      */
-    function __construct(SelectionModel $selection) {
-        $this->selection = $selection;
+    function __construct(SelectionModel|null $selection) {
+        
+        if(isset($selection)){
+            $this->selection = $selection;
+        }
         parent::__construct();
     }
 
@@ -148,6 +151,34 @@ class SelectionsDB extends DatabaseAcess{
             throw new \RuntimeException('Operação falhou!');
         } catch(RuntimeException|PDOException $ex){
             throw new \RuntimeException($ex->getMessage());
+        }
+    }
+
+    /**
+     * Obtém todos os dados não sigilosos referents a um usuário
+     * 
+     * @param UserModel Modelo de usuário
+     * @return array Lista de dados não sigilosos
+     * @see abstracts/DatabaseAcess.php
+     * @throws RuntimeException Falha na consulta
+     */
+    public function getAll(\App\Models\UserModel $user): array{      
+        try{
+            $query = parent::getConnection()->prepare("SELECT * FROM Selections");
+                
+            $id =  $user->getID();
+
+            $query->bindParam(1, $id);
+            $query->bindParam(2, $id);
+
+            if($query->execute()){
+                return $query->fetchAll(\PDO::FETCH_ASSOC);
+            }
+
+            throw new RuntimeException("Operação falhou");
+
+        } catch(RuntimeException|PDOException $ex){
+            throw new \RuntimeException($ex->getMessage());            
         }
     }
 

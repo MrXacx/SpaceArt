@@ -10,7 +10,7 @@
             "App\\DAO\\": "src/dao/",
             "App\\DAO\\Abstract\\": "src/dao/abstracts/",
             "App\\Models\\": "src/models/",
-            "App\\Utils\\": "src/utils/",      
+            "App\\Utils\\": "src/utils/",
             "App\\Utils\\Tools\\": "src/utils/traits/"
         }
     },

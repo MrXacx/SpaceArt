@@ -47,8 +47,6 @@ CREATE TABLE Contracts (
   rate int(1) DEFAULT NULL,
   accepted BOOLEAN DEFAULT 0,
   locked BOOLEAN DEFAULT 0,
-  contracts JSON DEFAULT NULL,
-  selections JSON DEFAULT NULL,
 
   PRIMARY KEY (id),
   FOREIGN KEY (hirer) REFERENCES Users(id),

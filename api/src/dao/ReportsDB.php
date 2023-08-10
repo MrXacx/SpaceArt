@@ -32,9 +32,11 @@ class ReportsDB extends DatabaseAcess
     /**
      * @param ReportModel $report Modelo de candidatura a ser manipulado
      */
-    function __construct(ReportModel $report)
+    function __construct(ReportModel|null $report)
     {
-        $this->report = $report;
+        if(isset($report)){
+            $this->report = $report;
+        }
         parent::__construct();
     }
 
@@ -101,6 +103,7 @@ class ReportsDB extends DatabaseAcess
         }
     }
 
+    /*
     public function getAll(): array
     {
         try {
@@ -121,7 +124,7 @@ class ReportsDB extends DatabaseAcess
         } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
-    }
+    }*/
 
     /**
      * Este método não deve ser chamado.

@@ -77,8 +77,8 @@ class UsersDB extends DatabaseAcess{
     /**
      * @param UserModel $user Modelo de usuário a ser manipulado
      */
-    function __construct(UserModel $user = null){
-        if($user instanceof UserModel){
+    function __construct(UserModel|null $user = null){
+        if(isset($user)){
             $this->user = $user;
         }
         parent::__construct();

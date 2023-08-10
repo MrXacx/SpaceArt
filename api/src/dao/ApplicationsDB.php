@@ -24,13 +24,15 @@ class ApplicationsDB extends DatabaseAcess{
      * Modelo de candidatura a ser manipulado
      * @var ApplicationModel
      */
-    private ApplicationModel $candidature;
+    private ApplicationModel $application;
 
     /**
-     * @param ApplicationModel $candidature Modelo de candidatura a ser manipulado
+     * @param ApplicationModel $application Modelo de candidatura a ser manipulado
      */
-    function __construct(ApplicationModel $candidature) {
-        $this->candidature = $candidature;
+    function __construct(ApplicationModel|null $application) {
+        if(isset($application)){
+            $this->application = $application;
+        }
         parent::__construct();
     }
 
@@ -43,16 +45,16 @@ class ApplicationsDB extends DatabaseAcess{
     public function create(): int{
         try{      
 
-            $this->candidature->setID($this->getRandomID()); // Gera uuid
+            $this->application->setID($this->getRandomID()); // Gera uuid
             
 
             // Passa query SQL de criação
             $query = $this->getConnection()->prepare('INSERT INTO Selection_Applications (id, selection, artist) VALUES (?,?,?)');
             
             // Substitui interrogações pelos valores dos atributos
-            $query->bindValue(1, $this->candidature->getID());
-            $query->bindValue(2, $this->candidature->getSelectionID());
-            $query->bindValue(3, $this->candidature->getUserID());
+            $query->bindValue(1, $this->application->getID());
+            $query->bindValue(2, $this->application->getSelectionID());
+            $query->bindValue(3, $this->application->getUserID());
             
             if($query->execute()){ // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
@@ -80,7 +82,7 @@ class ApplicationsDB extends DatabaseAcess{
                 
             // Determina query SQL de leitura
             $query = $this->getConnection()->prepare("SELECT id, $column FROM Selection_Applications WHERE id = ?");
-            $query->bindValue(1, $this->candidature->getID()); // Substitui interrogação na query pelo ID passado
+            $query->bindValue(1, $this->application->getID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se consulta não falhar
                 return parent::formatResultOfGet($query); // Retorna valor que 
@@ -93,12 +95,17 @@ class ApplicationsDB extends DatabaseAcess{
         }
     }
     
-
-    public function getAllCandidates(): array{
+    /**
+     * Obtém todos os dados não sigilosos referentEs a uma seleção
+     * 
+     * @return array Lista de dados não sigilosos
+     * @throws RuntimeException Falha na consulta
+     */
+    public function getAll(): array{
         try{
             // Determina query SQL de leitura
             $query = $this->getConnection()->prepare('SELECT * FROM Selection_Applications WHERE selection = ?');
-            $query->bindValue(1, $this->candidature->getSelectionID()); // Substitui interrogação na query pelo ID passado
+            $query->bindValue(1, $this->application->getSelectionID()); // Substitui interrogação na query pelo ID passado
             
             if($query->execute()){ // Executa se a query for aceita
                 $applicationList = [];
@@ -134,8 +141,8 @@ class ApplicationsDB extends DatabaseAcess{
             // Deleta candidatura do banco
             $query = $this->getConnection()->prepare('DELETE FROM Selection_Applications WHERE selection = ? AND artist = ?');
             
-            $query->bindValue(1, $this->candidature->getSelectionID());
-            $query->bindValue(2, $this->candidature->getUserID());
+            $query->bindValue(1, $this->application->getSelectionID());
+            $query->bindValue(2, $this->application->getUserID());
 
             if($query->execute()){ // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas

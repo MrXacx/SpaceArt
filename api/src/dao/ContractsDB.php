@@ -152,7 +152,6 @@ class ContractsDB extends DatabaseAcess{
     /**
      * Obtém modelo de contrato configurado com base em todos os dados da linha
      * 
-     * @param string $this->contract->getID() ID do contrato
      * @return UserModel Modelo do contrato
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
@@ -173,17 +172,27 @@ class ContractsDB extends DatabaseAcess{
         }
     }
 
+    /**
+     * @see abstracts/DatabaseAcess.php
+     */
+    public function getAll(\App\Models\UserModel $user): array{      
+        try{
+            $query = parent::getConnection()->prepare("SELECT id, hirer, hired, price FROM Contracts WHERE hirer = ? OR hired = ?");
+                
+            $id =  $user->getID();
 
-    public function getAll(\App\Models\UserModel $user): array{
-            $query = parent::getConnection()->prepare("SELECT id, hirer, hired, price INTO Contracts WHERE hirer = ? OR hired = ?");
+            $query->bindParam(1, $id);
+            $query->bindParam(2, $id);
 
-            $query->bindParam(1, $user->getID());
-            $query->bindParam(2, $user->getID());
+            if($query->execute()){
+                return $query->fetchAll(\PDO::FETCH_ASSOC);
+            }
 
-            $query->execute();
+            throw new RuntimeException("Operação falhou");
 
-            return $query->fetchAll(\PDO::FETCH_ASSOC);
-
+        } catch(RuntimeException|PDOException $ex){
+            throw new \RuntimeException($ex->getMessage());            
+        }
     }
 
     /**
