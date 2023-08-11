@@ -4,7 +4,8 @@
   "description": "Aplicação Web com propósito de facilitar a comunicação entre artsitas informais e estabelecimentos brasileiros a fim de contratá-los.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,9 @@
     "express-handlebars": "^7.0.7",
     "nodemon": "^2.0.22",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.19.6",
+    "prettier": "^3.0.1"
   }
 }

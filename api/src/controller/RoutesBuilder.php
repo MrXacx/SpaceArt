@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
 
@@ -10,24 +11,28 @@ use FastRoute\Dispatcher;
 
 
 
-class RoutesBuilder extends \App\Controller\Server{
+class RoutesBuilder extends \App\Controller\Server
+{
     private static $dispatcher;
     private array $response;
 
-    public static function createRoutes(): void{
+    public static function createRoutes(): void
+    {
         static::$dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $collector) {
-            $collector->addGroup('/user', function (RouteCollector $collector) {
-                $collector->get('/', \App\Controller\UserRoute::class.'/queryUsualData'); // Obtém dado(s) do usuário logado
-                $collector->get('/user/login', \App\Controller\UserRoute::class.'querySignInData'); // Obtém id do usuárionew App\Controller\UserController($collector);  
+            $collector->addGroup('/users', function (RouteCollector $collector) {
+                $collector->get('/consult', \App\Controller\UserRoute::class . '/queryUsualData'); // Obtém dado(s) do usuário logado
+                $collector->get('/sign-in', \App\Controller\UserRoute::class . 'querySignInData'); // Obtém id do usuárionew App\Controller\UserController($collector);  
             });
-        });
+        });// /users/consult
     }
 
-    public static function isBuilded(): bool{
+    public static function isBuilded(): bool
+    {
         return isset($dispatcher);
     }
 
-    public function dispatch(): void{
+    public function dispatch(): void
+    {
         $routeInfo = static::$dispatcher->dispatch(parent::getHTTPMethod(), parent::getStrippedURI());
 
         switch ($routeInfo[0]) {
@@ -46,10 +51,8 @@ class RoutesBuilder extends \App\Controller\Server{
         }
     }
 
-    public function getResponse(): array{
+    public function getResponse(): array
+    {
         return $this->response;
     }
-
 }
-
-?>

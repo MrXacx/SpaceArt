@@ -47,12 +47,10 @@ CREATE TABLE Contracts (
   rate int(1) DEFAULT NULL,
   accepted BOOLEAN DEFAULT 0,
   locked BOOLEAN DEFAULT 0,
-  contracts JSON DEFAULT NULL,
-  selections JSON DEFAULT NULL,
 
   PRIMARY KEY (id),
-  FOREIGN KEY (hirer) REFERENCES Users(id),
-  FOREIGN KEY (hired) REFERENCES Users(id)
+  FOREIGN KEY (hirer) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (hired) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE Selections (
@@ -65,10 +63,10 @@ CREATE TABLE Selections (
   locked BOOLEAN DEFAULT 0,
 
   PRIMARY KEY (id),
-  FOREIGN KEY (owner_id) REFERENCES Users(id)
+  FOREIGN KEY (owner_id) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE Selection_Applications(
+CREATE TABLE Selection_Applications (
   id CHAR(36) NOT NULL,
   selection CHAR(36) NOT NULL,
   artist CHAR(36) NOT NULL,
@@ -79,6 +77,16 @@ CREATE TABLE Selection_Applications(
   PRIMARY KEY (selection, artist),
   UNIQUE KEY (id)
   
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE Reports (
+  id CHAR(36) NOT NULL,
+  reporter CHAR(36) NOT NULL,
+  reported CHAR(36) NOT NULL,
+  reason VARCHAR(255) NOT NULL,
+  accepted BOOLEAN DEFAULT NULL,
+  
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO Users (id, full_name, email, pwd, phone, document, cep) VALUES

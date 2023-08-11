@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Controller;
+
 use App\DAO\UsersDB;
 use App\Model\UserModel;
 
-class UserRoute{
+class UserRoute
+{
     public function  queryUsualData()
     {
         $user = new UserModel($_GET['email']);
@@ -35,10 +38,11 @@ class UserRoute{
             o id consultado com base nos dados informados.  
         */
 
-        return (isset($_GET['email']) && isset($_GET['password'])) ? (new UsersDB(new UserModel($_GET['email'], $_GET['password'])))->getID() : [];
+        if (isset($_GET['email']) && isset($_GET['password'])) {
+            $db = new UsersDB(new UserModel($_GET['email'], $_GET['password']));
+            return $db->getID();
+        } else {
+            return [];
+        }
     }
 }
-
-
-
-?>

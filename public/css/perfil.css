@@ -1,25 +1,25 @@
-main{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
-	box-sizing: border-box;
-	padding: none;
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+  padding: none;
 }
-main>*{
-	margin: var(--default_margin);
+main > * {
+  margin: var(--default_margin);
 }
-.picture-user{
-	max-width: 90%;
-	height: 10vh;
-}
-
-hr{
-	width: 70%;
+.picture-user {
+  max-width: 90%;
+  height: 10vh;
 }
 
-@media screen and (max-width:280px){
-	.table li{
-		font-size: 0.65rem;
-	}
+hr {
+  width: 70%;
+}
+
+@media screen and (max-width: 280px) {
+  .table li {
+    font-size: 0.65rem;
+  }
 }

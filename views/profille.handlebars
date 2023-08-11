@@ -1,36 +1,36 @@
 <div class="wrapper">
-	<link rel="stylesheet" type="text/css" href="/css/perfil.css">
-	
-	<h2 class="title">{{title}}</h2>
+  <link rel="stylesheet" type="text/css" href="/css/perfil.css" />
 
-	<main>
-		<img class="picture-user" src="{{image}}" alt="{{nome}}">
+  <h2 class="title">{{title}}</h2>
 
-		<h3>{{nome}}</h3>
-		<!-- barra de avaliação não usual -->
-		<hr>
-		<section class="ferramentas">
-		
-			{{#each ferramentas}}
-				<button type="button nav-button">
-					{{{this}}}
-				</button>`
-			{{/each}}
-			
-		</section>
-	</main>
+  <main>
+    <img class="picture-user" src="{{image}}" alt="{{nome}}" />
 
-	<table class="box table">
-	
-		{{#each rows}}
-				<tr>
-					<th>{{this.titulo}}</th>
-					<td>{{this.valor}}</td>				
-				</tr>
-		{{/each}}
-		
-	</table>
-	<!--
+    <h3>{{nome}}</h3>
+    <!-- barra de avaliação não usual -->
+    <hr />
+    <section class="ferramentas">
+
+      {{#each ferramentas}}
+        <button type="button nav-button">
+          {{{this}}}
+        </button>`
+      {{/each}}
+
+    </section>
+  </main>
+
+  <table class="box table">
+
+    {{#each rows}}
+      <tr>
+        <th>{{this.titulo}}</th>
+        <td>{{this.valor}}</td>
+      </tr>
+    {{/each}}
+
+  </table>
+  <!--
 	<ul id="conquistas">
 		<li>
 			<img src="" alt="conquista">

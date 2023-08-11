@@ -19,5 +19,3 @@ $routes->dispatch();
 $response = $routes->getResponse();
 
 echo json_encode($response);
-
-?>
