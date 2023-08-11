@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../../src/index.php';
 
-use App\Models\UserModel;
+use App\Model\UserModel;
 use App\DAO\UsersDB;
 
 /**
@@ -132,5 +132,3 @@ class UsersDBTest extends \PHPUnit\Framework\TestCase{
         $this->assertEquals(1, self::$db->delete());        
     }
 }
-
-?>

@@ -1,18 +1,20 @@
 <?php
 
-declare(strict_types = 1);
-namespace App\Models;
+declare(strict_types=1);
+
+namespace App\Model;
 
 use App\DAO\ContractsDB;
-use App\Utils\DataValidator;
+use App\Util\DataValidator;
 
 /**
  * Classe modelo de contratos
  * 
- * @package Models
+ * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class ContractModel{
+class ContractModel
+{
 
     /**
      * ID do contrato
@@ -55,7 +57,7 @@ class ContractModel{
      * @var array
      */
     private array $time;
-    
+
     /**
      * Avaliação do contrato
      * 
@@ -75,11 +77,12 @@ class ContractModel{
      * @param string $hiredID ID do contratado
      * @param string $price Valor do contrato
      */
-    function __construct(string $hirerID, string $hiredID, int $price){
+    function __construct(string $hirerID, string $hiredID, int $price)
+    {
         $this->validator = new DataValidator();
         $this->hirerID = $hirerID;
         $this->hiredID = $hiredID;
-        $this->price = $price.''; // Armazena valor como string            
+        $this->price = $price . ''; // Armazena valor como string            
     }
 
     /**
@@ -88,7 +91,8 @@ class ContractModel{
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return ContractModel Instância da classe
      */
-    public static function getInstanceOf(array $attr): self{
+    public static function getInstanceOf(array $attr): self
+    {
         $model = new ContractModel(
             $attr[ContractsDB::HIRER_ID],
             $attr[ContractsDB::HIRED_ID],
@@ -102,7 +106,6 @@ class ContractModel{
         $model->locked = boolval($attr[ContractsDB::LOCKED]);
         $model->accepted = boolval($attr[ContractsDB::ACCEPTED]);
         return $model;
-        
     }
 
     /**
@@ -110,7 +113,8 @@ class ContractModel{
      * 
      * @param string $id ID do contrato
      */
-    public function setID(string $id): void{
+    public function setID(string $id): void
+    {
         $this->id = $id;
     }
 
@@ -119,7 +123,8 @@ class ContractModel{
      * 
      * @return string ID
      */
-    public function getID(): string{
+    public function getID(): string
+    {
         return $this->id;
     }
 
@@ -128,7 +133,8 @@ class ContractModel{
      * 
      * @return string ID
      */
-    public function gethirerID(): string{
+    public function gethirerID(): string
+    {
         return $this->hirerID;
     }
 
@@ -137,7 +143,8 @@ class ContractModel{
      * 
      * @return string ID
      */
-    public function gethiredID(): string{
+    public function gethiredID(): string
+    {
         return $this->hiredID;
     }
 
@@ -146,7 +153,8 @@ class ContractModel{
      * 
      * @return string Preço
      */
-    public function getPrice(): string{
+    public function getPrice(): string
+    {
         return $this->price;
     }
 
@@ -155,31 +163,35 @@ class ContractModel{
      * 
      * @param string $date Data do evento
      */
-    public function setDate(string $date): void{
+    public function setDate(string $date): void
+    {
         $this->date = $this->validator->isValidDateFormat($date) ? $date : null;
     }
 
     /**
      * Obtém data do evento
      */
-    public function getDate(): string{
+    public function getDate(): string
+    {
         return $this->date;
     }
-    
+
     /**
      * Define Horários de início e fim do evento
      * 
      * @param string $inital Horário início
      * @param string $inital Horário fim
      */
-    public function setTime(string $inital, string $final): void{
+    public function setTime(string $inital, string $final): void
+    {
         $this->time = ['inital' => $this->validator->buildTime($inital), 'final' => $this->validator->buildTime($final)];
     }
 
     /**
      * Obtém horários do evento
      */
-    public function getTime(): array{
+    public function getTime(): array
+    {
         return $this->time;
     }
 
@@ -188,42 +200,51 @@ class ContractModel{
      * 
      * @param string $art Tipo de arte
      */
-    public function setArt(string $art): void{
+    public function setArt(string $art): void
+    {
         $this->art = $art;
     }
 
     /**
      * Obtém tipo de arte
      */
-    public function getArt(): string{
+    public function getArt(): string
+    {
         return $this->art;
     }
 
-    public function setRate(int $rate){
+    public function setRate(int $rate)
+    {
         $this->rate = $this->validator->isRate($rate) ? $rate : null;
     }
 
-    public function getRate(): int{
+    public function getRate(): int
+    {
         return $this->rate;
     }
 
-    public function setAccepted(bool $accepted): void{
+    public function setAccepted(bool $accepted): void
+    {
         $this->accepted = $accepted;
     }
 
-    public function isAccepted(): bool{
+    public function isAccepted(): bool
+    {
         return $this->accepted;
     }
-  
-    public function setLocked(bool $locked): void{
+
+    public function setLocked(bool $locked): void
+    {
         $this->locked = $locked;
     }
 
-    public function isLocked(): bool{
+    public function isLocked(): bool
+    {
         return $this->locked;
     }
-    
-    public function toArray(): array{
+
+    public function toArray(): array
+    {
         return [
             'id' => $this->id ?? null,
             'hirer' => $this->hirerID,

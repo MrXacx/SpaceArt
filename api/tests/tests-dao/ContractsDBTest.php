@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../../src/index.php';
 
-use App\Models\ContractModel;
+use App\Model\ContractModel;
 use App\DAO\ContractsDB;
 
 /**
@@ -105,4 +105,3 @@ class ContractsDBTest extends \PHPUnit\Framework\TestCase{
         $this->assertEquals(1, self::$db->delete());
     }
 }
-?>

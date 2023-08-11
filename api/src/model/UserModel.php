@@ -1,22 +1,24 @@
 <?php
 
-declare(strict_types = 1);
-namespace App\Models;
+declare(strict_types=1);
+
+namespace App\Model;
 
 use App\DAO\UsersDB;
 
 /**
  * Classe modelo de usuário
- * @package Models
+ * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class UserModel{
+class UserModel
+{
 
     /**
      * ID do usuário
      * @var string
      */
-        private string $id;
+    private string $id;
 
     /**
      * Nome completo do usuário
@@ -40,7 +42,7 @@ class UserModel{
      * Senha do usuário
      * @var string
      */
-    private string $pwd;
+    private string|null $pwd;
 
     /**
      * cpf/cnpj do usuário
@@ -67,7 +69,8 @@ class UserModel{
      * @param $email Email do usuário
      * @param $pwd Senha do usuário
      */
-    function __construct(string $email, string $pwd){
+    function __construct(string $email, string $pwd = null)
+    {
         $this->email = $email;
         $this->pwd = $pwd;
     }
@@ -75,42 +78,48 @@ class UserModel{
     /**
      * @param string $id ID do usuário
      */
-    public function setID(string $id): void{
+    public function setID(string $id): void
+    {
         $this->id = $id;
     }
 
     /**
      * @param string $name Nome do usuário
      */
-    public function setName(string $name): void{
+    public function setName(string $name): void
+    {
         $this->name = $name;
     }
 
     /**
      * @param string $phone Telefone do usuário
      */
-    public function setPhone(string $phone): void{
+    public function setPhone(string $phone): void
+    {
         $this->phone = $phone;
     }
 
     /**
      * @param string $documentNumber Cpf/Cnpj do usuário
      */
-    public function setDocumentNumber(string $documentNumber): void{
+    public function setDocumentNumber(string $documentNumber): void
+    {
         $this->documentNumber = $documentNumber;
     }
 
     /**
      * @param string $cep CEP do usuário
      */
-    public function setCEP(string $cep): void{
+    public function setCEP(string $cep): void
+    {
         $this->cep = $cep;
     }
 
     /**
      * @param string $website URL do website do usuário
      */
-    public function setWebsite(string $website): void{
+    public function setWebsite(string $website): void
+    {
         $this->website = $website;
     }
 
@@ -118,7 +127,8 @@ class UserModel{
      * Obtém ID do usuário
      * @return string ID 
      */
-    public function getID(): string{
+    public function getID(): string
+    {
         return $this->id;
     }
 
@@ -126,7 +136,8 @@ class UserModel{
      * Obtém Nome do usuário
      * @return string nome
      */
-    public function getName(): string{
+    public function getName(): string
+    {
         return $this->name;
     }
 
@@ -134,7 +145,8 @@ class UserModel{
      * Obtém Email do usuário
      * @return string Email 
      */
-    public function getEmail(): string{
+    public function getEmail(): string
+    {
         return $this->email;
     }
 
@@ -142,7 +154,8 @@ class UserModel{
      * Obtém Número de telefone do usuário
      * @return string Número de telefone 
      */
-    public function getPhone(): string{
+    public function getPhone(): string
+    {
         return $this->phone;
     }
 
@@ -150,7 +163,8 @@ class UserModel{
      * Obtém senha do usuário
      * @return string senha 
      */
-    public function getPassword(): string{
+    public function getPassword(): string
+    {
         return $this->pwd;
     }
 
@@ -158,7 +172,8 @@ class UserModel{
      * Obtém cpf/cnpj do usuário
      * @return string Código de cpf/cnpj 
      */
-    public function getDocumentNumber(): string{
+    public function getDocumentNumber(): string
+    {
         return $this->documentNumber;
     }
 
@@ -166,7 +181,8 @@ class UserModel{
      * Obtém cep do usuário
      * @return string cep 
      */
-    public function getCEP(): string{
+    public function getCEP(): string
+    {
         return $this->cep;
     }
 
@@ -174,15 +190,18 @@ class UserModel{
      * Obtém ID do usuário
      * @return string ID 
      */
-    public function getWebsite(): string{
+    public function getWebsite(): string
+    {
         return $this->website;
     }
 
-    public function setContracts(string $contractList): void{
+    public function setContracts(string $contractList): void
+    {
         $this->contracts = ($contractList);
     }
 
-    public function setSelections(string $selectionList): void{
+    public function setSelections(string $selectionList): void
+    {
         $this->selections = ($selectionList);
     }
 
@@ -192,24 +211,26 @@ class UserModel{
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return self Instância da classe
      */
-    public static function getInstanceOf(array $attr): self{
+    public static function getInstanceOf(array $attr): self
+    {
         $model = new UserModel($attr[UsersDB::EMAIL], $attr[UsersDB::PWD]);
-        $model->id =$attr['id'];
+        $model->id = $attr['id'];
         $model->name = $attr[UsersDB::NAME];
         $model->cep = $attr[UsersDB::CEP];
         $model->phone = $attr[UsersDB::PHONE];
         $model->documentNumber = $attr[UsersDB::DOCUMENT_NUMBER];
-        $model->setContracts($attr[UsersDB::CONTRACTS]);
-        $model->setSelections($attr[UsersDB::SELECTIONS]);
+        //$model->setContracts($attr[UsersDB::CONTRACTS]);
+        //$model->setSelections($attr[UsersDB::SELECTIONS]);
 
-        if(isset($attr[UsersDB::SITE])){ // Executa se a posição existir
+        if (isset($attr[UsersDB::SITE])) { // Executa se a posição existir
             $model->website = $attr[UsersDB::SITE];
         }
 
         return $model;
     }
 
-    public function toArray(): array{
+    public function toArray(): array
+    {
         return [
             'id' => $this->id ?? null,
             'email' => $this->email,

@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\DAO;
 
-use App\DAO\Abstract\DatabaseAcess;
-use App\Models\ContractModel;
+use App\DAO\Template\DatabaseAcess;
+use App\Model\ContractModel;
 use PDOException;
 use RuntimeException;
 
@@ -14,7 +15,8 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ContractsDB extends DatabaseAcess{
+class ContractsDB extends DatabaseAcess
+{
     /**
      * Nome da coluna de contratante
      * @var string
@@ -78,26 +80,28 @@ class ContractsDB extends DatabaseAcess{
     /**
      * @param ContractModel $contract Modelo de contrato a ser utilizado na manipulação
      */
-    function __construct(ContractModel|null $contract){
-        if(isset($contract)){
+    function __construct(ContractModel|null $contract)
+    {
+        if (isset($contract)) {
             $this->contract = $contract;
         }
         parent::__construct();
     }
-   
+
     /**
      * Insere contrato na tabela
      * 
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function create(): int{
-        try{
+    public function create(): int
+    {
+        try {
             $this->contract->setID($this->getRandomID()); // Gera uuid
-            
+
             // Passa query SQL de criação
             $query = $this->getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, inital_time, final_time, art) VALUES (?,?,?,?,?,?,?,?)');
-            
+
             // Substitui interrogações pelos valores dos atributos
             $query->bindValue(1, $this->contract->getID());
             $query->bindValue(2, $this->contract->getHirerID());
@@ -109,14 +113,15 @@ class ContractsDB extends DatabaseAcess{
             $query->bindValue(6, $time['inital']);
             $query->bindValue(7, $time['final']);
             $query->bindValue(8, $this->contract->getArt());
-            
-            if($query->execute()){ // Executa se a query não falhar
+
+            if ($query->execute()) { // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
             }
 
             // Executa se houver alguma falha esperada
-            error: throw new \RuntimeException('Operação falhou!');
-        } catch(RuntimeException|PDOException $ex){
+            error:
+            throw new \RuntimeException('Operação falhou!');
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -127,47 +132,50 @@ class ContractsDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function get(string $column): array{
-        try{
-            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+    public function get(string $column): array
+    {
+        try {
+            if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Contracts"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
-                
+
             // Determina query SQL de leitura
             $query = $this->getConnection()->prepare("SELECT id, $column FROM Contracts WHERE id = ?");
             $query->bindValue(1, $this->contract->getID()); // Substitui interrogação na query pelo ID passado
-            
-            if($query->execute()){ // Executa se consulta não falhar
+
+            if ($query->execute()) { // Executa se consulta não falhar
                 return $this->formatResultOfGet($query); // Retorna valor que 
             }
 
             // Executa em caso de falhas esperadas
-            error: throw new \RuntimeException($message ?? 'Operação falhou!');
-        } catch(RuntimeException|PDOException $ex){
+            error:
+            throw new \RuntimeException($message ?? 'Operação falhou!');
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
-    
+
     /**
      * Obtém modelo de contrato configurado com base em todos os dados da linha
      * 
      * @return UserModel Modelo do contrato
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function getContract(): ContractModel{
-        try{
+    public function getContract(): ContractModel
+    {
+        try {
             // Determina query SQL de leitura
             $query = $this->getConnection()->prepare('SELECT * FROM Contracts WHERE id = ?');
             $query->bindValue(1, $this->contract->getID()); // Substitui interrogação na query pelo ID passado
-            
-            if($query->execute()){ // Executa se a query for aceita
+
+            if ($query->execute()) { // Executa se a query for aceita
                 return ContractModel::getInstanceOf($this->formatResultOfGet($query));
             }
 
             // Executa em caso de falhas esperadas
             throw new \RuntimeException('Operação falhou!');
-        } catch(RuntimeException|PDOException $ex){
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -175,7 +183,7 @@ class ContractsDB extends DatabaseAcess{
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getAll(\App\Models\UserModel $user): array{      
+    public function getAll(\App\Model\UserModel $user): array{      
         try{
             $query = parent::getConnection()->prepare("SELECT id, hirer, hired, price FROM Contracts WHERE hirer = ? OR hired = ?");
                 
@@ -201,14 +209,14 @@ class ContractsDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function update(string $column, string $value): int{
-        try{
-            
-            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+    public function update(string $column, string $value): int
+    {
+        try {
+
+            if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Contracts"; // Define mensagem de erro
                 goto error; // Pula execução do método
-            }
-            else if(!$this->dataValidator->isValidToFlag($column, $value)){ // Executa se o valor estiver fora dos parâmetros da coluna
+            } else if (!$this->dataValidator->isValidToFlag($column, $value)) { // Executa se o valor estiver fora dos parâmetros da coluna
                 return 0;
             }
 
@@ -219,14 +227,15 @@ class ContractsDB extends DatabaseAcess{
             $query->bindValue(1, $value);
             $query->bindValue(2, $this->contract->getID());
 
-            if($query->execute()){ // Executa se a query não falhar
+            if ($query->execute()) { // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
             }
 
             // Executa em caso de falhas esperadas
-            error: throw new \RuntimeException($message ?? 'Operação falhou!');
-        } catch(RuntimeException|PDOException $ex){
-            throw new \RuntimeException($ex->getMessage());            
+            error:
+            throw new \RuntimeException($message ?? 'Operação falhou!');
+        } catch (RuntimeException | PDOException $ex) {
+            throw new \RuntimeException($ex->getMessage());
         }
     }
 
@@ -236,20 +245,20 @@ class ContractsDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function delete(): int{
-        try{
+    public function delete(): int
+    {
+        try {
             // Deleta seleção do banco
             $query = $this->getConnection()->prepare('DELETE FROM Contracts WHERE id = ?');
             $query->bindValue(1, $this->contract->getID());
-            if($query->execute()){ // Executa se a query não falhar
+            if ($query->execute()) { // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
             }
-            
+
             throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
-        } catch(RuntimeException|PDOException $ex){
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
-        
     }
 
     /**
@@ -258,9 +267,9 @@ class ContractsDB extends DatabaseAcess{
      * @param string Nome da coluna
      * @return bool Retorna true se coluna for compatível
      */
-    public static function isColumn(string $column):bool{
+    public static function isColumn(string $column): bool
+    {
         $columns = [static::HIRER_ID, static::HIRED_ID, static::PRICE, static::ART, static::DATE, static::INITAL_TIME, static::FINAL_TIME];
-        return !is_bool(array_search($column,$columns));
+        return !is_bool(array_search($column, $columns));
     }
-
 }

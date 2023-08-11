@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\DAO;
 
-use App\DAO\Abstract\DatabaseAcess;
-use App\Models\ApplicationModel;
+use App\DAO\Template\DatabaseAcess;
+use App\Model\ApplicationModel;
 use PDOException;
 use RuntimeException;
 
@@ -14,7 +15,8 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ApplicationsDB extends DatabaseAcess{
+class ApplicationsDB extends DatabaseAcess
+{
 
     public const ARTIST = 'artist';
     public const SELECTION = 'selection';
@@ -42,15 +44,15 @@ class ApplicationsDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function create(): int{
-        try{      
+    public function create(): int
+    {
+        try {
 
             $this->application->setID($this->getRandomID()); // Gera uuid
             
-
             // Passa query SQL de criação
             $query = $this->getConnection()->prepare('INSERT INTO Selection_Applications (id, selection, artist) VALUES (?,?,?)');
-            
+
             // Substitui interrogações pelos valores dos atributos
             $query->bindValue(1, $this->application->getID());
             $query->bindValue(2, $this->application->getSelectionID());
@@ -62,7 +64,7 @@ class ApplicationsDB extends DatabaseAcess{
 
             // Executa se houver alguma falha esperada
             throw new \RuntimeException('Operação falhou!');
-        } catch(RuntimeException|PDOException $ex){
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -73,13 +75,14 @@ class ApplicationsDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function get(string $column): array{
-        try{
-            if(!static::isColumn($column)){ // Executa se coluna informada não pertencer à tabela
+    public function get(string $column): array
+    {
+        try {
+            if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
                 $message = "\"$column\" não é uma coluna da tabela Selection_Applications"; // Define mensagem de erro
                 goto error; // Pula execução do método
             }
-                
+
             // Determina query SQL de leitura
             $query = $this->getConnection()->prepare("SELECT id, $column FROM Selection_Applications WHERE id = ?");
             $query->bindValue(1, $this->application->getID()); // Substitui interrogação na query pelo ID passado
@@ -89,8 +92,9 @@ class ApplicationsDB extends DatabaseAcess{
             }
 
             // Executa em caso de falhas esperadas
-            error: throw new \RuntimeException($message ?? 'Operação falhou!');
-        } catch(RuntimeException|PDOException $ex){
+            error:
+            throw new \RuntimeException($message ?? 'Operação falhou!');
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -109,7 +113,7 @@ class ApplicationsDB extends DatabaseAcess{
             
             if($query->execute()){ // Executa se a query for aceita
                 $applicationList = [];
-                foreach($query->fetchAll(\PDO::FETCH_ASSOC) as $application){
+                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $application) {
                     $applicationList[] = ApplicationModel::getInstanceOf($application);
                 }
                 return $applicationList;
@@ -117,7 +121,7 @@ class ApplicationsDB extends DatabaseAcess{
 
             // Executa em caso de falhas esperadas
             throw new \RuntimeException('Operação falhou!');
-        } catch(RuntimeException|PDOException $ex){
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -126,7 +130,8 @@ class ApplicationsDB extends DatabaseAcess{
      * Este método não deve ser chamado.
      * @throws RuntimeException Caso o método seja executado
      */
-    public function update(string $column = null, string $value = null): int{
+    public function update(string $column = null, string $value = null): int
+    {
         throw new RuntimeException('Não há suporte para atualizações na tabela Selection_Applications');
     }
 
@@ -136,23 +141,23 @@ class ApplicationsDB extends DatabaseAcess{
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function delete(): int{
-        try{
+    public function delete(): int
+    {
+        try {
             // Deleta candidatura do banco
             $query = $this->getConnection()->prepare('DELETE FROM Selection_Applications WHERE selection = ? AND artist = ?');
             
             $query->bindValue(1, $this->application->getSelectionID());
             $query->bindValue(2, $this->application->getUserID());
 
-            if($query->execute()){ // Executa se a query não falhar
+            if ($query->execute()) { // Executa se a query não falhar
                 return $query->rowCount(); // Retorna linhas afetadas
             }
-            
+
             throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
-        } catch(RuntimeException|PDOException $ex){
+        } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
-        
     }
 
     /**
@@ -161,8 +166,8 @@ class ApplicationsDB extends DatabaseAcess{
      * @param string Nome da coluna
      * @return bool Retorna true se coluna for compatível
      */
-    public static function isColumn(string $column):bool{
+    public static function isColumn(string $column): bool
+    {
         return $column == self::ARTIST || $column == self::SELECTION | $column == self::LAST_CHANGE;
     }
-
 }

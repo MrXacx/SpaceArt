@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DAO;
 
-use App\DAO\Abstract\DatabaseAcess;
-use App\Models\ReportModel;
+use App\DAO\Template\DatabaseAcess;
+use App\Model\ReportModel;
 use PDOException;
 use RuntimeException;
 
@@ -124,7 +124,7 @@ class ReportsDB extends DatabaseAcess
         } catch (RuntimeException | PDOException $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
-    }*/
+    }
 
     /**
      * Este método não deve ser chamado.

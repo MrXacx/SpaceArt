@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Model;
 
 use App\DAO\ApplicationsDB;
 
-class ApplicationModel{
+class ApplicationModel
+{
 
     private string $id;
 
@@ -14,44 +15,53 @@ class ApplicationModel{
 
     private string $lastChange;
 
-    function __construct(string $selectionID){
+    function __construct(string $selectionID)
+    {
         $this->selectionID = $selectionID;
     }
 
-    public function getSelectionID(): string{
+    public function getSelectionID(): string
+    {
         return $this->selectionID;
     }
 
-    public function setID(string $id): void{
+    public function setID(string $id): void
+    {
         $this->id = $id;
     }
 
-    public function getID(): string{
+    public function getID(): string
+    {
         return $this->id;
     }
 
-    public function setUserID(string $userID): void{
+    public function setUserID(string $userID): void
+    {
         $this->userID = $userID;
     }
 
-    public function getUserID(): string{
+    public function getUserID(): string
+    {
         return $this->userID;
     }
 
-    public function setLastChange(string $lastChange): void{
+    public function setLastChange(string $lastChange): void
+    {
         $this->lastChange = $lastChange;
     }
-    
-    public static function getInstanceOf(array $attr): self{
+
+    public static function getInstanceOf(array $attr): self
+    {
         $model = new ApplicationModel($attr[ApplicationsDB::SELECTION]);
         $model->id = $attr['id'];
         $model->userID = $attr[ApplicationsDB::ARTIST];
         $model->lastChange = $attr[ApplicationsDB::LAST_CHANGE];
-        
+
         return $model;
     }
 
-    public function toArray(): array{
+    public function toArray(): array
+    {
         return [
             'id' => $this->id ?? null,
             'selection' => $this->selectionID,

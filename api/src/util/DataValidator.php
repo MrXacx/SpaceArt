@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace App\Util;
 
 use App\DAO\ContractsDB;
 use App\DAO\SelectionsDB;
@@ -11,11 +11,12 @@ use RuntimeException;
 /**
  * Classe de validação de dados
  * 
- * @package Utils
+ * @package Util
  * @author Ariel Santos (MrXacx)
  */
-final class DataValidator{
-    use \App\Utils\Tools\DateTimeTrait; // Habilita ferramenta para datas e horários
+final class DataValidator
+{
+    use \App\Util\Tool\DateTimeTrait; // Habilita ferramenta para datas e horários
 
     /**
      * Valida o formato de uma data
@@ -23,13 +24,14 @@ final class DataValidator{
      * @param string $date Data a ser analizada
      * @return bool Retorna true se estiver no formato correto
      */
-    public function isValidDateFormat(string $date): bool{      
-        if(preg_match('#^\d{4}-\d{2}-\d{2}$#', $date)){ // Executa se o formato AAAA-MM-DD for respeitado
+    public function isValidDateFormat(string $date): bool
+    {
+        if (preg_match('#^\d{4}-\d{2}-\d{2}$#', $date)) { // Executa se o formato AAAA-MM-DD for respeitado
             $date = explode('-', $date); // Separa string em vetor
             return $date[2] >= 1 && $date[2] <= $this->getLastDayOfMonth($date[1], $date[0]); // Garante que os valores de mês e dia condizem com a realidade
         }
-        
-        return false;     
+
+        return false;
     }
 
     /**
@@ -38,14 +40,15 @@ final class DataValidator{
      * @param string $date Horário a ser analizado
      * @return bool Retorna true se estiver no formato correto
      */
-    public function isValidTimeFormat(string $time): bool{
+    public function isValidTimeFormat(string $time): bool
+    {
 
-        if(preg_match('#^\d{2}:\d{2}(:\d{2}){0,1}$#', $time)){ // Executa se estiver no formato por HH:MM ou HH:MM:SS
+        if (preg_match('#^\d{2}:\d{2}(:\d{2}){0,1}$#', $time)) { // Executa se estiver no formato por HH:MM ou HH:MM:SS
             $time = explode(':', $time); // Separa string em vetor
             return ($time[0] >= 0 && $time[0] <= 23) && ($time[1] >= 0 && $time[0] <= 59); // Retorna com base nos valores de hora e minuto
         }
 
-        return false;    
+        return false;
     }
 
     /**
@@ -56,9 +59,10 @@ final class DataValidator{
      * @return bool Retorna true se estiver entre o comprimento mínimo e máximo da coluna
      * @throws RuntimeException Caso coluna informada não for encontrada
      */
-    public function isValidVarcharLength(string $varchar, string $column): bool{
+    public function isValidVarcharLength(string $varchar, string $column): bool
+    {
         $length = strlen($varchar);
-        return  $length > 0 && $length <= match($column){
+        return  $length > 0 && $length <= match ($column) {
             'id' => 36,
             UsersDB::NAME, UsersDB::EMAIL, UsersDB::SITE, UsersDB::PWD, ContractsDB::ART, SelectionsDB::ART => 255,
             default => throw new RuntimeException('Coluna não encontrada')
@@ -71,7 +75,8 @@ final class DataValidator{
      * @param string $price Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isPrice(string $price): bool{
+    public function isPrice(string $price): bool
+    {
         return preg_match('#^\d{1,5}$#', $price); // Inteiro e com até 5 caracteres
     }
 
@@ -81,7 +86,8 @@ final class DataValidator{
      * @param string $phone Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isPhone(string $phone): bool{
+    public function isPhone(string $phone): bool
+    {
         return preg_match('#[1-9]\d9(8|9)\d{7}#', $phone); // Espaço para DDD e demais 9 números
     }
 
@@ -91,7 +97,8 @@ final class DataValidator{
      * @param string $cep Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isCEP(string $cep): bool{
+    public function isCEP(string $cep): bool
+    {
         return preg_match('#\b\d{8}\b#', $cep); // 8 algarismos
     }
 
@@ -101,7 +108,8 @@ final class DataValidator{
      * @param string $url Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isURL(string $url): bool{
+    public function isURL(string $url): bool
+    {
         // Suporte a método http/https, domínio, path e query string
         return preg_match('#^https{0,1}://[\w\.-]+/(([\w\.-_]+)/)*(\?([\w_-]+=[\w%-]+&{0,1})+){0,1}$#', $url);
     }
@@ -112,7 +120,8 @@ final class DataValidator{
      * @param string $documentNumber Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isDocumentNumber(string $documentNumber): bool{
+    public function isDocumentNumber(string $documentNumber): bool
+    {
         return preg_match('#^\d{11}$#', $documentNumber); // 11 algarismos
     }
 
@@ -122,12 +131,14 @@ final class DataValidator{
      * @param string $url Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isValidDatetimeFormat(string $datetime): bool{
+    public function isValidDatetimeFormat(string $datetime): bool
+    {
         $datetime = explode(" ", $datetime);
         return $this->isValidDateFormat($datetime[0]) && $this->isValidTimeFormat($datetime[1]);
     }
 
-    public function isRate(int $rate): bool{
+    public function isRate(int $rate): bool
+    {
         return $rate >= 0 && $rate <= 5;
     }
 
@@ -138,8 +149,9 @@ final class DataValidator{
      * @param string $value Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isValidToFlag(string $flag, string $value): bool{
-        return match($flag){
+    public function isValidToFlag(string $flag, string $value): bool
+    {
+        return match ($flag) {
             ContractsDB::DATE => $this->isValidDateFormat($value),
             ContractsDB::INITAL_TIME, ContractsDB::FINAL_TIME => $this->isValidTimeFormat($value),
             SelectionsDB::INITAL_DATETIME, SelectionsDB::FINAL_DATETIME => $this->isValidDatetimeFormat($value),
@@ -150,8 +162,4 @@ final class DataValidator{
             default => $this->isValidVarcharLength($value, $flag)
         };
     }
-   
 }
-
-?>
-

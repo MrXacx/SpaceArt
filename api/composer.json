@@ -6,12 +6,12 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "App\\Controllers\\": "src/controllers/",
+            "App\\Controller\\": "src/controller/",
             "App\\DAO\\": "src/dao/",
-            "App\\DAO\\Abstract\\": "src/dao/abstracts/",
-            "App\\Models\\": "src/models/",
-            "App\\Utils\\": "src/utils/",
-            "App\\Utils\\Tools\\": "src/utils/traits/"
+            "App\\DAO\\Template\\": "src/dao/abstracts/",
+            "App\\Model\\": "src/model/",
+            "App\\Util\\": "src/util/",      
+            "App\\Util\\Tool\\": "src/util/traits/"
         }
     },
     "require": {

@@ -1,21 +1,23 @@
 <?php
 
-declare(strict_types = 1);    
-namespace App\DAO\Abstract;
+declare(strict_types=1);
 
-require_once __DIR__.'/../../../vendor/autoload.php';
+namespace App\DAO\Template;
+
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use PDO;
 use PDOException;
 use PDOStatement;
-use App\Utils\DataValidator;
+use App\Util\DataValidator;
 
 /**
  * Classe de conexão com o banco de dados
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-abstract class DatabaseAcess{
+abstract class DatabaseAcess
+{
     /**
      * Objeto de conexão com o banco
      * @var PDO
@@ -28,11 +30,12 @@ abstract class DatabaseAcess{
      */
     protected DataValidator $dataValidator;
 
-    function __construct(){
-        try{
+    function __construct()
+    {
+        try {
             $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
-            $this->dataValidator= new DataValidator();
-        } catch(\Exception $ex){            
+            $this->dataValidator = new DataValidator();
+        } catch (\Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -42,7 +45,8 @@ abstract class DatabaseAcess{
      * @return PDO Manipulador do banco de dados
      * 
      */
-    protected function getConnection(): PDO{
+    protected function getConnection(): PDO
+    {
         return $this->connection;
     }
 
@@ -51,7 +55,8 @@ abstract class DatabaseAcess{
      * @return String Sequência aleatória de 36 dígitos
      * 
      */
-    protected function getRandomID():string{
+    protected function getRandomID(): string
+    {
         return \Ramsey\Uuid\Uuid::uuid7()->toString();
     }
 
@@ -61,22 +66,24 @@ abstract class DatabaseAcess{
      * @return array|string Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
-    protected function formatResultOfGet(PDOStatement|false &$query): array{
-        
+    protected function formatResultOfGet(PDOStatement|false &$query): array
+    {
+
         $response = $query->fetch(\PDO::FETCH_ASSOC);
         unset($query);
 
-        if(is_array($response) && isset($response)){
-            foreach($response as $key => $value){
+        if (is_array($response) && isset($response)) {
+            foreach ($response as $key => $value) {
                 $result[$key] = $value;
             }
             return $result;
         }
-        
-        return $result ?? throw new PDOException('Leitura não retornou um valor válido!');  
+
+        return $result ?? throw new PDOException('Leitura não retornou um valor válido!');
     }
 
-    function __destruct(){
+    function __destruct()
+    {
         unset($this->connection);
     }
 
@@ -119,6 +126,5 @@ abstract class DatabaseAcess{
      * @param string Nome da coluna
      * @return bool Retorna true se coluna for compatível
      */
-    abstract public static function isColumn(string $column):bool;
+    abstract public static function isColumn(string $column): bool;
 }
-?>

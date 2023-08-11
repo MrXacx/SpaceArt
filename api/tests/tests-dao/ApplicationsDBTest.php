@@ -3,7 +3,7 @@
 require_once __DIR__.'/../../src/index.php';
 
 use App\DAO\ApplicationsDB;
-use App\Models\ApplicationModel;
+use App\Model\ApplicationModel;
 
 class ApplicationsDBTest extends \PHPUnit\Framework\TestCase{
 
@@ -40,5 +40,3 @@ class ApplicationsDBTest extends \PHPUnit\Framework\TestCase{
     }
 
 }
-
-?>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Model;
 
 use App\DAO\ReportsDB;
 
@@ -74,5 +74,3 @@ class ReportModel{
  
 
 }
-
-?>

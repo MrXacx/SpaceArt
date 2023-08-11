@@ -1,14 +1,23 @@
 <?php
 
-use App\DAO\UsersDB;
-use App\Models\UserModel;
+header('Content-Type: application/json');
 
-include_once __DIR__.'/config/enviroment.php';
-include_once __DIR__.'/../vendor/autoload.php';
+include_once __DIR__ . '/config/enviroment.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $_ENV = array_merge($_ENV, getDatabaseSettings());
 
-header('Content-type: application/json; charset="utf-8"');
-echo json_encode([]);
+use App\Controller\RoutesBuilder;
+
+if(!RoutesBuilder::isBuilded()){
+    RoutesBuilder::createRoutes();
+}
+
+$routes = new RoutesBuilder();
+$routes->dispatch();
+
+$response = $routes->getResponse();
+
+echo json_encode($response);
 
 ?>

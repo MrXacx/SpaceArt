@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../../src/index.php';
 
-use App\Models\SelectionModel;
+use App\Model\SelectionModel;
 use App\DAO\SelectionsDB;
 
 /**
@@ -104,5 +104,3 @@ class SelectionsDBTest extends \PHPUnit\Framework\TestCase{
         $this->assertEquals(1, self::$db->delete());
     }
 }
-
-?>
