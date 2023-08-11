@@ -126,6 +126,17 @@ final class DataValidator
     }
 
     /**
+     * Checa se um email é válido
+     * 
+     * @param string $email Valor a ser analizado
+     * @return bool Retorna true caso esteja
+     */
+    public function isEmail(string $email): bool
+    {
+        return preg_match('#^/\S+@\S+\.\S+/$#', $email); // 11 algarismos
+    }
+
+    /**
      * Checa se valor está apto a ser inserido em colunas do tipo datetime
      * 
      * @param string $url Valor a ser analizado

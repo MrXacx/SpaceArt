@@ -80,11 +80,9 @@ class ContractsDB extends DatabaseAcess
     /**
      * @param ContractModel $contract Modelo de contrato a ser utilizado na manipulação
      */
-    function __construct(ContractModel|null $contract)
+    function __construct(ContractModel $contract)
     {
-        if (isset($contract)) {
-            $this->contract = $contract;
-        }
+        $this->contract = $contract;
         parent::__construct();
     }
 

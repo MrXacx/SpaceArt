@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\DAO\UsersDB;
+use App\Util\DataValidator;
 
 /**
  * Classe modelo de usuário
@@ -62,17 +63,19 @@ class UserModel
      */
     private string $website;
 
-    private array $contracts = [];
-    private array $selections = [];
-
     /**
-     * @param $email Email do usuário
-     * @param $pwd Senha do usuário
+     * @param string $pwd Senha do usuário
      */
-    function __construct(string $email, string $pwd = null)
+    public function setPassword(string $pwd): void
+    {
+        $this->pwd = $pwd;
+    }
+    /**
+     * @param string $email Email do usuário
+     */
+    public function setEmail(string $email): void
     {
         $this->email = $email;
-        $this->pwd = $pwd;
     }
 
     /**
@@ -195,15 +198,6 @@ class UserModel
         return $this->website;
     }
 
-    public function setContracts(string $contractList): void
-    {
-        $this->contracts = ($contractList);
-    }
-
-    public function setSelections(string $selectionList): void
-    {
-        $this->selections = ($selectionList);
-    }
 
     /**
      * Obtém um modelo de usuário inicializado
@@ -219,8 +213,6 @@ class UserModel
         $model->cep = $attr[UsersDB::CEP];
         $model->phone = $attr[UsersDB::PHONE];
         $model->documentNumber = $attr[UsersDB::DOCUMENT_NUMBER];
-        //$model->setContracts($attr[UsersDB::CONTRACTS]);
-        //$model->setSelections($attr[UsersDB::SELECTIONS]);
 
         if (isset($attr[UsersDB::SITE])) { // Executa se a posição existir
             $model->website = $attr[UsersDB::SITE];
@@ -238,9 +230,7 @@ class UserModel
             'phone' => $this->phone ?? null,
             'document_number' => $this->documentNumber ?? null,
             'cep' => $this->cep ?? null,
-            'website' => $this->website ?? null,
-            'contractList' => $this->contracts,
-            'selectionList' => $this->selections,
+            'website' => $this->website ?? null,,
         ];
     }
 }

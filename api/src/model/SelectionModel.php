@@ -63,13 +63,9 @@ class SelectionModel
      */
     private DataValidator $validator;
 
-    /**
-     * @param string $ownerID ID do criador da seleção
-     */
-    function __construct(string $ownerID)
+    function __construct()
     {
         $this->validator = new DataValidator();
-        $this->ownerID = $this->validator->isValidVarcharLength($ownerID, 'id') ? $ownerID : null;;
     }
 
     /**
@@ -111,6 +107,14 @@ class SelectionModel
     public function getID(): string
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $ownerID ID do criador da seleção
+     */
+    function setOwnerID(string $ownerID)
+    {
+        $this->ownerID = $this->validator->isValidVarcharLength($ownerID, 'id') ? $ownerID : null;;
     }
 
     /**

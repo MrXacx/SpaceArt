@@ -31,10 +31,8 @@ class ApplicationsDB extends DatabaseAcess
     /**
      * @param ApplicationModel $application Modelo de candidatura a ser manipulado
      */
-    function __construct(ApplicationModel|null $application) {
-        if(isset($application)){
-            $this->application = $application;
-        }
+    function __construct(ApplicationModel $application) {
+        $this->application = $application;      
         parent::__construct();
     }
 

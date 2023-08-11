@@ -103,7 +103,6 @@ class ReportsDB extends DatabaseAcess
         }
     }
 
-    /*
     public function getAll(): array
     {
         try {

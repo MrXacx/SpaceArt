@@ -7,9 +7,9 @@ use App\Model\UserModel;
 
 class UserRoute
 {
-    public function  queryUsualData()
+    public function  consult(): array
     {
-        $user = new UserModel($_GET['email']);
+        $user = new UserModel();
         $db = new UsersDB($user);
 
         if (isset($_GET['id'])) {
@@ -30,7 +30,7 @@ class UserRoute
         return [];
     }
 
-    public function querySignInData()
+    public function signIn(): array
     {
         /*
             No ato do login, o sistema servido deve possuir email e senha do usuário,
@@ -41,8 +41,8 @@ class UserRoute
         if (isset($_GET['email']) && isset($_GET['password'])) {
             $db = new UsersDB(new UserModel($_GET['email'], $_GET['password']));
             return $db->getID();
-        } else {
-            return [];
         }
+        
+        return [];    
     }
 }

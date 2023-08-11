@@ -15,7 +15,7 @@ class ApplicationModel
 
     private string $lastChange;
 
-    function __construct(string $selectionID)
+    function setSelectionID(string $selectionID)
     {
         $this->selectionID = $selectionID;
     }

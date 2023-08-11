@@ -20,10 +20,12 @@ class RoutesBuilder extends \App\Controller\Server
     {
         static::$dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $collector) {
             $collector->addGroup('/users', function (RouteCollector $collector) {
-                $collector->get('/consult', \App\Controller\UserRoute::class . '/queryUsualData'); // Obtém dado(s) do usuário logado
-                $collector->get('/sign-in', \App\Controller\UserRoute::class . 'querySignInData'); // Obtém id do usuárionew App\Controller\UserController($collector);  
+                $collector->get('/consult', \App\Controller\UserRoute::class . '/consult'); // Obtém dados do usuário logado
+                $collector->get('/sign-in', \App\Controller\UserRoute::class . '/signIn'); // Obtém id do usuárionew App\Controller\UserController($collector);  
             });
-        });// /users/consult
+
+            $collector->get('/contracts/consult', \App\Controller\ContractRoute::class . '/queryUsualData');
+        });
     }
 
     public static function isBuilded(): bool

@@ -62,11 +62,8 @@ class SelectionsDB extends DatabaseAcess
     /**
      * @param SelectionModel $selection Modelo de seleção a ser manipulado
      */
-    function __construct(SelectionModel|null $selection) {
-        
-        if(isset($selection)){
-            $this->selection = $selection;
-        }
+    function __construct(SelectionModel $selection) {
+        $this->selection = $selection;
         parent::__construct();
     }
 

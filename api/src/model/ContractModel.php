@@ -72,19 +72,11 @@ class ContractModel
      */
     private DataValidator $validator;
 
-    /** 
-     * @param string $hirerID ID do contratante
-     * @param string $hiredID ID do contratado
-     * @param string $price Valor do contrato
-     */
-    function __construct(string $hirerID, string $hiredID, int $price)
+    function __construct()
     {
-        $this->validator = new DataValidator();
-        $this->hirerID = $hirerID;
-        $this->hiredID = $hiredID;
-        $this->price = $price . ''; // Armazena valor como string            
+        $this->validator = new DataValidator(); 
     }
-
+    
     /**
      * Obtém um modelo de contrato inicializado
      * 
@@ -128,6 +120,14 @@ class ContractModel
         return $this->id;
     }
 
+    /** 
+     * @param string $hirerID ID do contratante
+     */
+    function setHirerID(string $hirerID)
+    {
+        $this->hirerID = $hirerID;           
+    }
+
     /**
      * Obtém ID do contratante
      * 
@@ -138,6 +138,14 @@ class ContractModel
         return $this->hirerID;
     }
 
+    /** 
+     * @param string $hiredID ID do contratado
+     */
+    function setHireDID(string $hiredID)
+    {
+        $this->hiredID = $hiredID;           
+    }
+
     /**
      * Obtém ID do contratado
      * 
@@ -146,6 +154,14 @@ class ContractModel
     public function gethiredID(): string
     {
         return $this->hiredID;
+    }
+
+    /** 
+     * @param string $price Valor do contrato
+     */
+    function setPrice(int $price)
+    {
+        $this->price = $price . ''; // Armazena valor como string            
     }
 
     /**
