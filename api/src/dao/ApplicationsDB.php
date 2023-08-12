@@ -6,6 +6,7 @@ namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
 use App\Model\ApplicationModel;
+use App\Model\SelectionModel;
 use PDOException;
 use RuntimeException;
 
@@ -28,11 +29,15 @@ class ApplicationsDB extends DatabaseAcess
      */
     private ApplicationModel $application;
 
+    private SelectionModel|null $selection;
+
     /**
      * @param ApplicationModel $application Modelo de candidatura a ser manipulado
      */
-    function __construct(ApplicationModel $application) {
-        $this->application = $application;      
+    function __construct(ApplicationModel $application, SelectionModel $selection = null)
+    {
+        $this->application = $application;
+        $this->selection =  $selection;
         parent::__construct();
     }
 
@@ -44,27 +49,22 @@ class ApplicationsDB extends DatabaseAcess
      */
     public function create(): int
     {
-        try {
+        $this->application->setID($this->getRandomID()); // Gera uuid
 
-            $this->application->setID($this->getRandomID()); // Gera uuid
-            
-            // Passa query SQL de criação
-            $query = $this->getConnection()->prepare('INSERT INTO Selection_Applications (id, selection, artist) VALUES (?,?,?)');
+        // Passa query SQL de criação
+        $query = $this->getConnection()->prepare('INSERT INTO Selection_Applications (id, selection, artist) VALUES (?,?,?)');
 
-            // Substitui interrogações pelos valores dos atributos
-            $query->bindValue(1, $this->application->getID());
-            $query->bindValue(2, $this->application->getSelectionID());
-            $query->bindValue(3, $this->application->getUserID());
-            
-            if($query->execute()){ // Executa se a query não falhar
-                return $query->rowCount(); // Retorna linhas afetadas
-            }
+        // Substitui interrogações pelos valores dos atributos
+        $query->bindValue(1, $this->application->getID());
+        $query->bindValue(2, $this->application->getSelectionID());
+        $query->bindValue(3, $this->application->getUserID());
 
-            // Executa se houver alguma falha esperada
-            throw new \RuntimeException('Operação falhou!');
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
+        if ($query->execute()) { // Executa se a query não falhar
+            return $query->rowCount(); // Retorna linhas afetadas
         }
+
+        // Executa se houver alguma falha esperada
+        throw new \RuntimeException('Operação falhou!');
     }
 
     /**
@@ -73,55 +73,19 @@ class ApplicationsDB extends DatabaseAcess
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function get(string $column): array
+    public function getList(int $offset = 1, int $limit = 10): array
     {
-        try {
-            if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-                $message = "\"$column\" não é uma coluna da tabela Selection_Applications"; // Define mensagem de erro
-                goto error; // Pula execução do método
-            }
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare("SELECT * FROM Selection_Applications WHERE selection = ? ORDER BY last_change LIMIT $limit OFFSET $offset");
+        $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
 
-            // Determina query SQL de leitura
-            $query = $this->getConnection()->prepare("SELECT id, $column FROM Selection_Applications WHERE id = ?");
-            $query->bindValue(1, $this->application->getID()); // Substitui interrogação na query pelo ID passado
-            
-            if($query->execute()){ // Executa se consulta não falhar
-                return parent::formatResultOfGet($query); // Retorna valor que 
-            }
-
-            // Executa em caso de falhas esperadas
-            error:
-            throw new \RuntimeException($message ?? 'Operação falhou!');
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
+        if ($query->execute()) { // Executa se consulta não falhar
+            return
+                array_map(fn ($application) => ApplicationModel::getInstanceOf($application), $this->fetchRecord($query));
         }
-    }
-    
-    /**
-     * Obtém todos os dados não sigilosos referentEs a uma seleção
-     * 
-     * @return array Lista de dados não sigilosos
-     * @throws RuntimeException Falha na consulta
-     */
-    public function getAll(): array{
-        try{
-            // Determina query SQL de leitura
-            $query = $this->getConnection()->prepare('SELECT * FROM Selection_Applications WHERE selection = ?');
-            $query->bindValue(1, $this->application->getSelectionID()); // Substitui interrogação na query pelo ID passado
-            
-            if($query->execute()){ // Executa se a query for aceita
-                $applicationList = [];
-                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $application) {
-                    $applicationList[] = ApplicationModel::getInstanceOf($application);
-                }
-                return $applicationList;
-            }
 
-            // Executa em caso de falhas esperadas
-            throw new \RuntimeException('Operação falhou!');
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
-        }
+        // Executa em caso de falhas esperadas
+        throw new \RuntimeException('Operação falhou!');
     }
 
     /**
@@ -141,21 +105,17 @@ class ApplicationsDB extends DatabaseAcess
      */
     public function delete(): int
     {
-        try {
-            // Deleta candidatura do banco
-            $query = $this->getConnection()->prepare('DELETE FROM Selection_Applications WHERE selection = ? AND artist = ?');
-            
-            $query->bindValue(1, $this->application->getSelectionID());
-            $query->bindValue(2, $this->application->getUserID());
+        // Deleta candidatura do banco
+        $query = $this->getConnection()->prepare('DELETE FROM Selection_Applications WHERE selection = ? AND artist = ?');
 
-            if ($query->execute()) { // Executa se a query não falhar
-                return $query->rowCount(); // Retorna linhas afetadas
-            }
+        $query->bindValue(1, $this->application->getSelectionID());
+        $query->bindValue(2, $this->application->getUserID());
 
-            throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
+        if ($query->execute()) { // Executa se a query não falhar
+            return $query->rowCount(); // Retorna linhas afetadas
         }
+
+        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
     }
 
     /**
@@ -166,6 +126,6 @@ class ApplicationsDB extends DatabaseAcess
      */
     public static function isColumn(string $column): bool
     {
-        return $column == self::ARTIST || $column == self::SELECTION | $column == self::LAST_CHANGE;
+        return $column == self::ARTIST || $column == self::SELECTION || $column == self::LAST_CHANGE;
     }
 }

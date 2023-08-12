@@ -10,6 +10,7 @@
       "App\\DAO\\": "src/dao/",
       "App\\DAO\\Template\\": "src/dao/abstracts/",
       "App\\Model\\": "src/model/",
+      "App\\Model\\Template\\": "src/model/abstracts/",
       "App\\Util\\": "src/util/",
       "App\\Util\\Tool\\": "src/util/traits/"
     }

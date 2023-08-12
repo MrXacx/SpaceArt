@@ -7,10 +7,6 @@ namespace App\Controller;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
 
-
-
-
-
 class RoutesBuilder extends \App\Controller\Server
 {
     private static $dispatcher;

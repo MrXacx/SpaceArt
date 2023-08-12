@@ -12,15 +12,8 @@ use App\Util\DataValidator;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class UserModel
+class UserModel extends \App\Model\Template\Entity
 {
-
-    /**
-     * ID do usuário
-     * @var string
-     */
-    private string $id;
-
     /**
      * Nome completo do usuário
      * @var string
@@ -207,30 +200,29 @@ class UserModel
      */
     public static function getInstanceOf(array $attr): self
     {
-        $model = new UserModel($attr[UsersDB::EMAIL], $attr[UsersDB::PWD]);
-        $model->id = $attr['id'];
-        $model->name = $attr[UsersDB::NAME];
-        $model->cep = $attr[UsersDB::CEP];
-        $model->phone = $attr[UsersDB::PHONE];
-        $model->documentNumber = $attr[UsersDB::DOCUMENT_NUMBER];
+        $entity = new UserModel();
+        $entity->id = $attr['id'] ?? null;
+        $entity->email = $attr[UsersDB::EMAIL] ?? null;
+        $entity->pwd = $attr[UsersDB::PWD] ?? null;
+        $entity->name = $attr[UsersDB::NAME] ?? null;
+        $entity->cep = $attr[UsersDB::CEP] ?? null;
+        $entity->phone = $attr[UsersDB::PHONE] ?? null;
+        $entity->documentNumber = $attr[UsersDB::DOCUMENT_NUMBER] ?? null;
+        $entity->website = $attr[UsersDB::SITE] ?? null;
 
-        if (isset($attr[UsersDB::SITE])) { // Executa se a posição existir
-            $model->website = $attr[UsersDB::SITE];
-        }
 
-        return $model;
+        return $entity;
     }
 
     public function toArray(): array
     {
-        return [
-            'id' => $this->id ?? null,
+        return array_filter(array_merge(parent::toArray(), [
             'email' => $this->email,
             'password' => $this->pwd,
             'phone' => $this->phone ?? null,
             'document_number' => $this->documentNumber ?? null,
             'cep' => $this->cep ?? null,
-            'website' => $this->website ?? null,,
-        ];
+            'website' => $this->website ?? null,
+        ]), fn($value) => isset($value));
     }
 }

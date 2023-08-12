@@ -4,11 +4,8 @@ namespace App\Model;
 
 use App\DAO\ApplicationsDB;
 
-class ApplicationModel
+class ApplicationModel extends \App\Model\Template\Entity
 {
-
-    private string $id;
-
     private string $userID;
 
     private string $selectionID;
@@ -23,16 +20,6 @@ class ApplicationModel
     public function getSelectionID(): string
     {
         return $this->selectionID;
-    }
-
-    public function setID(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getID(): string
-    {
-        return $this->id;
     }
 
     public function setUserID(string $userID): void
@@ -52,21 +39,21 @@ class ApplicationModel
 
     public static function getInstanceOf(array $attr): self
     {
-        $model = new ApplicationModel($attr[ApplicationsDB::SELECTION]);
-        $model->id = $attr['id'];
-        $model->userID = $attr[ApplicationsDB::ARTIST];
-        $model->lastChange = $attr[ApplicationsDB::LAST_CHANGE];
+        $entity = new ApplicationModel();
+        $entity->id = $attr['id'];
+        $entity->selectionID = $attr[ApplicationsDB::SELECTION];
+        $entity->userID = $attr[ApplicationsDB::ARTIST];
+        $entity->lastChange = $attr[ApplicationsDB::LAST_CHANGE];
 
-        return $model;
+        return $entity;
     }
 
     public function toArray(): array
     {
-        return [
-            'id' => $this->id ?? null,
+        return array_merge(parent::toArray(), [
             'selection' => $this->selectionID,
             'user' => $this->userID ?? null,
             'last_change' => $this->lastChange ?? null,
-        ];
+        ]);
     }
 }

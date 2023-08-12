@@ -12,14 +12,9 @@ use App\Util\DataValidator;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class SelectionModel
+class SelectionModel extends \App\Model\Template\Entity
 {
 
-    /**
-     * ID da seleção
-     * @var string
-     */
-    private string $id;
 
     /**
      * ID do criador da seleção
@@ -77,36 +72,18 @@ class SelectionModel
     public static function getInstanceOf(array $attr): self
     {
 
-        $model = new SelectionModel($attr[SelectionsDB::OWNER_ID]);
-        $model->id = $attr['id'];
-        $model->price = $attr[SelectionsDB::PRICE];
-        $model->art = $attr[SelectionsDB::ART];
+        $entity = new SelectionModel();
+        $entity->id = $attr['id'];
+        $entity->ownerID = $attr[SelectionsDB::OWNER_ID];
+        $entity->price = $attr[SelectionsDB::PRICE];
+        $entity->art = $attr[SelectionsDB::ART];
+
         $datetime = [explode(' ', $attr[SelectionsDB::INITAL_DATETIME]), explode(' ', $attr[SelectionsDB::FINAL_DATETIME])];
-        $model->date = ['inital' => $datetime[0][0], 'final' => $datetime[1][0]];
-        $model->time = ['inital' => $datetime[0][1], 'final' => $datetime[1][1]];
-        $model->locked = boolval($attr[SelectionsDB::LOCKED]);
+        $entity->date = ['inital' => $datetime[0][0], 'final' => $datetime[1][0]];
+        $entity->time = ['inital' => $datetime[0][1], 'final' => $datetime[1][1]];
+        $entity->locked = boolval($attr[SelectionsDB::LOCKED]);
 
-        return $model;
-    }
-
-    /**
-     * Define id da seleção
-     * 
-     * @param string $id ID
-     */
-    public function setID(string $id)
-    {
-        $this->id = $this->validator->isValidVarcharLength($id, 'id') ? $id : null;
-    }
-
-    /**
-     * Obtém ID do modelo
-     * 
-     * @return string ID
-     */
-    public function getID(): string
-    {
-        return $this->id;
+        return $entity;
     }
 
     /**
@@ -214,14 +191,13 @@ class SelectionModel
 
     public function toArray(): array
     {
-        return [
-            'id' => $this->id ?? null,
+        return array_filter(array_merge(parent::toArray(), [
             'owner' => $this->ownerID,
             'price' => $this->price ?? null,
             'art' => $this->art ?? null,
             'date' => $this->date ?? null,
             'time' => $this->time ?? null,
             'locked' => boolval($this->time ?? null),
-        ];
+        ]), fn($value) => isset($value));
     }
 }

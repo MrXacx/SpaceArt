@@ -30,6 +30,8 @@ abstract class DatabaseAcess
      */
     protected DataValidator $dataValidator;
 
+    protected \App\Model\UserModel|null $user;
+
     function __construct()
     {
         try {
@@ -66,20 +68,13 @@ abstract class DatabaseAcess
      * @return array|string Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
-    protected function formatResultOfGet(PDOStatement|false &$query): array
+    protected function fetchRecord(PDOStatement $query, bool $multipleRecords = true): array
     {
-
-        $response = $query->fetch(\PDO::FETCH_ASSOC);
-        unset($query);
-
-        if (is_array($response) && isset($response)) {
-            foreach ($response as $key => $value) {
-                $result[$key] = $value;
-            }
-            return $result;
+        $response = $multipleRecords ? $query->fetchAll(\PDO::FETCH_ASSOC) : $query->fetch(\PDO::FETCH_ASSOC);
+        if(is_array($response)){
+            return $response;
         }
-
-        return $result ?? throw new PDOException('Leitura não retornou um valor válido!');
+        throw new \RuntimeException('Registro(s) não encontrado(s)');
     }
 
     function __destruct()
@@ -98,10 +93,11 @@ abstract class DatabaseAcess
     /**
      * Obtém determinada célula da tabela
      * 
-     * @param string $column Nome da coluna a ser consultada 
-     * @return string Valor da célula
+     * @param int $offset Linha de início da consulta 
+     * @param int $limit Quantidade de registros a ser retornada
+     * @return array Lista de registros
      */
-    abstract public function get(string $column): array;
+    abstract public function getList(int $offset = 1, int $limit = 10): array;
 
     /**
      * Atualiza determinada célula do banco

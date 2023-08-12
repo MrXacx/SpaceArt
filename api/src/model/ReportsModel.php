@@ -4,73 +4,72 @@ namespace App\Model;
 
 use App\DAO\ReportsDB;
 
-class ReportModel{
-    private string $id;
+class ReportModel extends \App\Model\Template\Entity
+{
     private string $reporterID;
     private string $reportedID;
     private string $reason;
     private bool $accepted;
 
-    function __construct(string $reporterID){
+    function __construct(string $reporterID)
+    {
         $this->reporterID = $reporterID;
     }
 
-    public static function getInstanceOf(array $attr): self{
-        $report = new ReportModel($attr[ReportsDB::REPORTER]);
+    public static function getInstanceOf(array $attr): self
+    {
+        $entity = new ReportModel($attr[ReportsDB::REPORTER]);
 
-        $report->id = $attr['id'];
-        $report->reportedID = $attr[ReportsDB::REPORTED];
-        $report->reason = $attr[ReportsDB::REASON];
-        $report->accepted = boolval($attr[ReportsDB::ACCEPTED]);
+        $entity->id = $attr['id'];
+        $entity->reportedID = $attr[ReportsDB::REPORTED];
+        $entity->reason = $attr[ReportsDB::REASON];
+        $entity->accepted = boolval($attr[ReportsDB::ACCEPTED]);
 
-        return $report;
+        return $entity;
     }
 
-    public function toArray(): array{
-        return [
-            'id' => $this->id,
+    public function toArray(): array
+    {
+        return array_merge(parent::toArray(), [
             'reporter' => $this->reporterID,
             'reported' => $this->reportedID,
             'reason' => $this->reason,
             'accepted' => $this->accepted,
-        ];
+        ]);
     }
 
-    public function setID(string $id): void{
+    public function getReporterID(): string
+    {
+        return $this->id;
+    }
+
+    public function setReportedID(string $id): void
+    {
         $this->id = $id;
     }
 
-    public function getID(): string{
+    public function getReportedID(): string
+    {
         return $this->id;
     }
 
-    public function getReporterID(): string{
-        return $this->id;
-    }
- 
-    public function setReportedID(string $id): void{
+    public function setReason(string $id): void
+    {
         $this->id = $id;
     }
 
-    public function getReportedID(): string{
-        return $this->id;
-    }
- 
-    public function setReason(string $id): void{
-        $this->id = $id;
-    }
-
-    public function getReason(): string{
+    public function getReason(): string
+    {
         return $this->id;
     }
 
-    public function setAccepted(bool $accepted): void{
+    public function setAccepted(bool $accepted): void
+    {
         $this->accepted = $accepted;
     }
 
-    public function isAccepted(): bool{
+    public function isAccepted(): bool
+    {
         return $this->accepted;
     }
- 
-
 }

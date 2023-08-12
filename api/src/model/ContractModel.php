@@ -13,14 +13,8 @@ use App\Util\DataValidator;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class ContractModel
+class ContractModel extends \App\Model\Template\Entity
 {
-
-    /**
-     * ID do contrato
-     * @var string
-     */
-    private string $id;
 
     /**
      * ID do contratante
@@ -74,9 +68,9 @@ class ContractModel
 
     function __construct()
     {
-        $this->validator = new DataValidator(); 
+        $this->validator = new DataValidator();
     }
-    
+
     /**
      * Obtém um modelo de contrato inicializado
      * 
@@ -85,39 +79,26 @@ class ContractModel
      */
     public static function getInstanceOf(array $attr): self
     {
-        $model = new ContractModel(
-            $attr[ContractsDB::HIRER_ID],
-            $attr[ContractsDB::HIRED_ID],
-            intval($attr[ContractsDB::PRICE])
-        );
-        $model->id = $attr['id'];
-        $model->date = $attr[ContractsDB::DATE];
-        $model->time['inital'] = $attr[ContractsDB::INITAL_TIME];
-        $model->time['final'] = $attr[ContractsDB::FINAL_TIME];
-        $model->art = $attr[ContractsDB::ART];
-        $model->locked = boolval($attr[ContractsDB::LOCKED]);
-        $model->accepted = boolval($attr[ContractsDB::ACCEPTED]);
-        return $model;
-    }
+        $entity = new ContractModel();
+        $entity->id = $attr['id'];
+        $entity->hiredID = $attr[ContractsDB::HIRED_ID];
+        $entity->hirerID = $attr[ContractsDB::HIRER_ID];
+        $entity->price = intval($attr[ContractsDB::PRICE]);
+        $entity->date = $attr[ContractsDB::DATE];
 
-    /**
-     * Define ID do contrato
-     * 
-     * @param string $id ID do contrato
-     */
-    public function setID(string $id): void
-    {
-        $this->id = $id;
-    }
 
-    /**
-     * Obtém ID do modelo
-     * 
-     * @return string ID
-     */
-    public function getID(): string
-    {
-        return $this->id;
+
+        $entity->time['inital'] = $attr[ContractsDB::INITAL_TIME] ?? null;
+        $entity->time['final'] = $attr[ContractsDB::FINAL_TIME] ?? null;
+        $entity->art = $attr[ContractsDB::ART] ?? null;
+
+        if(isset($attr[ContractsDB::LOCKED]) && isset($attr[ContractsDB::ACCEPTED])){
+            $entity->locked = boolval($attr[ContractsDB::LOCKED]);
+            $entity->accepted = boolval($attr[ContractsDB::ACCEPTED]);
+        }
+
+
+        return $entity;
     }
 
     /** 
@@ -125,7 +106,7 @@ class ContractModel
      */
     function setHirerID(string $hirerID)
     {
-        $this->hirerID = $hirerID;           
+        $this->hirerID = $hirerID;
     }
 
     /**
@@ -143,7 +124,7 @@ class ContractModel
      */
     function setHireDID(string $hiredID)
     {
-        $this->hiredID = $hiredID;           
+        $this->hiredID = $hiredID;
     }
 
     /**
@@ -261,8 +242,7 @@ class ContractModel
 
     public function toArray(): array
     {
-        return [
-            'id' => $this->id ?? null,
+        return array_filter(array_merge(parent::toArray(), [
             'hirer' => $this->hirerID,
             'hired' => $this->hiredID,
             'price' => $this->price ?? null,
@@ -271,6 +251,6 @@ class ContractModel
             'time' => $this->time ?? null,
             'locked' => $this->locked ?? null,
             'accepted' => $this->accepted ?? null,
-        ];
+        ]), fn($value) => isset($value));
     }
 }

@@ -6,8 +6,8 @@ namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
 use App\Model\ReportModel;
-use PDOException;
 use RuntimeException;
+use SebastianBergmann\CodeCoverage\Report\Xml\Report;
 
 /**
  * Classe de maniupulação da tabela Reports
@@ -32,11 +32,10 @@ class ReportsDB extends DatabaseAcess
     /**
      * @param ReportModel $report Modelo de candidatura a ser manipulado
      */
-    function __construct(ReportModel|null $report)
+    function __construct(ReportModel $report, \App\Model\UserModel $user)
     {
-        if(isset($report)){
-            $this->report = $report;
-        }
+        $this->report = $report;
+        $this->user = $user;
         parent::__construct();
     }
 
@@ -48,29 +47,24 @@ class ReportsDB extends DatabaseAcess
      */
     public function create(): int
     {
-        try {
 
-            $this->report->setID($this->getRandomID()); // Gera uuid
+        $this->report->setID($this->getRandomID()); // Gera uuid
 
+        // Passa query SQL de criação
+        $query = $this->getConnection()->prepare('INSERT INTO Reports (id, reporter, reporter, reason) VALUES (?,?,?,?)');
 
-            // Passa query SQL de criação
-            $query = $this->getConnection()->prepare('INSERT INTO Reports (id, reporter, reporter, reason) VALUES (?,?,?,?)');
+        // Substitui interrogações pelos valores dos atributos
+        $query->bindValue(1, $this->report->getID());
+        $query->bindValue(2, $this->report->getReporterID());
+        $query->bindValue(3, $this->report->getReportedID());
+        $query->bindValue(3, $this->report->getReason());
 
-            // Substitui interrogações pelos valores dos atributos
-            $query->bindValue(1, $this->report->getID());
-            $query->bindValue(2, $this->report->getReporterID());
-            $query->bindValue(3, $this->report->getReportedID());
-            $query->bindValue(3, $this->report->getReason());
-
-            if ($query->execute()) { // Executa se a query não falhar
-                return $query->rowCount(); // Retorna linhas afetadas
-            }
-
-            // Executa se houver alguma falha esperada
-            throw new \RuntimeException('Operação falhou!');
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
+        if ($query->execute()) { // Executa se a query não falhar
+            return $query->rowCount(); // Retorna linhas afetadas
         }
+
+        // Executa se houver alguma falha esperada
+        throw new \RuntimeException('Operação falhou!');
     }
 
     /**
@@ -79,50 +73,32 @@ class ReportsDB extends DatabaseAcess
      * @see abstracts/DatabaseAcess.php
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function get(string $column): array
+    public function getList(int $offset = 1, int $limit = 10): array
     {
-        try {
-            if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-                $message = "\"$column\" não é uma coluna da tabela Reports"; // Define mensagem de erro
-                goto error; // Pula execução do método
-            }
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare("SELECT * FROM Reports WHERE reporter = ? LIMIT $limit OFFSET $offset");
+        $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
 
-            // Determina query SQL de leitura
-            $query = $this->getConnection()->prepare("SELECT id, $column FROM Reports WHERE id = ?");
-            $query->bindValue(1, $this->report->getID()); // Substitui interrogação na query pelo ID passado
-
-            if ($query->execute()) { // Executa se consulta não falhar
-                return parent::formatResultOfGet($query); // Retorna valor que 
-            }
-
-            // Executa em caso de falhas esperadas
-            error:
-            throw new \RuntimeException($message ?? 'Operação falhou!');
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
+        if ($query->execute()) { // Executa se consulta não falhar
+            return array_map(fn ($report) => ReportModel::getInstanceOf($report), $this->fetchRecord($query));
         }
+
+        // Executa em caso de falhas esperadas
+        throw new \RuntimeException('Operação falhou!');
     }
 
-    public function getAll(): array
+    public function getReport(): ReportModel
     {
-        try {
-            // Determina query SQL de leitura
-            $query = $this->getConnection()->prepare('SELECT * FROM Reports WHERE reporter = ?');
-            $query->bindValue(1, $this->report->getReporterID()); // Substitui interrogação na query pelo ID passado
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare("SELECT * FROM Reports WHERE id = ?");
+        $query->bindValue(1, $this->report->getID()); // Substitui interrogação na query pelo ID passado
 
-            if ($query->execute()) { // Executa se a query for aceita
-                $applicationList = [];
-                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $application) {
-                    $applicationList[] = ReportModel::getInstanceOf($application);
-                }
-                return $applicationList;
-            }
-
-            // Executa em caso de falhas esperadas
-            throw new \RuntimeException('Operação falhou!');
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
+        if ($query->execute()) { // Executa se consulta não falhar
+            return ReportModel::getInstanceOf($this->fetchRecord($query, false));
         }
+
+        // Executa em caso de falhas esperadas
+        throw new \RuntimeException('Operação falhou!');
     }
 
     /**
@@ -142,20 +118,16 @@ class ReportsDB extends DatabaseAcess
      */
     public function delete(): int
     {
-        try {
-            // Deleta candidatura do banco
-            $query = $this->getConnection()->prepare('DELETE FROM Reports WHERE id = ?');
+        // Deleta candidatura do banco
+        $query = $this->getConnection()->prepare('DELETE FROM Reports WHERE id = ?');
 
-            $query->bindValue(1, $this->report->getID());
+        $query->bindValue(1, $this->report->getID());
 
-            if ($query->execute()) { // Executa se a query não falhar
-                return $query->rowCount(); // Retorna linhas afetadas
-            }
-
-            throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
-        } catch (RuntimeException | PDOException $ex) {
-            throw new \RuntimeException($ex->getMessage());
+        if ($query->execute()) { // Executa se a query não falhar
+            return $query->rowCount(); // Retorna linhas afetadas
         }
+
+        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
     }
 
     /**
