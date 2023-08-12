@@ -40,7 +40,6 @@ class ApplicationModel extends \App\Model\Template\Entity
     public static function getInstanceOf(array $attr): self
     {
         $entity = new ApplicationModel();
-        $entity->id = $attr['id'];
         $entity->selectionID = $attr[ApplicationsDB::SELECTION];
         $entity->userID = $attr[ApplicationsDB::ARTIST];
         $entity->lastChange = $attr[ApplicationsDB::LAST_CHANGE];

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\DAO\UsersDB;
-use App\Util\DataValidator;
 
 /**
  * Classe modelo de usuário
@@ -18,19 +17,19 @@ class UserModel extends \App\Model\Template\Entity
      * Nome completo do usuário
      * @var string
      */
-    private string $name;
+    private string|null $name;
 
     /**
      * Email do usuário
      * @var string
      */
-    private string $email;
+    private string|null $email;
 
     /**
      * Número de telefone do usuário
      * @var string
      */
-    private string $phone;
+    private string|null $phone;
 
     /**
      * Senha do usuário
@@ -42,19 +41,19 @@ class UserModel extends \App\Model\Template\Entity
      * cpf/cnpj do usuário
      * @var string
      */
-    private string $documentNumber;
+    private string|null $documentNumber;
 
     /**
      * cep do usuário
      * @var string
      */
-    private string $cep;
+    private string|null $cep;
 
     /**
      * site do usuário
      * @var string
      */
-    private string $website;
+    private string|null $website;
 
     /**
      * @param string $pwd Senha do usuário

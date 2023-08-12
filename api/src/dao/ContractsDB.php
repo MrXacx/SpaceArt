@@ -80,7 +80,7 @@ class ContractsDB extends DatabaseAcess
     /**
      * @param ContractModel $contract Modelo de contrato a ser utilizado na manipulação
      */
-    function __construct(ContractModel $contract, \App\Model\UserModel $user)
+    function __construct(ContractModel $contract, \App\Model\UserModel $user = null)
     {
         $this->contract = $contract;
         $this->user = $user;

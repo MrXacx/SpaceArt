@@ -115,8 +115,7 @@ class SelectionsDB extends DatabaseAcess
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return
-                array_map(fn ($contract) => SelectionModel::getInstanceOf($contract), $this->fetchRecord($query));
+            return array_map(fn ($contract) => SelectionModel::getInstanceOf($contract), $this->fetchRecord($query));
         }
 
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falhas esperadas

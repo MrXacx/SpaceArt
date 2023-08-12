@@ -20,45 +20,45 @@ class ContractModel extends \App\Model\Template\Entity
      * ID do contratante
      * @var string
      */
-    private string $hirerID;
+    private string|null $hirerID;
 
     /**
      * ID do contratado
      * @var string
      */
-    private string $hiredID;
+    private string|null $hiredID;
 
     /**
      * Valor do contrato
      * @var string
      */
-    private string $price;
+    private string|null $price;
 
     /**
      * Tipo de arte
      * @var string
      */
-    private string $art;
+    private string|null $art;
 
     /**
      * Data do evento
      * @var string
      */
-    private string $date;
+    private string|null $date;
 
     /**
      * Horários de início e fim do evento
      * @var array
      */
-    private array $time;
+    private array|null $time;
 
     /**
      * Avaliação do contrato
      * 
      */
-    private int $rate;
-    private bool $accepted;
-    private bool $locked;
+    private int|null $rate;
+    private bool|null $accepted;
+    private bool|null $locked;
 
     /**
      * Objeto de validação de dados

@@ -130,8 +130,7 @@ class UsersDB extends DatabaseAcess
         $query->bindValue(1, $this->user->getEmail()); // Substitui a interrogação pelo email passado
 
         if ($query->execute()) { // Executa se a query for aceita
-            return
-                array_map(fn ($contract) => UserModel::getInstanceOf($contract), $this->fetchRecord($query));
+            return $this->fetchRecord($query, false);
         }
 
         // Executa em caso de falhas esperadas

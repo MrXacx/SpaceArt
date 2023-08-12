@@ -18,8 +18,8 @@ INSERT INTO Selections (id, owner_id, price, art, inital_datetime, final_datetim
 ('1', '1', 250, 'música', '2023-12-31 00:00', '2023-12-31 23:59'),
 ('2', '7', 300, 'pintura', '2023-12-31 00:00', '2023-12-31 23:59');
 
-INSERT INTO Selection_Applications (id, selection, artist) VALUES 
-('1', '1', '2'),
-('2', '2', '4'),
-('3', '1', '6'),
-('4', '2', '8');
+INSERT INTO Selection_Applications (selection, artist) VALUES 
+('1', '2'),
+('2', '4'),
+('1', '6'),
+('2', '8');

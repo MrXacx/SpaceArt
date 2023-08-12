@@ -6,7 +6,6 @@ abstract class Entity
 {
 
     protected string $id;
-    protected int $position;
 
     public function setID(string $id): void
     {
@@ -19,10 +18,7 @@ abstract class Entity
     }
 
     public function toArray(): array{
-        return [
-            'id' => $this->id ?? null,
-            'position' => $this->position ?? null,
-        ];
+        return ['id' => $this->id ?? null];
     }
     abstract public static function getInstanceOf(array $attr): self;
 }

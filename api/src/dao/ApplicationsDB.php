@@ -49,15 +49,13 @@ class ApplicationsDB extends DatabaseAcess
      */
     public function create(): int
     {
-        $this->application->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO Selection_Applications (id, selection, artist) VALUES (?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO Selection_Applications (selection, artist) VALUES (?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->application->getID());
-        $query->bindValue(2, $this->application->getSelectionID());
-        $query->bindValue(3, $this->application->getUserID());
+        $query->bindValue(1, $this->application->getSelectionID());
+        $query->bindValue(2, $this->application->getUserID());
 
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas
@@ -80,8 +78,7 @@ class ApplicationsDB extends DatabaseAcess
         $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return
-                array_map(fn ($application) => ApplicationModel::getInstanceOf($application), $this->fetchRecord($query));
+            return array_map(fn ($application) => ApplicationModel::getInstanceOf($application), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas

@@ -14,43 +14,41 @@ use App\Util\DataValidator;
  */
 class SelectionModel extends \App\Model\Template\Entity
 {
-
-
     /**
      * ID do criador da seleção
      * @var string
      */
-    public string $ownerID;
+    public string|null $ownerID;
 
     /**
      * Valor da seleção
      * @var string
      */
-    private string $price;
+    private string|null $price;
 
     /**
      * Tipo de arte
      * @var string
      */
-    private string $art;
+    private string|null $art;
 
     /**
      * Datas de início e fim
      * @var array
      */
-    private array $date;
+    private array|null $date;
 
     /**
      * Datas de início e fim
      * @var array
      */
-    private array $time;
+    private array|null $time;
 
     /**
      * Status da seleção
      * @var bool
      */
-    private bool $locked;
+    private bool|null $locked = false;
 
     /**
      * Objeto de validação
