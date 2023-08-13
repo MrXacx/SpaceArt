@@ -18,6 +18,12 @@ final class DataValidator
 {
     use \App\Util\Tool\DateTimeTrait; // Habilita ferramenta para datas e horários
 
+
+    public function isUiid(string $uiid): bool
+    {
+        return preg_match('#^\d{4}-\d{4}-\d{4}-\d{4}$#', $uiid);
+    }
+
     /**
      * Valida o formato de uma data
      * 
@@ -170,6 +176,7 @@ final class DataValidator
             UsersDB::DOCUMENT_NUMBER => $this->isDocumentNumber($value),
             UsersDB::CEP => $this->isCEP($value),
             UsersDB::SITE => $this->isURL($value),
+            'id' => $this->isUiid($value),
             default => $this->isValidVarcharLength($value, $flag)
         };
     }

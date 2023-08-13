@@ -14,6 +14,7 @@ class ReportModel extends \App\Model\Template\Entity
     function __construct(string $reporterID)
     {
         $this->reporterID = $reporterID;
+        parent::__construct();
     }
 
     public static function getInstanceOf(array $attr): self
@@ -45,7 +46,7 @@ class ReportModel extends \App\Model\Template\Entity
 
     public function setReportedID(string $id): void
     {
-        $this->id = $id;
+        $this->id = $this->validator->isUiid($id) ? $id : null;
     }
 
     public function getReportedID(): string
@@ -53,14 +54,14 @@ class ReportModel extends \App\Model\Template\Entity
         return $this->id;
     }
 
-    public function setReason(string $id): void
+    public function setReason(string $reason): void
     {
-        $this->id = $id;
+        $this->reason = $reason;
     }
 
     public function getReason(): string
     {
-        return $this->id;
+        return $this->reason;
     }
 
     public function setAccepted(bool $accepted): void

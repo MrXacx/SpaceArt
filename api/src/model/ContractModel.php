@@ -61,17 +61,6 @@ class ContractModel extends \App\Model\Template\Entity
     private bool|null $locked;
 
     /**
-     * Objeto de validação de dados
-     * @var DataValidator
-     */
-    private DataValidator $validator;
-
-    function __construct()
-    {
-        $this->validator = new DataValidator();
-    }
-
-    /**
      * Obtém um modelo de contrato inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
@@ -92,7 +81,7 @@ class ContractModel extends \App\Model\Template\Entity
         $entity->time['final'] = $attr[ContractsDB::FINAL_TIME] ?? null;
         $entity->art = $attr[ContractsDB::ART] ?? null;
 
-        if(isset($attr[ContractsDB::LOCKED]) && isset($attr[ContractsDB::ACCEPTED])){
+        if (isset($attr[ContractsDB::LOCKED]) && isset($attr[ContractsDB::ACCEPTED])) {
             $entity->locked = boolval($attr[ContractsDB::LOCKED]);
             $entity->accepted = boolval($attr[ContractsDB::ACCEPTED]);
         }
@@ -106,7 +95,7 @@ class ContractModel extends \App\Model\Template\Entity
      */
     function setHirerID(string $hirerID)
     {
-        $this->hirerID = $hirerID;
+        $this->hirerID = $this->validator->isUiid($hirerID) ? $hirerID : null;
     }
 
     /**
@@ -124,7 +113,7 @@ class ContractModel extends \App\Model\Template\Entity
      */
     function setHireDID(string $hiredID)
     {
-        $this->hiredID = $hiredID;
+        $this->hiredID = $this->validator->isUiid($hiredID) ? $hiredID : null;
     }
 
     /**
@@ -142,7 +131,7 @@ class ContractModel extends \App\Model\Template\Entity
      */
     function setPrice(int $price)
     {
-        $this->price = $price . ''; // Armazena valor como string            
+        $this->price = $this->validator->isPrice($price . '') ? $price . '' : null; // Armazena valor como string            
     }
 
     /**
@@ -251,6 +240,6 @@ class ContractModel extends \App\Model\Template\Entity
             'time' => $this->time ?? null,
             'locked' => $this->locked ?? null,
             'accepted' => $this->accepted ?? null,
-        ]), fn($value) => isset($value));
+        ]), fn ($value) => isset($value));
     }
 }

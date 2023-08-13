@@ -14,7 +14,7 @@ class ApplicationModel extends \App\Model\Template\Entity
 
     function setSelectionID(string $selectionID)
     {
-        $this->selectionID = $selectionID;
+        $this->selectionID = $this->validator->isUiid($selectionID) ? $selectionID : null;
     }
 
     public function getSelectionID(): string
@@ -24,7 +24,7 @@ class ApplicationModel extends \App\Model\Template\Entity
 
     public function setUserID(string $userID): void
     {
-        $this->userID = $userID;
+        $this->userID = $this->validator->isUiid($userID) ? $userID : null;
     }
 
     public function getUserID(): string
@@ -34,7 +34,7 @@ class ApplicationModel extends \App\Model\Template\Entity
 
     public function setLastChange(string $lastChange): void
     {
-        $this->lastChange = $lastChange;
+        $this->lastChange = $this->validator->isValidDatetimeFormat($lastChange) ? $lastChange : null;
     }
 
     public static function getInstanceOf(array $attr): self

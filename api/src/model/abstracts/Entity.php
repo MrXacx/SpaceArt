@@ -2,10 +2,25 @@
 
 namespace App\Model\Template;
 
+use App\Util\DataValidator;
+
 abstract class Entity
 {
 
     protected string $id;
+
+
+    /**
+     * Objeto de validação
+     * @var DataValidator
+     */
+    protected DataValidator $validator;
+
+    function __construct()
+    {
+        $this->validator = new DataValidator();
+    }
+    
 
     public function setID(string $id): void
     {

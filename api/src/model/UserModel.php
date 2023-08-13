@@ -75,7 +75,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setID(string $id): void
     {
-        $this->id = $id;
+        $this->id = $this->validator->isUiid($id) ? $id : null;
     }
 
     /**
@@ -91,7 +91,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setPhone(string $phone): void
     {
-        $this->phone = $phone;
+        $this->phone = $this->validator->isPhone($phone) ? $phone : null;
     }
 
     /**
@@ -99,7 +99,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setDocumentNumber(string $documentNumber): void
     {
-        $this->documentNumber = $documentNumber;
+        $this->documentNumber = $this->validator->isDocumentNumber($documentNumber) ? $documentNumber : null;
     }
 
     /**
@@ -107,7 +107,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setCEP(string $cep): void
     {
-        $this->cep = $cep;
+        $this->cep = $this->validator->isCEP($cep) ? $cep : null;
     }
 
     /**
@@ -115,7 +115,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setWebsite(string $website): void
     {
-        $this->website = $website;
+        $this->website = $this->validator->isURL($website) ? $website : null;
     }
 
     /**
@@ -190,7 +190,6 @@ class UserModel extends \App\Model\Template\Entity
         return $this->website;
     }
 
-
     /**
      * Obtém um modelo de usuário inicializado
      * 
@@ -222,6 +221,6 @@ class UserModel extends \App\Model\Template\Entity
             'document_number' => $this->documentNumber ?? null,
             'cep' => $this->cep ?? null,
             'website' => $this->website ?? null,
-        ]), fn($value) => isset($value));
+        ]), fn ($value) => isset($value));
     }
 }

@@ -50,16 +50,6 @@ class SelectionModel extends \App\Model\Template\Entity
      */
     private bool|null $locked = false;
 
-    /**
-     * Objeto de validação
-     * @var DataValidator
-     */
-    private DataValidator $validator;
-
-    function __construct()
-    {
-        $this->validator = new DataValidator();
-    }
 
     /**
      * Obtém um modelo de seleção inicializado
@@ -89,7 +79,7 @@ class SelectionModel extends \App\Model\Template\Entity
      */
     function setOwnerID(string $ownerID)
     {
-        $this->ownerID = $this->validator->isValidVarcharLength($ownerID, 'id') ? $ownerID : null;;
+        $this->ownerID = $this->validator->isUiid($ownerID) ? $ownerID : null;;
     }
 
     /**
@@ -196,6 +186,6 @@ class SelectionModel extends \App\Model\Template\Entity
             'date' => $this->date ?? null,
             'time' => $this->time ?? null,
             'locked' => boolval($this->time ?? null),
-        ]), fn($value) => isset($value));
+        ]), fn ($value) => isset($value));
     }
 }
