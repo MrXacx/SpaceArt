@@ -24,19 +24,12 @@ abstract class DatabaseAcess
      */
     private PDO $connection;
 
-    /**
-     * Objeto de validação de dados
-     * @var DataValidator
-     */
-    protected DataValidator $dataValidator;
-
-    protected \App\Model\UserModel|null $user;
+    protected \App\Model\User|null $user;
 
     function __construct()
     {
         try {
             $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
-            $this->dataValidator = new DataValidator();
         } catch (\Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -64,14 +57,15 @@ abstract class DatabaseAcess
 
     /**
      * Obtém valor consultado no banco de dados
-     * @param PDOStatement|false $query Objeto de consulta à tabela
-     * @return array|string Valor buscado no banco
+     * @param PDOStatement $query Objeto de consulta à tabela
+     * @param bool $multipleRecords Parâmetro de controle de múltiplos registros esperados
+     * @return array Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
     protected function fetchRecord(PDOStatement $query, bool $multipleRecords = true): array
     {
         $response = $multipleRecords ? $query->fetchAll(\PDO::FETCH_ASSOC) : $query->fetch(\PDO::FETCH_ASSOC);
-        if(is_array($response)){
+        if (is_array($response)) {
             return $response;
         }
         throw new \RuntimeException('Registro(s) não encontrado(s)');
@@ -91,7 +85,7 @@ abstract class DatabaseAcess
     abstract public function create(): int;
 
     /**
-     * Obtém determinada célula da tabela
+     * Obtém lista de dados não sensíveis da entidade
      * 
      * @param int $offset Linha de início da consulta 
      * @param int $limit Quantidade de registros a ser retornada

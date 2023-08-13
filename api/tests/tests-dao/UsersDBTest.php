@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../src/config/enviroment.php';
 
-use App\Model\UserModel;
+use App\Model\User;
 use App\DAO\UsersDB;
 
 /**
@@ -21,9 +21,9 @@ class UsersDBTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Objeto de manipulação de usuário
-     * @var UserModel
+     * @var User
      */
-    private static UserModel $user;
+    private static User $user;
 
     /**
      * Configura classe antes dos testes iniciarem
@@ -31,7 +31,7 @@ class UsersDBTest extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         // Inicia modelo de usuário
-        self::$user = new UserModel();
+        self::$user = new User();
         self::$user->setEmail('test@example.com');
         self::$user->setPassword('arroz-com-passas');
         self::$user->setName('teste name 1');
@@ -61,7 +61,7 @@ class UsersDBTest extends \PHPUnit\Framework\TestCase
     public function testCreateDuplicatedUser(): void
     {
         $this->expectException(RuntimeException::class);
-        $localUser = new UserModel();
+        $localUser = new User();
         $localUser->setEmail('test832@gmail.com');
         $localUser->setPassword('arroz&&passas');
         $localUser->setName('teste name 2');

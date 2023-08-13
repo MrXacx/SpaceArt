@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\UserModel;
+use App\Model\User;
 use PDOException;
 use RuntimeException;
 
@@ -60,19 +60,16 @@ class UsersDB extends DatabaseAcess
 
 
     /**
-     * @param UserModel $user Modelo de usuário a ser manipulado
+     * @param User $user Modelo de usuário a ser manipulado
      */
-    function __construct(UserModel $user = null)
+    function __construct(User $user = null)
     {
         $this->user = $user;
         parent::__construct();
     }
 
     /**
-     * Insere usuário na tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha devido a conexão com o banco de dados
      */
     public function create(): int
     {
@@ -100,28 +97,38 @@ class UsersDB extends DatabaseAcess
     }
 
     /**
-     * Obtém determinada célula da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, full_name, cep, website FROM Users  LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT id, full_name, cep, website FROM Users LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return $this->fetchRecord($query);
+            return array_map(fn($user) => User::getInstanceOf($user), $this->fetchRecord($query));
         }
         throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
     }
 
     /**
-     * Obtém ID do usuário
-     * 
-     * @param string $this->user->getEmail() Email do usuário
-     * @return string ID do usuário
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
+     * Obtém modelo de Usuário com dados não sensíveis
+     * @return User Modelo de usuário
+     */
+    public function getUnique(string $id): User
+    {
+        // Define query SQL para obter todas as colunas da linha do usuário
+        $query = $this->getConnection()->prepare('SELECT id, full_name, cep, website FROM Users WHERE id = ?');
+        $query->bindValue(1, $id); // Substitui interrogação pelo ID
+
+        if ($query->execute()) { // Executa se a query for aceita
+            return User::getInstanceOf($this->fetchRecord($query, false));
+        }
+        // Executa em caso de falhas esperadas
+        throw new RuntimeException('Operação falhou!');
+    }
+
+    /**
+     * @see abstracts/DatabaseAcess.php
      */
     public function getID(): array
     {
@@ -138,12 +145,10 @@ class UsersDB extends DatabaseAcess
     }
 
     /**
-     * Obtém modelo de usuário configurado com base nos dados do banco
-     * 
-     * @return UserModel Modelo do usuário
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
+     * Obtém modelo de Usuário com todos os dados disponíveis
+     * @return User Modelo de usuário
      */
-    public function getUser(): UserModel
+    public function getUser(): User
     {
 
         // Define query SQL para obter todas as colunas da linha do usuário
@@ -151,44 +156,20 @@ class UsersDB extends DatabaseAcess
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
-            return UserModel::getInstanceOf($this->fetchRecord($query, false));
+            return User::getInstanceOf($this->fetchRecord($query, false));
         }
         // Executa em caso de falhas esperadas
         throw new RuntimeException('Operação falhou!');
     }
 
     /**
-     * Obtém dados não sensíveis de um usuário
-     * 
-     * @param string $id ID do usuário a ser consultado
-     * @return array Vetor com dados do usuário
-     */
-    public function getUnique(string $id): array
-    {
-        // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, full_name, cep, website FROM Users WHERE id = ?');
-        $query->bindValue(1, $id); // Substitui interrogação pelo ID
-
-        if ($query->execute()) { // Executa se a query for aceita
-            return $this->fetchRecord($query, false);
-        }
-        // Executa em caso de falhas esperadas
-        throw new RuntimeException('Operação falhou!');
-    }
-
-    /**
-     * Atualiza determinada célula da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function update(string $column, string $value): int
     {
         if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
             $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
             goto error; // Pula execução do método
-        } else if (!$this->dataValidator->isValidToFlag($column, $value)) {
-            return 0;
         }
 
         // Passa query SQL de atualização
@@ -208,10 +189,7 @@ class UsersDB extends DatabaseAcess
     }
 
     /**
-     * Deleta usuário do banco
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function delete(): int
     {
@@ -228,8 +206,6 @@ class UsersDB extends DatabaseAcess
     }
 
     /**
-     * Confere se valor é idêntico ao nome de alguma coluna da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
      */
     public static function isColumn(string $column): bool

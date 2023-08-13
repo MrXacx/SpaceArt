@@ -11,49 +11,49 @@ use App\DAO\UsersDB;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class UserModel extends \App\Model\Template\Entity
+class User extends \App\Model\Template\Entity
 {
     /**
      * Nome completo do usuário
      * @var string
      */
-    private string|null $name;
+    private string $name;
 
     /**
      * Email do usuário
      * @var string
      */
-    private string|null $email;
+    private string $email;
 
     /**
      * Número de telefone do usuário
      * @var string
      */
-    private string|null $phone;
+    private string $phone;
 
     /**
      * Senha do usuário
      * @var string
      */
-    private string|null $pwd;
+    private string $pwd;
 
     /**
      * cpf/cnpj do usuário
      * @var string
      */
-    private string|null $documentNumber;
+    private string $documentNumber;
 
     /**
      * cep do usuário
      * @var string
      */
-    private string|null $cep;
+    private string $cep;
 
     /**
      * site do usuário
      * @var string
      */
-    private string|null $website;
+    private string|null $website = null;
 
     /**
      * @param string $pwd Senha do usuário
@@ -75,7 +75,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setID(string $id): void
     {
-        $this->id = $this->validator->isUiid($id) ? $id : null;
+        $this->id = $id;
     }
 
     /**
@@ -91,7 +91,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setPhone(string $phone): void
     {
-        $this->phone = $this->validator->isPhone($phone) ? $phone : null;
+        $this->phone = $phone;
     }
 
     /**
@@ -99,7 +99,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setDocumentNumber(string $documentNumber): void
     {
-        $this->documentNumber = $this->validator->isDocumentNumber($documentNumber) ? $documentNumber : null;
+        $this->documentNumber = $documentNumber;
     }
 
     /**
@@ -107,7 +107,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setCEP(string $cep): void
     {
-        $this->cep = $this->validator->isCEP($cep) ? $cep : null;
+        $this->cep = $cep;
     }
 
     /**
@@ -115,7 +115,7 @@ class UserModel extends \App\Model\Template\Entity
      */
     public function setWebsite(string $website): void
     {
-        $this->website = $this->validator->isURL($website) ? $website : null;
+        $this->website = $website;
     }
 
     /**
@@ -198,16 +198,25 @@ class UserModel extends \App\Model\Template\Entity
      */
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new UserModel();
-        $entity->id = $attr['id'] ?? null;
-        $entity->email = $attr[UsersDB::EMAIL] ?? null;
-        $entity->pwd = $attr[UsersDB::PWD] ?? null;
-        $entity->name = $attr[UsersDB::NAME] ?? null;
-        $entity->cep = $attr[UsersDB::CEP] ?? null;
-        $entity->phone = $attr[UsersDB::PHONE] ?? null;
-        $entity->documentNumber = $attr[UsersDB::DOCUMENT_NUMBER] ?? null;
-        $entity->website = $attr[UsersDB::SITE] ?? null;
+        $entity = new User();
 
+        foreach ($attr as $key => $value) {
+            $atributeName = match ($key) {
+                'id' => 'id',
+                UsersDB::EMAIL => 'email',
+                UsersDB::PWD => 'pwd',
+                UsersDB::NAME => 'name',
+                UsersDB::CEP => 'cep',
+                UsersDB::PHONE => 'phone',
+                UsersDB::DOCUMENT_NUMBER => 'documentNumber',
+                UsersDB::SITE => 'website',
+                default => null
+            };
+
+            if (isset($atributeName)) {
+                $entity->$atributeName = $value;
+            }
+        }
 
         return $entity;
     }
@@ -215,12 +224,13 @@ class UserModel extends \App\Model\Template\Entity
     public function toArray(): array
     {
         return array_filter(array_merge(parent::toArray(), [
-            'email' => $this->email,
-            'password' => $this->pwd,
+            'name' => $this->name,
+            'email' => $this->email ?? null,
+            'password' => $this->pwd ?? null,
             'phone' => $this->phone ?? null,
             'document_number' => $this->documentNumber ?? null,
-            'cep' => $this->cep ?? null,
-            'website' => $this->website ?? null,
+            'cep' => $this->cep,
+            'website' => $this->website,
         ]), fn ($value) => isset($value));
     }
 }

@@ -4,7 +4,7 @@ namespace App\Model;
 
 use App\DAO\ReportsDB;
 
-class ReportModel extends \App\Model\Template\Entity
+class Report extends \App\Model\Template\Entity
 {
     private string $reporterID;
     private string $reportedID;
@@ -19,7 +19,7 @@ class ReportModel extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new ReportModel($attr[ReportsDB::REPORTER]);
+        $entity = new Report($attr[ReportsDB::REPORTER]);
 
         $entity->id = $attr['id'];
         $entity->reportedID = $attr[ReportsDB::REPORTED];
@@ -46,7 +46,7 @@ class ReportModel extends \App\Model\Template\Entity
 
     public function setReportedID(string $id): void
     {
-        $this->id = $this->validator->isUiid($id) ? $id : null;
+        $this->id = $id;
     }
 
     public function getReportedID(): string

@@ -42,24 +42,19 @@ trait DateTimeTrait
      */
     public function isFuture(string $date, string $now): bool
     {
-        if ($this->isValidDateFormat($date) && $this->isValidTimeFormat($now)) { // Checa se datetime está num formato válido
+        $formats = ['Y', 'm', 'd', 'H', 'i']; // Flags para a classe Datetime (Ano, mês, dia, hora e minuto)
+        $values = array_combine($formats, $this->splitDateTime($date, $now)); // Define formatos como chaves dos pedaços do datetiem
 
-            $formats = ['Y', 'm', 'd', 'H', 'i']; // Flags para a classe Datetime (Ano, mês, dia, hora e minuto)
-            $values = array_combine($formats, $this->splitDateTime($date, $now)); // Define formatos como chaves dos pedaços do datetiem
+        $now = new DateTime(); // Inicia manipulador de tempo
 
-            $now = new DateTime(); // Inicia manipulador de tempo
-
-            foreach ($values as $format => $value) { // Itera datetime informado
-                $arr = array_slice($values, 0, array_search($format, $formats), true); // Obtém todos os valores das posições anteriores
-                if ($value > $now->format($format) && $this->areCurrentTime($arr, $now)) { // Executa se o valor da posição atual for superior ao seu equivalente de horário e todos os anteriores forem idênticos aos seus equivalentes
-                    return true;
-                }
+        foreach ($values as $format => $value) { // Itera datetime informado
+            $arr = array_slice($values, 0, array_search($format, $formats), true); // Obtém todos os valores das posições anteriores
+            if ($value > $now->format($format) && $this->areCurrentTime($arr, $now)) { // Executa se o valor da posição atual for superior ao seu equivalente de horário e todos os anteriores forem idênticos aos seus equivalentes
+                return true;
             }
-
-            return false;
         }
 
-        throw new RuntimeException("A data ou o horário não passou na validação");
+        return false;
     }
 
     /**
@@ -124,20 +119,4 @@ trait DateTimeTrait
     {
         return $this->isValidTimeFormat($time) ? "$time:00" : null;
     }
-
-    /**
-     * Valida o formato da data
-     * 
-     * @param string $date Data a ser analizada
-     * @return bool Retorna true se a data estiver no formato correto
-     */
-    abstract public function isValidDateFormat(string $date): bool;
-
-    /**
-     * Valida o formato de horário
-     * 
-     * @param string $date Horário a ser analizada
-     * @return bool Retorna true se O horário estiver no formato correto
-     */
-    abstract public function isValidTimeFormat(string $time): bool;
 }

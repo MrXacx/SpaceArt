@@ -12,43 +12,43 @@ use App\Util\DataValidator;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class SelectionModel extends \App\Model\Template\Entity
+class Selection extends \App\Model\Template\Entity
 {
     /**
      * ID do criador da seleção
      * @var string
      */
-    public string|null $ownerID;
+    public string $ownerID;
 
     /**
      * Valor da seleção
      * @var string
      */
-    private string|null $price;
+    private string $price;
 
     /**
      * Tipo de arte
      * @var string
      */
-    private string|null $art;
+    private string $art;
 
     /**
      * Datas de início e fim
      * @var array
      */
-    private array|null $date;
+    private array $date;
 
     /**
      * Datas de início e fim
      * @var array
      */
-    private array|null $time;
+    private array $time;
 
     /**
      * Status da seleção
      * @var bool
      */
-    private bool|null $locked = false;
+    private bool $locked = false;
 
 
     /**
@@ -60,7 +60,7 @@ class SelectionModel extends \App\Model\Template\Entity
     public static function getInstanceOf(array $attr): self
     {
 
-        $entity = new SelectionModel();
+        $entity = new Selection();
         $entity->id = $attr['id'];
         $entity->ownerID = $attr[SelectionsDB::OWNER_ID];
         $entity->price = $attr[SelectionsDB::PRICE];
@@ -79,7 +79,7 @@ class SelectionModel extends \App\Model\Template\Entity
      */
     function setOwnerID(string $ownerID)
     {
-        $this->ownerID = $this->validator->isUiid($ownerID) ? $ownerID : null;;
+        $this->ownerID =  $ownerID;
     }
 
     /**
@@ -97,9 +97,9 @@ class SelectionModel extends \App\Model\Template\Entity
      * 
      * @param string $price Valor da seleção
      */
-    public function setPrice(string $price)
+    public function setPrice(int $price)
     {
-        $this->price = $this->validator->isPrice($price) ? $price : 'null';
+        $this->price = $price . '';
     }
 
     /**
@@ -120,7 +120,7 @@ class SelectionModel extends \App\Model\Template\Entity
      */
     public function setDate(string $inital, string $final)
     {
-        $this->date =  array_combine(['inital', 'final'], $this->validator->isValidDateFormat($inital) && $this->validator->isValidDateFormat($final) ? [$inital, $final] : [null, null]);
+        $this->date = ['inital' => $inital, 'final' => $final];
     }
 
     /**
@@ -131,7 +131,7 @@ class SelectionModel extends \App\Model\Template\Entity
      */
     public function setTime(string $inital, string $final)
     {
-        $this->time = ['inital' => $this->validator->buildTime($inital), 'final' => $this->validator->buildTime($final)];
+        $this->time = ['inital' => $inital, 'final' => $final];
     }
 
     /**
@@ -154,7 +154,7 @@ class SelectionModel extends \App\Model\Template\Entity
      */
     public function setArt(string $art)
     {
-        $this->art = $this->validator->isValidVarcharLength($art, SelectionsDB::ART) ? $art : null;
+        $this->art = $art;
     }
 
     /**

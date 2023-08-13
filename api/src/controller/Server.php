@@ -5,6 +5,9 @@ namespace App\Controller;
 
 class Server
 {
+    const DEFAULT_OFFSET = 1;
+    const DEFAULT_LIMIT = 10;
+    const MAX_LIMIT = 500;
 
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
@@ -23,12 +26,6 @@ class Server
 
     public static function getStrippedURI(): string
     {
-        $uri = static::getURI();
-
-        if (is_int($position = strpos($uri, '?'))) {
-            $uri = substr($uri, 0, $position);
-        }
-
-        return rawurldecode($uri);
+        return rawurldecode($_SERVER['PHP_SELF']);
     }
 }

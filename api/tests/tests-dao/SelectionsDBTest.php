@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../src/config/enviroment.php';
 
-use App\Model\SelectionModel;
+use App\Model\Selection;
 use App\DAO\SelectionsDB;
 
 /**
@@ -21,9 +21,9 @@ class SelectionsDBTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Objeto de manipulação de seleção
-     * @var SelectionModel
+     * @var Selection
      */
-    private static SelectionModel $selection;
+    private static Selection $selection;
 
     /**
      * Configura classe antes dos testes iniciarem
@@ -31,7 +31,7 @@ class SelectionsDBTest extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         // Cria modelo de seleção
-        self::$selection = new SelectionModel();
+        self::$selection = new Selection();
         self::$selection->setOwnerID('1');
         self::$selection->setDate('2023-08-31', '2023-12-31');
         self::$selection->setTime('09:23', '12:03');

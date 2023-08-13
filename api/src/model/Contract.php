@@ -13,79 +13,98 @@ use App\Util\DataValidator;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class ContractModel extends \App\Model\Template\Entity
+class Contract extends \App\Model\Template\Entity
 {
+
+    use \App\Util\Tool\DateTimeTrait;
 
     /**
      * ID do contratante
      * @var string
      */
-    private string|null $hirerID;
+    private string $hirerID;
 
     /**
      * ID do contratado
      * @var string
      */
-    private string|null $hiredID;
+    private string $hiredID;
 
     /**
      * Valor do contrato
      * @var string
      */
-    private string|null $price;
+    private string $price;
 
     /**
      * Tipo de arte
      * @var string
      */
-    private string|null $art;
+    private string $art;
 
     /**
      * Data do evento
      * @var string
      */
-    private string|null $date;
+    private string $date;
 
     /**
      * Horários de início e fim do evento
      * @var array
      */
-    private array|null $time;
+    private array $time;
 
     /**
      * Avaliação do contrato
      * 
      */
-    private int|null $rate;
-    private bool|null $accepted;
-    private bool|null $locked;
+    private int $rate;
+    private bool $accepted;
+    private bool $locked;
 
     /**
      * Obtém um modelo de contrato inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
-     * @return ContractModel Instância da classe
+     * @return Contract Instância da classe
      */
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new ContractModel();
-        $entity->id = $attr['id'];
-        $entity->hiredID = $attr[ContractsDB::HIRED_ID];
-        $entity->hirerID = $attr[ContractsDB::HIRER_ID];
-        $entity->price = intval($attr[ContractsDB::PRICE]);
-        $entity->date = $attr[ContractsDB::DATE];
-
-
-
-        $entity->time['inital'] = $attr[ContractsDB::INITAL_TIME] ?? null;
-        $entity->time['final'] = $attr[ContractsDB::FINAL_TIME] ?? null;
-        $entity->art = $attr[ContractsDB::ART] ?? null;
-
-        if (isset($attr[ContractsDB::LOCKED]) && isset($attr[ContractsDB::ACCEPTED])) {
-            $entity->locked = boolval($attr[ContractsDB::LOCKED]);
-            $entity->accepted = boolval($attr[ContractsDB::ACCEPTED]);
+        $entity = new Contract();
+        foreach ($attr as $key => $value) {
+            switch ($key) {
+                case 'id':
+                    $entity->id = $value;
+                    break;
+                case ContractsDB::HIRED_ID:
+                    $entity->hiredID = $value;
+                    break;
+                case ContractsDB::HIRER_ID:
+                    $entity->hirerID = $value;
+                    break;
+                case ContractsDB::PRICE:
+                    $entity->price = intval($value);
+                    break;
+                case ContractsDB::DATE:
+                    $entity->date = $value;
+                    break;
+                case ContractsDB::INITAL_TIME:
+                    $entity->time['inital'] = $value;
+                    break;
+                case ContractsDB::FINAL_TIME:
+                    $entity->time['final'] = $value;
+                    break;
+                case ContractsDB::ART:
+                    $entity->art = $value;
+                    break;
+                case ContractsDB::LOCKED:
+                    $entity->locked = boolval($value);
+                    break;
+                case ContractsDB::ACCEPTED:
+                    $entity->accepted = boolval($value);
+                    break;
+            }
         }
-
 
         return $entity;
     }
@@ -95,7 +114,7 @@ class ContractModel extends \App\Model\Template\Entity
      */
     function setHirerID(string $hirerID)
     {
-        $this->hirerID = $this->validator->isUiid($hirerID) ? $hirerID : null;
+        $this->hirerID = $hirerID;
     }
 
     /**
@@ -113,7 +132,7 @@ class ContractModel extends \App\Model\Template\Entity
      */
     function setHireDID(string $hiredID)
     {
-        $this->hiredID = $this->validator->isUiid($hiredID) ? $hiredID : null;
+        $this->hiredID = $hiredID;
     }
 
     /**
@@ -131,7 +150,7 @@ class ContractModel extends \App\Model\Template\Entity
      */
     function setPrice(int $price)
     {
-        $this->price = $this->validator->isPrice($price . '') ? $price . '' : null; // Armazena valor como string            
+        $this->price = $price . ''; // Armazena valor como string            
     }
 
     /**
@@ -151,7 +170,7 @@ class ContractModel extends \App\Model\Template\Entity
      */
     public function setDate(string $date): void
     {
-        $this->date = $this->validator->isValidDateFormat($date) ? $date : null;
+        $this->date = $date;
     }
 
     /**
@@ -165,12 +184,12 @@ class ContractModel extends \App\Model\Template\Entity
     /**
      * Define Horários de início e fim do evento
      * 
-     * @param string $inital Horário início
-     * @param string $inital Horário fim
+     * @param string $inital Horário de início
+     * @param string $final Horário de fim
      */
     public function setTime(string $inital, string $final): void
     {
-        $this->time = ['inital' => $this->validator->buildTime($inital), 'final' => $this->validator->buildTime($final)];
+        $this->time = ['inital' => $this->buildTime($inital), 'final' => $this->buildTime($final)];
     }
 
     /**
@@ -201,7 +220,7 @@ class ContractModel extends \App\Model\Template\Entity
 
     public function setRate(int $rate)
     {
-        $this->rate = $this->validator->isRate($rate) ? $rate : null;
+        $this->rate =  $rate;
     }
 
     public function getRate(): int
@@ -234,9 +253,9 @@ class ContractModel extends \App\Model\Template\Entity
         return array_filter(array_merge(parent::toArray(), [
             'hirer' => $this->hirerID,
             'hired' => $this->hiredID,
-            'price' => $this->price ?? null,
+            'price' => $this->price,
+            'date' => $this->date,
             'art' => $this->art ?? null,
-            'date' => $this->date ?? null,
             'time' => $this->time ?? null,
             'locked' => $this->locked ?? null,
             'accepted' => $this->accepted ?? null,

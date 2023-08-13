@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\ContractModel;
+use App\Model\Contract;
 use PDOException;
 use RuntimeException;
 
@@ -73,14 +73,15 @@ class ContractsDB extends DatabaseAcess
 
     /**
      * Modelo de contrato a ser utilizado na manipulação
-     * @var ContractModel
+     * @var Contract
      */
-    private ContractModel $contract;
+    private Contract $contract;
 
     /**
-     * @param ContractModel $contract Modelo de contrato a ser utilizado na manipulação
+     * @param Contract $contract Modelo de contrato a ser utilizado na manipulação
+     * @param User #user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(ContractModel $contract, \App\Model\UserModel $user = null)
+    function __construct(Contract $contract, \App\Model\User $user = null)
     {
         $this->contract = $contract;
         $this->user = $user;
@@ -88,10 +89,7 @@ class ContractsDB extends DatabaseAcess
     }
 
     /**
-     * Insere contrato na tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function create(): int
     {
@@ -121,10 +119,7 @@ class ContractsDB extends DatabaseAcess
     }
 
     /**
-     * Obtém valor de determinada célula da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function getList(int $offset = 1, int $limit = 10): array
     {
@@ -136,7 +131,7 @@ class ContractsDB extends DatabaseAcess
         $query->bindValue(2, $id);
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($contract) => ContractModel::getInstanceOf($contract), $this->fetchRecord($query));
+            return array_map(fn ($contract) => Contract::getInstanceOf($contract), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas
@@ -144,19 +139,17 @@ class ContractsDB extends DatabaseAcess
     }
 
     /**
-     * Obtém modelo de contrato configurado com base em todos os dados da linha
-     * 
-     * @return UserModel Modelo do contrato
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
+     * Obtém modelo de contrato
+     * @return Contract modelo de contrato
      */
-    public function getContract(): ContractModel
+    public function getContract(): Contract
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare('SELECT * FROM Contracts WHERE id = ?');
         $query->bindValue(1, $this->contract->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se a query for aceita
-            return ContractModel::getInstanceOf($this->fetchRecord($query, false));
+            return Contract::getInstanceOf($this->fetchRecord($query, false));
         }
 
         // Executa em caso de falhas esperadas
@@ -166,35 +159,11 @@ class ContractsDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getAll(): array
-    {
-        $query = parent::getConnection()->prepare("SELECT id, hirer, hired, price FROM Contracts WHERE hirer = ? OR hired = ?");
-
-        $id =  $this->user->getID();
-
-        $query->bindParam(1, $id);
-        $query->bindParam(2, $id);
-
-        if ($query->execute()) {
-            return $this->fetchRecord($query);
-        }
-
-        throw new RuntimeException("Operação falhou");
-    }
-
-    /**
-     * Atualiza determinada célula da tabela
-     * 
-     * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
-     */
     public function update(string $column, string $value): int
     {
         if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
             $message = "\"$column\" não é uma coluna da tabela Contracts"; // Define mensagem de erro
             goto error; // Pula execução do método
-        } else if (!$this->dataValidator->isValidToFlag($column, $value)) { // Executa se o valor estiver fora dos parâmetros da coluna
-            return 0;
         }
 
         // Passa query SQL de atualização
@@ -209,15 +178,11 @@ class ContractsDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        error:
-        throw new \RuntimeException($message ?? 'Operação falhou!');
+        error: throw new \RuntimeException($message ?? 'Operação falhou!');
     }
 
     /**
-     * Deleta contrato da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function delete(): int
     {

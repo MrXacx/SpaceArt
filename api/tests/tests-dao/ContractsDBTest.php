@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../src/config/enviroment.php';
 
-use App\Model\ContractModel;
+use App\Model\Contract;
 use App\DAO\ContractsDB;
 
 /**
@@ -21,9 +21,9 @@ class ContractsDBTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Objeto de manipulação de contrato
-     * @var ContractModel
+     * @var Contract
      */
-    private static ContractModel $contract;
+    private static Contract $contract;
 
     /**
      * Configura classe antes dos testes iniciarem
@@ -31,7 +31,7 @@ class ContractsDBTest extends \PHPUnit\Framework\TestCase
     public static function setUpBeforeClass(): void
     {
         // Cria modelo de teste
-        self::$contract = new ContractModel();
+        self::$contract = new Contract();
         self::$contract->setHirerID('1');
         self::$contract->setHiredID('2');
         self::$contract->setPrice(85);

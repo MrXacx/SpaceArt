@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\ApplicationModel;
-use App\Model\SelectionModel;
-use PDOException;
+use App\Model\Application;
+use App\Model\Selection;
 use RuntimeException;
 
 /**
@@ -25,16 +24,21 @@ class ApplicationsDB extends DatabaseAcess
 
     /**
      * Modelo de candidatura a ser manipulado
-     * @var ApplicationModel
+     * @var Application
      */
-    private ApplicationModel $application;
-
-    private SelectionModel|null $selection;
+    private Application $application;
 
     /**
-     * @param ApplicationModel $application Modelo de candidatura a ser manipulado
+     * Modelo de seleção associado ao modelo de aplicação
+     * @var Selection|null
      */
-    function __construct(ApplicationModel $application, SelectionModel $selection = null)
+    private Selection|null $selection;
+
+    /**
+     * @param Application $application Modelo de candidatura a ser manipulado
+     * @param Selection $selection Modelo de seleção a ser considerado na manipulação [opcional]
+     */
+    function __construct(Application $application, Selection $selection = null)
     {
         $this->application = $application;
         $this->selection =  $selection;
@@ -42,10 +46,7 @@ class ApplicationsDB extends DatabaseAcess
     }
 
     /**
-     * Insere candidatura na tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function create(): int
     {
@@ -66,10 +67,7 @@ class ApplicationsDB extends DatabaseAcess
     }
 
     /**
-     * Obtém determinada célula da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function getList(int $offset = 1, int $limit = 10): array
     {
@@ -78,7 +76,7 @@ class ApplicationsDB extends DatabaseAcess
         $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($application) => ApplicationModel::getInstanceOf($application), $this->fetchRecord($query));
+            return array_map(fn ($application) => Application::getInstanceOf($application), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas
@@ -86,8 +84,7 @@ class ApplicationsDB extends DatabaseAcess
     }
 
     /**
-     * Este método não deve ser chamado.
-     * @throws RuntimeException Caso o método seja executado
+     * @see abstracts/DatabaseAcess.php
      */
     public function update(string $column = null, string $value = null): int
     {
@@ -95,10 +92,7 @@ class ApplicationsDB extends DatabaseAcess
     }
 
     /**
-     * Deleta candidatura da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function delete(): int
     {
@@ -116,10 +110,7 @@ class ApplicationsDB extends DatabaseAcess
     }
 
     /**
-     * Confere se valor é idêntico ao nome de alguma coluna da tabela
-     * 
-     * @param string Nome da coluna
-     * @return bool Retorna true se coluna for compatível
+     * @see abstracts/DatabaseAcess.php
      */
     public static function isColumn(string $column): bool
     {

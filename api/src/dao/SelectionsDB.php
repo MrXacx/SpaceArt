@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\SelectionModel;
-use App\Model\UserModel;
+use App\Model\Selection;
+use App\Model\User;
 use PDOException;
 use RuntimeException;
 
@@ -56,14 +56,15 @@ class SelectionsDB extends DatabaseAcess
 
     /**
      * Modelo de seleção a ser manipulado
-     * @var SelectionModel
+     * @var Selection
      */
-    private SelectionModel $selection;
+    private Selection $selection;
 
     /**
-     * @param SelectionModel $selection Modelo de seleção a ser manipulado
+     * @param Selection $selection Modelo de seleção a ser manipulado
+     * @param User $user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(SelectionModel $selection, UserModel $user = null)
+    function __construct(Selection $selection, User $user = null)
     {
         $this->selection = $selection;
         $this->user = $user;
@@ -71,10 +72,7 @@ class SelectionsDB extends DatabaseAcess
     }
 
     /**
-     * Insere seleção na tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function create(): int
     {
@@ -102,10 +100,7 @@ class SelectionsDB extends DatabaseAcess
     }
 
     /**
-     * Obtém determinada célula da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function getList(int $offset = 1, int $limit = 10): array
     {
@@ -115,7 +110,7 @@ class SelectionsDB extends DatabaseAcess
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($contract) => SelectionModel::getInstanceOf($contract), $this->fetchRecord($query));
+            return array_map(fn ($contract) => Selection::getInstanceOf($contract), $this->fetchRecord($query));
         }
 
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falhas esperadas
@@ -124,17 +119,17 @@ class SelectionsDB extends DatabaseAcess
     /**
      * Obtém modelo de seleção configurado com base nos dados do banco
      * 
-     * @return SelectionModel Modelo da seleção
+     * @return Selection Modelo da seleção
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    public function getSelection(): SelectionModel
+    public function getSelection(): Selection
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare('SELECT * FROM Selections WHERE id = ?');
         $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se a query for aceita
-            return SelectionModel::getInstanceOf($this->fetchRecord($query, false));
+            return Selection::getInstanceOf($this->fetchRecord($query, false));
         }
 
         // Executa em caso de falhas esperadas
@@ -142,11 +137,7 @@ class SelectionsDB extends DatabaseAcess
     }
 
     /**
-     * Obtém todos os dados não sigilosos referents a um usuário
-     * 
-     * @return array Lista de dados não sigilosos
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha na consulta
      */
     public function getAll(): array
     {
@@ -165,10 +156,7 @@ class SelectionsDB extends DatabaseAcess
     }
 
     /**
-     * Atualiza determinada célula da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function update(string $column, string $value): int
     {
@@ -176,8 +164,6 @@ class SelectionsDB extends DatabaseAcess
         if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
             $message = "\"$column\" não é uma coluna da tabela Selections"; // Define mensagem de erro
             goto error; // Pula execução do método
-        } else if (!$this->dataValidator->isValidToFlag($column, $value)) { // Executa se o valor não conidzer com a coluna
-            return 0;
         }
 
         // Passa query SQL de atualização
@@ -197,10 +183,7 @@ class SelectionsDB extends DatabaseAcess
     }
 
     /**
-     * Deleta seleção da tabela
-     * 
      * @see abstracts/DatabaseAcess.php
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     public function delete(): int
     {
@@ -215,10 +198,7 @@ class SelectionsDB extends DatabaseAcess
     }
 
     /**
-     * Confere se valor é idêntico ao nome de alguma coluna da tabela
-     * 
-     * @param string Nome da coluna
-     * @return bool Retorna true se coluna for compatível
+     * @see abstracts/DatabaseAcess.php
      */
     public static function isColumn(string $column): bool
     {
