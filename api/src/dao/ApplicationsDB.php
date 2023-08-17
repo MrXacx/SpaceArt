@@ -52,7 +52,7 @@ class ApplicationsDB extends DatabaseAcess
     {
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO Selection_Applications (selection, artist) VALUES (?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO selection_application (selection, artist) VALUES (?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->application->getSelectionID());
@@ -72,7 +72,7 @@ class ApplicationsDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM Selection_Applications WHERE selection = ? ORDER BY last_change LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT * FROM selection_application WHERE selection = ? ORDER BY last_change LIMIT $limit OFFSET $offset");
         $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
@@ -97,7 +97,7 @@ class ApplicationsDB extends DatabaseAcess
     public function delete(): int
     {
         // Deleta candidatura do banco
-        $query = $this->getConnection()->prepare('DELETE FROM Selection_Applications WHERE selection = ? AND artist = ?');
+        $query = $this->getConnection()->prepare('DELETE FROM selection_application WHERE selection = ? AND artist = ?');
 
         $query->bindValue(1, $this->application->getSelectionID());
         $query->bindValue(2, $this->application->getUserID());

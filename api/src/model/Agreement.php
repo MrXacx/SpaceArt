@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\ContractsDB;
-use App\Util\DataValidator;
+use App\DAO\AgreementsDB;
 
 /**
  * Classe modelo de contratos
@@ -13,7 +12,7 @@ use App\Util\DataValidator;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class Contract extends \App\Model\Template\Entity
+class Agreement extends \App\Model\Template\Entity
 {
 
     use \App\Util\Tool\DateTimeTrait;
@@ -66,41 +65,41 @@ class Contract extends \App\Model\Template\Entity
      * Obtém um modelo de contrato inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
-     * @return Contract Instância da classe
+     * @return Agreement Instância da classe
      */
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Contract();
+        $entity = new Agreement();
         foreach ($attr as $key => $value) {
             switch ($key) {
                 case 'id':
                     $entity->id = $value;
                     break;
-                case ContractsDB::HIRED_ID:
+                case AgreementsDB::HIRED_ID:
                     $entity->hiredID = $value;
                     break;
-                case ContractsDB::HIRER_ID:
+                case AgreementsDB::HIRER_ID:
                     $entity->hirerID = $value;
                     break;
-                case ContractsDB::PRICE:
+                case AgreementsDB::PRICE:
                     $entity->price = intval($value);
                     break;
-                case ContractsDB::DATE:
+                case AgreementsDB::DATE:
                     $entity->date = $value;
                     break;
-                case ContractsDB::INITAL_TIME:
+                case AgreementsDB::INITAL_TIME:
                     $entity->time['inital'] = $value;
                     break;
-                case ContractsDB::FINAL_TIME:
+                case AgreementsDB::FINAL_TIME:
                     $entity->time['final'] = $value;
                     break;
-                case ContractsDB::ART:
+                case AgreementsDB::ART:
                     $entity->art = $value;
                     break;
-                case ContractsDB::LOCKED:
+                case AgreementsDB::LOCKED:
                     $entity->locked = boolval($value);
                     break;
-                case ContractsDB::ACCEPTED:
+                case AgreementsDB::ACCEPTED:
                     $entity->accepted = boolval($value);
                     break;
             }

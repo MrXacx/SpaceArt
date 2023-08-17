@@ -80,7 +80,7 @@ class SelectionsDB extends DatabaseAcess
         $datetime = $this->selection->getDatetime(); // Obtém datas e horários de início e fim
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO Selections (id, owner_id, price, inital_datetime, final_datetime, art) VALUES (?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO selection (id, owner_id, price, inital_datetime, final_datetime, art) VALUES (?,?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->selection->getID());
@@ -105,12 +105,12 @@ class SelectionsDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM Selections WHERE owner_id = ? ORDER BY ABS(DATEDIFF(inital_date, CURDATE())) LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT * FROM selection WHERE owner_id = ? ORDER BY ABS(DATEDIFF(inital_date, CURDATE())) LIMIT $limit OFFSET $offset");
 
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($contract) => Selection::getInstanceOf($contract), $this->fetchRecord($query));
+            return array_map(fn ($agreement) => Selection::getInstanceOf($agreement), $this->fetchRecord($query));
         }
 
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falhas esperadas
@@ -125,7 +125,7 @@ class SelectionsDB extends DatabaseAcess
     public function getSelection(): Selection
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare('SELECT * FROM Selections WHERE id = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM selection WHERE id = ?');
         $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -141,7 +141,7 @@ class SelectionsDB extends DatabaseAcess
      */
     public function getAll(): array
     {
-        $query = parent::getConnection()->prepare("SELECT * FROM Selections");
+        $query = parent::getConnection()->prepare("SELECT * FROM selection");
 
         $id =  $this->user->getID();
 
@@ -162,12 +162,12 @@ class SelectionsDB extends DatabaseAcess
     {
 
         if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-            $message = "\"$column\" não é uma coluna da tabela Selections"; // Define mensagem de erro
+            $message = "\"$column\" não é uma coluna da tabela selection"; // Define mensagem de erro
             goto error; // Pula execução do método
         }
 
         // Passa query SQL de atualização
-        $query = $this->getConnection()->prepare("UPDATE Selections SET $column = ? WHERE id = ?");
+        $query = $this->getConnection()->prepare("UPDATE selection \SET $column = ? WHERE id = ?");
 
         // Substitui interrogações pelos valores das variáveis
         $query->bindValue(1, $value);
@@ -188,7 +188,7 @@ class SelectionsDB extends DatabaseAcess
     public function delete(): int
     {
         // Deleta seleção do banco
-        $query = $this->getConnection()->prepare('DELETE FROM Selections WHERE id = ?');
+        $query = $this->getConnection()->prepare('DELETE FROM selection WHERE id = ?');
         $query->bindValue(1, $this->selection->getID());
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas

@@ -1,4 +1,8 @@
 const server = require("./Server");
 server.createServer();
-server.createGetRoute();
+
+server.createGetRoute('/', (req, res) => {
+    res.send('Bem-vindo!');
+});
+
 server.on(9000);

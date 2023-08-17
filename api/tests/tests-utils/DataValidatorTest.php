@@ -1,6 +1,6 @@
 <?php
 
-use App\DAO\ContractsDB;
+use App\DAO\AgreementsDB;
 use App\DAO\SelectionsDB;
 use App\DAO\UsersDB;
 use App\Util\DataValidator;
@@ -45,7 +45,7 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase
     public function testValidateLength(): void
     {
         $this->assertTrue($this->validator->isValidVarcharLength('Churrascada', \App\DAO\UsersDB::PWD));
-        $this->assertFalse($this->validator->isValidVarcharLength('', \App\DAO\ContractsDB::ART));
+        $this->assertFalse($this->validator->isValidVarcharLength('', \App\DAO\AgreementsDB::ART));
         $this->assertFalse($this->validator->isValidVarcharLength(str_repeat('a', 256), \App\DAO\UsersDB::PWD));
     }
 
@@ -130,30 +130,31 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateDocumentNumberWithCorrectValue(): void
     {
-        $this->assertTrue($this->validator->isDocumentNumber('28315572947'));
+        $this->assertTrue($this->validator->isCPF('28315572947'));
+        $this->assertTrue($this->validator->isCNPJ('12829845214235'));
     }
 
     public function testValidateDocumentNumberWithIncorrectValue(): void
     {
-        $this->assertFalse($this->validator->isDocumentNumber('2831557294a'));
-        $this->assertFalse($this->validator->isDocumentNumber('2831557294'));
-        $this->assertFalse($this->validator->isDocumentNumber('283155729471'));
+        $this->assertFalse($this->validator->isCNPJ('2831557294a'));
+        $this->assertFalse($this->validator->isCPF('2831557294'));
+        $this->assertFalse($this->validator->isCPF('283155729471'));
     }
 
     public function testValidateAnyColumnWithCorrectParams(): void
     {
         $this->assertTrue($this->validator->isValidToFlag(UsersDB::NAME, 'José Luís Datena'));
-        $this->assertTrue($this->validator->isValidToFlag(UsersDB::DOCUMENT_NUMBER, '24873944813'));
+        $this->assertTrue($this->validator->isValidToFlag(UsersDB::CPF, '24873944813'));
         $this->assertTrue($this->validator->isValidToFlag(UsersDB::CEP, '91614582'));
-        $this->assertTrue($this->validator->isValidToFlag(ContractsDB::DATE, '2023-07-01'));
+        $this->assertTrue($this->validator->isValidToFlag(AgreementsDB::DATE, '2023-07-01'));
         $this->assertTrue($this->validator->isValidToFlag(SelectionsDB::FINAL_DATETIME, '2023-07-01 00:22'));
     }
 
     public function testValidateAnyColumnWithIncorrectValue(): void
     {
         $this->assertFalse($this->validator->isValidToFlag(UsersDB::NAME, ''));
-        $this->assertFalse($this->validator->isValidToFlag(UsersDB::DOCUMENT_NUMBER, '2e483944813'));
-        $this->assertFalse($this->validator->isValidToFlag(ContractsDB::DATE, '2023-12-32'));
+        $this->assertFalse($this->validator->isValidToFlag(UsersDB::CPF, '2e483944813'));
+        $this->assertFalse($this->validator->isValidToFlag(AgreementsDB::DATE, '2023-12-32'));
         $this->assertFalse($this->validator->isValidToFlag(SelectionsDB::FINAL_DATETIME, '2023-7-01 00:22'));
     }
 

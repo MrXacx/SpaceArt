@@ -48,7 +48,7 @@ class ReportsDB extends DatabaseAcess
         $this->report->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO Reports (id, reporter, reporter, reason) VALUES (?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO report (id, reporter, reporter, reason) VALUES (?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->report->getID());
@@ -70,7 +70,7 @@ class ReportsDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM Reports WHERE reporter = ? LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT * FROM report WHERE reporter = ? LIMIT $limit OFFSET $offset");
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
@@ -84,7 +84,7 @@ class ReportsDB extends DatabaseAcess
     public function getReport(): Report
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM Reports WHERE id = ?");
+        $query = $this->getConnection()->prepare("SELECT * FROM report WHERE id = ?");
         $query->bindValue(1, $this->report->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
@@ -110,7 +110,7 @@ class ReportsDB extends DatabaseAcess
     public function delete(): int
     {
         // Deleta candidatura do banco
-        $query = $this->getConnection()->prepare('DELETE FROM Reports WHERE id = ?');
+        $query = $this->getConnection()->prepare('DELETE FROM report WHERE id = ?');
 
         $query->bindValue(1, $this->report->getID());
 

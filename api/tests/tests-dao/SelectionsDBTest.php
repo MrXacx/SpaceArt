@@ -15,7 +15,7 @@ class SelectionsDBTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Objeto de manipulação de tabela
-     * @var ContractsDB
+     * @var AgreementsDB
      */
     private static SelectionsDB $db;
 

@@ -38,22 +38,35 @@ class User extends \App\Model\Template\Entity
     private string $pwd;
 
     /**
-     * cpf/cnpj do usuário
-     * @var string
+     * Número de idenficação nacional pessoal
+     * @var string|null
      */
-    private string $documentNumber;
+    private string|null $CPF = null;
 
     /**
-     * cep do usuário
+     * Número de identificação nacional de empreendimentos
+     * @var string|null
+     */
+    private string|null $CNPJ = null;
+
+    /**
+     * Controle do tipo de conta
+     * @var bool
+     */
+    private bool $enterprise;
+
+    /**
+     * CEP do usuário
      * @var string
      */
-    private string $cep;
+    private string $CEP;
 
     /**
      * site do usuário
      * @var string
      */
     private string|null $website = null;
+
 
     /**
      * @param string $pwd Senha do usuário
@@ -95,19 +108,29 @@ class User extends \App\Model\Template\Entity
     }
 
     /**
-     * @param string $documentNumber Cpf/Cnpj do usuário
+     * Insere código de identificação do usuário
+     * @param string $CPF código
      */
-    public function setDocumentNumber(string $documentNumber): void
+    public function setCPF(string $CPF): void
     {
-        $this->documentNumber = $documentNumber;
+        $this->CPF = $CPF;
     }
 
     /**
-     * @param string $cep CEP do usuário
+     * Insere código de identificação do empreendimento
+     * @param string $CNPJ código
      */
-    public function setCEP(string $cep): void
+    public function setCNPJ(string $CNPJ): void
     {
-        $this->cep = $cep;
+        $this->CNPJ = $CNPJ;
+    }
+
+    /**
+     * @param string $CEP CEP do usuário
+     */
+    public function setCEP(string $CEP): void
+    {
+        $this->CEP = $CEP;
     }
 
     /**
@@ -116,6 +139,15 @@ class User extends \App\Model\Template\Entity
     public function setWebsite(string $website): void
     {
         $this->website = $website;
+    }
+
+    /**
+     * Define se o usuário é um empreendimento
+     * @param bool 
+     */
+    public function setEnterprise(bool $enterprise): void
+    {
+        $this->enterprise = $enterprise;
     }
 
     /**
@@ -164,21 +196,30 @@ class User extends \App\Model\Template\Entity
     }
 
     /**
-     * Obtém cpf/cnpj do usuário
-     * @return string Código de cpf/cnpj 
+     * Obtém número de identificação do usuário
+     * @return string|null Número de identificação ou nulo, caso não tenha sido informado
      */
-    public function getDocumentNumber(): string
+    public function getCPF(): string|null
     {
-        return $this->documentNumber;
+        return $this->CPF;
     }
 
     /**
-     * Obtém cep do usuário
-     * @return string cep 
+     * Obtém número de identificação do empreendimento
+     * @return string|null Número de identificação ou nulo, caso não tenha sido informado
+     */
+    public function getCNPJ(): string|null
+    {
+        return $this->CNPJ;
+    }
+
+    /**
+     * Obtém CEP do usuário
+     * @return string CEP 
      */
     public function getCEP(): string
     {
-        return $this->cep;
+        return $this->CEP;
     }
 
     /**
@@ -191,6 +232,15 @@ class User extends \App\Model\Template\Entity
     }
 
     /**
+     * Obtém informação do tipo de usuário
+     * @return bool true caso de de empreendimento, false em caso de artista
+     */
+    public function isEnterprise(): bool
+    {
+        return $this->enterprise;
+    }
+
+    /**
      * Obtém um modelo de usuário inicializado
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
@@ -200,6 +250,8 @@ class User extends \App\Model\Template\Entity
     {
         $entity = new User();
 
+        $entity->enterprise = boolval($attr[UsersDB::ENTERPRISE]);
+
         foreach ($attr as $key => $value) {
             $atributeName = match ($key) {
                 'id' => 'id',
@@ -207,9 +259,11 @@ class User extends \App\Model\Template\Entity
                 UsersDB::PWD => 'pwd',
                 UsersDB::NAME => 'name',
                 UsersDB::CEP => 'cep',
+                UsersDB::CPF => 'CPF',
+                UsersDB::CNPJ => 'CNPJ',
                 UsersDB::PHONE => 'phone',
-                UsersDB::DOCUMENT_NUMBER => 'documentNumber',
                 UsersDB::SITE => 'website',
+
                 default => null
             };
 
@@ -227,10 +281,13 @@ class User extends \App\Model\Template\Entity
             'name' => $this->name,
             'email' => $this->email ?? null,
             'password' => $this->pwd ?? null,
-            'phone' => $this->phone ?? null,
-            'document_number' => $this->documentNumber ?? null,
-            'cep' => $this->cep,
+            'phone' => $this->phone ?? null,          
+            'CPF' => $this->CPF,
+            'CNPJ' => $this->CNPJ,
+            'CEP' => $this->CEP,
             'website' => $this->website,
+            'enterprise' => $this->enterprise,
         ]), fn ($value) => isset($value));
     }
+
 }

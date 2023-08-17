@@ -19,15 +19,15 @@ class UserRoute
     {
 
         // Confere se id corresponde ao formato correto
-        if ($this->validator->isUiid($_GET['id'].'')) {
+        if ($this->validator->isUiid($_GET['id'] . '')) {
             $user = new User();
             $user->setID($_GET['id']);
 
             $db = new UsersDB($user); // Inicia objeto para manipular o registro do usuário informado
             return $db->getUser()->toArray();
         }
-        
-        throw new RuntimeException('ID do usuário não foi informado ou apresenta formato inconsistente: '. $_GET['id']);
+
+        throw new RuntimeException('ID do usuário não foi informado ou apresenta formato inconsistente: ' . $_GET['id']);
     }
 
     public function signIn(): array
@@ -38,7 +38,7 @@ class UserRoute
             o id consultado com base nos dados informados.  
         */
 
-        if ($this->validator->isEmail($_GET['email'].'') && $this->validator->isValidVarcharLength($_GET['password'], UsersDB::PWD)) {
+        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UsersDB::PWD)) {
             $user = new User();
             $user->setEmail($_GET['email']);
             $user->setPassword($_GET['password']);
@@ -49,15 +49,15 @@ class UserRoute
         throw new RuntimeException('Email e/ou senha não foram informados ou apresentam formato inconsistente');
     }
 
-    public function getList():array
+    public function getList(): array
     {
         // Confere se offset é inteiro e superior ao valor mínimo
         $offset = preg_match('#^\d+$#', $_GET['offset']) && $_GET['offset'] >=  Server::DEFAULT_OFFSET  ? intval($_GET['offset']) : Server::DEFAULT_OFFSET;
-        
+
         // Confere se limit é inteiro e não ultrapassa o tamanho máximo da lista
         $limit =  preg_match('#^\d+$#', $_GET['limit']) && $_GET['limit'] <= Server::MAX_LIMIT ? intval($_GET['limit']) : Server::DEFAULT_LIMIT;
-        
+
         // Retorna lista de vetorers com dados dos usuários
-        return array_map(fn($user) => $user->toArray(), (new UsersDB())->getList($offset, $limit));
+        return array_map(fn ($user) => $user->toArray(), (new UsersDB())->getList($offset, $limit));
     }
 }

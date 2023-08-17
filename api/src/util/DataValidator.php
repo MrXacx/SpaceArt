@@ -2,7 +2,7 @@
 
 namespace App\Util;
 
-use App\DAO\ContractsDB;
+use App\DAO\AgreementsDB;
 use App\DAO\SelectionsDB;
 use App\DAO\UsersDB;
 use RuntimeException;
@@ -30,7 +30,7 @@ final class DataValidator
      * @param string $date Data a ser analizada
      * @return bool Retorna true se estiver no formato correto
      */
-    public function isValidDateFormat(string $date): bool
+    public function isDate(string $date): bool
     {
         if (preg_match('#^\d{4}-\d{2}-\d{2}$#', $date)) { // Executa se o formato AAAA-MM-DD for respeitado
             $date = explode('-', $date); // Separa string em vetor
@@ -46,7 +46,7 @@ final class DataValidator
      * @param string $date Horário a ser analizado
      * @return bool Retorna true se estiver no formato correto
      */
-    public function isValidTimeFormat(string $time): bool
+    public function isTime(string $time): bool
     {
 
         if (preg_match('#^\d{2}:\d{2}(:\d{2}){0,1}$#', $time)) { // Executa se estiver no formato por HH:MM ou HH:MM:SS
@@ -70,7 +70,7 @@ final class DataValidator
         $length = strlen($varchar);
         return  $length > 0 && $length <= match ($column) {
             'id' => 36,
-            UsersDB::NAME, UsersDB::EMAIL, UsersDB::SITE, UsersDB::PWD, ContractsDB::ART, SelectionsDB::ART => 255,
+            UsersDB::NAME, UsersDB::EMAIL, UsersDB::SITE, UsersDB::PWD, AgreementsDB::ART, SelectionsDB::ART => 255,
             default => throw new RuntimeException('Coluna não encontrada')
         };
     }
@@ -100,12 +100,12 @@ final class DataValidator
     /**
      * Checa se valor está apto a ser inserido na coluna de cep
      * 
-     * @param string $cep Valor a ser analizado
+     * @param string $CEP Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isCEP(string $cep): bool
+    public function isCEP(string $CEP): bool
     {
-        return preg_match('#\b\d{8}\b#', $cep); // 8 algarismos
+        return preg_match('#\b\d{8}\b#', $CEP); // 8 algarismos
     }
 
     /**
@@ -121,14 +121,25 @@ final class DataValidator
     }
 
     /**
-     * Checa se valor está apto a ser inserido na coluna de cpf/cnpj
+     * Checa se valor está apto a ser inserido na coluna de cpf
      * 
      * @param string $documentNumber Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isDocumentNumber(string $documentNumber): bool
+    public function isCPF(string $CPF): bool
     {
-        return preg_match('#^\d{11}$#', $documentNumber); // 11 algarismos
+        return preg_match('#^\d{11}$#', $CPF); // 11 algarismos
+    }
+
+    /**
+     * Checa se valor está apto a ser inserido na coluna de cnpj
+     * 
+     * @param string $documentNumber Valor a ser analizado
+     * @return bool Retorna true caso esteja
+     */
+    public function isCNPJ(string $CNPJ): bool
+    {
+        return preg_match('#^\d{14}$#', $CNPJ); // 14 algarismos
     }
 
     /**
@@ -148,10 +159,10 @@ final class DataValidator
      * @param string $url Valor a ser analizado
      * @return bool Retorna true caso esteja
      */
-    public function isValidDatetimeFormat(string $datetime): bool
+    public function isDatetime(string $datetime): bool
     {
         $datetime = explode(" ", $datetime);
-        return $this->isValidDateFormat($datetime[0]) && $this->isValidTimeFormat($datetime[1]);
+        return $this->isDate($datetime[0]) && $this->isTime($datetime[1]);
     }
 
     public function isRate(int $rate): bool
@@ -169,11 +180,12 @@ final class DataValidator
     public function isValidToFlag(string $flag, string $value): bool
     {
         return match ($flag) {
-            ContractsDB::DATE => $this->isValidDateFormat($value),
-            ContractsDB::INITAL_TIME, ContractsDB::FINAL_TIME => $this->isValidTimeFormat($value),
-            SelectionsDB::INITAL_DATETIME, SelectionsDB::FINAL_DATETIME => $this->isValidDatetimeFormat($value),
+            AgreementsDB::DATE => $this->isDate($value),
+            AgreementsDB::INITAL_TIME, AgreementsDB::FINAL_TIME => $this->isTime($value),
+            SelectionsDB::INITAL_DATETIME, SelectionsDB::FINAL_DATETIME => $this->isDatetime($value),
             UsersDB::PHONE => $this->isPhone($value),
-            UsersDB::DOCUMENT_NUMBER => $this->isDocumentNumber($value),
+            UsersDB::CPF => $this->isCPF($value),
+            UsersDB::CNPJ => $this->isCNPJ($value),
             UsersDB::CEP => $this->isCEP($value),
             UsersDB::SITE => $this->isURL($value),
             'id' => $this->isUiid($value),

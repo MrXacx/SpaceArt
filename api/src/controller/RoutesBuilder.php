@@ -22,7 +22,7 @@ class RoutesBuilder extends \App\Controller\Server
                 $collector->get('/sign-in', \App\Controller\UserRoute::class . '/signIn'); // Obtém id do usuárionew App\Controller\UserController($collector);  
             });
 
-            //$collector->get('/contract/consult', \App\Controller\ContractRoute::class . '/queryUsualData');
+            //$collector->get('/contract/consult', \App\Controller\AgreementRoute::class . '/queryUsualData');
         });
     }
 
@@ -45,9 +45,9 @@ class RoutesBuilder extends \App\Controller\Server
             case Dispatcher::FOUND:
                 list($state, $handler, $vars) = $routeInfo;
                 list($class, $method) = explode('/', $handler);
-                try{
+                try {
                     $this->response['result'] = call_user_func_array([new $class, $method], $vars);
-                } catch(Exception $ex){  
+                } catch (Exception $ex) {
                     $this->response['error'] = [
                         'isRuntime' => $ex instanceof \RuntimeException,
                         'isConnection' => $ex instanceof \PDOException,
@@ -55,7 +55,7 @@ class RoutesBuilder extends \App\Controller\Server
                     ];
                 }
                 break;
-            }
+        }
     }
 
     public function getResponse(): array

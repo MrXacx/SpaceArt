@@ -106,7 +106,7 @@ trait DateTimeTrait
     public function buildDatetime(string $date, string $time): string|null
     {
         $time = $this->buildTime($time);
-        return $this->isValidDateFormat($date) && isset($time) ? "$date $time" : null;
+        return $this->isDate($date) && isset($time) ? "$date $time" : null;
     }
 
     /**
@@ -117,6 +117,6 @@ trait DateTimeTrait
      */
     public function buildTime(string $time): string|null
     {
-        return $this->isValidTimeFormat($time) ? "$time:00" : null;
+        return $this->isTime($time) ? "$time:00" : null;
     }
 }

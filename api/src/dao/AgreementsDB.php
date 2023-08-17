@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\Contract;
+use App\Model\Agreement;
 use PDOException;
 use RuntimeException;
 
 /**
- * Classe de maniupulação da tabela Contracts
+ * Classe de maniupulação da tabela Agreements
  * 
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ContractsDB extends DatabaseAcess
+class AgreementsDB extends DatabaseAcess
 {
     /**
      * Nome da coluna de contratante
@@ -73,17 +73,17 @@ class ContractsDB extends DatabaseAcess
 
     /**
      * Modelo de contrato a ser utilizado na manipulação
-     * @var Contract
+     * @var Agreement
      */
-    private Contract $contract;
+    private Agreement $agreement;
 
     /**
-     * @param Contract $contract Modelo de contrato a ser utilizado na manipulação
+     * @param Agreement $agreement Modelo de contrato a ser utilizado na manipulação
      * @param User #user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(Contract $contract, \App\Model\User $user = null)
+    function __construct(Agreement $agreement, \App\Model\User $user = null)
     {
-        $this->contract = $contract;
+        $this->agreement = $agreement;
         $this->user = $user;
         parent::__construct();
     }
@@ -93,22 +93,22 @@ class ContractsDB extends DatabaseAcess
      */
     public function create(): int
     {
-        $this->contract->setID($this->getRandomID()); // Gera uuid
+        $this->agreement->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO Contracts (id, hirer, hired, price, date_point, inital_time, final_time, art) VALUES (?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO agreement (id, hirer, hired, price, date_point, inital_time, final_time, art) VALUES (?,?,?,?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->contract->getID());
-        $query->bindValue(2, $this->contract->getHirerID());
-        $query->bindValue(3, $this->contract->getHiredID());
-        $query->bindValue(4, $this->contract->getPrice());
-        $query->bindValue(5,  $this->contract->getDate());
+        $query->bindValue(1, $this->agreement->getID());
+        $query->bindValue(2, $this->agreement->getHirerID());
+        $query->bindValue(3, $this->agreement->getHiredID());
+        $query->bindValue(4, $this->agreement->getPrice());
+        $query->bindValue(5,  $this->agreement->getDate());
 
-        $time = $this->contract->getTime();
+        $time = $this->agreement->getTime();
         $query->bindValue(6, $time['inital']);
         $query->bindValue(7, $time['final']);
-        $query->bindValue(8, $this->contract->getArt());
+        $query->bindValue(8, $this->agreement->getArt());
 
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas
@@ -124,14 +124,14 @@ class ContractsDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, hirer, hired, price, date_point FROM Contracts WHERE hirer = ? OR hired = ? ORDER BY ABS(DATEDIFF(date_point, CURDATE())) LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT id, hirer, hired, price, date_point FROM agreement WHERE hirer = ? OR hired = ? ORDER BY ABS(DATEDIFF(date_point, CURDATE())) LIMIT $limit OFFSET $offset");
 
         $id = $this->user->getID();
         $query->bindValue(1, $id);
         $query->bindValue(2, $id);
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($contract) => Contract::getInstanceOf($contract), $this->fetchRecord($query));
+            return array_map(fn ($agreement) => Agreement::getInstanceOf($agreement), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas
@@ -140,16 +140,16 @@ class ContractsDB extends DatabaseAcess
 
     /**
      * Obtém modelo de contrato
-     * @return Contract modelo de contrato
+     * @return Agreement modelo de contrato
      */
-    public function getContract(): Contract
+    public function getAgreement(): Agreement
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare('SELECT * FROM Contracts WHERE id = ?');
-        $query->bindValue(1, $this->contract->getID()); // Substitui interrogação na query pelo ID passado
+        $query = $this->getConnection()->prepare('SELECT * FROM agreement WHERE id = ?');
+        $query->bindValue(1, $this->agreement->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se a query for aceita
-            return Contract::getInstanceOf($this->fetchRecord($query, false));
+            return Agreement::getInstanceOf($this->fetchRecord($query, false));
         }
 
         // Executa em caso de falhas esperadas
@@ -162,23 +162,24 @@ class ContractsDB extends DatabaseAcess
     public function update(string $column, string $value): int
     {
         if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-            $message = "\"$column\" não é uma coluna da tabela Contracts"; // Define mensagem de erro
+            $message = "\"$column\" não é uma coluna da tabela agreement"; // Define mensagem de erro
             goto error; // Pula execução do método
         }
 
         // Passa query SQL de atualização
-        $query = $this->getConnection()->prepare("UPDATE Contracts SET $column = ? WHERE id = ?");
+        $query = $this->getConnection()->prepare("UPDATE agreement SET $column = ? WHERE id = ?");
 
         // Substitui interrogações pelos valores das variáveis
         $query->bindValue(1, $value);
-        $query->bindValue(2, $this->contract->getID());
+        $query->bindValue(2, $this->agreement->getID());
 
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas
         }
 
         // Executa em caso de falhas esperadas
-        error: throw new \RuntimeException($message ?? 'Operação falhou!');
+        error:
+        throw new \RuntimeException($message ?? 'Operação falhou!');
     }
 
     /**
@@ -187,8 +188,8 @@ class ContractsDB extends DatabaseAcess
     public function delete(): int
     {
         // Deleta seleção do banco
-        $query = $this->getConnection()->prepare('DELETE FROM Contracts WHERE id = ?');
-        $query->bindValue(1, $this->contract->getID());
+        $query = $this->getConnection()->prepare('DELETE FROM agreement WHERE id = ?');
+        $query->bindValue(1, $this->agreement->getID());
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas
         }
