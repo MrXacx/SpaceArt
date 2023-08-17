@@ -19,72 +19,72 @@ USE spaceart;
 -- --------------------------------------------------------
 
 CREATE TABLE user (
-  id CHAR(36) NOT NULL,
-  full_name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  CPF VARCHAR(11) DEFAULT NULL,
-  CNPJ VARCHAR(14) DEFAULT NULL,
-  phone VARCHAR(11) NOT NULL,
-  pwd VARCHAR(255) NOT NULL,
-  CEP VARCHAR(8) NOT NULL,
-  website VARCHAR(255) DEFAULT NULL,
-  isEnterprise BOOLEAN NOT NULL,
+  id char(36) NOT NULL,
+  name varchar(255) NOT NULL,
+  email varchar(255) NOT NULL,
+  CPF varchar(11) DEFAULT NULL,
+  CNPJ varchar(14) DEFAULT NULL,
+  phone varchar(11) NOT NULL,
+  password varchar(255) NOT NULL,
+  CEP varchar(8) NOT NULL,
+  website varchar(255) DEFAULT NULL,
+  type enum("artist", "enterprise") NOT NULL,
 
   PRIMARY KEY (id),
   UNIQUE KEY (email),
   UNIQUE KEY (CPF),
   UNIQUE KEY (CNPJ)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE agreement (
-  id CHAR(36) NOT NULL,
-  hirer CHAR(36) NOT NULL,
-  hired CHAR(36) NOT NULL,
-  price MEDIUMINT(5) UNSIGNED NOT NULL,
-  date_point DATE NOT NULL,
+  id char(36) NOT NULL,
+  hirer char(36) NOT NULL,
+  hired char(36) NOT NULL,
+  price mediumint(5) UNSIGNED NOT NULL,
+  date date NOT NULL,
   inital_time TIME(0) NOT NULL,
   final_time  TIME(0) NOT NULL,
-  art VARCHAR(255) NOT NULL,
-  rate INT(1) DEFAULT NULL,
-  accepted BOOLEAN DEFAULT 0,
-  locked BOOLEAN DEFAULT 0,
+  art varchar(255) NOT NULL,
+  rate int DEFAULT NULL,
+  accepted boolean DEFAULT 0,
+  locked boolean DEFAULT 0,
 
   PRIMARY KEY (id),
-  FOREIGN KEY (hirer) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (hired) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  FOREIGN KEY (hirer) REFERENCES user(id) ON UPdate CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (hired) REFERENCES user(id) ON UPdate CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection (
-  id CHAR(36) NOT NULL,
-  owner_id CHAR(36) NOT NULL,
-  price MEDIUMINT(5) UNSIGNED NOT NULL,
-  inital_datetime DATETIME NOT NULL,
-  final_datetime DATETIME NOT NULL,
-  art VARCHAR(255) NOT NULL,
-  locked BOOLEAN DEFAULT 0,
+  id char(36) NOT NULL,
+  owner char(36) NOT NULL,
+  price mediumint(5) UNSIGNED NOT NULL,
+  inital_datetime dateTIME NOT NULL,
+  final_datetime dateTIME NOT NULL,
+  art varchar(255) NOT NULL,
+  locked boolean DEFAULT 0,
 
   PRIMARY KEY (id),
-  FOREIGN KEY (owner_id) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES user(id) ON UPdate CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection_application (
-  selection CHAR(36) NOT NULL,
-  artist CHAR(36) NOT NULL,
-  last_change TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  selection char(36) NOT NULL,
+  artist char(36) NOT NULL,
+  last_change timestamp DEFAULT CURRENT_timestamp ON UPdate CURRENT_timestamp,
   
-  FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (artist) REFERENCES user (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  PRIMARY KEY (selection, artist) 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (selection, artist),
+  CONSTRAINT selection_fk FOREIGN KEY (selection) REFERENCES selection (id) ON UPdate CASCADE ON DELETE CASCADE,
+  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES user (id) ON UPdate CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE report (
-  id CHAR(36) NOT NULL,
-  reporter CHAR(36),
-  reported CHAR(36) NOT NULL,
-  reason VARCHAR(255) NOT NULL,
-  accepted BOOLEAN DEFAULT NULL,
+  id char(36) NOT NULL,
+  reporter char(36),
+  reported char(36) NOT NULL,
+  reason varchar(255) NOT NULL,
+  accepted boolean DEFAULT NULL,
   
   PRIMARY KEY (id),
-  FOREIGN KEY (reporter) REFERENCES user (id)  ON UPDATE CASCADE ON DELETE SET NULL,
-  FOREIGN KEY (reported) REFERENCES user (id)  ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES user (id)  ON UPdate CASCADE ON DELETE SET NULL,
+  CONSTRAINT reported_fk FOREIGN KEY (reported) REFERENCES user (id)  ON UPdate CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
