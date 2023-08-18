@@ -43,7 +43,7 @@ class AgreementsDB extends DatabaseAcess
         $this->agreement->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO agreement (id, hirer, hired, price, date_point, inital_time, final_time, art) VALUES (?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO agreement (id, hirer, hired, price, date, inital_time, final_time, art) VALUES (?,?,?,?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->agreement->getID());

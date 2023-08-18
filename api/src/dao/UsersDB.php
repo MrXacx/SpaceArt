@@ -16,7 +16,7 @@ use RuntimeException;
  */
 class UsersDB extends DatabaseAcess
 {
-    
+
     /**
      * @param User $user Modelo de usuário a ser manipulado
      */
@@ -32,7 +32,7 @@ class UsersDB extends DatabaseAcess
     public function create(): int
     {
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO user (id, full_name, email, phone, password, CPF, CNPJ, CEP, enterprise) VALUES (?,?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO user (id, name, email, phone, password, CPF, CNPJ, CEP, type) VALUES (?,?,?,?,?,?,?,?,?)');
 
         $this->user->setID($this->getRandomID());
 
@@ -45,7 +45,7 @@ class UsersDB extends DatabaseAcess
         $query->bindValue(6, $this->user->getCPF());
         $query->bindValue(7, $this->user->getCNPJ());
         $query->bindValue(8, $this->user->getCEP());
-        $query->bindValue(9, $this->user->getTypt());
+        $query->bindValue(9, $this->user->getType());
 
 
         if ($query->execute()) { // Executa se a query não falhar

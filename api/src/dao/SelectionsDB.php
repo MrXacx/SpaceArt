@@ -45,7 +45,7 @@ class SelectionsDB extends DatabaseAcess
         $datetime = $this->selection->getDatetime(); // Obtém datas e horários de início e fim
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO selection (id, owner_id, price, inital_datetime, final_datetime, art) VALUES (?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO selection (id, owner, price, inital_datetime, final_datetime, art) VALUES (?,?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->selection->getID());

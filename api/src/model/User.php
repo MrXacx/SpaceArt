@@ -236,7 +236,7 @@ class User extends \App\Model\Template\Entity
      * Obtém o tipo de usuário
      * @return AccountType
      */
-    public function getTypt(): AccountType
+    public function getType(): AccountType
     {
         return $this->type;
     }
