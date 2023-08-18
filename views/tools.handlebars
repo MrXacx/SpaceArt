@@ -15,9 +15,9 @@
 
   <section class="window-shape-section">
     {{#each windowAnchors}}
-      <a class="window-shape-anchor box" href="{{this.rota}}">
-        <img class="icon" src="{{this.src}}" alt="{{this.nome}}" />
-        <h3>{{this.nome}}</h3>
+      <a class="window-shape-anchor box" href="{{this.route}}">
+        <img class="icon" src="{{this.src}}" alt="{{this.name}}" />
+        <h3>{{this.name}}</h3>
       </a>
     {{/each}}
   </section>
@@ -25,9 +25,9 @@
   {{#if showlandscapeAnchors}}
     <section>
       {{#each landscapeAnchors}}
-        <a class="landscape-shape-anchor box" href="{{this.rota}}">
-          <img class="icon" src="{{this.src}}" alt="{{this.nome}}" />
-          <h3>{{this.nome}}</h3>
+        <a class="landscape-shape-anchor box" href="{{this.route}}">
+          <img class="icon" src="{{this.src}}" alt="{{this.name}}" />
+          <h3>{{this.name}}</h3>
         </a>
       {{/each}}
     </section>

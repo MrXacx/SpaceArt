@@ -28,6 +28,5 @@
     "express-handlebars": "^7.1.2",
     "nodemon": "^2.0.22",
     "path": "^0.12.7"
-  },
-  "devDependencies": {}
+  }
 }
