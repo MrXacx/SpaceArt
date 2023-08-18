@@ -38,7 +38,7 @@ class UserRoute
             o id consultado com base nos dados informados.  
         */
 
-        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UsersDB::PWD)) {
+        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UsersDB::PASSWORD)) {
             $user = new User();
             $user->setEmail($_GET['email']);
             $user->setPassword($_GET['password']);

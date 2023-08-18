@@ -9,14 +9,16 @@
       "App\\Controller\\": "src/controller/",
       "App\\DAO\\": "src/dao/",
       "App\\DAO\\Template\\": "src/dao/abstracts/",
+      "App\\DAO\\Enumerate\\": "src/dao/enum/",
       "App\\Model\\": "src/model/",
+      "App\\Model\\Enumerate\\": "src/model/enum/",
       "App\\Model\\Template\\": "src/model/abstracts/",
       "App\\Util\\": "src/util/",
       "App\\Util\\Tool\\": "src/util/traits/"
     }
   },
   "require": {
-    "php": "8.0.*",
+    "php": "8.2.*",
     "nikic/fast-route": "^1.3",
     "ramsey/uuid": "4.7.4"
   },

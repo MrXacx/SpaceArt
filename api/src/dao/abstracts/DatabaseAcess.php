@@ -29,7 +29,7 @@ abstract class DatabaseAcess
     function __construct()
     {
         try {
-            $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
+            $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_password']);
         } catch (\Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }
@@ -109,12 +109,4 @@ abstract class DatabaseAcess
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
     abstract public function delete(): int;
-
-    /**
-     * Confere se valor é idêntico ao nome de alguma coluna da tabela
-     * 
-     * @param string Nome da coluna
-     * @return bool Retorna true se coluna for compatível
-     */
-    abstract public static function isColumn(string $column): bool;
 }

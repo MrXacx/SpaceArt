@@ -18,10 +18,6 @@ use RuntimeException;
 class ApplicationsDB extends DatabaseAcess
 {
 
-    public const ARTIST = 'artist';
-    public const SELECTION = 'selection';
-    public const LAST_CHANGE = 'last_change';
-
     /**
      * Modelo de candidatura a ser manipulado
      * @var Application
@@ -109,11 +105,4 @@ class ApplicationsDB extends DatabaseAcess
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
     }
 
-    /**
-     * @see abstracts/DatabaseAcess.php
-     */
-    public static function isColumn(string $column): bool
-    {
-        return $column == self::ARTIST || $column == self::SELECTION || $column == self::LAST_CHANGE;
-    }
 }

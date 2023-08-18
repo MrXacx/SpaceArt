@@ -69,9 +69,9 @@ class Application extends \App\Model\Template\Entity
     public static function getInstanceOf(array $attr): self
     {
         $entity = new Application();
-        $entity->selectionID = $attr[ApplicationsDB::SELECTION];
-        $entity->userID = $attr[ApplicationsDB::ARTIST];
-        $entity->lastChange = $attr[ApplicationsDB::LAST_CHANGE];
+        $entity->selectionID = $attr[ApplicationColumn::SELECTION];
+        $entity->userID = $attr[ApplicationColumn::ARTIST];
+        $entity->lastChange = $attr[ApplicationColumn::LAST_CHANGE];
 
         return $entity;
     }

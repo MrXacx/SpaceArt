@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
+use App\DAO\Enumerate\AgreementColumn;
 use App\Model\Agreement;
-use PDOException;
-use RuntimeException;
 
 /**
  * Classe de maniupulação da tabela Agreements
@@ -17,59 +16,7 @@ use RuntimeException;
  */
 class AgreementsDB extends DatabaseAcess
 {
-    /**
-     * Nome da coluna de contratante
-     * @var string
-     */
-    public const HIRER_ID = 'hirer';
-
-    /**
-     * Nome da coluna de contratado
-     * @var string
-     */
-    public const HIRED_ID = 'hired';
-
-    /**
-     * Nome da coluna de valor de contrato
-     * @var string
-     */
-    public const PRICE = 'price';
-
-    /**
-     * Nome da coluna de tipo de arte
-     * @var string
-     */
-    public const ART = 'art';
-
-    /**
-     * Nome da coluna de data do evento
-     * @var string
-     */
-    public const DATE = 'date_point';
-
-    /**
-     * Nome da coluna de horário de início
-     * @var string
-     */
-    public const INITAL_TIME = 'inital_time';
-
-    /**
-     * Nome da coluna de horário de fim
-     * @var string
-     */
-    public const FINAL_TIME = 'final_time';
-
-    /**
-     * Nome da coluna de status do contrato
-     * @var string
-     */
-    public const LOCKED = 'locked';
-
-    /**
-     * Nome da coluna de status da solicitação de contrato
-     * @var string
-     */
-    public const ACCEPTED = 'accepted';
+    
 
     /**
      * Modelo de contrato a ser utilizado na manipulação
@@ -161,7 +108,7 @@ class AgreementsDB extends DatabaseAcess
      */
     public function update(string $column, string $value): int
     {
-        if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
+        if (!AgreementColumn::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
             $message = "\"$column\" não é uma coluna da tabela agreement"; // Define mensagem de erro
             goto error; // Pula execução do método
         }
@@ -197,15 +144,5 @@ class AgreementsDB extends DatabaseAcess
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
     }
 
-    /**
-     * Confere se valor é idêntico ao nome de alguma coluna da tabela
-     * 
-     * @param string Nome da coluna
-     * @return bool Retorna true se coluna for compatível
-     */
-    public static function isColumn(string $column): bool
-    {
-        $columns = [static::HIRER_ID, static::HIRED_ID, static::PRICE, static::ART, static::DATE, static::INITAL_TIME, static::FINAL_TIME];
-        return !is_bool(array_search($column, $columns));
-    }
+    
 }

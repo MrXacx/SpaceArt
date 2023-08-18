@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\DAO\UsersDB;
+use App\Model\Enumerate\AccountType;
 
 /**
  * Classe modelo de usuário
@@ -35,7 +36,7 @@ class User extends \App\Model\Template\Entity
      * Senha do usuário
      * @var string
      */
-    private string $pwd;
+    private string $password;
 
     /**
      * Número de idenficação nacional pessoal
@@ -50,10 +51,10 @@ class User extends \App\Model\Template\Entity
     private string|null $CNPJ = null;
 
     /**
-     * Controle do tipo de conta
-     * @var bool
+     * Tipo de conta
+     * @var AccountType
      */
-    private bool $enterprise;
+    private AccountType $type;
 
     /**
      * CEP do usuário
@@ -69,11 +70,11 @@ class User extends \App\Model\Template\Entity
 
 
     /**
-     * @param string $pwd Senha do usuário
+     * @param string $password Senha do usuário
      */
-    public function setPassword(string $pwd): void
+    public function setPassword(string $password): void
     {
-        $this->pwd = $pwd;
+        $this->password = $password;
     }
     /**
      * @param string $email Email do usuário
@@ -142,12 +143,12 @@ class User extends \App\Model\Template\Entity
     }
 
     /**
-     * Define se o usuário é um empreendimento
-     * @param bool 
+     * Define tipo de conta
+     * @param AccountType 
      */
-    public function setEnterprise(bool $enterprise): void
+    public function setEnterprise(AccountType $type): void
     {
-        $this->enterprise = $enterprise;
+        $this->type = $type;
     }
 
     /**
@@ -192,7 +193,7 @@ class User extends \App\Model\Template\Entity
      */
     public function getPassword(): string
     {
-        return $this->pwd;
+        return $this->password;
     }
 
     /**
@@ -232,12 +233,12 @@ class User extends \App\Model\Template\Entity
     }
 
     /**
-     * Obtém informação do tipo de usuário
-     * @return bool true caso de de empreendimento, false em caso de artista
+     * Obtém o tipo de usuário
+     * @return AccountType
      */
-    public function isEnterprise(): bool
+    public function getTypt(): AccountType
     {
-        return $this->enterprise;
+        return $this->type;
     }
 
     /**
@@ -250,20 +251,19 @@ class User extends \App\Model\Template\Entity
     {
         $entity = new User();
 
-        $entity->enterprise = boolval($attr[UsersDB::ENTERPRISE]);
 
         foreach ($attr as $key => $value) {
             $atributeName = match ($key) {
                 'id' => 'id',
                 UsersDB::EMAIL => 'email',
-                UsersDB::PWD => 'pwd',
+                UsersDB::PASSWORD => 'password',
                 UsersDB::NAME => 'name',
                 UsersDB::CEP => 'cep',
                 UsersDB::CPF => 'CPF',
                 UsersDB::CNPJ => 'CNPJ',
                 UsersDB::PHONE => 'phone',
                 UsersDB::SITE => 'website',
-
+                UsersDB::TYPE => 'type',
                 default => null
             };
 
@@ -280,14 +280,13 @@ class User extends \App\Model\Template\Entity
         return array_filter(array_merge(parent::toArray(), [
             'name' => $this->name,
             'email' => $this->email ?? null,
-            'password' => $this->pwd ?? null,
-            'phone' => $this->phone ?? null,          
+            'password' => $this->password ?? null,
+            'phone' => $this->phone ?? null,
             'CPF' => $this->CPF,
             'CNPJ' => $this->CNPJ,
             'CEP' => $this->CEP,
             'website' => $this->website,
-            'enterprise' => $this->enterprise,
+            'type' => $this->type,
         ]), fn ($value) => isset($value));
     }
-
 }

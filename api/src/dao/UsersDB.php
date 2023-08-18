@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\Template\User;
-use PDOException;
+use App\DAO\Enumerate\UserColumn;
+use App\Model\User;
 use RuntimeException;
 
 /**
@@ -16,61 +16,7 @@ use RuntimeException;
  */
 class UsersDB extends DatabaseAcess
 {
-    /**
-     * Nome da coluna de nome
-     * @var string
-     */
-    public const NAME = 'full_name';
-
-    /**
-     * Nome da coluna de senha 
-     * @var string
-     */
-    public const PWD = 'pwd';
-
-    /**
-     * Nome da coluna de telefone 
-     * @var string
-     */
-    public const PHONE = 'phone';
-
-    /**
-     * Nome da coluna de email
-     * @var string
-     */
-    public const EMAIL = 'email';
-
-    /**
-     * Nome da coluna de cep
-     * @var string
-     */
-    public const CEP = 'CEP';
-
-    /**
-     * Nome da coluna de site
-     * @var string
-     */
-    public const SITE = 'website';
-
-    /**
-     * Nome da coluna de CPF
-     * @var string
-     */
-    public const CPF = 'CPF';
-
-    /**
-     * Nome da coluna de CNPJ
-     * @var string
-     */
-    public const CNPJ = 'CNPJ';
-
-    /**
-     * Nome da coluna de vínculo com empreedimento
-     * @var string
-     */
-    public const ENTERPRISE = 'ENTERPRISE';
-
-
+    
     /**
      * @param User $user Modelo de usuário a ser manipulado
      */
@@ -86,7 +32,7 @@ class UsersDB extends DatabaseAcess
     public function create(): int
     {
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO user (id, full_name, email, phone, pwd, CPF, CNPJ, CEP, enterprise) VALUES (?,?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO user (id, full_name, email, phone, password, CPF, CNPJ, CEP, enterprise) VALUES (?,?,?,?,?,?,?,?,?)');
 
         $this->user->setID($this->getRandomID());
 
@@ -99,7 +45,7 @@ class UsersDB extends DatabaseAcess
         $query->bindValue(6, $this->user->getCPF());
         $query->bindValue(7, $this->user->getCNPJ());
         $query->bindValue(8, $this->user->getCEP());
-        $query->bindValue(9, $this->user->isEnterprise());
+        $query->bindValue(9, $this->user->getTypt());
 
 
         if ($query->execute()) { // Executa se a query não falhar
@@ -181,7 +127,7 @@ class UsersDB extends DatabaseAcess
      */
     public function update(string $column, string $value): int
     {
-        if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
+        if (!UserColumn::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
             $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
             goto error; // Pula execução do método
         }
@@ -217,14 +163,5 @@ class UsersDB extends DatabaseAcess
 
         throw new RuntimeException('Operação falhou'); // Executa em caso de falha esperada
 
-    }
-
-    /**
-     * @see abstracts/DatabaseAcess.php
-     */
-    public static function isColumn(string $column): bool
-    {
-        $columns = [self::NAME, self::PWD, self::EMAIL, self::CEP, self::SITE, self::PHONE, self::CNPJ, self::CPF, self::ENTERPRISE];
-        return !is_bool(array_search($column, $columns));
     }
 }

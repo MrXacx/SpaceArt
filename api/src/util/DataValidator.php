@@ -70,7 +70,7 @@ final class DataValidator
         $length = strlen($varchar);
         return  $length > 0 && $length <= match ($column) {
             'id' => 36,
-            UsersDB::NAME, UsersDB::EMAIL, UsersDB::SITE, UsersDB::PWD, AgreementsDB::ART, SelectionsDB::ART => 255,
+            UsersDB::NAME, UsersDB::EMAIL, UsersDB::SITE, UsersDB::PASSWORD, AgreementColumn::ART, SelectionColumn::ART => 255,
             default => throw new RuntimeException('Coluna não encontrada')
         };
     }
@@ -180,9 +180,9 @@ final class DataValidator
     public function isValidToFlag(string $flag, string $value): bool
     {
         return match ($flag) {
-            AgreementsDB::DATE => $this->isDate($value),
-            AgreementsDB::INITAL_TIME, AgreementsDB::FINAL_TIME => $this->isTime($value),
-            SelectionsDB::INITAL_DATETIME, SelectionsDB::FINAL_DATETIME => $this->isDatetime($value),
+            AgreementColumn::DATE => $this->isDate($value),
+            AgreementColumn::INITAL_TIME, AgreementColumn::FINAL_TIME => $this->isTime($value),
+            SelectionColumn::INITAL_DATETIME, SelectionColumn::FINAL_DATETIME => $this->isDatetime($value),
             UsersDB::PHONE => $this->isPhone($value),
             UsersDB::CPF => $this->isCPF($value),
             UsersDB::CNPJ => $this->isCNPJ($value),

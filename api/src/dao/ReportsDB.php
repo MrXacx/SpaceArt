@@ -16,12 +16,6 @@ use RuntimeException;
  */
 class ReportsDB extends DatabaseAcess
 {
-
-    public const REPORTER = 'artist';
-    public const REPORTED = 'artist';
-    public const REASON = 'selection';
-    public const ACCEPTED = 'last_change';
-
     /**
      * Modelo de candidatura a ser manipulado
      * @var Report
@@ -119,13 +113,5 @@ class ReportsDB extends DatabaseAcess
         }
 
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
-    }
-
-    /**
-     * @see abstracts/DatabaseAcess.php
-     */
-    public static function isColumn(string $column): bool
-    {
-        return !is_bool(array_search($column, [self::REPORTED, self::REPORTER, self::REASON, self::ACCEPTED]));
     }
 }

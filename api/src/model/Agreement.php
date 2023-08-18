@@ -58,6 +58,8 @@ class Agreement extends \App\Model\Template\Entity
      * 
      */
     private int $rate;
+
+
     private bool $accepted;
     private bool $locked;
 
@@ -75,31 +77,31 @@ class Agreement extends \App\Model\Template\Entity
                 case 'id':
                     $entity->id = $value;
                     break;
-                case AgreementsDB::HIRED_ID:
+                case AgreementColumn::HIRED_ID:
                     $entity->hiredID = $value;
                     break;
-                case AgreementsDB::HIRER_ID:
+                case AgreementColumn::HIRER_ID:
                     $entity->hirerID = $value;
                     break;
-                case AgreementsDB::PRICE:
+                case AgreementColumn::PRICE:
                     $entity->price = intval($value);
                     break;
-                case AgreementsDB::DATE:
+                case AgreementColumn::DATE:
                     $entity->date = $value;
                     break;
-                case AgreementsDB::INITAL_TIME:
+                case AgreementColumn::INITAL_TIME:
                     $entity->time['inital'] = $value;
                     break;
-                case AgreementsDB::FINAL_TIME:
+                case AgreementColumn::FINAL_TIME:
                     $entity->time['final'] = $value;
                     break;
-                case AgreementsDB::ART:
+                case AgreementColumn::ART:
                     $entity->art = $value;
                     break;
-                case AgreementsDB::LOCKED:
+                case AgreementColumn::LOCKED:
                     $entity->locked = boolval($value);
                     break;
-                case AgreementsDB::ACCEPTED:
+                case AgreementColumn::ACCEPTED:
                     $entity->accepted = boolval($value);
                     break;
             }

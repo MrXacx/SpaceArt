@@ -19,12 +19,12 @@ class Report extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Report($attr[ReportsDB::REPORTER]);
+        $entity = new Report($attr[ReportColumn::REPORTER]);
 
         $entity->id = $attr['id'];
-        $entity->reportedID = $attr[ReportsDB::REPORTED];
-        $entity->reason = $attr[ReportsDB::REASON];
-        $entity->accepted = boolval($attr[ReportsDB::ACCEPTED]);
+        $entity->reportedID = $attr[ReportColumn::REPORTED];
+        $entity->reason = $attr[ReportColumn::REASON];
+        $entity->accepted = boolval($attr[ReportColumn::ACCEPTED]);
 
         return $entity;
     }

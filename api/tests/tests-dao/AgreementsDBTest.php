@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../src/config/enviroment.php';
 
 use App\Model\Agreement;
 use App\DAO\AgreementsDB;
+
 /**
  * Classe de teste de AgreementsDB
  * 
@@ -44,12 +45,12 @@ class AgreementsDBTest extends \PHPUnit\Framework\TestCase
 
     public function testValidColumnExists(): void
     {
-        $this->assertTrue(AgreementsDB::isColumn(AgreementsDB::PRICE));
+        $this->assertTrue(AgreementColumn::isColumn(AgreementColumn::PRICE));
     }
 
     public function testInvalidColumnExists(): void
     {
-        $this->assertFalse(AgreementsDB::isColumn('0'));
+        $this->assertFalse(AgreementColumn::isColumn('0'));
     }
 
     public function testCreateValidAgreement(): void
@@ -71,8 +72,8 @@ class AgreementsDBTest extends \PHPUnit\Framework\TestCase
     public function testUpdateColumn(): void
     {
         self::$db->create(self::$agreement);
-        self::$db->update(AgreementsDB::FINAL_TIME, '14:35');
-        $this->assertEquals('14:35:00', self::$db->getAgreement(AgreementsDB::FINAL_TIME)->getTime()['final']);
+        self::$db->update(AgreementColumn::FINAL_TIME, '14:35');
+        $this->assertEquals('14:35:00', self::$db->getAgreement(AgreementColumn::FINAL_TIME)->getTime()['final']);
     }
 
     /**

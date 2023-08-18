@@ -46,35 +46,34 @@ CREATE TABLE agreement (
   final_time  TIME(0) NOT NULL,
   art varchar(255) NOT NULL,
   rate int DEFAULT NULL,
-  accepted boolean DEFAULT 0,
-  locked boolean DEFAULT 0,
+  status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
   PRIMARY KEY (id),
-  FOREIGN KEY (hirer) REFERENCES user(id) ON UPdate CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (hired) REFERENCES user(id) ON UPdate CASCADE ON DELETE CASCADE
+  CONSTRAINT hirer_fk FOREIGN KEY (hirer) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT hired_fk FOREIGN KEY (hired) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection (
   id char(36) NOT NULL,
   owner char(36) NOT NULL,
   price mediumint(5) UNSIGNED NOT NULL,
-  inital_datetime dateTIME NOT NULL,
-  final_datetime dateTIME NOT NULL,
+  inital_datetime datetime NOT NULL,
+  final_datetime datetime NOT NULL,
   art varchar(255) NOT NULL,
   locked boolean DEFAULT 0,
 
   PRIMARY KEY (id),
-  CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES user(id) ON UPdate CASCADE ON DELETE CASCADE
+  CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection_application (
   selection char(36) NOT NULL,
   artist char(36) NOT NULL,
-  last_change timestamp DEFAULT CURRENT_timestamp ON UPdate CURRENT_timestamp,
+  last_change timestamp DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
   
   PRIMARY KEY (selection, artist),
-  CONSTRAINT selection_fk FOREIGN KEY (selection) REFERENCES selection (id) ON UPdate CASCADE ON DELETE CASCADE,
-  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES user (id) ON UPdate CASCADE ON DELETE CASCADE
+  CONSTRAINT selection_fk FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES user (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE report (
@@ -85,6 +84,6 @@ CREATE TABLE report (
   accepted boolean DEFAULT NULL,
   
   PRIMARY KEY (id),
-  CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES user (id)  ON UPdate CASCADE ON DELETE SET NULL,
-  CONSTRAINT reported_fk FOREIGN KEY (reported) REFERENCES user (id)  ON UPdate CASCADE ON DELETE CASCADE
+  CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES user (id)  ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT reported_fk FOREIGN KEY (reported) REFERENCES user (id)  ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;

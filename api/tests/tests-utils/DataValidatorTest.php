@@ -44,9 +44,9 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateLength(): void
     {
-        $this->assertTrue($this->validator->isValidVarcharLength('Churrascada', \App\DAO\UsersDB::PWD));
-        $this->assertFalse($this->validator->isValidVarcharLength('', \App\DAO\AgreementsDB::ART));
-        $this->assertFalse($this->validator->isValidVarcharLength(str_repeat('a', 256), \App\DAO\UsersDB::PWD));
+        $this->assertTrue($this->validator->isValidVarcharLength('Churrascada', \App\DAO\UsersDB::PASSWORD));
+        $this->assertFalse($this->validator->isValidVarcharLength('', \App\DAO\AgreementColumn::ART));
+        $this->assertFalse($this->validator->isValidVarcharLength(str_repeat('a', 256), \App\DAO\UsersDB::PASSWORD));
     }
 
     public function testValidateLengthWithInvalidColumn(): void
@@ -146,16 +146,16 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validator->isValidToFlag(UsersDB::NAME, 'José Luís Datena'));
         $this->assertTrue($this->validator->isValidToFlag(UsersDB::CPF, '24873944813'));
         $this->assertTrue($this->validator->isValidToFlag(UsersDB::CEP, '91614582'));
-        $this->assertTrue($this->validator->isValidToFlag(AgreementsDB::DATE, '2023-07-01'));
-        $this->assertTrue($this->validator->isValidToFlag(SelectionsDB::FINAL_DATETIME, '2023-07-01 00:22'));
+        $this->assertTrue($this->validator->isValidToFlag(AgreementColumn::DATE, '2023-07-01'));
+        $this->assertTrue($this->validator->isValidToFlag(SelectionColumn::FINAL_DATETIME, '2023-07-01 00:22'));
     }
 
     public function testValidateAnyColumnWithIncorrectValue(): void
     {
         $this->assertFalse($this->validator->isValidToFlag(UsersDB::NAME, ''));
         $this->assertFalse($this->validator->isValidToFlag(UsersDB::CPF, '2e483944813'));
-        $this->assertFalse($this->validator->isValidToFlag(AgreementsDB::DATE, '2023-12-32'));
-        $this->assertFalse($this->validator->isValidToFlag(SelectionsDB::FINAL_DATETIME, '2023-7-01 00:22'));
+        $this->assertFalse($this->validator->isValidToFlag(AgreementColumn::DATE, '2023-12-32'));
+        $this->assertFalse($this->validator->isValidToFlag(SelectionColumn::FINAL_DATETIME, '2023-7-01 00:22'));
     }
 
     public function testValidateAnyColumnWithIncorrectFlag(): void

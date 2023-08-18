@@ -61,14 +61,14 @@ class Selection extends \App\Model\Template\Entity
 
         $entity = new Selection();
         $entity->id = $attr['id'];
-        $entity->ownerID = $attr[SelectionsDB::OWNER_ID];
-        $entity->price = $attr[SelectionsDB::PRICE];
-        $entity->art = $attr[SelectionsDB::ART];
+        $entity->ownerID = $attr[SelectionColumn::OWNER_ID];
+        $entity->price = $attr[SelectionColumn::PRICE];
+        $entity->art = $attr[SelectionColumn::ART];
 
-        $datetime = [explode(' ', $attr[SelectionsDB::INITAL_DATETIME]), explode(' ', $attr[SelectionsDB::FINAL_DATETIME])];
+        $datetime = [explode(' ', $attr[SelectionColumn::INITAL_DATETIME]), explode(' ', $attr[SelectionColumn::FINAL_DATETIME])];
         $entity->date = ['inital' => $datetime[0][0], 'final' => $datetime[1][0]];
         $entity->time = ['inital' => $datetime[0][1], 'final' => $datetime[1][1]];
-        $entity->locked = boolval($attr[SelectionsDB::LOCKED]);
+        $entity->locked = boolval($attr[SelectionColumn::LOCKED]);
 
         return $entity;
     }

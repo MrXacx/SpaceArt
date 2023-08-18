@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
+use App\DAO\Enumerate\SelectionColumn;
 use App\Model\Selection;
 use App\Model\User;
-use PDOException;
 use RuntimeException;
 
 /**
@@ -18,41 +18,6 @@ use RuntimeException;
  */
 class SelectionsDB extends DatabaseAcess
 {
-    /**
-     * Nome da coluna do ID do criador da seleção
-     * @var string
-     */
-    public const OWNER_ID = 'owner_id';
-
-    /**
-     * Nome da coluna do preço
-     * @var string
-     */
-    public const PRICE = 'price';
-
-    /**
-     * Nome da coluna do tipo de arte
-     * @var string
-     */
-    public const ART = 'art';
-
-    /**
-     * Nome da coluna da data de início da seleção
-     * @var string
-     */
-    public const INITAL_DATETIME = 'inital_datetime';
-
-    /**
-     * Nome da coluna da data de fim da seleção
-     * @var string
-     */
-    public const FINAL_DATETIME = 'final_datetime';
-
-    /**
-     * Nome da coluna de status
-     * @var bool
-     */
-    public const LOCKED = 'locked';
 
     /**
      * Modelo de seleção a ser manipulado
@@ -161,7 +126,7 @@ class SelectionsDB extends DatabaseAcess
     public function update(string $column, string $value): int
     {
 
-        if (!static::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
+        if (!SelectionColumn::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
             $message = "\"$column\" não é uma coluna da tabela selection"; // Define mensagem de erro
             goto error; // Pula execução do método
         }
@@ -195,14 +160,5 @@ class SelectionsDB extends DatabaseAcess
         }
 
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
-    }
-
-    /**
-     * @see abstracts/DatabaseAcess.php
-     */
-    public static function isColumn(string $column): bool
-    {
-        $columns = [self::OWNER_ID, self::PRICE, self::ART, self::INITAL_DATETIME, self::FINAL_DATETIME];
-        return !is_bool(array_search($column, $columns));
     }
 }
