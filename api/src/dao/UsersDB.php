@@ -127,11 +127,6 @@ class UsersDB extends DatabaseAcess
      */
     public function update(string $column, string $value): int
     {
-        if (!UserColumn::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-            $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
-            goto error; // Pula execução do método
-        }
-
         // Passa query SQL de atualização
         $query = $this->getConnection()->prepare("UPDATE user SET $column = ? WHERE id = ?");
 
@@ -144,8 +139,7 @@ class UsersDB extends DatabaseAcess
         }
 
         // Executa caso alguma falha esperada aconteça
-        error:
-        throw new RuntimeException($message ?? 'Operação falhou!');
+        throw new RuntimeException('Operação falhou!');
     }
 
     /**

@@ -19,7 +19,7 @@ class UserRoute
     {
 
         // Confere se id corresponde ao formato correto
-        if ($this->validator->isUiid($_GET['id'] . '')) {
+        if ($this->validator->isUUID($_GET['id'] . '')) {
             $user = new User();
             $user->setID($_GET['id']);
 

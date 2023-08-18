@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\DAO\Enumerate\SelectionColumn;
 use App\Model\Selection;
 use App\Model\User;
 use RuntimeException;
@@ -125,12 +124,6 @@ class SelectionsDB extends DatabaseAcess
      */
     public function update(string $column, string $value): int
     {
-
-        if (!SelectionColumn::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-            $message = "\"$column\" não é uma coluna da tabela selection"; // Define mensagem de erro
-            goto error; // Pula execução do método
-        }
-
         // Passa query SQL de atualização
         $query = $this->getConnection()->prepare("UPDATE selection \SET $column = ? WHERE id = ?");
 
@@ -143,8 +136,7 @@ class SelectionsDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        error:
-        throw new \RuntimeException($message ?? 'Operação falhou!');
+        throw new \RuntimeException('Operação falhou!');
     }
 
     /**

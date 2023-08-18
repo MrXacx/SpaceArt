@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\DAO\Enumerate\AgreementColumn;
 use App\Model\Agreement;
+use App\Model\User;
 
 /**
  * Classe de maniupulação da tabela Agreements
@@ -28,7 +28,7 @@ class AgreementsDB extends DatabaseAcess
      * @param Agreement $agreement Modelo de contrato a ser utilizado na manipulação
      * @param User #user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(Agreement $agreement, \App\Model\User $user = null)
+    function __construct(Agreement $agreement, User $user = null)
     {
         $this->agreement = $agreement;
         $this->user = $user;
@@ -82,7 +82,7 @@ class AgreementsDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        throw new \RuntimeException($message ?? 'Operação falhou!');
+        throw new \RuntimeException('Operação falhou!');
     }
 
     /**
@@ -108,11 +108,6 @@ class AgreementsDB extends DatabaseAcess
      */
     public function update(string $column, string $value): int
     {
-        if (!AgreementColumn::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-            $message = "\"$column\" não é uma coluna da tabela agreement"; // Define mensagem de erro
-            goto error; // Pula execução do método
-        }
-
         // Passa query SQL de atualização
         $query = $this->getConnection()->prepare("UPDATE agreement SET $column = ? WHERE id = ?");
 
@@ -125,8 +120,7 @@ class AgreementsDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        error:
-        throw new \RuntimeException($message ?? 'Operação falhou!');
+        throw new \RuntimeException('Operação falhou!');
     }
 
     /**

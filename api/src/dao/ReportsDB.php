@@ -6,6 +6,7 @@ namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
 use App\Model\Report;
+use App\Model\User;
 use RuntimeException;
 
 /**
@@ -26,7 +27,7 @@ class ReportsDB extends DatabaseAcess
      * @param Report $report Modelo de candidatura a ser manipulado
      * @param User $user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(Report $report, \App\Model\User $user)
+    function __construct(Report $report, User $user)
     {
         $this->report = $report;
         $this->user = $user;
@@ -95,7 +96,7 @@ class ReportsDB extends DatabaseAcess
      */
     public function update(string $column = null, string $value = null): int
     {
-        throw new RuntimeException('Não há suporte para atualizações na tabela Reports');
+        throw new RuntimeException('Não há suporte para atualizações na tabela report');
     }
 
     /**
