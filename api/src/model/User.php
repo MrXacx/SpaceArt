@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\UsersDB;
+use App\DAO\Enumerate\UserColumn;
 use App\Model\Enumerate\AccountType;
 
 /**
@@ -255,15 +255,15 @@ class User extends \App\Model\Template\Entity
         foreach ($attr as $key => $value) {
             $atributeName = match ($key) {
                 'id' => 'id',
-                UsersDB::EMAIL => 'email',
-                UsersDB::PASSWORD => 'password',
-                UsersDB::NAME => 'name',
-                UsersDB::CEP => 'cep',
-                UsersDB::CPF => 'CPF',
-                UsersDB::CNPJ => 'CNPJ',
-                UsersDB::PHONE => 'phone',
-                UsersDB::SITE => 'website',
-                UsersDB::TYPE => 'type',
+                UserColumn::EMAIL => 'email',
+                UserColumn::PASSWORD => 'password',
+                UserColumn::NAME => 'name',
+                UserColumn::CEP => 'cep',
+                UserColumn::CPF => 'CPF',
+                UserColumn::CNPJ => 'CNPJ',
+                UserColumn::PHONE => 'phone',
+                UserColumn::SITE => 'website',
+                UserColumn::TYPE => 'type',
                 default => null
             };
 

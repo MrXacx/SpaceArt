@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 include_once __DIR__ . '/config/enviroment.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$_ENV = array_merge($_ENV, getDatabaseSettings());
+$_ENV = array_merge($_ENV, getDatabaseSettings(true));
 
 use App\Controller\RoutesBuilder;
 

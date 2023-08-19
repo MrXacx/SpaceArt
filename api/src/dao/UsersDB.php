@@ -32,7 +32,7 @@ class UsersDB extends DatabaseAcess
     public function create(): int
     {
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO user (id, name, email, phone, password, CPF, CNPJ, CEP, type) VALUES (?,?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO users (id, name, email, phone, password, CPF, CNPJ, CEP, type) VALUES (?,?,?,?,?,?,?,?,?)');
 
         $this->user->setID($this->getRandomID());
 
@@ -62,7 +62,7 @@ class UsersDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, full_name, CEP, website, enterprise FROM user LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT id, name, CEP, website, type FROM users LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn ($user) => User::getInstanceOf($user), $this->fetchRecord($query));
@@ -77,7 +77,7 @@ class UsersDB extends DatabaseAcess
     public function getUnique(string $id): User
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, full_name, CEP, website, enterprise FROM userWHERE id = ?');
+        $query = $this->getConnection()->prepare('SELECT id, name, CEP, website, type FROM users WHERE id = ?');
         $query->bindValue(1, $id); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -93,7 +93,7 @@ class UsersDB extends DatabaseAcess
     public function getID(): array
     {
         // Passa query SQL para leitura da coluna id
-        $query = $this->getConnection()->prepare('SELECT id FROM userWHERE email = ? ');
+        $query = $this->getConnection()->prepare('SELECT id FROM users WHERE email = ? ');
         $query->bindValue(1, $this->user->getEmail()); // Substitui a interrogação pelo email passado
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -112,7 +112,7 @@ class UsersDB extends DatabaseAcess
     {
 
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT * FROM user WHERE id = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM users WHERE id = ?');
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -128,12 +128,12 @@ class UsersDB extends DatabaseAcess
     public function update(string $column, string $value): int
     {
         if (!UserColumn::isColumn($column)) { // Executa se coluna informada não pertencer à tabela
-            $message = "\"$column\" não é uma coluna da tabela Users"; // Define mensagem de erro
+            $message = "\"$column\" não é uma coluna da tabela users"; // Define mensagem de erro
             goto error; // Pula execução do método
         }
 
         // Passa query SQL de atualização
-        $query = $this->getConnection()->prepare("UPDATE user SET $column = ? WHERE id = ?");
+        $query = $this->getConnection()->prepare("UPDATE users SET $column = ? WHERE id = ?");
 
         // Substitui interrogações
         $query->bindValue(1, $value);
@@ -154,7 +154,7 @@ class UsersDB extends DatabaseAcess
     public function delete(): int
     {
         // Define a query SQL de remoção
-        $query = $this->getConnection()->prepare('DELETE FROM user WHERE id = ?');
+        $query = $this->getConnection()->prepare('DELETE FROM users WHERE id = ?');
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID informado
 
         if ($query->execute()) { // Executa caso a query seja aceita

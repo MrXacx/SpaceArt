@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\DAO\ApplicationsDB;
+use App\DAO\Enumerate\ApplicationColumn;
 
 /**
  * Classe modelo de aplicação a uma seleção

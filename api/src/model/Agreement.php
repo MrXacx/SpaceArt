@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\AgreementsDB;
+use App\DAO\Enumerate\AgreementColumn;
+use App\Model\Enumerate\AgreementStatus;
 
 /**
  * Classe modelo de contratos
@@ -60,8 +61,7 @@ class Agreement extends \App\Model\Template\Entity
     private int $rate;
 
 
-    private bool $accepted;
-    private bool $locked;
+    private AgreementStatus $status;
 
     /**
      * Obtém um modelo de contrato inicializado
@@ -98,11 +98,8 @@ class Agreement extends \App\Model\Template\Entity
                 case AgreementColumn::ART:
                     $entity->art = $value;
                     break;
-                case AgreementColumn::LOCKED:
-                    $entity->locked = boolval($value);
-                    break;
-                case AgreementColumn::ACCEPTED:
-                    $entity->accepted = boolval($value);
+                case AgreementColumn::STATUS:
+                    $entity->status = $value;
                     break;
             }
         }
@@ -229,25 +226,17 @@ class Agreement extends \App\Model\Template\Entity
         return $this->rate;
     }
 
-    public function setAccepted(bool $accepted): void
+    public function setStatus(AgreementStatus $status): void
     {
-        $this->accepted = $accepted;
+        $this->status = $status;
     }
 
-    public function isAccepted(): bool
+    public function getStatus(): AgreementStatus
     {
-        return $this->accepted;
+        return $this->status;
     }
 
-    public function setLocked(bool $locked): void
-    {
-        $this->locked = $locked;
-    }
 
-    public function isLocked(): bool
-    {
-        return $this->locked;
-    }
 
     public function toArray(): array
     {
@@ -258,8 +247,7 @@ class Agreement extends \App\Model\Template\Entity
             'date' => $this->date,
             'art' => $this->art ?? null,
             'time' => $this->time ?? null,
-            'locked' => $this->locked ?? null,
-            'accepted' => $this->accepted ?? null,
+            'status' => $this->status ?? null
         ]), fn ($value) => isset($value));
     }
 }

@@ -29,7 +29,7 @@ abstract class DatabaseAcess
     function __construct()
     {
         try {
-            $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_password']);
+            $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
         } catch (\Exception $ex) {
             throw new \RuntimeException($ex->getMessage());
         }

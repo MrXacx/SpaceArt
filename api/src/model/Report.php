@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\DAO\ReportsDB;
+use App\DAO\Enumerate\ReportColumn;
 
 class Report extends \App\Model\Template\Entity
 {

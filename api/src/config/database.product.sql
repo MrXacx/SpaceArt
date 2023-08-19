@@ -14,20 +14,20 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: spaceart
 --
-CREATE DATABASE spaceart;
-USE spaceart;
+-- CREATE DATABASE spaceart;
+-- USE spaceart;
 -- --------------------------------------------------------
 
-CREATE TABLE user (
+CREATE TABLE users(
   id char(36) NOT NULL,
-  name varchar(255) NOT NULL,
-  email varchar(255) NOT NULL,
+  name varchar(191) NOT NULL,
+  email varchar(191) NOT NULL,
   CPF varchar(11) DEFAULT NULL,
   CNPJ varchar(14) DEFAULT NULL,
   phone varchar(11) NOT NULL,
-  password varchar(255) NOT NULL,
+  password varchar(191) NOT NULL,
   CEP varchar(8) NOT NULL,
-  website varchar(255) DEFAULT NULL,
+  website varchar(191) DEFAULT NULL,
   type enum("artist", "enterprise") NOT NULL,
 
   PRIMARY KEY (id),
@@ -36,54 +36,54 @@ CREATE TABLE user (
   UNIQUE KEY (CNPJ)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE agreement (
+CREATE TABLE agreement(
   id char(36) NOT NULL,
   hirer char(36) NOT NULL,
   hired char(36) NOT NULL,
   price mediumint(5) UNSIGNED NOT NULL,
   date date NOT NULL,
-  inital_time TIME(0) NOT NULL,
-  final_time  TIME(0) NOT NULL,
-  art varchar(255) NOT NULL,
+  inital_time time NOT NULL,
+  final_time  time NOT NULL,
+  art varchar(191) NOT NULL,
   rate int DEFAULT NULL,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
   PRIMARY KEY (id),
-  CONSTRAINT hirer_fk FOREIGN KEY (hirer) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT hired_fk FOREIGN KEY (hired) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT hirer_fk FOREIGN KEY (hirer) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT hired_fk FOREIGN KEY (hired) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE selection (
+CREATE TABLE selection(
   id char(36) NOT NULL,
   owner char(36) NOT NULL,
   price mediumint(5) UNSIGNED NOT NULL,
   inital_datetime datetime NOT NULL,
   final_datetime datetime NOT NULL,
-  art varchar(255) NOT NULL,
+  art varchar(191) NOT NULL,
   locked boolean DEFAULT 0,
 
   PRIMARY KEY (id),
-  CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE selection_application (
+CREATE TABLE selection_application(
   selection char(36) NOT NULL,
   artist char(36) NOT NULL,
   last_change timestamp DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
   
   PRIMARY KEY (selection, artist),
   CONSTRAINT selection_fk FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES user (id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE report (
+CREATE TABLE report(
   id char(36) NOT NULL,
   reporter char(36),
   reported char(36) NOT NULL,
-  reason varchar(255) NOT NULL,
+  reason varchar(191) NOT NULL,
   accepted boolean DEFAULT NULL,
   
   PRIMARY KEY (id),
-  CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES user (id)  ON UPDATE CASCADE ON DELETE SET NULL,
-  CONSTRAINT reported_fk FOREIGN KEY (reported) REFERENCES user (id)  ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES users (id)  ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT reported_fk FOREIGN KEY (reported) REFERENCES users (id)  ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
