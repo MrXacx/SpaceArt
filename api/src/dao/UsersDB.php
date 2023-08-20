@@ -70,9 +70,6 @@ class UsersDB extends DatabaseAcess
         throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
     }
 
-
-
-
     /**
      * Obtém modelo de Usuário com dados não sensíveis
      * @return User Modelo de usuário

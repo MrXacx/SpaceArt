@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App;
 
 /**
  * Classe com para consultar dados do servidor

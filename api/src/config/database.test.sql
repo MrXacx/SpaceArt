@@ -8,20 +8,20 @@ INSERT INTO users (id, name, image, email, password, phone, CEP, federation, cit
 ('5', 'usuário 5', 'img.jpg', 'email5@gmail.com', 'senha 5', '55555', '55555', 'ES', "Vila Velha"),
 ('7', 'usuário 7', 'img.jpg', 'email7@gmail.com', 'senha 7', '77777', '77777', 'GO', "Goiânia");
 
-INSERT INTO enterprise (id, CNPJ, district, address)
+INSERT INTO enterprise (id, CNPJ, district, address) VALUES
 ('1', '11111', 'BAIRRO 1', "Rua 1, nº 43"),
 ('3', '33333', 'BAIRRO 2', "Rua 2, nº 63 E"),
 ('5', '55555', 'BAIRRO 3', "Travessa 3, nº 37, segundo andar"),
 ('7', '77777', 'BAIRRO 4', "Rua 4, s/n");
 
-INSERT INTO artist (id, CPF, wage_to_hourly, art)
+INSERT INTO artist (id, CPF, wage_to_hourly, art) VALUES
 ('2', '22222', '204', 'dança'),
 ('4', '44444', '234', 'música'),
 ('6', '66666', '420', 'escultura'),
 ('8', '88888', '110', 'pintura');
 
 
-INSERT INTO agreement (id, hirer, hired, price, date inital_time, final_time, art) VALUES
+INSERT INTO agreement (id, hirer, hired, price, date, inital_time, final_time, art) VALUES
 ('1', '1', '2', 200, '2023-12-31', '00:00', '23:59', 'música'),
 ('2', '3', '4', 200, '2023-12-31', '00:00', '23:59', 'pintura'),
 ('3', '5', '6', 200, '2023-12-31', '00:00', '23:59', 'escultura'),
