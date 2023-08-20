@@ -46,7 +46,7 @@ class RoutesBuilder extends \App\Controller\Server
                 list($state, $handler, $vars) = $routeInfo;
                 list($class, $method) = explode('/', $handler);
                 try {
-                    $this->response = [call_user_func_array([new $class, $method], $vars)];
+                    $this->response = call_user_func_array([new $class, $method], $vars);
                 } catch (Exception $ex) {
                         $this->response['error'] = [
                             'isRuntime' => $ex instanceof \RuntimeException,

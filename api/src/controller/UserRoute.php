@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DAO\Enumerate\UserColumn;
 use App\DAO\UsersDB;
 use App\Model\User;
 use App\Util\DataValidator;
@@ -38,7 +39,7 @@ class UserRoute
             o id consultado com base nos dados informados.  
         */
 
-        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UsersDB::PASSWORD)) {
+        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UserColumn::PASSWORD)) {
             $user = new User();
             $user->setEmail($_GET['email']);
             $user->setPassword($_GET['password']);
@@ -58,6 +59,9 @@ class UserRoute
         $limit =  preg_match('#^\d+$#', $_GET['limit']) && $_GET['limit'] <= Server::MAX_LIMIT ? intval($_GET['limit']) : Server::DEFAULT_LIMIT;
 
         // Retorna lista de vetorers com dados dos usuários
-        return array_map(fn ($user) => $user->toArray(), (new UsersDB())->getList($offset, $limit));
+        $list = (new UsersDB())->getList($offset, $limit);
+        //return $a;
+        return  array_map(fn ($user) => $user->toArray(), $list);
+        //return count($arr) >= 1 ? $arr : throw new RuntimeException("sem retornos");
     }
 }

@@ -54,7 +54,7 @@ class User extends \App\Model\Template\Entity
      * Tipo de conta
      * @var AccountType
      */
-    private AccountType $type;
+    private AccountType|string $type;
 
     /**
      * CEP do usuário
@@ -251,14 +251,13 @@ class User extends \App\Model\Template\Entity
     {
         $entity = new User();
 
-
         foreach ($attr as $key => $value) {
             $atributeName = match ($key) {
                 'id' => 'id',
                 UserColumn::EMAIL => 'email',
                 UserColumn::PASSWORD => 'password',
                 UserColumn::NAME => 'name',
-                UserColumn::CEP => 'cep',
+                UserColumn::CEP => 'CEP',
                 UserColumn::CPF => 'CPF',
                 UserColumn::CNPJ => 'CNPJ',
                 UserColumn::PHONE => 'phone',
