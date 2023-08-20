@@ -2,61 +2,17 @@
 
 namespace App\DAO\Enumerate;
 
-enum UserColumn: string
+enum UserColumn
 {
-    /**
-     * Nome da coluna de nome
-     * @var string
-     */
     public const NAME = 'name';
-
-    /**
-     * Nome da coluna de senha 
-     * @var string
-     */
+    public const IMAGE = 'image';
     public const PASSWORD = 'password';
-
-    /**
-     * Nome da coluna de telefone 
-     * @var string
-     */
     public const PHONE = 'phone';
-
-    /**
-     * Nome da coluna de email
-     * @var string
-     */
     public const EMAIL = 'email';
-
-    /**
-     * Nome da coluna de cep
-     * @var string
-     */
     public const CEP = 'CEP';
-
-    /**
-     * Nome da coluna de site
-     * @var string
-     */
+    public const FEDERATION = 'federation';
+    public const CITY = 'city';
     public const SITE = 'website';
-
-    /**
-     * Nome da coluna de CPF
-     * @var string
-     */
-    public const CPF = 'CPF';
-
-    /**
-     * Nome da coluna de CNPJ
-     * @var string
-     */
-    public const CNPJ = 'CNPJ';
-
-    /**
-     * Nome da coluna de tipo de conta
-     * @var string
-     */
-    public const TYPE = 'type';
 
 
     /**

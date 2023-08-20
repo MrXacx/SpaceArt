@@ -2,7 +2,7 @@
 
 namespace App\DAO\Enumerate;
 
-enum SelectionColumn: string
+enum SelectionColumn
 {
     /**
      * Nome da coluna do ID do criador da seleção

@@ -22,17 +22,37 @@ CREATE TABLE users(
   id char(36) NOT NULL,
   name varchar(191) NOT NULL,
   email varchar(191) NOT NULL,
-  CPF varchar(11) DEFAULT NULL,
-  CNPJ varchar(14) DEFAULT NULL,
-  phone varchar(11) NOT NULL,
+  phone char(11) NOT NULL,
   password varchar(191) NOT NULL,
   CEP varchar(8) NOT NULL,
-  website varchar(191) DEFAULT NULL,
-  type enum("artist", "enterprise") NOT NULL,
+  federation char(2) NOT NULL,
+  city varchar(50) NOT NULL,
+  image varchar(191),
+  website varchar(191),
 
   PRIMARY KEY (id),
   UNIQUE KEY (email),
-  UNIQUE KEY (CPF),
+  
+  UNIQUE KEY (CNPJ)
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE artist(
+  id char(36) NOT NULL,
+  CPF char(11) NOT NULL,
+  art enum("escultura", "pintura", "dança", "música") NOT NULL,
+  wage_to_hourly float NOT NULL,
+
+  CONSTRAINT id_fk FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE,
+  UNIQUE KEY (CPF)
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE enterprise(
+  id char(36) NOT NULL,
+  CNPJ char(14) NOT NULL,
+  district varchar(191) NOT NULL,
+  address varchar(191) NOT NULL,
+
+  CONSTRAINT id_fk FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE,
   UNIQUE KEY (CNPJ)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -45,12 +65,12 @@ CREATE TABLE agreement(
   inital_time time NOT NULL,
   final_time  time NOT NULL,
   art varchar(191) NOT NULL,
-  rate int DEFAULT NULL,
+  rate int,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
   PRIMARY KEY (id),
-  CONSTRAINT hirer_fk FOREIGN KEY (hirer) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT hired_fk FOREIGN KEY (hired) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT hirer_fk FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT hired_fk FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection(
@@ -73,7 +93,7 @@ CREATE TABLE selection_application(
   
   PRIMARY KEY (selection, artist),
   CONSTRAINT selection_fk FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE report(
@@ -81,7 +101,7 @@ CREATE TABLE report(
   reporter char(36),
   reported char(36) NOT NULL,
   reason varchar(191) NOT NULL,
-  accepted boolean DEFAULT NULL,
+  accepted boolean,
   
   PRIMARY KEY (id),
   CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES users (id)  ON UPDATE CASCADE ON DELETE SET NULL,

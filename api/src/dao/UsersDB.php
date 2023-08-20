@@ -32,20 +32,20 @@ class UsersDB extends DatabaseAcess
     public function create(): int
     {
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO users (id, name, email, phone, password, CPF, CNPJ, CEP, type) VALUES (?,?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO users (id, name, image, email, password, phone, CEP, federation, city) VALUES (?,?,?,?,?,?,?,?,?)');
 
         $this->user->setID($this->getRandomID());
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->user->getID());
         $query->bindValue(2, $this->user->getName());
-        $query->bindValue(3, $this->user->getEmail());
-        $query->bindValue(4, $this->user->getPhone());
+        $query->bindValue(3, $this->user->getImage());
+        $query->bindValue(4, $this->user->getEmail());
         $query->bindValue(5, $this->user->getPassword());
-        $query->bindValue(6, $this->user->getCPF());
-        $query->bindValue(7, $this->user->getCNPJ());
-        $query->bindValue(8, $this->user->getCEP());
-        $query->bindValue(9, $this->user->getType());
+        $query->bindValue(6, $this->user->getPhone());
+        $query->bindValue(7, $this->user->getCEP());
+        $query->bindValue(8, $this->user->getFederation());
+        $query->bindValue(9, $this->user->getCity());
 
 
         if ($query->execute()) { // Executa se a query não falhar
@@ -62,13 +62,16 @@ class UsersDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, name, CEP, website, type FROM users LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT id, name, image, CEP, federation, city, website FROM users LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn ($user) => User::getInstanceOf($user), $this->fetchRecord($query));
         }
         throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
     }
+
+
+
 
     /**
      * Obtém modelo de Usuário com dados não sensíveis
@@ -77,7 +80,7 @@ class UsersDB extends DatabaseAcess
     public function getUnique(string $id): User
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, name, CEP, website, type FROM users WHERE id = ?');
+        $query = $this->getConnection()->prepare('SELECT id, name, image, CEP, federation, city, website type FROM users WHERE id = ?');
         $query->bindValue(1, $id); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -93,8 +96,11 @@ class UsersDB extends DatabaseAcess
     public function getID(): array
     {
         // Passa query SQL para leitura da coluna id
-        $query = $this->getConnection()->prepare('SELECT id FROM users WHERE email = ? ');
-        $query->bindValue(1, $this->user->getEmail()); // Substitui a interrogação pelo email passado
+        $query = $this->getConnection()->prepare('SELECT id FROM users WHERE email = ? AND password = ?');
+        
+        // // Substitui as interrogações
+        $query->bindValue(1, $this->user->getEmail());
+        $query->bindValue(1, $this->user->getPassword());
 
         if ($query->execute()) { // Executa se a query for aceita
             return $this->fetchRecord($query, false);

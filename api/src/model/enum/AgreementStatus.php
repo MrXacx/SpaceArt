@@ -3,8 +3,10 @@
 namespace App\Model\Enumerate;
 
 enum AgreementStatus{
-    case ACCEPTED;
-    case RECUSED;
-    case SEND;
-    case CANCELED;
+    public const ACCEPTED = 'accepted';
+    public const RECUSED = 'recused';
+    public const SEND = 'send';
+    public const CANCELED = 'canceled';
 }
+
+?>

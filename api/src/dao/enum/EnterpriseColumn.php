@@ -2,11 +2,13 @@
 
 namespace App\DAO\Enumerate;
 
-enum ApplicationColumn
+enum EnterpriseColumn
 {
-    public const ARTIST = 'artist';
-    public const SELECTION = 'selection';
-    public const LAST_CHANGE = 'last_change';
+
+
+    public const CNPJ = 'CNPJ';
+    public const DISTRICT = 'district';
+    public const ADDRESS = 'address';
 
     /**
      * Confere se valor é idêntico ao nome de alguma coluna da tabela

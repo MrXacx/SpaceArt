@@ -14,7 +14,8 @@
       "App\\Model\\Enumerate\\": "src/model/enum/",
       "App\\Model\\Template\\": "src/model/abstracts/",
       "App\\Util\\": "src/util/",
-      "App\\Util\\Tool\\": "src/util/traits/"
+      "App\\Util\\Tool\\": "src/util/traits/",
+      "App\\Util\\Enumerate\\": "src/util/enum/"
     }
   },
   "require": {

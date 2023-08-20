@@ -2,7 +2,7 @@
 
 namespace App\DAO\Enumerate;
 
-enum ReportColumn: string
+enum ReportColumn
 {
     public const REPORTER = 'reporter';
     public const REPORTED = 'reported';

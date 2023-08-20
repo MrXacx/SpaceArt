@@ -1,13 +1,14 @@
 <?php
+
 namespace App\DAO\Enumerate;
 
-enum AgreementColumn: string
+enum AgreementColumn
 {
     /**
      * Nome da coluna de contratante
      * @var string
      */
-    case HIRER_ID = 'hirer';
+    public const HIRER_ID = 'hirer';
 
     /**
      * Nome da coluna de contratado
@@ -62,5 +63,3 @@ enum AgreementColumn: string
         return !is_bool(array_search($column, self::cases()));
     }
 }
-
-?>
