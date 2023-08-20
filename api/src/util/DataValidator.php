@@ -19,9 +19,9 @@ final class DataValidator
     use \App\Util\Tool\DateTimeTrait; // Habilita ferramenta para datas e horários
 
 
-    public function isUiid(string $uiid): bool
+    public function isUUID(string $uuid): bool
     {
-        return preg_match('#^\d{4}-\d{4}-\d{4}-\d{4}$#', $uiid);
+        return preg_match('#^\d{4}-\d{4}-\d{4}-\d{4}$#', $uuid);
     }
 
     /**
@@ -188,7 +188,7 @@ final class DataValidator
             UsersDB::CNPJ => $this->isCNPJ($value),
             UsersDB::CEP => $this->isCEP($value),
             UsersDB::SITE => $this->isURL($value),
-            'id' => $this->isUiid($value),
+            'id' => $this->isUUID($value),
             default => $this->isValidVarcharLength($value, $flag)
         };
     }

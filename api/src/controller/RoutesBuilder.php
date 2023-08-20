@@ -8,21 +8,30 @@ use Exception;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
 
+/**
+ * Classe para controlar rotas
+ */
 class RoutesBuilder extends \App\Controller\Server
 {
     private static $dispatcher;
     private array $response;
 
+    /**
+     * Inicia as rotas da API
+     */
     public static function createRoutes(): void
     {
-        static::$dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $collector) {
-            $collector->addGroup('/user', function (RouteCollector $collector) {
-                $collector->get('/consult', \App\Controller\UserRoute::class . '/getUnique'); // Obtém dados do usuário logado
+        static::$dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $collector) { // Inicia rotas
+            $collector->addGroup('/user', function (RouteCollector $collector) { // rotas com início "/user"
+                $collector->get('/unique', \App\Controller\UserRoute::class . '/getUnique'); // Obtém dados do usuário logado
                 $collector->get('/list', \App\Controller\UserRoute::class . '/getList'); // Obtém dados do usuário logado
                 $collector->get('/sign-in', \App\Controller\UserRoute::class . '/signIn'); // Obtém id do usuárionew App\Controller\UserController($collector);  
             });
-
-            //$collector->get('/contract/consult', \App\Controller\AgreementRoute::class . '/queryUsualData');
+            
+            $collector->addGroup('/agreement', function (RouteCollector $collector) { // rotas com início "/agreement"
+                $collector->get('/unique', \App\Controller\AgreementRoute::class . '/getUnique');
+                $collector->get('/list', \App\Controller\AgreementRoute::class . '/getList');
+            });
         });
     }
 

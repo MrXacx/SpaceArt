@@ -46,7 +46,7 @@ abstract class DatabaseAcess
     }
 
     /**
-     * Obtém uiid
+     * Obtém uuid
      * @return String Sequência aleatória de 36 dígitos
      * 
      */

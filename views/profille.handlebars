@@ -4,9 +4,9 @@
   <h2 class="title">{{title}}</h2>
 
   <main>
-    <img class="picture-user" src="{{image}}" alt="{{nome}}" />
+    <img class="picture-user" src="{{image}}" alt="{{name}}" />
 
-    <h3>{{nome}}</h3>
+    <h3>{{name}}</h3>
     <!-- barra de avaliação não usual -->
     <hr />
     <section class="ferramentas">
@@ -24,19 +24,10 @@
 
     {{#each rows}}
       <tr>
-        <th>{{this.titulo}}</th>
-        <td>{{this.valor}}</td>
+        <th>{{this.key}}</th>
+        <td>{{this.value}}</td>
       </tr>
     {{/each}}
 
   </table>
-  <!--
-	<ul id="conquistas">
-		<li>
-			<img src="" alt="conquista">
-			<legend>Contrato seguro</legend>
-			<p class="small-text">Perfil com dados verificados</p>
-		</li>
-	</ul>
-	-->
 </div>

@@ -15,19 +15,19 @@ module.exports = {
   },
 
   prepateHandlebars(path, express) {
-    this.host.use(express.static(path.join(__dirname, "../../public"))); // Permite a interpretação de arquivos estáticos do diretório assets
+    this.host.use(express.static(path.join(__dirname, "../public"))); // Permite a interpretação de arquivos estáticos do diretório assets
 
     const exphbs = require("express-handlebars").create({
       // Configura handlebars
       defaultLayout: "main",
       extname: "handlebars",
-      layoutsDir: path.join(__dirname, "../../views/layouts"),
+      layoutsDir: path.join(__dirname, "../views/layouts"),
     });
 
     // Configura manipulação de rotas
     this.host.engine("handlebars", exphbs.engine);
     this.host.set("view engine", "handlebars");
-    this.host.set("views", "../../views/");
+    this.host.set("views", "../views/");
   },
 
   createGetRoute(

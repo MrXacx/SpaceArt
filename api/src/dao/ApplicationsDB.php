@@ -84,7 +84,7 @@ class ApplicationsDB extends DatabaseAcess
      */
     public function update(string $column = null, string $value = null): int
     {
-        throw new RuntimeException('Não há suporte para atualizações na tabela Selection_Applications');
+        throw new RuntimeException('Não há suporte para atualizações na tabela selection_application');
     }
 
     /**
