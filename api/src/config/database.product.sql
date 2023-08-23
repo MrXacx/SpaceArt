@@ -15,6 +15,10 @@ SET time_zone = "+00:00";
 -- Banco de dados: spaceart
 --
 -- --------------------------------------------------------
+DROP DATABASE spaceart;
+CREATE DATABASE spaceart;
+USE spaceart;
+
 
 CREATE TABLE users(
 
@@ -28,9 +32,9 @@ CREATE TABLE users(
   city varchar(50) NOT NULL,
   image varchar(191),
   website varchar(191),
-  rate unsigned float DEFAULT 0
+  rate float DEFAULT 0
 
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE artist(
 
@@ -40,7 +44,7 @@ CREATE TABLE artist(
   wage_to_hourly float NOT NULL,
 
   FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE enterprise(
 
@@ -51,7 +55,7 @@ CREATE TABLE enterprise(
 
   FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE agreement(
 
@@ -69,7 +73,7 @@ CREATE TABLE agreement(
   FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
 
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection(
 
@@ -83,7 +87,7 @@ CREATE TABLE selection(
 
   FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
 
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection_application(
 
@@ -95,7 +99,7 @@ CREATE TABLE selection_application(
   FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE
 
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE report(
 
@@ -108,7 +112,7 @@ CREATE TABLE report(
   FOREIGN KEY (reporter) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL,
   FOREIGN KEY (reported) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE chat(
   id char(36) PRIMARY KEY,
@@ -117,29 +121,29 @@ CREATE TABLE chat(
 
   FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
-)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE message(
     chat char(36),
     sender char(36),
     content varchar(191) NOT NULL,
-    shipping_datetime datetime DEFAULT CURRENT_TIMESTAMP,
+    shipping_datetime timestamp DEFAULT CURRENT_TIMESTAMP,
     
-    PRIMARY KEY (chat, sender, shipping_datetime),
-    CONSTRAINT chat_fk FOREIGN KEY (chat) REFERENCES chat(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT sender_fk FOREIGN KEY (sender) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+    PRIMARY KEY (chat, sender, shipping_datetime)
+    FOREIGN KEY (chat) REFERENCES chat (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (sender) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE rate(
 
     author char(36),
     agreement char(36),
-    rate unsigned float NOT NULL,
-	  description varchar(191),
+    rate float NOT NULL,
+	description varchar(191),
 
     PRIMARY KEY(author, agreement),
-    CONSTRAINT author_fk FOREIGN KEY (author) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT agreement_fk FOREIGN KEY (agreement) REFERENCES agreement(id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT author_fk FOREIGN KEY (author) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT agreement_fk FOREIGN KEY (agreement) REFERENCES agreement (id) ON UPDATE CASCADE ON DELETE CASCADE
     
-) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
