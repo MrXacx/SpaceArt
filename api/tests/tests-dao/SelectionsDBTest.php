@@ -3,21 +3,21 @@
 require_once __DIR__ . '/../../src/config/enviroment.php';
 
 use App\Model\Selection;
-use App\DAO\SelectionsDB;
+use App\DAO\SelectionDB;
 
 /**
- * Classe de teste de SelectionsDB
+ * Classe de teste de SelectionDB
  * 
  * @package Tests
- * @see src/dao/SelectionsDB.php
+ * @see src/dao/SelectionDB.php
  */
-class SelectionsDBTest extends \PHPUnit\Framework\TestCase
+class SelectionDBTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Objeto de manipulação de tabela
-     * @var AgreementsDB
+     * @var AgreementDB
      */
-    private static SelectionsDB $db;
+    private static SelectionDB $db;
 
     /**
      * Objeto de manipulação de seleção
@@ -39,7 +39,7 @@ class SelectionsDBTest extends \PHPUnit\Framework\TestCase
         self::$selection->setArt('música');
 
         // Inicia manipulador de tabela
-        self::$db = new SelectionsDB(self::$selection);
+        self::$db = new SelectionDB(self::$selection);
     }
 
     public function testValidColumnExists(): void

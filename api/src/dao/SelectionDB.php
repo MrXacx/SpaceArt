@@ -15,7 +15,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class SelectionsDB extends DatabaseAcess
+class SelectionDB extends DatabaseAcess
 {
 
     /**

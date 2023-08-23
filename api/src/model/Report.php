@@ -6,14 +6,14 @@ use App\DAO\Enumerate\ReportColumn;
 
 class Report extends \App\Model\Template\Entity
 {
-    private string $reporterID;
-    private string $reportedID;
+    private string $reporter;
+    private string $reported;
     private string $reason;
     private bool $accepted;
 
-    function __construct(string $reporterID)
+    function __construct(string $reporter)
     {
-        $this->reporterID = $reporterID;
+        $this->reporter = $reporter;
         parent::__construct();
     }
 
@@ -22,7 +22,7 @@ class Report extends \App\Model\Template\Entity
         $entity = new Report($attr[ReportColumn::REPORTER]);
 
         $entity->id = $attr['id'];
-        $entity->reportedID = $attr[ReportColumn::REPORTED];
+        $entity->reported = $attr[ReportColumn::REPORTED];
         $entity->reason = $attr[ReportColumn::REASON];
         $entity->accepted = boolval($attr[ReportColumn::ACCEPTED]);
 
@@ -32,24 +32,24 @@ class Report extends \App\Model\Template\Entity
     public function toArray(): array
     {
         return array_merge(parent::toArray(), [
-            'reporter' => $this->reporterID,
-            'reported' => $this->reportedID,
+            'reporter' => $this->reporter,
+            'reported' => $this->reported,
             'reason' => $this->reason,
             'accepted' => $this->accepted,
         ]);
     }
 
-    public function getReporterID(): string
+    public function getReporter(): string
     {
         return $this->id;
     }
 
-    public function setReportedID(string $id): void
+    public function setReported(string $id): void
     {
         $this->id = $id;
     }
 
-    public function getReportedID(): string
+    public function getReported(): string
     {
         return $this->id;
     }

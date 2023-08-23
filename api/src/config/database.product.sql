@@ -17,9 +17,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 CREATE TABLE users(
-  id char(36) NOT NULL,
+
+  id char(36) PRIMARY KEY,
   name varchar(191) NOT NULL,
-  email varchar(191) NOT NULL,
+  email varchar(191) UNIQUE KEY NOT NULL,
   phone char(11) NOT NULL,
   password varchar(191) NOT NULL,
   CEP varchar(8) NOT NULL,
@@ -27,79 +28,118 @@ CREATE TABLE users(
   city varchar(50) NOT NULL,
   image varchar(191),
   website varchar(191),
+  rate unsigned float DEFAULT 0
 
-  PRIMARY KEY (id),
-  UNIQUE KEY (email)
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE artist(
-  id char(36) NOT NULL,
-  CPF char(11) NOT NULL,
+
+  id char(36) PRIMARY KEY,
+  CPF char(11) UNIQUE KEY NOT NULL,
   art enum("escultura", "pintura", "dança", "música") NOT NULL,
   wage_to_hourly float NOT NULL,
 
-  FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE,
-  UNIQUE KEY (CPF)
+  FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE enterprise(
-  id char(36) NOT NULL,
-  CNPJ char(14) NOT NULL,
+
+  id char(36) PRIMARY KEY,
+  CNPJ char(14) UNIQUE KEY NOT NULL,
   district varchar(191) NOT NULL,
   address varchar(191) NOT NULL,
 
-  FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE,
-  UNIQUE KEY (CNPJ)
+  FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE agreement(
-  id char(36) NOT NULL,
+
+  id char(36) PRIMARY KEY,
   hirer char(36) NOT NULL,
   hired char(36) NOT NULL,
-  price mediumint(5) UNSIGNED NOT NULL,
+  price mediumint(5) unsigned NOT NULL,
   date date NOT NULL,
   inital_time time NOT NULL,
   final_time  time NOT NULL,
   art varchar(191) NOT NULL,
-  rate int,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
+  rate int,
 
-  PRIMARY KEY (id),
   FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
+
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection(
-  id char(36) NOT NULL,
+
+  id char(36) PRIMARY KEY,
   owner char(36) NOT NULL,
-  price mediumint(5) UNSIGNED NOT NULL,
+  price mediumint(5) unsigned NOT NULL,
   inital_datetime datetime NOT NULL,
   final_datetime datetime NOT NULL,
   art varchar(191) NOT NULL,
   locked boolean DEFAULT 0,
 
-  PRIMARY KEY (id),
   FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
+
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE selection_application(
+
   selection char(36) NOT NULL,
   artist char(36) NOT NULL,
-  last_change timestamp DEFAULT CURRENT_timestamp ON UPDATE CURRENT_timestamp,
+  last_change timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
   PRIMARY KEY (selection, artist),
   FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE
+
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE report(
-  id char(36) NOT NULL,
+
+  id char(36) PRIMARY KEY,
   reporter char(36),
   reported char(36) NOT NULL,
   reason varchar(191) NOT NULL,
   accepted boolean,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (reporter) REFERENCES users (id)  ON UPDATE CASCADE ON DELETE SET NULL,
-  FOREIGN KEY (reported) REFERENCES users (id)  ON UPDATE CASCADE ON DELETE CASCADE
+
+  FOREIGN KEY (reporter) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL,
+  FOREIGN KEY (reported) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
+
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE chat(
+  id char(36) PRIMARY KEY,
+  artist char(36),
+  enterprise char(36),
+
+  FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
+)
+
+CREATE TABLE message(
+    chat char(36),
+    sender char(36),
+    content varchar(191) NOT NULL,
+    shipping_datetime datetime DEFAULT CURRENT_TIMESTAMP,
+    
+    PRIMARY KEY (chat, sender, shipping_datetime),
+    CONSTRAINT chat_fk FOREIGN KEY (chat) REFERENCES chat(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT sender_fk FOREIGN KEY (sender) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE
+
+) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE rate(
+
+    author char(36),
+    agreement char(36),
+    rate unsigned float NOT NULL,
+	  description varchar(191),
+
+    PRIMARY KEY(author, agreement),
+    CONSTRAINT author_fk FOREIGN KEY (author) REFERENCES user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT agreement_fk FOREIGN KEY (agreement) REFERENCES agreement(id) ON UPDATE CASCADE ON DELETE CASCADE
+    
 ) ENGINE=InnoDB DEFAULT charSET=utf8mb4 COLLATE=utf8mb4_general_ci;

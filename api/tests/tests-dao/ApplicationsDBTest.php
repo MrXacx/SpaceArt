@@ -2,27 +2,27 @@
 
 require_once __DIR__ . '/../../src/config/enviroment.php';
 
-use App\DAO\ApplicationsDB;
+use App\DAO\ApplicationDB;
 use App\Model\Application;
 use App\Model\Selection;
 
 
-class ApplicationsDBTest extends \PHPUnit\Framework\TestCase
+class ApplicationDBTest extends \PHPUnit\Framework\TestCase
 {
 
     private Selection $selection;
     private Application $application;
-    private ApplicationsDB $db;
+    private ApplicationDB $db;
 
     protected function setUp(): void
     {
         $this->application = new Application();
-        $this->application->setUserID('1');
-        $this->application->setSelectionID('2');
+        $this->application->setUser('1');
+        $this->application->setSelection('2');
         $this->selection = new Selection();
-        $this->selection->setID($this->application->getSelectionID());
+        $this->selection->setID($this->application->getSelection());
 
-        $this->db = new ApplicationsDB($this->application, $this->selection);
+        $this->db = new ApplicationDB($this->application, $this->selection);
     }
 
     public function testCreate()

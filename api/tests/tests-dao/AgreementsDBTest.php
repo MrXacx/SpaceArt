@@ -2,23 +2,23 @@
 require_once __DIR__ . '/../../src/config/enviroment.php';
 
 use App\Model\Agreement;
-use App\DAO\AgreementsDB;
+use App\DAO\AgreementDB;
 
 /**
- * Classe de teste de AgreementsDB
+ * Classe de teste de AgreementDB
  * 
  * @package Tests
- * @see src/dao/AgreementsDB.php
+ * @see src/dao/AgreementDB.php
  */
 
 
-class AgreementsDBTest extends \PHPUnit\Framework\TestCase
+class AgreementDBTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Objeto de manipulação de tabela
-     * @var AgreementsDB
+     * @var AgreementDB
      */
-    private static AgreementsDB $db;
+    private static AgreementDB $db;
 
     /**
      * Objeto de manipulação de contrato
@@ -40,7 +40,7 @@ class AgreementsDBTest extends \PHPUnit\Framework\TestCase
         self::$agreement->setTime('07:24', '08:32');
         self::$agreement->setArt('escultura');
 
-        self::$db = new AgreementsDB(self::$agreement);
+        self::$db = new AgreementDB(self::$agreement);
     }
 
     public function testValidColumnExists(): void

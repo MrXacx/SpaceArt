@@ -41,7 +41,6 @@ class User extends \App\Model\Template\Entity
      */
     protected string $password;
 
-
     /**
      * site do usuário
      * @var string
@@ -53,6 +52,12 @@ class User extends \App\Model\Template\Entity
      * @var string
      */
     protected string|null $image = null;
+
+    /**
+     * Nota média do usuário
+     * @var float
+     */
+    protected float|string $rate;
 
 
     /**
@@ -77,6 +82,7 @@ class User extends \App\Model\Template\Entity
                 UserColumn::CITY => 'city',
                 UserColumn::PHONE => 'phone',
                 UserColumn::SITE => 'website',
+                UserColumn::RATE => 'rate',
                 default => null
             };
 
@@ -208,6 +214,14 @@ class User extends \App\Model\Template\Entity
         return $this->image;
     }
 
+    public function setRate(float $rate): void{
+        $this->rate = $rate;
+    }
+
+    public function getRate(): float{
+        return floatval($this->rate);
+    }
+
     public function toArray(): array
     {
         return array_merge(parent::toArray(), [
@@ -217,6 +231,7 @@ class User extends \App\Model\Template\Entity
             'password' => $this->password ?? null,
             'phone' => $this->phone ?? null,
             'location' => $this->toLocationArray(),
+            'rate' => $this->rate,
             'website' => $this->website
         ]);
     }

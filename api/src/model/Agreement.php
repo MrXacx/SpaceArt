@@ -22,19 +22,19 @@ class Agreement extends \App\Model\Template\Entity
      * ID do contratante
      * @var string
      */
-    private string $hirerID;
+    private string $hirer;
 
     /**
      * ID do contratado
      * @var string
      */
-    private string $hiredID;
+    private string $hired;
 
     /**
      * Valor do contrato
-     * @var string
+     * @var int|string
      */
-    private string $price;
+    private int|string $price;
 
     /**
      * Tipo de arte
@@ -77,14 +77,14 @@ class Agreement extends \App\Model\Template\Entity
                 case 'id':
                     $entity->id = $value;
                     break;
-                case AgreementColumn::HIRED_ID:
-                    $entity->hiredID = $value;
+                case AgreementColumn::HIRED:
+                    $entity->hired = $value;
                     break;
-                case AgreementColumn::HIRER_ID:
-                    $entity->hirerID = $value;
+                case AgreementColumn::HIRER:
+                    $entity->hirer = $value;
                     break;
                 case AgreementColumn::PRICE:
-                    $entity->price = intval($value);
+                    $entity->price = $value;
                     break;
                 case AgreementColumn::DATE:
                     $entity->date = $value;
@@ -108,11 +108,11 @@ class Agreement extends \App\Model\Template\Entity
     }
 
     /** 
-     * @param string $hirerID ID do contratante
+     * @param string $hirer ID do contratante
      */
-    function setHirerID(string $hirerID)
+    function setHirer(string $hirer)
     {
-        $this->hirerID = $hirerID;
+        $this->hirer = $hirer;
     }
 
     /**
@@ -120,17 +120,17 @@ class Agreement extends \App\Model\Template\Entity
      * 
      * @return string ID
      */
-    public function gethirerID(): string
+    public function getHirer(): string
     {
-        return $this->hirerID;
+        return $this->hirer;
     }
 
     /** 
-     * @param string $hiredID ID do contratado
+     * @param string $hired ID do contratado
      */
-    function setHireDID(string $hiredID)
+    function setHired(string $hired)
     {
-        $this->hiredID = $hiredID;
+        $this->hired = $hired;
     }
 
     /**
@@ -138,9 +138,9 @@ class Agreement extends \App\Model\Template\Entity
      * 
      * @return string ID
      */
-    public function gethiredID(): string
+    public function gethired(): string
     {
-        return $this->hiredID;
+        return $this->hired;
     }
 
     /** 
@@ -148,7 +148,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     function setPrice(int $price)
     {
-        $this->price = $price . ''; // Armazena valor como string            
+        $this->price = $price;       
     }
 
     /**
@@ -156,9 +156,9 @@ class Agreement extends \App\Model\Template\Entity
      * 
      * @return string Preço
      */
-    public function getPrice(): string
+    public function getPrice(): int
     {
-        return $this->price;
+        return intval($this->price);
     }
 
     /**
@@ -241,8 +241,8 @@ class Agreement extends \App\Model\Template\Entity
     public function toArray(): array
     {
         return array_filter(array_merge(parent::toArray(), [
-            'hirer' => $this->hirerID,
-            'hired' => $this->hiredID,
+            'hirer' => $this->hirer,
+            'hired' => $this->hired,
             'price' => $this->price,
             'date' => $this->date,
             'art' => $this->art ?? null,

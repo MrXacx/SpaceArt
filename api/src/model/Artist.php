@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\DAO\Enumerate\ArtistColumn;
-use App\DAO\Enumerate\EnterpriseColumn;
 use App\DAO\Enumerate\UserColumn;
-use App\Model\Enumerate\AccountType;
 
 /**
  * Classe modelo de usuário

@@ -13,7 +13,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ArtistsDB extends UsersDB
+class ArtistDB extends UsersDB
 {
 
     private Artist $artist;

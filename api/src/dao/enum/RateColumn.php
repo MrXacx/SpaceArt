@@ -2,17 +2,13 @@
 
 namespace App\DAO\Enumerate;
 
-enum AgreementColumn
+enum RateColumn
 {
 
-    public const HIRER = 'hirer';
-    public const HIRED = 'hired';
-    public const PRICE = 'price';
-    public const ART = 'art';
-    public const DATE = 'date';
-    public const INITAL_TIME = 'inital_time';
-    public const FINAL_TIME = 'final_time';
-    public const STATUS = 'status';
+    public const AUTHOR = 'author';
+    public const AGREEMENT = 'agreement';
+    public const RATE = 'rate';
+    public const DESCRIPTION = 'description';
 
     /**
      * Confere se valor é idêntico ao nome de alguma coluna da tabela

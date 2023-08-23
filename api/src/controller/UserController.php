@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DAO\ArtistsDB;
+use App\DAO\ArtistDB;
 use App\DAO\EnterprisesDB;
 use App\DAO\Enumerate\UserColumn;
 use App\DAO\UsersDB;
@@ -76,7 +76,7 @@ class UserController
         }
 
         $dao = match($type) { //Obtém objeto adequado para o tipo de conta
-            AccountType::ARTIST => new ArtistsDB(),
+            AccountType::ARTIST => new ArtistDB(),
             AccountType::ENTERPRISE => new EnterprisesDB(),
             default => throw new RuntimeException('O tipo da conta não foi informado ou não foi reconhecido') // Lança exceção
         };
@@ -98,5 +98,3 @@ class UserController
         }
     }
 }
-
-?>

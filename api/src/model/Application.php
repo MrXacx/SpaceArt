@@ -16,13 +16,13 @@ class Application extends \App\Model\Template\Entity
      * ID do usuário
      * @var string
      */
-    private string $userID;
+    private string $user;
 
     /**
      * ID da seleção
      * @var string
      */
-    private string $selectionID;
+    private string $selection;
 
     /**
      * Última alteração na aplicação
@@ -34,43 +34,43 @@ class Application extends \App\Model\Template\Entity
      * Insere ID da seleção
      * @param string
      */
-    function setSelectionID(string $selectionID)
+    function setSelection(string $selection)
     {
-        $this->selectionID =  $selectionID;
+        $this->selection =  $selection;
     }
 
     /**
      * Obtém ID da seleção
      * @return string
      */
-    public function getSelectionID(): string
+    public function getSelection(): string
     {
-        return $this->selectionID;
+        return $this->selection;
     }
 
     /**
      * Insere ID do usuário
      * @param string
      */
-    public function setUserID(string $userID): void
+    public function setUser(string $user): void
     {
-        $this->userID = $userID;
+        $this->user = $user;
     }
 
     /**
      * Obtém ID do usuário
      * @return string
      */
-    public function getUserID(): string
+    public function getUser(): string
     {
-        return $this->userID;
+        return $this->user;
     }
 
     public static function getInstanceOf(array $attr): self
     {
         $entity = new Application();
-        $entity->selectionID = $attr[ApplicationColumn::SELECTION];
-        $entity->userID = $attr[ApplicationColumn::ARTIST];
+        $entity->selection = $attr[ApplicationColumn::SELECTION];
+        $entity->user = $attr[ApplicationColumn::ARTIST];
         $entity->lastChange = $attr[ApplicationColumn::LAST_CHANGE];
 
         return $entity;
@@ -79,8 +79,8 @@ class Application extends \App\Model\Template\Entity
     public function toArray(): array
     {
         return [
-            'selection' => $this->selectionID,
-            'user' => $this->userID,
+            'selection' => $this->selection,
+            'user' => $this->user,
             'last_change' => $this->lastChange ?? null,
         ];
     }

@@ -14,9 +14,9 @@ use App\Model\User;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class AgreementsDB extends DatabaseAcess
+class AgreementDB extends DatabaseAcess
 {
-    
+
 
     /**
      * Modelo de contrato a ser utilizado na manipulação
@@ -47,8 +47,8 @@ class AgreementsDB extends DatabaseAcess
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->agreement->getID());
-        $query->bindValue(2, $this->agreement->getHirerID());
-        $query->bindValue(3, $this->agreement->getHiredID());
+        $query->bindValue(2, $this->agreement->getHirer());
+        $query->bindValue(3, $this->agreement->getHired());
         $query->bindValue(4, $this->agreement->getPrice());
         $query->bindValue(5,  $this->agreement->getDate());
 
@@ -137,6 +137,4 @@ class AgreementsDB extends DatabaseAcess
 
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
     }
-
-    
 }

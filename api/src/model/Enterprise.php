@@ -6,7 +6,6 @@ namespace App\Model;
 
 use App\DAO\Enumerate\EnterpriseColumn;
 use App\DAO\Enumerate\UserColumn;
-use App\Model\Enumerate\AccountType;
 
 /**
  * Classe modelo de usuário

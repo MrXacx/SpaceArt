@@ -1,7 +1,7 @@
 <?php
 
-use App\DAO\AgreementsDB;
-use App\DAO\SelectionsDB;
+use App\DAO\AgreementDB;
+use App\DAO\SelectionDB;
 use App\DAO\UsersDB;
 use App\Util\DataValidator;
 

@@ -15,7 +15,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ApplicationsDB extends DatabaseAcess
+class ApplicationDB extends DatabaseAcess
 {
 
     /**
@@ -51,8 +51,8 @@ class ApplicationsDB extends DatabaseAcess
         $query = $this->getConnection()->prepare('INSERT INTO selection_application (selection, artist) VALUES (?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->application->getSelectionID());
-        $query->bindValue(2, $this->application->getUserID());
+        $query->bindValue(1, $this->application->getSelection());
+        $query->bindValue(2, $this->application->getUser());
 
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas
@@ -95,8 +95,8 @@ class ApplicationsDB extends DatabaseAcess
         // Deleta candidatura do banco
         $query = $this->getConnection()->prepare('DELETE FROM selection_application WHERE selection = ? AND artist = ?');
 
-        $query->bindValue(1, $this->application->getSelectionID());
-        $query->bindValue(2, $this->application->getUserID());
+        $query->bindValue(1, $this->application->getSelection());
+        $query->bindValue(2, $this->application->getUser());
 
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas
@@ -104,5 +104,4 @@ class ApplicationsDB extends DatabaseAcess
 
         throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
     }
-
 }

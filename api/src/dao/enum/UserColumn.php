@@ -12,6 +12,7 @@ enum UserColumn
     public const CEP = 'CEP';
     public const FEDERATION = 'federation';
     public const CITY = 'city';
+    public const RATE = 'rate';
     public const SITE = 'website';
 
 

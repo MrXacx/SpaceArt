@@ -15,7 +15,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ReportsDB extends DatabaseAcess
+class ReportDB extends DatabaseAcess
 {
     /**
      * Modelo de candidatura a ser manipulado
@@ -47,8 +47,8 @@ class ReportsDB extends DatabaseAcess
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->report->getID());
-        $query->bindValue(2, $this->report->getReporterID());
-        $query->bindValue(3, $this->report->getReportedID());
+        $query->bindValue(2, $this->report->getReporter());
+        $query->bindValue(3, $this->report->getReported());
         $query->bindValue(3, $this->report->getReason());
 
         if ($query->execute()) { // Executa se a query não falhar
