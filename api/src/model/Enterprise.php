@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\Enumerate\EnterpriseColumn;
-use App\DAO\Enumerate\UserColumn;
+use App\DAO\EnterpriseDB;
+use App\DAO\UsersDB;
 
 /**
  * Classe modelo de usuário
@@ -34,17 +34,17 @@ class Enterprise extends User
         foreach ($attr as $key => $value) {
             $atributeName = match ($key) {
                 'id' => 'id',
-                UserColumn::EMAIL => 'email',
-                UserColumn::PASSWORD => 'password',
-                UserColumn::NAME => 'name',
-                EnterpriseColumn::CNPJ => 'CNPJ',
-                UserColumn::CEP => 'CEP',
-                UserColumn::FEDERATION => 'federation',
-                UserColumn::CITY => 'federation',
-                EnterpriseColumn::DISTRICT => 'district',
-                EnterpriseColumn::ADDRESS=> 'address',
-                UserColumn::PHONE => 'phone',
-                UserColumn::SITE => 'website',
+                UsersDB::EMAIL => 'email',
+                UsersDB::PASSWORD => 'password',
+                UsersDB::NAME => 'name',
+                EnterpriseDB::CNPJ => 'CNPJ',
+                UsersDB::CEP => 'CEP',
+                UsersDB::FEDERATION => 'federation',
+                UsersDB::CITY => 'federation',
+                EnterpriseDB::DISTRICT => 'district',
+                EnterpriseDB::ADDRESS => 'address',
+                UsersDB::PHONE => 'phone',
+                UsersDB::SITE => 'website',
                 default => null
             };
 
@@ -76,10 +76,10 @@ class Enterprise extends User
 
     public function toArray(): array
     {
-        
+
         return array_merge(parent::toArray(), [
             'CNPJ' => $this->CNPJ,
-            
+
         ]);
     }
 }

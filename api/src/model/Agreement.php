@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\Enumerate\AgreementColumn;
+use App\DAO\AgreementDB;
 use App\Model\Enumerate\AgreementStatus;
 
 /**
@@ -77,28 +77,28 @@ class Agreement extends \App\Model\Template\Entity
                 case 'id':
                     $entity->id = $value;
                     break;
-                case AgreementColumn::HIRED:
+                case AgreementDB::HIRED:
                     $entity->hired = $value;
                     break;
-                case AgreementColumn::HIRER:
+                case AgreementDB::HIRER:
                     $entity->hirer = $value;
                     break;
-                case AgreementColumn::PRICE:
+                case AgreementDB::PRICE:
                     $entity->price = $value;
                     break;
-                case AgreementColumn::DATE:
+                case AgreementDB::DATE:
                     $entity->date = $value;
                     break;
-                case AgreementColumn::INITAL_TIME:
+                case AgreementDB::INITAL_TIME:
                     $entity->time['inital'] = $value;
                     break;
-                case AgreementColumn::FINAL_TIME:
+                case AgreementDB::FINAL_TIME:
                     $entity->time['final'] = $value;
                     break;
-                case AgreementColumn::ART:
+                case AgreementDB::ART:
                     $entity->art = $value;
                     break;
-                case AgreementColumn::STATUS:
+                case AgreementDB::STATUS:
                     $entity->status = $value;
                     break;
             }
@@ -148,7 +148,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     function setPrice(int $price)
     {
-        $this->price = $price;       
+        $this->price = $price;
     }
 
     /**

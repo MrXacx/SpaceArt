@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\DAO\Enumerate\ApplicationColumn;
+use App\DAO\ApplicationDB;
 
 /**
  * Classe modelo de aplicação a uma seleção
@@ -69,9 +69,9 @@ class Application extends \App\Model\Template\Entity
     public static function getInstanceOf(array $attr): self
     {
         $entity = new Application();
-        $entity->selection = $attr[ApplicationColumn::SELECTION];
-        $entity->user = $attr[ApplicationColumn::ARTIST];
-        $entity->lastChange = $attr[ApplicationColumn::LAST_CHANGE];
+        $entity->selection = $attr[ApplicationDB::SELECTION];
+        $entity->user = $attr[ApplicationDB::ARTIST];
+        $entity->lastChange = $attr[ApplicationDB::LAST_CHANGE];
 
         return $entity;
     }

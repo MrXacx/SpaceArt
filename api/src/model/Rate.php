@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\DAO\Enumerate\RateColumn;
+use App\DAO\RateDB;
 
 class Rate extends \App\Model\Template\Entity
 {
@@ -19,11 +19,11 @@ class Rate extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Rate($attr[RateColumn::AGREEMENT]);
+        $entity = new Rate($attr[RateDB::AGREEMENT]);
 
-        $entity->author = $attr[RateColumn::AUTHOR];
-        $entity->rate = $attr[RateColumn::RATE];
-        $entity->description = $attr[RateColumn::DESCRIPTION];
+        $entity->author = $attr[RateDB::AUTHOR];
+        $entity->rate = $attr[RateDB::RATE];
+        $entity->description = $attr[RateDB::DESCRIPTION];
 
         return $entity;
     }

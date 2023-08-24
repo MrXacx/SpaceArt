@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\Enumerate\ArtistColumn;
-use App\DAO\Enumerate\UserColumn;
+use App\DAO\ArtistDB;
+use App\DAO\UsersDB;
 
 /**
  * Classe modelo de usuário
@@ -33,20 +33,21 @@ class Artist extends User
         $entity = new Artist();
 
         foreach ($attr as $key => $value) {
+
             $atributeName = match ($key) {
                 'id' => 'id',
-                UserColumn::EMAIL => 'email',
-                UserColumn::PASSWORD => 'password',
-                UserColumn::NAME => 'name',
-                UserColumn::PHONE => 'phone',
-                UserColumn::CEP => 'CEP',
-                UserColumn::FEDERATION => 'federation',
-                UserColumn::CITY => 'city',
-                
-                ArtistColumn::CPF => 'CPF',
-                ArtistColumn::ART => 'art',
-                ArtistColumn::WAGE => 'wage',
-                UserColumn::SITE => 'website',
+                UsersDB::EMAIL => 'email',
+                UsersDB::PASSWORD => 'password',
+                UsersDB::NAME => 'name',
+                UsersDB::PHONE => 'phone',
+                UsersDB::CEP => 'CEP',
+                UsersDB::FEDERATION => 'federation',
+                UsersDB::CITY => 'city',
+
+                ArtistDB::CPF => 'CPF',
+                ArtistDB::ART => 'art',
+                ArtistDB::WAGE => 'wage',
+                UsersDB::SITE => 'website',
 
                 default => null
             };

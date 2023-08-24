@@ -60,7 +60,7 @@ body > * {
   list-style-type: none;
   padding: var(--default_padding);
   display: flex;
-  flex-direction: column;
+  flex-direction: column
 }
 .table tr {
   display: grid;

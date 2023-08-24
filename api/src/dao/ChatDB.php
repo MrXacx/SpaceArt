@@ -5,37 +5,32 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\Report;
-use App\Model\User;
+use App\Model\Chat;
 use RuntimeException;
 
 /**
- * Classe de maniupulação da tabela Reports
+ * Classe de maniupulação da tabela Chats
  * 
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class ReportDB extends DatabaseAcess
+class ChatDB extends DatabaseAcess
 {
-    public const REPORTER = 'reporter';
-    public const REPORTED = 'reported';
-    public const REASON = 'selection';
-    public const ACCEPTED = 'last_change';
-    
-    /**
-     * Modelo de candidatura a ser manipulado
-     * @var Report
-     */
-    private Report $report;
+    public const ARTIST = 'artist';
+    public const ENTERPRISE = 'enterprise';
 
     /**
-     * @param Report $report Modelo de candidatura a ser manipulado
-     * @param User $user Modelo de usuário a ser considerado na manipulação [opcional]
+     * Modelo de candidatura a ser manipulado
+     * @var Chat
      */
-    function __construct(Report $report, User $user)
+    private Chat $chat;
+
+    /**
+     * @param Chat $chat Modelo de candidatura a ser manipulado
+     */
+    function __construct(Chat $chat)
     {
-        $this->report = $report;
-        $this->user = $user;
+        $this->chat = $chat;
         parent::__construct();
     }
 
@@ -45,16 +40,15 @@ class ReportDB extends DatabaseAcess
     public function create(): int
     {
 
-        $this->report->setID($this->getRandomID()); // Gera uuid
+        $this->chat->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO report (id, reporter, reporter, reason) VALUES (?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO chat (id, artist, enterprise) VALUES (?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->report->getID());
-        $query->bindValue(2, $this->report->getReporter());
-        $query->bindValue(3, $this->report->getReported());
-        $query->bindValue(3, $this->report->getReason());
+        $query->bindValue(1, $this->chat->getID());
+        $query->bindValue(2, $this->chat->getArtist());
+        $query->bindValue(3, $this->chat->getEnterprise());
 
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas
@@ -70,25 +64,28 @@ class ReportDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM report WHERE reporter = ? LIMIT $limit OFFSET $offset");
-        $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
+        $query = $this->getConnection()->prepare("SELECT * FROM chat WHERE artist = ? OR enterprise = ? LIMIT $limit OFFSET $offset");
+
+        $id = $this->chat->getID();
+        $query->bindValue(1, $id);
+        $query->bindValue(2, $id);
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($report) => Report::getInstanceOf($report), $this->fetchRecord($query));
+            return array_map(fn ($chat) => Chat::getInstanceOf($chat), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas
         throw new \RuntimeException('Operação falhou!');
     }
 
-    public function getReport(): Report
+    public function getChat(): Chat
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM report WHERE id = ?");
-        $query->bindValue(1, $this->report->getID()); // Substitui interrogação na query pelo ID passado
+        $query = $this->getConnection()->prepare("SELECT * FROM chat WHERE id = ?");
+        $query->bindValue(1, $this->chat->getID()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return Report::getInstanceOf($this->fetchRecord($query, false));
+            return Chat::getInstanceOf($this->fetchRecord($query, false));
         }
 
         // Executa em caso de falhas esperadas
@@ -101,7 +98,7 @@ class ReportDB extends DatabaseAcess
      */
     public function update(string $column = null, string $value = null): int
     {
-        throw new RuntimeException('Não há suporte para atualizações na tabela report');
+        throw new RuntimeException('Não há suporte para atualizações na tabela chat');
     }
 
     /**
@@ -110,9 +107,9 @@ class ReportDB extends DatabaseAcess
     public function delete(): int
     {
         // Deleta candidatura do banco
-        $query = $this->getConnection()->prepare('DELETE FROM report WHERE id = ?');
+        $query = $this->getConnection()->prepare('DELETE FROM chat WHERE id = ?');
 
-        $query->bindValue(1, $this->report->getID());
+        $query->bindValue(1, $this->chat->getID());
 
         if ($query->execute()) { // Executa se a query não falhar
             return $query->rowCount(); // Retorna linhas afetadas

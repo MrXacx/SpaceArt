@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\DAO\Enumerate\MessageColumn;
+use App\DAO\MessageDB;
 
 class Message extends \App\Model\Template\Entity
 {
@@ -16,10 +16,10 @@ class Message extends \App\Model\Template\Entity
     {
         $entity = new Message();
 
-        $entity->sender = $attr[MessageColumn::CHAT];
-        $entity->chat = $attr[MessageColumn::DATETIME];
-        $entity->content = $attr[MessageColumn::CONTENT];
-        $entity->datetime = $attr[MessageColumn::CONTENT];
+        $entity->sender = $attr[MessageDB::CHAT];
+        $entity->chat = $attr[MessageDB::DATETIME];
+        $entity->content = $attr[MessageDB::CONTENT];
+        $entity->datetime = $attr[MessageDB::CONTENT];
 
         return $entity;
     }

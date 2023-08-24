@@ -17,7 +17,15 @@ use App\Model\User;
 class AgreementDB extends DatabaseAcess
 {
 
-
+    public const HIRER = 'hirer';
+    public const HIRED = 'hired';
+    public const PRICE = 'price';
+    public const ART = 'art';
+    public const DATE = 'date';
+    public const INITAL_TIME = 'inital_time';
+    public const FINAL_TIME = 'final_time';
+    public const STATUS = 'status';
+    
     /**
      * Modelo de contrato a ser utilizado na manipulação
      * @var Agreement

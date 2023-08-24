@@ -45,12 +45,12 @@ class AgreementDBTest extends \PHPUnit\Framework\TestCase
 
     public function testValidColumnExists(): void
     {
-        $this->assertTrue(AgreementColumn::isColumn(AgreementColumn::PRICE));
+        $this->assertTrue(AgreementDB::isColumn(AgreementDB::PRICE));
     }
 
     public function testInvalidColumnExists(): void
     {
-        $this->assertFalse(AgreementColumn::isColumn('0'));
+        $this->assertFalse(AgreementDB::isColumn('0'));
     }
 
     public function testCreateValidAgreement(): void
@@ -72,8 +72,8 @@ class AgreementDBTest extends \PHPUnit\Framework\TestCase
     public function testUpdateColumn(): void
     {
         self::$db->create(self::$agreement);
-        self::$db->update(AgreementColumn::FINAL_TIME, '14:35');
-        $this->assertEquals('14:35:00', self::$db->getAgreement(AgreementColumn::FINAL_TIME)->getTime()['final']);
+        self::$db->update(AgreementDB::FINAL_TIME, '14:35');
+        $this->assertEquals('14:35:00', self::$db->getAgreement(AgreementDB::FINAL_TIME)->getTime()['final']);
     }
 
     /**

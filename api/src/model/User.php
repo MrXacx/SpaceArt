@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\Enumerate\UserColumn;
+use App\DAO\UsersDB;
 use App\Util\Tool\Location;
 
 /**
@@ -73,16 +73,16 @@ class User extends \App\Model\Template\Entity
         foreach ($attr as $key => $value) {
             $atributeName = match ($key) {
                 'id' => 'id',
-                UserColumn::EMAIL => 'email',
-                UserColumn::PASSWORD => 'password',
-                UserColumn::NAME => 'name',
-                UserColumn::IMAGE => 'image',
-                UserColumn::CEP => 'CEP',
-                UserColumn::FEDERATION => 'federation',
-                UserColumn::CITY => 'city',
-                UserColumn::PHONE => 'phone',
-                UserColumn::SITE => 'website',
-                UserColumn::RATE => 'rate',
+                UsersDB::EMAIL => 'email',
+                UsersDB::PASSWORD => 'password',
+                UsersDB::NAME => 'name',
+                UsersDB::IMAGE => 'image',
+                UsersDB::CEP => 'CEP',
+                UsersDB::FEDERATION => 'federation',
+                UsersDB::CITY => 'city',
+                UsersDB::PHONE => 'phone',
+                UsersDB::SITE => 'website',
+                UsersDB::RATE => 'rate',
                 default => null
             };
 
@@ -214,11 +214,13 @@ class User extends \App\Model\Template\Entity
         return $this->image;
     }
 
-    public function setRate(float $rate): void{
+    public function setRate(float $rate): void
+    {
         $this->rate = $rate;
     }
 
-    public function getRate(): float{
+    public function getRate(): float
+    {
         return floatval($this->rate);
     }
 

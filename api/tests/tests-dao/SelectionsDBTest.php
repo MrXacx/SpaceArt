@@ -44,12 +44,12 @@ class SelectionDBTest extends \PHPUnit\Framework\TestCase
 
     public function testValidColumnExists(): void
     {
-        $this->assertTrue(SelectionColumn::isColumn(SelectionColumn::INITAL_DATETIME));
+        $this->assertTrue(SelectionDB::isColumn(SelectionDB::INITAL_DATETIME));
     }
 
     public function testInvalidColumnExists(): void
     {
-        $this->assertFalse(SelectionColumn::isColumn('DESC'));
+        $this->assertFalse(SelectionDB::isColumn('DESC'));
     }
 
     public function testCreateValidSelection(): void
@@ -70,7 +70,7 @@ class SelectionDBTest extends \PHPUnit\Framework\TestCase
      */
     public function testUpdateColumn(): void
     {
-        self::$db->update(SelectionColumn::ART, 'dança');
+        self::$db->update(SelectionDB::ART, 'dança');
         $this->assertEquals('dança', self::$db->getSelection()->getArt());
     }
 

@@ -16,7 +16,10 @@ use App\Model\Rate;
  */
 class RateDB extends DatabaseAcess
 {
-
+    public const AUTHOR = 'author';
+    public const AGREEMENT = 'agreement';
+    public const RATE = 'rate';
+    public const DESCRIPTION = 'description';
 
     /**
      * Modelo de contrato a ser utilizado na manipulação

@@ -16,7 +16,10 @@ use App\Model\Message;
  */
 class MessageDB extends DatabaseAcess
 {
-
+    public const SENDER = 'sender';
+    public const CHAT = 'chat';
+    public const CONTENT = 'content';
+    public const DATETIME = 'shipping_datetime';
 
     /**
      * Modelo de contrato a ser utilizado na manipulação
@@ -82,7 +85,7 @@ class MessageDB extends DatabaseAcess
     public function getMessage(): Message
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare('SELECT * FROM message WHERE chat = ? AND send = ? AND shipping_datetime = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM message WHERE chat = ? AND sender = ? AND shipping_datetime = ?');
 
         $query->bindValue(1, $this->message->getChat());
         $query->bindValue(2, $this->message->getSender());
@@ -102,7 +105,7 @@ class MessageDB extends DatabaseAcess
     public function update(string $column, string $value): int
     {
         // Passa query SQL de atualização
-        $query = $this->getConnection()->prepare("UPDATE message SET $column = ? WHERE chat = ? AND send = ? AND shipping_datetime = ?");
+        $query = $this->getConnection()->prepare("UPDATE message SET $column = ? WHERE chat = ? AND sender = ? AND shipping_datetime = ?");
 
         // Substitui interrogações pelos valores das variáveis
         $query->bindValue(1, $value);
@@ -124,7 +127,7 @@ class MessageDB extends DatabaseAcess
     public function delete(): int
     {
         // Deleta seleção do banco
-        $query = $this->getConnection()->prepare('DELETE FROM message WHERE chat = ? AND send = ? AND shipping_datetime = ?');
+        $query = $this->getConnection()->prepare('DELETE FROM message WHERE chat = ? AND sender = ? AND shipping_datetime = ?');
         $query->bindValue(1, $this->message->getChat());
         $query->bindValue(2, $this->message->getSender());
         $query->bindValue(3, $this->message->getDatetime());

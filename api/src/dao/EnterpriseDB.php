@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DAO;
 
-use App\DAO\Enumerate\UserColumn;
+use App\DAO\UsersDB;
 use App\Model\Enterprise;
 use RuntimeException;
 
@@ -15,6 +15,9 @@ use RuntimeException;
  */
 class EnterprisesDB extends UsersDB
 {
+    public const CNPJ = 'CNPJ';
+    public const DISTRICT = 'district';
+    public const ADDRESS = 'address';
 
     private Enterprise $enterprise;
 
@@ -107,8 +110,8 @@ class EnterprisesDB extends UsersDB
     public function update(string $column, string $value): int
     {
 
-        if(UserColumn::isColumn($column)){
-            return parent::update($column, $value);          
+        if (UsersDB::isColumn(parent::class, $column)) {
+            return parent::update($column, $value);
         }
 
         // Passa query SQL de atualização
@@ -125,5 +128,4 @@ class EnterprisesDB extends UsersDB
         // Executa caso alguma falha esperada aconteça
         throw new RuntimeException('Operação falhou!');
     }
-
 }

@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Server;
 use App\DAO\ArtistDB;
 use App\DAO\EnterprisesDB;
-use App\DAO\Enumerate\UserColumn;
 use App\DAO\UsersDB;
 use App\Model\User;
+
 use App\Util\DataValidator;
 use App\Util\Enumerate\AccountType;
 use RuntimeException;
@@ -19,7 +20,8 @@ class UserController
         $this->validator = new DataValidator();
     }
 
-    private function removeNullValues(array $arr): array{
+    private function removeNullValues(array $arr): array
+    {
         return array_filter($arr, fn ($value) => isset($value));
     }
 
@@ -46,7 +48,7 @@ class UserController
             o id consultado com base nos dados informados.  
         */
 
-        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UserColumn::PASSWORD)) {
+        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UsersDB::PASSWORD)) {
             $user = new User();
             $user->setEmail($_GET['email']);
             $user->setPassword($_GET['password']);
@@ -75,7 +77,7 @@ class UserController
             $offset = Server::DEFAULT_LIMIT;
         }
 
-        $dao = match($type) { //Obtém objeto adequado para o tipo de conta
+        $dao = match ($type) { //Obtém objeto adequado para o tipo de conta
             AccountType::ARTIST => new ArtistDB(),
             AccountType::ENTERPRISE => new EnterprisesDB(),
             default => throw new RuntimeException('O tipo da conta não foi informado ou não foi reconhecido') // Lança exceção
@@ -88,9 +90,10 @@ class UserController
     /**
      * Deleta usuário
      */
-    public function delete(): void{
+    public function delete(): void
+    {
 
-        if(isset($_REQUEST['id'])){
+        if (isset($_REQUEST['id'])) {
             $user = new User();
             $user->setID($_REQUEST['id']);
             $db = new UsersDB($user);

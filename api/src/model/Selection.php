@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\Enumerate\SelectionColumn;
+use App\DAO\SelectionDB;
 
 /**
  * Classe modelo de seleção
@@ -61,14 +61,14 @@ class Selection extends \App\Model\Template\Entity
 
         $entity = new Selection();
         $entity->id = $attr['id'];
-        $entity->ownerID = $attr[SelectionColumn::OWNER_ID];
-        $entity->price = $attr[SelectionColumn::PRICE];
-        $entity->art = $attr[SelectionColumn::ART];
+        $entity->ownerID = $attr[SelectionDB::OWNER_ID];
+        $entity->price = $attr[SelectionDB::PRICE];
+        $entity->art = $attr[SelectionDB::ART];
 
-        $datetime = [explode(' ', $attr[SelectionColumn::INITAL_DATETIME]), explode(' ', $attr[SelectionColumn::FINAL_DATETIME])];
+        $datetime = [explode(' ', $attr[SelectionDB::INITAL_DATETIME]), explode(' ', $attr[SelectionDB::FINAL_DATETIME])];
         $entity->date = ['inital' => $datetime[0][0], 'final' => $datetime[1][0]];
         $entity->time = ['inital' => $datetime[0][1], 'final' => $datetime[1][1]];
-        $entity->locked = boolval($attr[SelectionColumn::LOCKED]);
+        $entity->locked = boolval($attr[SelectionDB::LOCKED]);
 
         return $entity;
     }

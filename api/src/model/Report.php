@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\DAO\Enumerate\ReportColumn;
+use App\DAO\ReportDB;
 
 class Report extends \App\Model\Template\Entity
 {
@@ -19,12 +19,12 @@ class Report extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Report($attr[ReportColumn::REPORTER]);
+        $entity = new Report($attr[ReportDB::REPORTER]);
 
         $entity->id = $attr['id'];
-        $entity->reported = $attr[ReportColumn::REPORTED];
-        $entity->reason = $attr[ReportColumn::REASON];
-        $entity->accepted = boolval($attr[ReportColumn::ACCEPTED]);
+        $entity->reported = $attr[ReportDB::REPORTED];
+        $entity->reason = $attr[ReportDB::REASON];
+        $entity->accepted = boolval($attr[ReportDB::ACCEPTED]);
 
         return $entity;
     }
@@ -41,17 +41,17 @@ class Report extends \App\Model\Template\Entity
 
     public function getReporter(): string
     {
-        return $this->id;
+        return $this->reporter;
     }
 
-    public function setReported(string $id): void
+    public function setReported(string $reporter): void
     {
-        $this->id = $id;
+        $this->reporter = $reporter;
     }
 
     public function getReported(): string
     {
-        return $this->id;
+        return $this->reported;
     }
 
     public function setReason(string $reason): void

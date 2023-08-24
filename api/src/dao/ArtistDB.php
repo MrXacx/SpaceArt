@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DAO;
 
-use App\DAO\Enumerate\UserColumn;
+use App\DAO\UsersDB;
 use App\Model\Artist;
 use RuntimeException;
 
@@ -32,7 +32,7 @@ class ArtistDB extends UsersDB
      */
     public function create(): int
     {
-        if(parent::create() == 1){ // Executa se o usuário foi criado
+        if (parent::create() == 1) { // Executa se o usuário foi criado
 
             // Passa query SQL de criação
             $query = $this->getConnection()->prepare('INSERT INTO artist (id, CPF, art, wage_to_hourly, address) VALUES (?,?,?,?)');
@@ -108,7 +108,7 @@ class ArtistDB extends UsersDB
     public function update(string $column, string $value): int
     {
 
-        if (UserColumn::isColumn($column)) {
+        if ($this->isColumn(parent::class, $column)) {
             return parent::update($column, $value);
         }
 

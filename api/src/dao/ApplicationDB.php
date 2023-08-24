@@ -18,6 +18,10 @@ use RuntimeException;
 class ApplicationDB extends DatabaseAcess
 {
 
+    public const ARTIST = 'artist';
+    public const SELECTION = 'selection';
+    public const LAST_CHANGE = 'last_change';
+
     /**
      * Modelo de candidatura a ser manipulado
      * @var Application

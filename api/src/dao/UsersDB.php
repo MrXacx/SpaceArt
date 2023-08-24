@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\DAO\Enumerate\UserColumn;
 use App\Model\User;
 use RuntimeException;
 
@@ -16,6 +15,17 @@ use RuntimeException;
  */
 class UsersDB extends DatabaseAcess
 {
+    public const EMAIL = 'email';
+    public const PASSWORD = 'password';
+    public const NAME = 'NAME';
+    public const PHONE = 'phone';
+    public const CEP = 'CEP';
+    public const FEDERATION = 'federation';
+    public const CITY = 'city';
+    public const CPF = 'CPF';
+    public const ART = 'art';
+    public const WAGE = 'wage';
+    public const SITE = 'website';
 
     /**
      * @param User $user Modelo de usuário a ser manipulado
@@ -94,7 +104,7 @@ class UsersDB extends DatabaseAcess
     {
         // Passa query SQL para leitura da coluna id
         $query = $this->getConnection()->prepare('SELECT id FROM users WHERE email = ? AND password = ?');
-        
+
         // // Substitui as interrogações
         $query->bindValue(1, $this->user->getEmail());
         $query->bindValue(1, $this->user->getPassword());

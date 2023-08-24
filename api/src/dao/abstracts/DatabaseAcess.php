@@ -10,6 +10,8 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use App\Util\DataValidator;
+use Reflection;
+use ReflectionClassConstant;
 
 /**
  * Classe de conexão com o banco de dados
@@ -69,6 +71,11 @@ abstract class DatabaseAcess
             return $response;
         }
         throw new \RuntimeException('Registro(s) não encontrado(s)');
+    }
+
+    public function isColumn(string $class, string $column): bool{
+        $cases = (new \ReflectionClass($class))->getConstants(ReflectionClassConstant::IS_PUBLIC);
+        return false !== array_search($column, $cases, true);
     }
 
     function __destruct()
