@@ -9,7 +9,7 @@ use App\DAO\UsersDB;
 use App\Model\User;
 
 use App\Util\DataValidator;
-use App\Util\Enumerate\AccountType;
+use App\Model\Enumerate\AccountType;
 use RuntimeException;
 
 class UserController

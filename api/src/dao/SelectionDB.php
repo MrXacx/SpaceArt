@@ -18,16 +18,11 @@ use RuntimeException;
 class SelectionDB extends DatabaseAcess
 {
 
-    public const NAME = 'name';
-    public const IMAGE = 'image';
-    public const PASSWORD = 'password';
-    public const PHONE = 'phone';
-    public const EMAIL = 'email';
-    public const CEP = 'CEP';
-    public const FEDERATION = 'federation';
-    public const CITY = 'city';
-    public const RATE = 'rate';
-    public const SITE = 'website';
+    public const OWNER = 'owner';
+    public const ART = 'art';
+    public const INITAL_DATETIME = 'inital_datetime';
+    public const FINAL_DATETIME = 'final_datetime';
+    public const PRICE = 'price';
 
     /**
      * Modelo de seleção a ser manipulado

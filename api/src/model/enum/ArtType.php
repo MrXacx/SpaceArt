@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Util\Enumerate;
+namespace App\Model\Enumerate;
 
 enum ArtType
 {
