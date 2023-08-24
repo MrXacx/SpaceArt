@@ -77,7 +77,7 @@ class UsersDB extends DatabaseAcess
     public function getUnique(string $id): User
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, name, image, CEP, federation, city, rate, website type FROM users WHERE id = ?');
+        $query = $this->getConnection()->prepare('SELECT id, name, image, CEP, federation, city, rate, website FROM users WHERE id = ?');
         $query->bindValue(1, $id); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
