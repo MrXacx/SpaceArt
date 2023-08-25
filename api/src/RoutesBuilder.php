@@ -31,9 +31,49 @@ class RoutesBuilder extends Server
                     $collector->get('/', UserController::class . '/getUnique'); // Busca todos os dados de um usuário
                     $collector->get('/list', UserController::class . '/getList'); // Busca lista de usuários
                     $collector->get('/sign-in', UserController::class . '/signIn'); // Busca id do usuário  
-                    
+                    $collector->post('/', UserController::class . '/create'); // Busca id do usuário  
+                    $collector->put('/', UserController::class . '/update'); // Busca id do usuário     
                     $collector->delete('/', UserController::class . '/delete'); // Deleta usuário
-                })
+                });
+                $collector->addGroup('/chat', function (RouteCollector $collector)  // rotas com início "/user"
+                {
+                    $collector->get('/', UserController::class . '/'); //Abre o menu de chats
+                    $collector->get('/conversation', UserController::class . '/'); //Abre a conversa selecionada
+                    $collector->get('/conversation/list', UserController::class . '/'); //Abre a conversa selecionada
+                    $collector->post('/conversation', UserController::class . '/'); //Cria um chat novo
+                    $collector->delete('/conversation', UserController::class . '/'); //Deleta um chat existente
+                    $collector->put('/conversation', UserController::class . '/'); //Atualiza as informações do chat
+                });
+                $collector->addGroup('/contract', function (RouteCollector $collector)  //rotas com início '/contract'
+                {
+                    $collector->get('/rate', UserController::class . '/'); //Abre o menu de avaliação
+                    $collector->delete('/rate', UserController::class . '/'); //Deleta a avaliação
+                    $collector->put('/rate', UserController::class . '/'); //Atualiza as informações da avaliação
+                    $collector->post('/rate', UserController::class . '/'); //Cria uma nova avaliação
+                    $collector->get('/', UserController::class . '/'); //Abre o menu de contratos
+                    $collector->get('/list', UserController::class . '/'); //Abre um canto específico
+                    $collector->delete('/', UserController::class . '/'); //Deleta um contrato
+                    $collector->put('/', UserController::class . '/'); //Atualiza as informações do contrato
+                    $collector->post('/', UserController::class . '/'); //Cria um contrato
+                    
+                });
+                $collector->addGroup('/selection', function (RouteCollector $collector)  //rotas com início '/contract'
+                {
+                    $collector->get('/list', UserController::class . '/'); //Abre o menu de criação de vaga
+                    $collector->get('/', UserController::class . '/'); //Abre uma vaga em específico
+                    $collector->delete('/', UserController::class . '/'); //Deleta uma vaga
+                    $collector->put('/', UserController::class . '/'); //Atualiza as informações de uma vaga
+                    $collector->post('/', UserController::class . '/'); //Cria uma vaga
+                    
+                });
+                $collector->addGroup('/application', function (RouteCollector $collector)  //rotas com início '/application'
+                {
+                    $collector->get('/list', UserController::class . '/'); //Abre o menu de candidatura
+                    $collector->get('/', UserController::class . '/'); //Abre uma vaga em específico
+                    $collector->delete('/', UserController::class . '/'); //Deleta uma candidatura
+                    $collector->post('/', UserController::class . '/'); //Cria uma candidatura
+                    
+                });
                 
             );
     }
