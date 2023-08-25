@@ -2,6 +2,10 @@
 
 namespace App;
 
+use Symfony\Component\HttpFoundation\Request;
+use App\Http\SpecialRequest;
+
+
 /**
  * Classe com para consultar dados do servidor
  * @author Ariel Santos (MrXacx)
@@ -51,4 +55,9 @@ class Server
     {
         return rawurldecode($_SERVER['PHP_SELF']);
     }
+
+    public static function getParameters(): \Symfony\Component\HttpFoundation\ParameterBag{
+        return (new Request($_GET, $_POST, $_REQUEST))->attributes;
+    }
+
 }

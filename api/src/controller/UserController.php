@@ -15,9 +15,12 @@ use RuntimeException;
 class UserController
 {
     private DataValidator $validator;
+    private \Symfony\Component\HttpFoundation\ParameterBag $parameters;
+
     function __construct()
     {
         $this->validator = new DataValidator();
+        $this->parameters = Server::getParameters();
     }
 
     private function removeNullValues(array $arr): array
@@ -27,17 +30,19 @@ class UserController
 
     public function getUnique(): array
     {
-        $id = $_GET['id'] ?? '';
+        $id = $this->parameters->get('id').'';
+
         // Confere se id corresponde ao formato correto
         if ($this->validator->isUUID($id)) {
+
             $user = new User();
-            $user->setID($_GET['id']);
+            $user->setID($id);
 
             $db = new UsersDB($user); // Inicia objeto para manipular o registro do usuário informado
             return $this->removeNullValues($db->getUser()->toArray())();
         }
 
-        throw new RuntimeException('ID do usuário não foi informado ou apresenta formato inconsistente: ' . $_GET['id']);
+        throw new RuntimeException('ID do usuário não foi informado ou apresenta formato inconsistente');
     }
 
     public function signIn(): array
@@ -48,10 +53,15 @@ class UserController
             o id consultado com base nos dados informados.  
         */
 
-        if ($this->validator->isEmail($_GET['email'] . '') && $this->validator->isValidVarcharLength($_GET['password'], UsersDB::PASSWORD)) {
+        $email = $this->parameters->get('email') . '';
+        $password = $this->parameters->get('password') . '';
+
+        if ($this->validator->isEmail($email) && $this->validator->isValidVarcharLength($password, UsersDB::PASSWORD)) {
             $user = new User();
-            $user->setEmail($_GET['email']);
-            $user->setPassword($_GET['password']);
+
+            $user->setEmail($email);
+            $user->setPassword($password);
+
             $db = new UsersDB($user);
             return $db->getID();
         }
@@ -64,16 +74,16 @@ class UserController
      */
     public function getList(): array
     {
-        // Normaliza parâmetros esperados
-        $type = $_GET['type'] ?? null;
-        $offset = intval($_GET['offset'] ?? null);
-        $limit = intval($_GET['limit'] ?? null);
+
+        $type = $this->parameters->get('type'); // Obtém tipo da conta
+        $offset = intval($this->parameters->get('offset')); // Obtém posição de início da leitura
+        $limit = intval($this->parameters->get('limit')); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
         }
 
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo ou ultrapassar o valor máximo
+        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
             $offset = Server::DEFAULT_LIMIT;
         }
 
@@ -90,14 +100,18 @@ class UserController
     /**
      * Deleta usuário
      */
-    public function delete(): void
+    public function delete(): bool
     {
+        $id = $this->parameters->get('id');
 
-        if (isset($_REQUEST['id'])) {
+        if (isset($id)) { // Executa se o id foi informado
             $user = new User();
-            $user->setID($_REQUEST['id']);
+            $user->setID($id);
+
             $db = new UsersDB($user);
-            $db->delete();
+            return $db->delete();
         }
+        
+        return false;
     }
 }
