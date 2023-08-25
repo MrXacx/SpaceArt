@@ -44,7 +44,7 @@ class SelectionDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
         $this->selection->setID($this->getRandomID()); // Gera uuid
         $datetime = $this->selection->getDatetime(); // Obtém datas e horários de início e fim
@@ -61,12 +61,7 @@ class SelectionDB extends DatabaseAcess
 
         $query->bindValue(6, $this->selection->getArt());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -109,7 +104,7 @@ class SelectionDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getAll(): array
+   /* public function getRandomList(): array
     {
         $query = parent::getConnection()->prepare("SELECT * FROM selection");
 
@@ -123,12 +118,12 @@ class SelectionDB extends DatabaseAcess
         }
 
         throw new RuntimeException("Operação falhou");
-    }
+    }*/
 
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function update(string $column, string $value): int
+    public function update(string $column, string $value): bool
     {
         // Passa query SQL de atualização
         $query = $this->getConnection()->prepare("UPDATE selection \SET $column = ? WHERE id = ?");
@@ -137,26 +132,17 @@ class SelectionDB extends DatabaseAcess
         $query->bindValue(1, $value);
         $query->bindValue(2, $this->selection->getID());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function delete(): int
+    public function delete(): bool
     {
         // Deleta seleção do banco
         $query = $this->getConnection()->prepare('DELETE FROM selection WHERE id = ?');
         $query->bindValue(1, $this->selection->getID());
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
+        return $query->execute();
     }
 }

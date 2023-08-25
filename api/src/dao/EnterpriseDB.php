@@ -33,7 +33,7 @@ class EnterprisesDB extends UsersDB
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
         parent::create();
 
@@ -47,12 +47,7 @@ class EnterprisesDB extends UsersDB
         $query->bindValue(4, $this->enterprise->getAddress());
 
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -107,7 +102,7 @@ class EnterprisesDB extends UsersDB
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function update(string $column, string $value): int
+    public function update(string $column, string $value): bool
     {
 
         if (UsersDB::isColumn(parent::class, $column)) {
@@ -121,11 +116,6 @@ class EnterprisesDB extends UsersDB
         $query->bindValue(1, $value);
         $query->bindValue(2, $this->enterprise->getID());
 
-        if ($query->execute()) { // Executa em caso de sucesso na operação
-            return ($query->rowCount()); // Retorna o número de linhas afetadas
-        }
-
-        // Executa caso alguma falha esperada aconteça
-        throw new RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 }

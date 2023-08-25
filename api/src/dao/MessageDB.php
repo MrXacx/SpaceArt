@@ -40,7 +40,7 @@ class MessageDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
 
         // Passa query SQL de criação
@@ -52,12 +52,7 @@ class MessageDB extends DatabaseAcess
         $query->bindValue(3, $this->message->getContent());
 
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -102,7 +97,7 @@ class MessageDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function update(string $column, string $value): int
+    public function update(string $column, string $value): bool
     {
         // Passa query SQL de atualização
         $query = $this->getConnection()->prepare("UPDATE message SET $column = ? WHERE chat = ? AND sender = ? AND shipping_datetime = ?");
@@ -113,18 +108,13 @@ class MessageDB extends DatabaseAcess
         $query->bindValue(3, $this->message->getSender());
         $query->bindValue(4, $this->message->getDatetime());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function delete(): int
+    public function delete(): bool
     {
         // Deleta seleção do banco
         $query = $this->getConnection()->prepare('DELETE FROM message WHERE chat = ? AND sender = ? AND shipping_datetime = ?');
@@ -132,10 +122,6 @@ class MessageDB extends DatabaseAcess
         $query->bindValue(2, $this->message->getSender());
         $query->bindValue(3, $this->message->getDatetime());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
+        return $query->execute();
     }
 }

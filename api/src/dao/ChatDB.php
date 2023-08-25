@@ -37,7 +37,7 @@ class ChatDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
 
         $this->chat->setID($this->getRandomID()); // Gera uuid
@@ -50,12 +50,7 @@ class ChatDB extends DatabaseAcess
         $query->bindValue(2, $this->chat->getArtist());
         $query->bindValue(3, $this->chat->getEnterprise());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -96,7 +91,7 @@ class ChatDB extends DatabaseAcess
      * Este método não deve ser chamado.
      * @throws RuntimeException Caso o método seja executado
      */
-    public function update(string $column = null, string $value = null): int
+    public function update(string $column = null, string $value = null): bool
     {
         throw new RuntimeException('Não há suporte para atualizações na tabela chat');
     }
@@ -104,17 +99,13 @@ class ChatDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function delete(): int
+    public function delete(): bool
     {
         // Deleta candidatura do banco
         $query = $this->getConnection()->prepare('DELETE FROM chat WHERE id = ?');
 
         $query->bindValue(1, $this->chat->getID());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
+        return $query->execute();
     }
 }

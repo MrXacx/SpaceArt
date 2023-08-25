@@ -30,9 +30,9 @@ class ArtistDB extends UsersDB
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
-        if (parent::create() == 1) { // Executa se o usuário foi criado
+        if (parent::create()) { // Executa se o usuário foi criado
 
             // Passa query SQL de criação
             $query = $this->getConnection()->prepare('INSERT INTO artist (id, CPF, art, wage_to_hourly, address) VALUES (?,?,?,?)');
@@ -44,9 +44,7 @@ class ArtistDB extends UsersDB
             $query->bindValue(4, $this->artist->getWage());
 
 
-            if ($query->execute()) { // Executa se a query não falhar
-                return $query->rowCount(); // Retorna linhas afetadas
-            }
+            return $query->execute();
         }
 
         // Executa se houver alguma falha esperada
@@ -105,7 +103,7 @@ class ArtistDB extends UsersDB
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function update(string $column, string $value): int
+    public function update(string $column, string $value): bool
     {
 
         if ($this->isColumn(parent::class, $column)) {
@@ -119,11 +117,6 @@ class ArtistDB extends UsersDB
         $query->bindValue(1, $value);
         $query->bindValue(2, $this->artist->getID());
 
-        if ($query->execute()) { // Executa em caso de sucesso na operação
-            return ($query->rowCount()); // Retorna o número de linhas afetadas
-        }
-
-        // Executa caso alguma falha esperada aconteça
-        throw new RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 }

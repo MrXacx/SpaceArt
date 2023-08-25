@@ -39,7 +39,7 @@ class UsersDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
         // Passa query SQL de criação
         $query = $this->getConnection()->prepare('INSERT INTO users (id, name, image, email, password, phone, CEP, federation, city) VALUES (?,?,?,?,?,?,?,?,?)');
@@ -58,12 +58,7 @@ class UsersDB extends DatabaseAcess
         $query->bindValue(9, $this->user->getCity());
 
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -138,7 +133,7 @@ class UsersDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function update(string $column, string $value): int
+    public function update(string $column, string $value): bool
     {
 
         // Passa query SQL de atualização
@@ -148,28 +143,19 @@ class UsersDB extends DatabaseAcess
         $query->bindValue(1, $value);
         $query->bindValue(2, $this->user->getID());
 
-        if ($query->execute()) { // Executa em caso de sucesso na operação
-            return ($query->rowCount()); // Retorna o número de linhas afetadas
-        }
-
-        // Executa caso alguma falha esperada aconteça
-        throw new RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function delete(): int
+    public function delete(): bool
     {
         // Define a query SQL de remoção
         $query = $this->getConnection()->prepare('DELETE FROM users WHERE id = ?');
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID informado
 
-        if ($query->execute()) { // Executa caso a query seja aceita
-            return $query->rowCount(); // Retorna número de linhas apagadas
-        }
-
-        throw new RuntimeException('Operação falhou'); // Executa em caso de falha esperada
+        return $query->execute();
 
     }
 }

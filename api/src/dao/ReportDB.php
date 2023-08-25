@@ -21,7 +21,7 @@ class ReportDB extends DatabaseAcess
     public const REPORTED = 'reported';
     public const REASON = 'selection';
     public const ACCEPTED = 'last_change';
-    
+
     /**
      * Modelo de candidatura a ser manipulado
      * @var Report
@@ -42,7 +42,7 @@ class ReportDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
 
         $this->report->setID($this->getRandomID()); // Gera uuid
@@ -56,12 +56,7 @@ class ReportDB extends DatabaseAcess
         $query->bindValue(3, $this->report->getReported());
         $query->bindValue(3, $this->report->getReason());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -99,7 +94,7 @@ class ReportDB extends DatabaseAcess
      * Este método não deve ser chamado.
      * @throws RuntimeException Caso o método seja executado
      */
-    public function update(string $column = null, string $value = null): int
+    public function update(string $column = null, string $value = null): bool
     {
         throw new RuntimeException('Não há suporte para atualizações na tabela report');
     }
@@ -107,17 +102,13 @@ class ReportDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function delete(): int
+    public function delete(): bool
     {
         // Deleta candidatura do banco
         $query = $this->getConnection()->prepare('DELETE FROM report WHERE id = ?');
 
         $query->bindValue(1, $this->report->getID());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
+        return $query->execute();
     }
 }

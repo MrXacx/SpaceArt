@@ -89,7 +89,7 @@ abstract class DatabaseAcess
      * @return int Número de linhas afetadas
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    abstract public function create(): int;
+    abstract public function create(): bool;
 
     /**
      * Obtém lista de dados não sensíveis da entidade
@@ -107,7 +107,7 @@ abstract class DatabaseAcess
      * @param string $value Novo valor da coluna
      * @return int Número de linhas afetadas
      */
-    abstract public function update(string $column, string $value): int;
+    abstract public function update(string $column, string $value): bool;
 
     /**
      * Deleta linha do banco
@@ -115,5 +115,5 @@ abstract class DatabaseAcess
      * @return int Número de linhas deletadas
      * @throws RuntimeException Falha causada pela conexão com o banco de dados
      */
-    abstract public function delete(): int;
+    abstract public function delete(): bool;
 }

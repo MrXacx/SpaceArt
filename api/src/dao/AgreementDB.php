@@ -25,7 +25,7 @@ class AgreementDB extends DatabaseAcess
     public const INITAL_TIME = 'inital_time';
     public const FINAL_TIME = 'final_time';
     public const STATUS = 'status';
-    
+
     /**
      * Modelo de contrato a ser utilizado na manipulação
      * @var Agreement
@@ -46,7 +46,7 @@ class AgreementDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
         $this->agreement->setID($this->getRandomID()); // Gera uuid
 
@@ -65,12 +65,7 @@ class AgreementDB extends DatabaseAcess
         $query->bindValue(7, $time['final']);
         $query->bindValue(8, $this->agreement->getArt());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -114,7 +109,7 @@ class AgreementDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function update(string $column, string $value): int
+    public function update(string $column, string $value): bool
     {
         // Passa query SQL de atualização
         $query = $this->getConnection()->prepare("UPDATE agreement SET $column = ? WHERE id = ?");
@@ -123,26 +118,17 @@ class AgreementDB extends DatabaseAcess
         $query->bindValue(1, $value);
         $query->bindValue(2, $this->agreement->getID());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function delete(): int
+    public function delete(): bool
     {
         // Deleta seleção do banco
         $query = $this->getConnection()->prepare('DELETE FROM agreement WHERE id = ?');
         $query->bindValue(1, $this->agreement->getID());
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
+        return $query->execute();
     }
 }

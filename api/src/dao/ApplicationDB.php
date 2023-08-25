@@ -48,7 +48,7 @@ class ApplicationDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function create(): int
+    public function create(): bool
     {
 
         // Passa query SQL de criação
@@ -58,12 +58,7 @@ class ApplicationDB extends DatabaseAcess
         $query->bindValue(1, $this->application->getSelection());
         $query->bindValue(2, $this->application->getUser());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        // Executa se houver alguma falha esperada
-        throw new \RuntimeException('Operação falhou!');
+        return $query->execute();
     }
 
     /**
@@ -86,7 +81,7 @@ class ApplicationDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function update(string $column = null, string $value = null): int
+    public function update(string $column = null, string $value = null): bool
     {
         throw new RuntimeException('Não há suporte para atualizações na tabela selection_application');
     }
@@ -94,7 +89,7 @@ class ApplicationDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function delete(): int
+    public function delete(): bool
     {
         // Deleta candidatura do banco
         $query = $this->getConnection()->prepare('DELETE FROM selection_application WHERE selection = ? AND artist = ?');
@@ -102,10 +97,6 @@ class ApplicationDB extends DatabaseAcess
         $query->bindValue(1, $this->application->getSelection());
         $query->bindValue(2, $this->application->getUser());
 
-        if ($query->execute()) { // Executa se a query não falhar
-            return $query->rowCount(); // Retorna linhas afetadas
-        }
-
-        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falha esperada
+        return $query->execute();
     }
 }

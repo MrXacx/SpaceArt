@@ -2,6 +2,12 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+use Symfony\Component\HttpFoundation\Response;
+
+$response = new Response();
+$response->headers->set('Content-Type', 'application/json');
+
+
 Locale::setDefault('pt-BR');
 App\RoutesBuilder::createRoutes();
 
