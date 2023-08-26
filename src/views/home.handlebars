@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <h2 id="saudacao" class="title">{{title}}</h2>
+  <main>
+
+    <section class="window-shape-section">
+      {{#each windowAnchors}}
+        <a class="window-shape-anchor box" href="{{this.route}}">
+          <img class="icon" src="{{this.src}}" alt="{{this.name}}" />
+          <h3>{{this.name}}</h3>
+        </a>
+      {{/each}}
+
+    </section>
+    <section>
+      {{#each landscapeAnchors}}
+        <a class="landscape-shape-anchor box" href="{{this.route}}">
+          <img class="icon" src="{{this.src}}" alt="{{this.name}}" />
+          <h3>{{this.name}}</h3>
+        </a>
+      {{/each}}
+    </section>
+  </main>
+</div>
