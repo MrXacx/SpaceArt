@@ -13,7 +13,7 @@ use RuntimeException;
  * @package DAO
  * @author Ariel Santos (MrXacx)
  */
-class EnterprisesDB extends UsersDB
+class EnterpriseDB extends UsersDB
 {
     public const CNPJ = 'CNPJ';
     public const DISTRICT = 'district';
