@@ -6,9 +6,12 @@ namespace App\Model;
 
 use App\DAO\AgreementDB;
 use App\Model\Enumerate\AgreementStatus;
+use App\Model\Enumerate\ArtType;
+use App\Util\DataFormmatException;
+use DateTime;
 
 /**
- * Classe modelo de contratos
+ * Classe modelo de contrato
  * 
  * @package Model
  * @author Ariel Santos (MrXacx)
@@ -32,21 +35,21 @@ class Agreement extends \App\Model\Template\Entity
 
     /**
      * Valor do contrato
-     * @var int|string
+     * @var float|string
      */
-    private int|string $price;
+    private float|string $price;
 
     /**
      * Tipo de arte
-     * @var string
+     * @var ArtType
      */
-    private string $art;
+    private ArtType $art;
 
     /**
      * Data do evento
-     * @var string
+     * @var DateTime
      */
-    private string $date;
+    private DateTime $date;
 
     /**
      * Horários de início e fim do evento
@@ -55,20 +58,12 @@ class Agreement extends \App\Model\Template\Entity
     private array $time;
 
     /**
-     * Avaliação do contrato
-     * 
+     * Status do contrato
+     * @var AgreementStatus
      */
-    private int $rate;
-
-
     private AgreementStatus $status;
 
-    /**
-     * Obtém um modelo de contrato inicializado
-     * 
-     * @param array $attr Array associativo contento todas as informações do modelo
-     * @return Agreement Instância da classe
-     */
+
     public static function getInstanceOf(array $attr): self
     {
         $entity = new Agreement();
@@ -87,7 +82,7 @@ class Agreement extends \App\Model\Template\Entity
                     $entity->price = $value;
                     break;
                 case AgreementDB::DATE:
-                    $entity->date = $value;
+                    $entity->date = DateTime::createFromFormat('Y-m-d', $value);
                     break;
                 case AgreementDB::INITAL_TIME:
                     $entity->time['inital'] = $value;
@@ -96,10 +91,10 @@ class Agreement extends \App\Model\Template\Entity
                     $entity->time['final'] = $value;
                     break;
                 case AgreementDB::ART:
-                    $entity->art = $value;
+                    $entity->art = ArtType::tryFrom($value);
                     break;
                 case AgreementDB::STATUS:
-                    $entity->status = $value;
+                    $entity->status = AgreementStatus::tryFrom($value);
                     break;
             }
         }
@@ -108,17 +103,17 @@ class Agreement extends \App\Model\Template\Entity
     }
 
     /** 
+     * Define o ID do contratante
      * @param string $hirer ID do contratante
      */
     function setHirer(string $hirer)
     {
-        $this->hirer = $hirer;
+        $this->hirer = $this->validator->isUUID($hirer) ? $hirer : throw new DataFormmatException('hirer id');
     }
 
     /**
      * Obtém ID do contratante
-     * 
-     * @return string ID
+     * @return string
      */
     public function getHirer(): string
     {
@@ -126,17 +121,17 @@ class Agreement extends \App\Model\Template\Entity
     }
 
     /** 
-     * @param string $hired ID do contratado
+     * Define ID do contratado
+     * @param string
      */
     function setHired(string $hired)
     {
-        $this->hired = $hired;
+        $this->hired = $this->validator->isUUID($hired) ? $hired : throw new DataFormmatException('hired id');
     }
 
     /**
      * Obtém ID do contratado
-     * 
-     * @return string ID
+     * @return string
      */
     public function gethired(): string
     {
@@ -144,37 +139,37 @@ class Agreement extends \App\Model\Template\Entity
     }
 
     /** 
-     * @param string $price Valor do contrato
+     * Obtém preço do contrato
+     * @param float
      */
-    function setPrice(int $price)
+    function setPrice(float $price)
     {
         $this->price = $price;
     }
 
     /**
      * Obtém Valor do contrato
-     * 
-     * @return string Preço
+     * @return float
      */
-    public function getPrice(): int
+    public function getPrice(): float
     {
-        return intval($this->price);
+        return floatval($this->price);
     }
 
     /**
      * Define aata do evento
-     * 
-     * @param string $date Data do evento
+     * @param DateTime
      */
-    public function setDate(string $date): void
+    public function setDate(DateTime $date): void
     {
         $this->date = $date;
     }
 
     /**
      * Obtém data do evento
+     * @return DateTime
      */
-    public function getDate(): string
+    public function getDate(): DateTime
     {
         return $this->date;
     }
@@ -182,12 +177,12 @@ class Agreement extends \App\Model\Template\Entity
     /**
      * Define Horários de início e fim do evento
      * 
-     * @param string $inital Horário de início
-     * @param string $final Horário de fim
+     * @param DateTime $inital Horário de início
+     * @param DateTime $final Horário de fim
      */
-    public function setTime(string $inital, string $final): void
+    public function setTime(DateTime $inital, DateTime $final): void
     {
-        $this->time = ['inital' => $this->buildTime($inital), 'final' => $this->buildTime($final)];
+        $this->time = ['inital' => $inital->format('H:i:s'), 'final' => $final->format('H:i:s')];
     }
 
     /**
@@ -200,37 +195,35 @@ class Agreement extends \App\Model\Template\Entity
 
     /**
      * Define Tipo de arte do contrato
-     * 
-     * @param string $art Tipo de arte
+     * @param ArtType 
      */
-    public function setArt(string $art): void
+    public function setArt(ArtType $art): void
     {
         $this->art = $art;
     }
 
     /**
      * Obtém tipo de arte
+     * @return ArtType
      */
-    public function getArt(): string
+    public function getArt(): ArtType
     {
         return $this->art;
     }
 
-    public function setRate(int $rate)
-    {
-        $this->rate =  $rate;
-    }
-
-    public function getRate(): int
-    {
-        return $this->rate;
-    }
-
+    /**
+     * Define status do contrato
+     * @param AgreementStatus
+     */
     public function setStatus(AgreementStatus $status): void
     {
         $this->status = $status;
     }
 
+    /**
+     * Obtém status do contrato
+     * @return AgreementStatus
+     */
     public function getStatus(): AgreementStatus
     {
         return $this->status;
@@ -244,7 +237,7 @@ class Agreement extends \App\Model\Template\Entity
             'hirer' => $this->hirer,
             'hired' => $this->hired,
             'price' => $this->price,
-            'date' => $this->date,
+            'date' => $this->date->format('d/m/Y'),
             'art' => $this->art ?? null,
             'time' => $this->time ?? null,
             'status' => $this->status ?? null

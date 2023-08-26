@@ -2,10 +2,18 @@
 
 namespace App\Model\Enumerate;
 
-enum ArtType
+/**
+ * Enumeração de tipo de arte
+ * @package App\Model\Enumerate
+ * @author Ariel Santos (MrXacx)
+ */
+enum ArtType: string
 {
-    public const SONG = 'música';
-    public const SCULPTURE = 'escultura';
-    public const PAINTING = 'pintura';
-    public const DANCE = 'dança';
+    case SONG = 'música';
+    case SCULPTURE = 'escultura';
+    case PAINTING = 'pintura';
+    case DANCE = 'dança';
+
 }
+
+?>

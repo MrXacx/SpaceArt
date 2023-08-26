@@ -7,8 +7,9 @@ use App\Http\SpecialRequest;
 
 
 /**
- * Classe com para consultar dados do servidor
- * @author Ariel Santos (MrXacx)
+ * Classe com dados do servidor
+ * @package App
+ * @author Ariel Santos MrXacx (Ariel Santos)
  */
 class Server
 {

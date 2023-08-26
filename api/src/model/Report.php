@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\DAO\ReportDB;
+use App\Util\DataFormmatException;
 
 class Report extends \App\Model\Template\Entity
 {
@@ -39,36 +40,64 @@ class Report extends \App\Model\Template\Entity
         ]);
     }
 
+    /**
+     * Obtém id do denunciador
+     * @return string
+     */
     public function getReporter(): string
     {
         return $this->reporter;
     }
 
+    /**
+     * Define id do denunciado
+     * @param string
+     */
     public function setReported(string $reporter): void
     {
         $this->reporter = $reporter;
     }
 
+    /**
+     * Obtém id do denunciado
+     * @return string
+     */
     public function getReported(): string
     {
         return $this->reported;
     }
 
+    /**
+     * Define razão da denúncia
+     * @param string
+     */
     public function setReason(string $reason): void
     {
-        $this->reason = $reason;
+        $this->reason = $this->validator->isFit($reason) ? $reason : throw new DataFormmatException('reason', DataFormmatException::LENGTH);
     }
 
+    /**
+     * Obtém razão da denúncia
+     * @return string
+     */
     public function getReason(): string
     {
         return $this->reason;
     }
 
+    /**
+     * Define se a denúncia foi aceita
+     * @param bool
+     */
     public function setAccepted(bool $accepted): void
     {
         $this->accepted = $accepted;
     }
 
+    /**
+     * Retorna se a denuncia foi aceita
+     * @param string
+     */
     public function isAccepted(): bool
     {
         return $this->accepted;

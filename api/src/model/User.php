@@ -6,6 +6,7 @@ namespace App\Model;
 
 use App\DAO\UsersDB;
 use App\Util\Tool\Location;
+use App\Util\DataFormmatException;
 
 /**
  * Classe modelo de usuário
@@ -48,10 +49,10 @@ class User extends \App\Model\Template\Entity
     protected string|null $website = null;
 
     /**
-     * Imagem de perfil do usuário
+     * ImageURLm de perfil do usuário
      * @var string
      */
-    protected string|null $image = null;
+    protected string|null $imageURL = null;
 
     /**
      * Nota média do usuário
@@ -76,7 +77,7 @@ class User extends \App\Model\Template\Entity
                 UsersDB::EMAIL => 'email',
                 UsersDB::PASSWORD => 'password',
                 UsersDB::NAME => 'name',
-                UsersDB::IMAGE => 'image',
+                UsersDB::IMAGE_URL => 'imageURL',
                 UsersDB::CEP => 'CEP',
                 UsersDB::FEDERATION => 'federation',
                 UsersDB::CITY => 'city',
@@ -99,7 +100,8 @@ class User extends \App\Model\Template\Entity
      */
     public function setID(string $id): void
     {
-        $this->id = $id;
+
+        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormmatException('ID');
     }
 
     /**
@@ -116,7 +118,7 @@ class User extends \App\Model\Template\Entity
      */
     public function setEmail(string $email): void
     {
-        $this->email = $email;
+        $this->email = $this->validator->isEmail($email) ? $email : throw new DataFormmatException('EMAIL');
     }
 
     /**
@@ -133,7 +135,7 @@ class User extends \App\Model\Template\Entity
      */
     public function setPassword(string $password): void
     {
-        $this->password = $password;
+        $this->password = $this->validator->isFit($password) ? $password : throw new DataFormmatException('PASSWORD', DataFormmatException::LENGTH);
     }
 
     /**
@@ -150,7 +152,7 @@ class User extends \App\Model\Template\Entity
      */
     public function setName(string $name): void
     {
-        $this->name = $name;
+        $this->name = $this->validator->isFit($name) ? $name : throw new DataFormmatException('NAME', DataFormmatException::LENGTH);
     }
 
     /**
@@ -168,7 +170,7 @@ class User extends \App\Model\Template\Entity
      */
     public function setPhone(string $phone): void
     {
-        $this->phone = $phone;
+        $this->phone = $this->validator->isPhone($phone) ? $phone : throw new DataFormmatException('PHONE');
     }
 
     /**
@@ -185,7 +187,7 @@ class User extends \App\Model\Template\Entity
      */
     public function setWebsite(string $website): void
     {
-        $this->website = $website;
+        $this->website = $this->validator->isURL($website) ? $website : throw new DataFormmatException('website');
     }
 
     /**
@@ -198,20 +200,20 @@ class User extends \App\Model\Template\Entity
     }
 
     /**
-     * @param string $website URL do website do usuário
+     * @param string $image URL do imagem de perfil do usuário
      */
-    public function setImage(string $path): void
+    public function setImageURL(string $image): void
     {
-        $this->image = $path;
+        $this->imageURL = $this->validator->isURL($image) ? $image : throw new DataFormmatException('image URL');
     }
 
     /**
      * Obtém ID do usuário
      * @return string ID 
      */
-    public function getImage(): string
+    public function getImageURL(): string
     {
-        return $this->image;
+        return $this->imageURL;
     }
 
     public function setRate(float $rate): void
@@ -228,7 +230,7 @@ class User extends \App\Model\Template\Entity
     {
         return array_merge(parent::toArray(), [
             'name' => $this->name,
-            'image' => $this->image,
+            'imageURL' => $this->imageURL,
             'email' => $this->email ?? null,
             'password' => $this->password ?? null,
             'phone' => $this->phone ?? null,

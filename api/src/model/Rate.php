@@ -3,18 +3,43 @@
 namespace App\Model;
 
 use App\DAO\RateDB;
+use App\Util\DataFormmatException;
 
 class Rate extends \App\Model\Template\Entity
 {
+    /**
+     * ID do autor da avaliação
+     * @var string
+     */
     private string $author;
+
+    /**
+     * ID do contrato avaliado
+     * @var string
+     */
     private string $agreement;
-    private int|string $rate;
+
+    /**
+     * Nota da avaliação
+     * @var float|string
+     */
+    private float|string $rate;
+
+    /**
+     * Descrição da avaliação
+     * @var string
+     */
     private string $description;
 
+
+    /**
+     * 
+     * @param string ID do contrato
+     */
     function __construct(string $agreement)
     {
-        $this->agreement = $agreement;
         parent::__construct();
+        $this->agreement = $this->validator->isUUID($agreement) ? $agreement : throw new DataFormmatException('AGREEMENT ID');
     }
 
     public static function getInstanceOf(array $attr): self
@@ -38,6 +63,10 @@ class Rate extends \App\Model\Template\Entity
         ];
     }
 
+    /**
+     * Obtém o ID do contrato
+     * @return string
+     */
     public function getAgreement(): string
     {
         return $this->agreement;
@@ -48,27 +77,47 @@ class Rate extends \App\Model\Template\Entity
         $this->author = $author;
     }
 
+    /**
+     * Obtém o ID do autor da avaliação
+     * @return string
+     */
     public function getAuthor(): string
     {
         return $this->author;
     }
 
+    /**
+     * Define a descrição
+     * @param string
+     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
+    /**
+     * Obtém a descrição
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setRate(int $rate): void
+    /**
+     * Define a nota
+     * @param float
+     */
+    public function setRate(float $rate): void
     {
         $this->rate = $rate;
     }
 
-    public function getRate(): int
+    /**
+     * Obtém o Nota da avaliação
+     * @return float
+     */
+    public function getRate(): float
     {
         return intval($this->rate);
     }

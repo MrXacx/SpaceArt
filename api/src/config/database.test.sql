@@ -1,4 +1,4 @@
-INSERT INTO users (id, name, image, email, password, phone, CEP, federation, city) VALUES
+INSERT INTO users (id, name, imageURL, email, password, phone, CEP, federation, city) VALUES
 ('2', 'usuário 2', 'img.jpg', 'email2@gmail.com', 'senha 2', '22222', '22222', 'BA', "Salvador"),
 ('4', 'usuário 4', 'img.jpg', 'email4@gmail.com', 'senha 4', '44444', '44444', 'SP', "Osasco"),
 ('6', 'usuário 6', 'img.jpg', 'email6@gmail.com', 'senha 6', '66666', '66666', 'AM', "Manaus"),

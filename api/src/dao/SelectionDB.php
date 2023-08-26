@@ -23,6 +23,7 @@ class SelectionDB extends DatabaseAcess
     public const INITAL_DATETIME = 'inital_datetime';
     public const FINAL_DATETIME = 'final_datetime';
     public const PRICE = 'price';
+    public const LOCKED = 'locked';
 
     /**
      * Modelo de seleção a ser manipulado
@@ -54,7 +55,7 @@ class SelectionDB extends DatabaseAcess
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->selection->getID());
-        $query->bindValue(2, $this->selection->getOwnerID());
+        $query->bindValue(2, $this->selection->getOwner());
         $query->bindValue(3, $this->selection->getPrice());
         $query->bindValue(4, $datetime['inital']);
         $query->bindValue(5, $datetime['final']);

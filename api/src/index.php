@@ -2,9 +2,11 @@
 
 require_once __DIR__ . '/config/setup.php';
 
-$routes = new App\RoutesBuilder();
-//$routes->fetchResponse($response, $routes->dispatch());
+$response = new Symfony\Component\HttpFoundation\Response(); // Inicia objeto de resposta
+$response->headers->set('Content-Type', 'application/json'); // Define o formato da resposta
 
-$response->setContent(json_encode($_SERVER));
+$routes->fetchResponse($response, $routes->dispatch()); // Obtém a resposta da rota
 
-$response->send();
+$response->send(); // Exibe resposta
+
+?>

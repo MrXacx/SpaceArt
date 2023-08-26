@@ -4,26 +4,28 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Util\DataFormmatException;
 use Exception;
 use FastRoute;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Classe para controlar rotas
+ * @package App
+ * @author Ariel Santos MrXacx (Ariel Santos)
  */
-class RoutesBuilder extends Server
+class RoutesBuilder
 {
-    private static $dispatcher;
+    private Dispatcher $dispatcher;
 
     /**
      * Inicia as rotas da API
      */
-    public static function createRoutes(): void
+    function __construct()
     {
-        static::$dispatcher = FastRoute\simpleDispatcher(
+        $this->dispatcher = FastRoute\simpleDispatcher(
             function (RouteCollector $collector){ // Inicia rotas
             
                 $collector->addGroup('/user', function (RouteCollector $collector)  // rotas com início "/user"
@@ -102,7 +104,7 @@ class RoutesBuilder extends Server
      */
     public function dispatch(): array
     {
-        return static::$dispatcher->dispatch(parent::getHTTPMethod(), parent::getStrippedURI());
+        return $this->dispatcher->dispatch(Server::getHTTPMethod(), Server::getStrippedURI());
     }
 
 
@@ -138,28 +140,30 @@ class RoutesBuilder extends Server
 
                     if ($content) { // Executa caso o retorno seja true
 
-                        $status = match (parent::getHTTPMethod()) { // Obtém código HTTP adequado
+                        $status = match (Server::getHTTPMethod()) { // Obtém código HTTP adequado
                             'DELETE', 'PUT' => Response::HTTP_NO_CONTENT, // Funcionou, mas não retorna dados
                             'POST' => Response::HTTP_CREATED // Novo recurso disponível
                         };
                         $responseHandler->setStatusCode($status); // Define o status da resposta
+                        
                     } else if (is_array($content)) { // Executa caso o conteúdo obtido seja um vetor
 
                         $responseHandler->setStatusCode(Response::HTTP_OK); // Funcionou e retorna conteúdo
                         $responseHandler->setContent(json_encode($content, JSON_INVALID_UTF8_IGNORE)); // Define conteúdo a ser repondido ao cliente
+                    
                     } else { // Caso a execução falhe
 
                         $responseHandler->setStatusCode(Response::HTTP_BAD_REQUEST); // Erro na requisição
                     }
 
                 } catch (Exception $ex) {
-                    // Define status de falha como erro de requisição exclusivamente em casos de execeções de Runtime
-                    $status = $ex instanceof RuntimeException ? Response::HTTP_BAD_REQUEST : Response::HTTP_INTERNAL_SERVER_ERROR;
+                    // Define status de falha como erro de requisição exclusivamente em casos de execeções de formatação de parâmetros
+                    $status = $ex instanceof DataFormmatException ? Response::HTTP_BAD_REQUEST : Response::HTTP_INTERNAL_SERVER_ERROR;
                     $responseHandler->setStatusCode($status);
                 }    
                 
         
-            }
+        }
 
     }
 

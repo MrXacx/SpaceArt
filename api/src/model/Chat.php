@@ -3,18 +3,27 @@
 namespace App\Model;
 
 use App\DAO\ChatDB;
+use App\Util\DataFormmatException;
 
+/**
+ * Classe modelo de chat
+ * @package Model
+ * @author Ariel Santos (MrXacx)
+ */
 class Chat extends \App\Model\Template\Entity
 {
+    /**
+     * ID do artista
+     * @var string
+     */
     private string $artist;
+
+    /**
+     * ID do empreedimento
+     * @var string
+     */
     private string $enterprise;
 
-    function __construct(string $artist, string $enterprise)
-    {
-        $this->artist = $artist;
-        $this->enterprise = $enterprise;
-        parent::__construct();
-    }
 
     public static function getInstanceOf(array $attr): self
     {
@@ -31,14 +40,31 @@ class Chat extends \App\Model\Template\Entity
         ]);
     }
 
+    /**
+     * Define ID do artista
+     * @param string
+     */
+    public function setArtist(string $artist): void
+    {
+        $this->artist = $this->validator->isUUID($artist) ? $artist : throw new DataFormmatException('artist id');
+    }
+
+    /**
+     * Define ID do empreedimento
+     * @param string
+     */
+    public function setEnterprise(string $enterprise): void
+    {
+        $this->artist = $this->validator->isUUID($enterprise) ? $enterprise : throw new DataFormmatException('enterprise id');
+    }
+
     public function getArtist(): string
     {
-        return $this->id;
+        return $this->artist;
     }
 
     public function getEnterprise(): string
     {
-        return $this->id;
+        return $this->enterprise;
     }
-
 }

@@ -30,7 +30,7 @@ CREATE TABLE users(
   CEP varchar(8) NOT NULL,
   federation char(2) NOT NULL,
   city varchar(50) NOT NULL,
-  image varchar(191),
+  imageURL varchar(191),
   website varchar(191),
   rate float DEFAULT 0
 

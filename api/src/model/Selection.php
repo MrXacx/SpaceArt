@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\DAO\SelectionDB;
+use App\Model\Enumerate\ArtType;
+use App\Util\DataFormmatException;
+use DateTime;
 
 /**
  * Classe modelo de seleção
@@ -17,19 +20,19 @@ class Selection extends \App\Model\Template\Entity
      * ID do criador da seleção
      * @var string
      */
-    public string $ownerID;
+    public string $owner;
 
     /**
      * Valor da seleção
      * @var string
      */
-    private string $price;
+    private float|string $price;
 
     /**
      * Tipo de arte
-     * @var string
+     * @var ArtType
      */
-    private string $art;
+    private ArtType $art;
 
     /**
      * Datas de início e fim
@@ -61,7 +64,7 @@ class Selection extends \App\Model\Template\Entity
 
         $entity = new Selection();
         $entity->id = $attr['id'];
-        $entity->ownerID = $attr[SelectionDB::OWNER_ID];
+        $entity->owner = $attr[SelectionDB::OWNER];
         $entity->price = $attr[SelectionDB::PRICE];
         $entity->art = $attr[SelectionDB::ART];
 
@@ -74,11 +77,11 @@ class Selection extends \App\Model\Template\Entity
     }
 
     /**
-     * @param string $ownerID ID do criador da seleção
+     * @param string $owner ID do criador da seleção
      */
-    function setOwnerID(string $ownerID)
+    function setOwner(string $owner)
     {
-        $this->ownerID =  $ownerID;
+        $this->owner = $this->validator->isUUID($owner) ? $owner : throw new DataFormmatException('ID');
     }
 
     /**
@@ -86,19 +89,19 @@ class Selection extends \App\Model\Template\Entity
      *  
      * @return string ID
      */
-    public function getOwnerID(): string
+    public function getOwner(): string
     {
-        return $this->ownerID;
+        return $this->owner;
     }
 
     /**
      * Define Valor da seleção
      * 
-     * @param string $price Valor da seleção
+     * @param float $price Valor da seleção
      */
-    public function setPrice(int $price)
+    public function setPrice(float $price)
     {
-        $this->price = $price . '';
+        $this->price = $price;
     }
 
     /**
@@ -106,31 +109,31 @@ class Selection extends \App\Model\Template\Entity
      * 
      * @return string Preço
      */
-    public function getPrice(): string
+    public function getPrice(): float
     {
-        return $this->price;
+        return floatval($this->price);
     }
 
     /**
      * Define datas de início e fim da seleção
      * 
-     * @param string $inital Data de início
-     * @param string $inital Data de fim
+     * @param DateTime $inital Data de início
+     * @param DateTime $inital Data de fim
      */
-    public function setDate(string $inital, string $final)
+    public function setDate(DateTime $inital, DateTime $final)
     {
-        $this->date = ['inital' => $inital, 'final' => $final];
+        $this->date = ['inital' => $inital->format('d/m/Y'), 'final' => $final->format('d/m/Y')];
     }
 
     /**
      * Define Horários de início e fim da seleção
      * 
-     * @param string $inital Horário de início
-     * @param string $inital Horário de fim
+     * @param DateTime $inital Horário de início
+     * @param DateTime $inital Horário de fim
      */
-    public function setTime(string $inital, string $final)
+    public function setTime(DateTime $inital, DateTime $final)
     {
-        $this->time = ['inital' => $inital, 'final' => $final];
+        $this->time = ['inital' => $inital->format('H:i:s'), 'final' => $final->format('H:i:s')];
     }
 
     /**
@@ -149,9 +152,9 @@ class Selection extends \App\Model\Template\Entity
     /**
      * Define tipo de arte da seleção
      * 
-     * @param string $art tipo de arte
+     * @param ArtType $art tipo de arte
      */
-    public function setArt(string $art)
+    public function setArt(ArtType $art)
     {
         $this->art = $art;
     }
@@ -159,9 +162,9 @@ class Selection extends \App\Model\Template\Entity
     /**
      * Obtém tipo de arte
      * 
-     * @return string Arte a ser praticada
+     * @return ArtType Arte a ser praticada
      */
-    public function getArt(): string
+    public function getArt(): ArtType
     {
         return $this->art;
     }
@@ -179,7 +182,7 @@ class Selection extends \App\Model\Template\Entity
     public function toArray(): array
     {
         return array_filter(array_merge(parent::toArray(), [
-            'owner' => $this->ownerID,
+            'owner' => $this->owner,
             'price' => $this->price ?? null,
             'art' => $this->art ?? null,
             'date' => $this->date ?? null,

@@ -2,8 +2,13 @@
 
 namespace App\Model\Enumerate;
 
-enum AccountType
+/**
+ * Enumeração de tipo de conta
+ * @package App\Model\Enumerate
+ * @author Ariel Santos (MrXacx)
+ */
+enum AccountType: string
 {
-    public const ARTIST = 'artist';
-    public const ENTERPRISE = 'enterprise';
+    case ARTIST = 'artist';
+    case ENTERPRISE = 'enterprise';
 }

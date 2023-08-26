@@ -3,13 +3,13 @@
 namespace App\Model;
 
 use App\DAO\ApplicationDB;
+use App\Util\DataFormmatException;
 
 /**
  * Classe modelo de aplicação a uma seleção
- * 
+ * @package Model
  * @author Ariel Santos (MrXacx)
  */
-
 class Application extends \App\Model\Template\Entity
 {
     /**
@@ -30,13 +30,13 @@ class Application extends \App\Model\Template\Entity
      */
     private string $lastChange;
 
+
     /**
-     * Insere ID da seleção
-     * @param string
+     * @param string ID da seleção
      */
-    function setSelection(string $selection)
+    function __construct(string $selection)
     {
-        $this->selection =  $selection;
+        $this->selection =  $this->validator->isUUID($selection) ? $selection : throw new DataFormmatException('selection id');
     }
 
     /**
@@ -54,7 +54,7 @@ class Application extends \App\Model\Template\Entity
      */
     public function setUser(string $user): void
     {
-        $this->user = $user;
+        $this->user = $this->validator->isUUID($user) ? $user : throw new DataFormmatException('user id');
     }
 
     /**
@@ -68,8 +68,7 @@ class Application extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Application();
-        $entity->selection = $attr[ApplicationDB::SELECTION];
+        $entity = new Application($attr[ApplicationDB::SELECTION]);
         $entity->user = $attr[ApplicationDB::ARTIST];
         $entity->lastChange = $attr[ApplicationDB::LAST_CHANGE];
 

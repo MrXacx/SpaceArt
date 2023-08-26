@@ -6,6 +6,8 @@ namespace App\Model;
 
 use App\DAO\ArtistDB;
 use App\DAO\UsersDB;
+use App\Model\Enumerate\ArtType;
+use App\Util\DataFormmatException;
 
 /**
  * Classe modelo de usuário
@@ -15,12 +17,22 @@ use App\DAO\UsersDB;
 class Artist extends User
 {
     /**
-     * Número de identificação nacional de empreendimentos
+     * Código de Pessoa Física
      * @var string
      */
     private string $CPF;
-    private string $art;
-    private float $wage;
+
+    /**
+     * Tipo de art
+     * @var ArtType
+     */
+    private ArtType $art;
+
+    /**
+     * Pretensão salarial por hora
+     * @var string|float
+     */
+    private string|float $wage;
 
     /**
      * Obtém um modelo de usuário inicializado
@@ -43,7 +55,6 @@ class Artist extends User
                 UsersDB::CEP => 'CEP',
                 UsersDB::FEDERATION => 'federation',
                 UsersDB::CITY => 'city',
-
                 ArtistDB::CPF => 'CPF',
                 ArtistDB::ART => 'art',
                 ArtistDB::WAGE => 'wage',
@@ -66,7 +77,7 @@ class Artist extends User
      */
     public function setCPF(string $CPF): void
     {
-        $this->CPF = $CPF;
+        $this->CPF = $this->validator->isCPF($CPF) ? $CPF : throw new DataFormmatException('CPF');
     }
 
     /**
@@ -79,25 +90,25 @@ class Artist extends User
     }
 
     /**
-     * Insere código de identificação do usuário
-     * @param string $CPF código
+     * Insere tipo de arte
+     * @param ArtType
      */
-    public function setArt(string $art): void
+    public function setArt(ArtType $art): void
     {
         $this->art = $art;
     }
 
     /**
-     * Obtém número de identificação do usuário
-     * @return string Número de identificação
+     * Obtém tipo de arte
+     * @return ArtType 
      */
-    public function getArt(): string
+    public function getArt(): ArtType
     {
         return $this->art;
     }
     /**
-     * Insere código de identificação do usuário
-     * @param string $CPF código
+     * Insere pretensão salarial
+     * @param string $wage
      */
     public function setWage(float $wage): void
     {

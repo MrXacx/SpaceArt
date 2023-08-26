@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DAO\EnterpriseDB;
 use App\DAO\UsersDB;
+use App\DAO\EnterpriseDB;
+use App\Util\DataFormmatException;
 
 /**
- * Classe modelo de usuário
+ * Classe modelo de empreendimento
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
@@ -62,24 +63,20 @@ class Enterprise extends User
      */
     public function setCNPJ(string $CNPJ): void
     {
-        $this->CNPJ = $CNPJ;
+        $this->CNPJ = $this->validator->isCNPJ($CNPJ) ? $CNPJ : throw new DataFormmatException('CNPJ');
     }
 
     /**
      * Obtém número de identificação do empreendimento
-     * @return string|null Número de identificação ou nulo, caso não tenha sido informado
+     * @return string Número de identificação
      */
-    public function getCNPJ(): string|null
+    public function getCNPJ(): string
     {
         return $this->CNPJ;
     }
 
     public function toArray(): array
     {
-
-        return array_merge(parent::toArray(), [
-            'CNPJ' => $this->CNPJ,
-
-        ]);
+        return array_merge(parent::toArray(), ['CNPJ' => $this->CNPJ]);
     }
 }

@@ -2,11 +2,15 @@
 
 namespace App\Model\Enumerate;
 
-enum AgreementStatus{
-    public const ACCEPTED = 'accepted';
-    public const RECUSED = 'recused';
-    public const SEND = 'send';
-    public const CANCELED = 'canceled';
+/**
+ * Enumeração de status de contrato
+ * @package App\Model\Enumerate
+ * @author Ariel Santos (MrXacx)
+ */
+enum AgreementStatus: string
+{
+    case ACCEPTED = 'accepted';
+    case RECUSED = 'recused';
+    case SEND = 'send';
+    case CANCELED = 'canceled';
 }
-
-?>

@@ -2,13 +2,21 @@
 
 namespace App\Model\Template;
 
+use App\Util\DataFormmatException;
 use App\Util\DataValidator;
 
+/**
+ * Classe abstrata de uma entidade
+ * @package App\Model\Template
+ * @author Ariel Santos (MrXacx)
+ */
 abstract class Entity
 {
-
+    /**
+     * ID da entidade
+     * @var string
+     */
     protected string $id;
-
 
     /**
      * Objeto de validação
@@ -21,19 +29,35 @@ abstract class Entity
         $this->validator = new DataValidator();
     }
     
-
+    /**
+     * Define ID da entidade
+     * @param string
+     */
     public function setID(string $id): void
     {
-        $this->id = $id;
+        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormmatException('ID');
     }
 
+    /**
+     * Obtém ID da entidade
+     * @return string
+     */
     public function getID(): string
     {
         return $this->id;
     }
 
+    /**
+     * Converte objeto em array
+     * @return array
+     */
     public function toArray(): array{
         return ['id' => $this->id ?? null];
     }
+
+    /**
+     * Obtém intância da classe através de um array associativo
+     * @param array
+     */
     abstract public static function getInstanceOf(array $attr): self;
 }
