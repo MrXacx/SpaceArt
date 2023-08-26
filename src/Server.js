@@ -1,55 +1,72 @@
-module.exports = {
-  createServer() {
-    const path = require("path"); // Obtém manipulador de path
-    const app = require("express"); // Obtém pacote de servidor
-    this.host = express();
+module.exports = Server;
 
-    this.initBodyParser();
-    this.initHandlebars(path, app);
-  },
+const Server = {};
 
-  initBodyParser() {
-    const bodyParser = require("body-parser");
-    this.host.use(bodyParser.urlencoded({ extended: false }));
-    this.host.use(bodyParser.json());
-  },
+/**
+   * Inicia configuração do servidor
+   */
+Server.createServer = () => {
+  const app = require('express'); // Obtém pacote de servidor
+  this.host = express();
 
-  initHandlebars(path, app) {
-    this.host.use(app.static(path.join(__dirname, "../public"))); // Permite a interpretação de arquivos estáticos do diretório assets
+  this.initBodyParser();
+  this.initHandlebars(app);
+}
 
-    let exphbs = require("express-handlebars").create({
-      // Configura handlebars
-      defaultLayout: "main",
-      extname: "handlebars",
-      layoutsDir: path.join(__dirname, "views/layouts"),
-    });
+/**
+ * Configura handlebars
+ * @param app Instância de Express
+ */
+Server.initHandlebars = (app) => {
+  const path = require('path'); // Obtém manipulador de path
+  this.host.use(app.static(path.join(__dirname, '../public'))); // Permite a interpretação de arquivos estáticos do diretório assets
 
-    // Configura manipulação de rotas
-    this.host.engine("handlebars", exphbs.engine);
-    this.host.set("view engine", "handlebars");
-    this.host.set("views", "../views/");
-  },
+  let exphbs = require('express-handlebars').create({
+    // Configura handlebars
+    defaultLayout: 'main',
+    extname: 'handlebars',
+    layoutsDir: path.join(__dirname, 'views/layouts'),
+  });
 
-  createGetRoute(
-    route = "/",
-    func = (req, res) => res.send("<h1>Página desconhecida</h1>")
-  ) {
-    // Cria uma callback para uma rota
-    this.host.get(route, func);
-  },
+  // Configura manipulação de rotas
+  this.host.engine('handlebars', exphbs.engine);
+  this.host.set('view engine', 'handlebars');
+  this.host.set('views', 'views/');
+}
 
-  createPostRoute(
-    route = "/",
-    func = (req, res) => res.send("<h1>Página desconhecida</h1>")
-  ) {
-    // Cria uma callback para uma rota
-    this.host.post(route, func);
-  },
+/**
+ * Configura body-parser
+ */
+Server.initBodyParser = () => {
+  const bodyParser = require('body-parser');
+  this.host.use(bodyParser.urlencoded({ extended: false }));
+  this.host.use(bodyParser.json());
+}
 
-  on(port = 9000) {
-    // Inicia servidor
-    this.host.listen(port, () =>
-      console.log(`Servidor iniciado em http://localhost:${port}`)
-    );
-  },
-};
+/**
+ * Cria uma callback para uma rota GET
+ * @param route rota
+ * @param func callback da rota
+ */
+Server.get = (
+  route = '/',
+  func = (req, res) => res.send('<h1>Página desconhecida</h1>')
+) => { 
+  this.host.get(route, func);
+}
+
+/**
+ * Cria uma callback para uma rota POST
+ * @param route rota
+ * @param func callback da rota
+ */
+Server.post = (
+  route = '/',
+  func = (req, res) => res.send('<h1>Página desconhecida</h1>')
+) => {
+  this.host.post(route, func);
+}
+
+Server.on = (port = 9000) => {
+  this.host.listen(port, () => console.log(`Servidor iniciado em http://localhost:${port}`));
+}

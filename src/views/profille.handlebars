@@ -4,7 +4,7 @@
   <h2 class="title">{{title}}</h2>
 
   <main>
-    <img class="picture-user" src="{{image}}" alt="{{name}}" />
+    <img class="picture-user" src="{{imageURL}}" alt="{{name}}" />
 
     <h3>{{name}}</h3>
     <!-- barra de avaliação não usual -->
@@ -12,9 +12,9 @@
     <section class="ferramentas">
 
       {{#each ferramentas}}
-        <button type="button nav-button">
-          {{{this}}}
-        </button>`
+      <button type="button nav-button">
+        {{{this}}}
+      </button>`
       {{/each}}
 
     </section>
@@ -23,10 +23,10 @@
   <table class="box table">
 
     {{#each rows}}
-      <tr>
-        <th>{{this.key}}</th>
-        <td>{{this.value}}</td>
-      </tr>
+    <tr>
+      <th>{{this.key}}</th>
+      <td>{{this.value}}</td>
+    </tr>
     {{/each}}
 
   </table>
