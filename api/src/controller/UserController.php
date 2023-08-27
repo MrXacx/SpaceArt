@@ -6,11 +6,13 @@ use App\Server;
 use App\DAO\UsersDB;
 use App\DAO\ArtistDB;
 use App\DAO\EnterpriseDB;
+use App\DAO\ReportDB;
 use App\Model\User;
 use App\Model\Artist;
 use App\Model\Enterprise;
 use App\Model\Enumerate\AccountType;
 use App\Model\Enumerate\ArtType;
+use App\Model\Report;
 use App\Util\DataFormmatException;
 use App\Util\DataValidator;
 use RuntimeException;
@@ -25,18 +27,26 @@ class UserController
         $this->parameterList = new ParameterBag($_REQUEST);
     }
 
+    /**
+     * Remove registros nulos de um vetor
+     * @param array $arr vetor a ser lido
+     * @return array vetor limpo
+     */
     private function removeNullValues(array $arr): array
     {
         return array_filter($arr, fn ($value) => isset($value));
     }
 
+    /**
+     * Obtém usuário
+     * @return array dados de um usuário
+     */
     public function getUser(): array
     {
 
-        $user = new User();
+        list($user, $db) = $this->getAccountType();
         $user->setID($this->parameterList->getString('id')); // Inicia usuário com o id informado
 
-        $db = new UsersDB($user); // Inicia objeto para manipular o registro do usuário informado
         return $this->removeNullValues($db->getUser()->toArray())();
         
     }
@@ -150,6 +160,19 @@ class UserController
     }
 
     /**
+     * Obtém tipo de conta informado
+     * @return array instância do modelo e do banco do tipo informado
+     */
+    private function getAccountType(): array{
+        return match ($this->parameterList->getString('type')) { // RECEBENDO O TIPO DA CONTA
+
+            AccountType::ARTIST->value => [$artist = new Artist(), new ArtistDB($artist)],
+            AccountType::ENTERPRISE->value => [$enterprise = new Enterprise(), new EnterpriseDB($enterprise)],
+            default => throw new DataFormmatException('Account type')
+        };
+    }
+
+    /**
      * Atualiza atributo do usuário
      * @return true caso o dado tenha sido atualizado
      */
@@ -161,13 +184,7 @@ class UserController
   
         $user = new User(); // INICIANDO MODELO DO USUÁRIO 
 
-        list($user, $db) = match($this->parameterList->getString('type')) { // RECEBENDO O TIPO DA CONTA
-
-            AccountType::ARTIST->value => [$artist = new Artist(), new ArtistDB($artist)],
-            AccountType::ENTERPRISE->value => [$enterprise = new Enterprise(), new EnterpriseDB($enterprise)],
-            default => throw new DataFormmatException('Account type')
-
-        };
+        list($user, $db) = $this->getAccountType();
         
         //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
         $user->setID($this->parameterList->getString('id')); // PASSA O ID DO USUARIO PARA O MODELO
@@ -195,4 +212,40 @@ class UserController
         return $db->delete(); // RETORNA SE DELETOU OU NÃO
 
     }
+
+    /**
+     * Obtém denúncia de um usuário
+     * @return array todos os dados da denúncia
+     */
+    public function getReport(): array{
+        $report = new Report($this->parameterList->getString('reporter'));
+        $report->setID($this->parameterList->getString('id'));
+        
+        $db = new ReportDB($report);
+        return $db->getReport()->toArray();
+    }
+
+    /**
+     * Obtém lista de denúncias
+     * @return array lista com dados das denúncias de um usuário
+     */
+    public function getReportList(): array
+    {
+        $db = new ReportDB(new Report($this->parameterList->getString('reporter')));   
+        return array_map(fn($report) => $report->toArray(), $db->getList());
+    }
+
+    /**
+     * Armazena denúncia
+     * @return bool true se a denúncia foi armazenada
+     */
+    public function storeReport(): bool{
+        $report = new Report($this->parameterList->getString('reporter'));
+        $report->setReported($this->parameterList->getString('reported'));
+        $report->setReason($this->parameterList->getString('reason'));
+
+        $db = new ReportDB($report);
+        return $db->create();
+    }
+
 }

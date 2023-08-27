@@ -26,7 +26,8 @@ class RoutesBuilder
     function __construct()
     {
         $this->dispatcher = FastRoute\simpleDispatcher(
-            function (RouteCollector $collector){ // Inicia rotas
+            function(RouteCollector $collector)
+            { // Inicia rotas
             
                 $collector->addGroup('/user', function (RouteCollector $collector)  // rotas com início "/user"
                 {
@@ -36,6 +37,7 @@ class RoutesBuilder
                     $collector->post('/', UserController::class . '/storeUser'); // Busca id do usuário  
                     $collector->put('/', UserController::class . '/updateUser'); // Busca id do usuário     
                     $collector->delete('/', UserController::class . '/deleteUser'); // Deleta usuário
+                    
                     $collector->addGroup('/report', function (RouteCollector $collector)  // rotas com início "/user/report"
                     {
                         $collector->get('/', UserController::class . '/getReport'); // Retorna uma denúncia
@@ -44,6 +46,7 @@ class RoutesBuilder
                         
                     });
                 });
+
                 $collector->addGroup('/chat', function (RouteCollector $collector)  // rotas com início "/chat"
                 {
                     $collector->get('/', ChatController::class . '/getChat'); // Exibe um chat
@@ -58,6 +61,7 @@ class RoutesBuilder
                         $collector->delete('/', ChatController::class . '/deletMessage'); //Deleta um chat existente
                     });
                 });
+
                 $collector->addGroup('/agreement', function (RouteCollector $collector)  //rotas com início '/agreement'
                 {
                     

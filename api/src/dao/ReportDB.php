@@ -30,12 +30,10 @@ class ReportDB extends DatabaseAcess
 
     /**
      * @param Report $report Modelo de candidatura a ser manipulado
-     * @param User $user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(Report $report, User $user)
+    function __construct(Report $report)
     {
         $this->report = $report;
-        $this->user = $user;
         parent::__construct();
     }
 
@@ -66,7 +64,7 @@ class ReportDB extends DatabaseAcess
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT * FROM report WHERE reporter = ? LIMIT $limit OFFSET $offset");
-        $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
+        $query->bindValue(1, $this->report->getReporter()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn ($report) => Report::getInstanceOf($report), $this->fetchRecord($query));
