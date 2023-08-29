@@ -61,9 +61,8 @@ class ChatDB extends DatabaseAcess
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT * FROM chat WHERE artist = ? OR enterprise = ? LIMIT $limit OFFSET $offset");
 
-        $id = $this->chat->getID();
-        $query->bindValue(1, $id);
-        $query->bindValue(2, $id);
+        $query->bindValue(1, $this->chat->getArtist());
+        $query->bindValue(2,  $this->chat->getEnterprise());
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn ($chat) => Chat::getInstanceOf($chat), $this->fetchRecord($query));
