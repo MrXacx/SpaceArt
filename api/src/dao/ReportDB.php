@@ -6,7 +6,7 @@ namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
 use App\Model\Report;
-use App\Model\User;
+use App\Model\Template\User;
 use RuntimeException;
 
 /**
@@ -67,7 +67,7 @@ class ReportDB extends DatabaseAcess
         $query->bindValue(1, $this->report->getReporter()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($report) => Report::getInstanceOf($report), $this->fetchRecord($query));
+            return array_map(fn($report) => Report::getInstanceOf($report), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas

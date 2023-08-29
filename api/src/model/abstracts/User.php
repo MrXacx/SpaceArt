@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Model\Template;
 
 use App\DAO\UsersDB;
 use App\Util\Tool\Location;
@@ -13,7 +13,7 @@ use App\Util\DataFormmatException;
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-class User extends \App\Model\Template\Entity
+abstract class User extends Entity
 {
 
     use Location;
@@ -67,33 +67,7 @@ class User extends \App\Model\Template\Entity
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return self Instância da classe
      */
-    public static function getInstanceOf(array $attr): self
-    {
-        $entity = new User();
-
-        foreach ($attr as $key => $value) {
-            $atributeName = match ($key) {
-                'id' => 'id',
-                UsersDB::EMAIL => 'email',
-                UsersDB::PASSWORD => 'password',
-                UsersDB::NAME => 'name',
-                UsersDB::IMAGE_URL => 'imageURL',
-                UsersDB::CEP => 'CEP',
-                UsersDB::FEDERATION => 'federation',
-                UsersDB::CITY => 'city',
-                UsersDB::PHONE => 'phone',
-                UsersDB::SITE => 'website',
-                UsersDB::RATE => 'rate',
-                default => null
-            };
-
-            if (isset($atributeName)) {
-                $entity->$atributeName = $value;
-            }
-        }
-
-        return $entity;
-    }
+    abstract public static function getInstanceOf(array $attr): self;
 
     /**
      * @param string $id ID do usuário

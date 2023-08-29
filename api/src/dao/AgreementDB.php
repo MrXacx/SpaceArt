@@ -6,7 +6,7 @@ namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
 use App\Model\Agreement;
-use App\Model\User;
+use App\Model\Template\User;
 
 /**
  * Classe de maniupulação da tabela Agreements
@@ -58,12 +58,12 @@ class AgreementDB extends DatabaseAcess
         $query->bindValue(2, $this->agreement->getHirer());
         $query->bindValue(3, $this->agreement->getHired());
         $query->bindValue(4, $this->agreement->getPrice());
-        $query->bindValue(5,  $this->agreement->getDate());
+        $query->bindValue(5, $this->agreement->getDate()->format(DatabaseAcess::DB_DATE_FORMAT));
 
         $time = $this->agreement->getTime();
-        $query->bindValue(6, $time['inital']);
-        $query->bindValue(7, $time['final']);
-        $query->bindValue(8, $this->agreement->getArt());
+        $query->bindValue(6, $time['inital']->format(DatabaseAcess::DB_TIME_FORMAT));
+        $query->bindValue(7, $time['final']->format(DatabaseAcess::DB_TIME_FORMAT));
+        $query->bindValue(8, $this->agreement->getArt()->value);
 
         return $query->execute();
     }
@@ -81,7 +81,7 @@ class AgreementDB extends DatabaseAcess
         $query->bindValue(2, $id);
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($agreement) => Agreement::getInstanceOf($agreement), $this->fetchRecord($query));
+            return array_map(fn($agreement) => Agreement::getInstanceOf($agreement), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas

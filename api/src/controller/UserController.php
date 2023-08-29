@@ -7,7 +7,7 @@ use App\DAO\UsersDB;
 use App\DAO\ArtistDB;
 use App\DAO\EnterpriseDB;
 use App\DAO\ReportDB;
-use App\Model\User;
+use App\Model\Template\User;
 use App\Model\Artist;
 use App\Model\Enterprise;
 use App\Model\Enumerate\AccountType;
@@ -16,26 +16,16 @@ use App\Model\Report;
 use App\Util\DataFormmatException;
 use App\Util\DataValidator;
 use RuntimeException;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
-class UserController
+class UserController extends \App\Controller\Template\Controller
 {
-    private ParameterBag $parameterList;
-
-    function __construct()
-    {
-        $this->parameterList = new ParameterBag($_REQUEST);
-    }
 
     /**
      * Remove registros nulos de um vetor
      * @param array $arr vetor a ser lido
      * @return array vetor limpo
      */
-    private function removeNullValues(array $arr): array
-    {
-        return array_filter($arr, fn ($value) => isset($value));
-    }
+
 
     /**
      * Obtém usuário
@@ -47,8 +37,8 @@ class UserController
         list($user, $db) = $this->getAccountType();
         $user->setID($this->parameterList->getString('id')); // Inicia usuário com o id informado
 
-        return $this->removeNullValues($db->getUser()->toArray())();
-        
+        return $this->filterNulls($db->getUser()->toArray())();
+
     }
 
     /**
@@ -62,7 +52,7 @@ class UserController
             mas pode não ter acesso ao id desse. Portanto, a API deve retornar apenas
             o id consultado com base nos dados informados.  
         */
-        
+
         $user = new User();
 
         $user->setEmail($this->parameterList->getString('email'));
@@ -70,7 +60,7 @@ class UserController
 
         $db = new UsersDB($user);
         return $db->getID();
-       
+
     }
 
     /**
@@ -93,13 +83,13 @@ class UserController
         }
 
         $dao = match ($type) { //Obtém objeto adequado para o tipo de conta
-            AccountType::ARTIST->value  => new ArtistDB(),
+            AccountType::ARTIST->value => new ArtistDB(),
             AccountType::ENTERPRISE->value => new EnterpriseDB(),
             default => throw new RuntimeException('O tipo da conta não foi informado ou não foi reconhecido') // Lança exceção
         };
 
         $list = $dao->getList($offset, $limit);
-        return  array_map(fn ($user) => $this->removeNullValues($user->toArray()), $list);
+        return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
     }
 
     /**
@@ -163,7 +153,8 @@ class UserController
      * Obtém tipo de conta informado
      * @return array instância do modelo e do banco do tipo informado
      */
-    private function getAccountType(): array{
+    private function getAccountType(): array
+    {
         return match ($this->parameterList->getString('type')) { // RECEBENDO O TIPO DA CONTA
 
             AccountType::ARTIST->value => [$artist = new Artist(), new ArtistDB($artist)],
@@ -181,16 +172,16 @@ class UserController
 
         $column = ($this->parameterList->getString('column')); // RECEBE A COLUNA QUE SERÁ ALTERADA
         $info = ($this->parameterList->getString('info')); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
-  
+
         $user = new User(); // INICIANDO MODELO DO USUÁRIO 
 
         list($user, $db) = $this->getAccountType();
-        
+
         //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
         $user->setID($this->parameterList->getString('id')); // PASSA O ID DO USUARIO PARA O MODELO
-        
+
         $validator = new DataValidator();
-        
+
         // VERIFICA SE O USERDB É NULO, E VERIFICA SE A COLUNA ESCOLHIDA PARA ALTERAÇÃO REALMENTE EXISTE NA TABELA ESCOLHIDA 
         if ($db->isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {
             return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
@@ -204,7 +195,7 @@ class UserController
      */
     public function deleteUser(): bool
     {
- 
+
         $user = new User(); //MODELO DE USUÁRIO
         $user->setID($this->parameterList->getString('id')); //PASSA O ID DE USUÁRIO PARA O MODELO
 
@@ -217,10 +208,11 @@ class UserController
      * Obtém denúncia de um usuário
      * @return array todos os dados da denúncia
      */
-    public function getReport(): array{
+    public function getReport(): array
+    {
         $report = new Report($this->parameterList->getString('reporter'));
         $report->setID($this->parameterList->getString('id'));
-        
+
         $db = new ReportDB($report);
         return $db->getReport()->toArray();
     }
@@ -231,7 +223,7 @@ class UserController
      */
     public function getReportList(): array
     {
-        $db = new ReportDB(new Report($this->parameterList->getString('reporter')));   
+        $db = new ReportDB(new Report($this->parameterList->getString('reporter')));
         return array_map(fn($report) => $report->toArray(), $db->getList());
     }
 
@@ -239,7 +231,8 @@ class UserController
      * Armazena denúncia
      * @return bool true se a denúncia foi armazenada
      */
-    public function storeReport(): bool{
+    public function storeReport(): bool
+    {
         $report = new Report($this->parameterList->getString('reporter'));
         $report->setReported($this->parameterList->getString('reported'));
         $report->setReason($this->parameterList->getString('reason'));

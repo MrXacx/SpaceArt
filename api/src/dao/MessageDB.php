@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
-use App\Model\User;
+use App\Model\Template\User;
 use App\Model\Message;
 
 /**
@@ -56,7 +56,7 @@ class MessageDB extends DatabaseAcess
     }
 
     /**
-     * @see abstracts/DatabaseAcess.php
+     * @see DatabaseAcess
      */
     public function getList(int $offset = 1, int $limit = 10): array
     {
@@ -66,7 +66,7 @@ class MessageDB extends DatabaseAcess
         $query->bindValue(1, $this->message->getChat());
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($message) => Message::getInstanceOf($message), $this->fetchRecord($query));
+            return array_map(fn($message) => Message::getInstanceOf($message), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas
@@ -84,7 +84,7 @@ class MessageDB extends DatabaseAcess
 
         $query->bindValue(1, $this->message->getChat());
         $query->bindValue(2, $this->message->getSender());
-        $query->bindValue(3, $this->message->getDatetime());
+        $query->bindValue(3, $this->message->getTimestamp()->format(DatabaseAcess::DB_TIMESTAMP_FORMAT));
 
         if ($query->execute()) { // Executa se a query for aceita
             return Message::getInstanceOf($this->fetchRecord($query, false));
@@ -106,7 +106,7 @@ class MessageDB extends DatabaseAcess
         $query->bindValue(1, $value);
         $query->bindValue(2, $this->message->getChat());
         $query->bindValue(3, $this->message->getSender());
-        $query->bindValue(4, $this->message->getDatetime());
+        $query->bindValue(4, $this->message->getTimestamp()->format(DatabaseAcess::DB_TIMESTAMP_FORMAT));
 
         return $query->execute();
     }
@@ -120,7 +120,7 @@ class MessageDB extends DatabaseAcess
         $query = $this->getConnection()->prepare('DELETE FROM message WHERE chat = ? AND sender = ? AND shipping_datetime = ?');
         $query->bindValue(1, $this->message->getChat());
         $query->bindValue(2, $this->message->getSender());
-        $query->bindValue(3, $this->message->getDatetime());
+        $query->bindValue(3, $this->message->getTimestamp()->format(DatabaseAcess::DB_TIMESTAMP_FORMAT));
 
         return $query->execute();
     }

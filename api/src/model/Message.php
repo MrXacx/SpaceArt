@@ -35,7 +35,7 @@ class Message extends \App\Model\Template\Entity
      * Momento do envio da mensagem
      * @var DateTime
      */
-    private DateTime $datetime;
+    private DateTime $timestamp;
 
     /**
      * @param string ID do chat
@@ -51,7 +51,7 @@ class Message extends \App\Model\Template\Entity
 
         $entity->sender = $attr[MessageDB::SENDER];
         $entity->content = $attr[MessageDB::CONTENT];
-        $entity->datetime = DateTime::createFromFormat('Y-m-d H:i:s', $attr[MessageDB::DATETIME]);
+        $entity->timestamp = DateTime::createFromFormat('Y-m-d H:i:s', $attr[MessageDB::DATETIME]);
         return $entity;
     }
 
@@ -61,7 +61,7 @@ class Message extends \App\Model\Template\Entity
             'sender' => $this->sender,
             'chat' => $this->chat,
             'content' => $this->content,
-            'datetime' => $this->datetime->format('d/m/Y H:is'),
+            'datetime' => $this->timestamp->format('d/m/Y H:is'),
         ];
     }
 
@@ -110,12 +110,16 @@ class Message extends \App\Model\Template\Entity
         return $this->content;
     }
 
+    public function setTimestamp(DateTime $timestamp): void{
+        $this->timestamp = $timestamp;
+    }
+
     /**
      * Obtém marco temporal do envio da mensagem
      * @param string
      */
-    public function getDatetime(): DateTime
+    public function getTimestamp(): DateTime
     {
-        return $this->datetime;
+        return $this->timestamp;
     }
 }

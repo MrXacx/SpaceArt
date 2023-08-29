@@ -9,8 +9,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use PDO;
 use PDOException;
 use PDOStatement;
-use App\Util\DataValidator;
-use Reflection;
 use ReflectionClassConstant;
 
 /**
@@ -26,7 +24,14 @@ abstract class DatabaseAcess
      */
     private PDO $connection;
 
-    protected \App\Model\User|null $user;
+    public const DB_TIMESTAMP_FORMAT = 'Y-m-d H:i:s';
+    public const USUAL_TIMESTAMP_FORMAT = 'd/m/Y H:i:s';
+    public const DB_DATE_FORMAT = 'Y-m-d';
+    public const USUAL_DATE_FORMAT = 'd/m/Y';
+public
+    public const DB_TIME_FORMAT = 'Y-m-d';
+
+    protected \App\Model\Template\User|null $user;
 
     function __construct()
     {
@@ -42,17 +47,17 @@ abstract class DatabaseAcess
      * @return PDO Manipulador do banco de dados
      * 
      */
-    protected function getConnection(): PDO
+    final protected function getConnection(): PDO
     {
         return $this->connection;
     }
 
     /**
      * Obtém uuid
-     * @return String Sequência aleatória de 36 dígitos
+     * @return string Sequência aleatória de 36 dígitos
      * 
      */
-    protected function getRandomID(): string
+    final protected function getRandomID(): string
     {
         return \Ramsey\Uuid\Uuid::uuid7()->toString();
     }
@@ -64,16 +69,17 @@ abstract class DatabaseAcess
      * @return array Valor buscado no banco
      * @throws PDOException Caso valor retornado seja de um tipo diferente de array ou string
      */
-    protected function fetchRecord(PDOStatement $query, bool $multipleRecords = true): array
+    final protected function fetchRecord(PDOStatement $query, bool $multipleRecords = true): array
     {
-        $response = $multipleRecords ? $query->fetchAll(\PDO::FETCH_ASSOC) : $query->fetch(\PDO::FETCH_ASSOC);
+        $response = $multipleRecords ? $query->fetchAll(PDO::FETCH_ASSOC) : $query->fetch(PDO::FETCH_ASSOC);
         if (is_array($response)) {
             return $response;
         }
         throw new \RuntimeException('Registro(s) não encontrado(s)');
     }
 
-    public function isColumn(string $class, string $column): bool{
+    final public function isColumn(string $class, string $column): bool
+    {
         $cases = (new \ReflectionClass($class))->getConstants(ReflectionClassConstant::IS_PUBLIC);
         return false !== array_search($column, $cases, true);
     }
@@ -87,7 +93,7 @@ abstract class DatabaseAcess
      * Insere linhs na tabela
      * 
      * @return int Número de linhas afetadas
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
+     * @throws \RuntimeException Falha causada pela conexão com o banco de dados
      */
     abstract public function create(): bool;
 
@@ -113,7 +119,7 @@ abstract class DatabaseAcess
      * Deleta linha do banco
      * 
      * @return int Número de linhas deletadas
-     * @throws RuntimeException Falha causada pela conexão com o banco de dados
+     * @throws \RuntimeException Falha causada pela conexão com o banco de dados
      */
     abstract public function delete(): bool;
 }
