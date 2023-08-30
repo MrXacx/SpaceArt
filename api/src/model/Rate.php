@@ -5,6 +5,11 @@ namespace App\Model;
 use App\DAO\RateDB;
 use App\Util\DataFormmatException;
 
+/**
+ * Classe modelo de avaliação
+ * @package Model
+ * @author Ariel Santos (MrXacx)
+ */
 class Rate extends \App\Model\Template\Entity
 {
     /**
@@ -65,21 +70,25 @@ class Rate extends \App\Model\Template\Entity
 
     /**
      * Obtém o ID do contrato
-     * @return string
+     * @return string Contrato
      */
     public function getAgreement(): string
     {
         return $this->agreement;
     }
 
+    /**
+     * Define ID do autor
+     * @param string $author Autor
+     */
     public function setAuthor(string $author): void
     {
         $this->author = $author;
     }
 
     /**
-     * Obtém o ID do autor da avaliação
-     * @return string
+     * Obtém o ID do autor
+     * @return string Autor
      */
     public function getAuthor(): string
     {
@@ -88,7 +97,7 @@ class Rate extends \App\Model\Template\Entity
 
     /**
      * Define a descrição
-     * @param string
+     * @param string Descrição
      */
     public function setDescription(string $description): void
     {
@@ -97,7 +106,7 @@ class Rate extends \App\Model\Template\Entity
 
     /**
      * Obtém a descrição
-     * @return string
+     * @return string Descrição
      */
     public function getDescription(): string
     {
@@ -106,7 +115,7 @@ class Rate extends \App\Model\Template\Entity
 
     /**
      * Define a nota
-     * @param float
+     * @param float Nota
      */
     public function setRate(float $rate): void
     {
@@ -115,10 +124,10 @@ class Rate extends \App\Model\Template\Entity
 
     /**
      * Obtém o Nota da avaliação
-     * @return float
+     * @return float Nota
      */
     public function getRate(): float
     {
-        return intval($this->rate);
+        return floatval($this->rate);
     }
 }

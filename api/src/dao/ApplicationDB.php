@@ -28,20 +28,14 @@ class ApplicationDB extends DatabaseAcess
      */
     private Application $application;
 
-    /**
-     * Modelo de seleção associado ao modelo de aplicação
-     * @var Selection|null
-     */
-    private Selection|null $selection;
 
     /**
      * @param Application $application Modelo de candidatura a ser manipulado
      * @param Selection $selection Modelo de seleção a ser considerado na manipulação [opcional]
      */
-    function __construct(Application $application, Selection $selection = null)
+    function __construct(Application $application)
     {
         $this->application = $application;
-        $this->selection =  $selection;
         parent::__construct();
     }
 
@@ -68,7 +62,7 @@ class ApplicationDB extends DatabaseAcess
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT * FROM selection_application WHERE selection = ? ORDER BY last_change LIMIT $limit OFFSET $offset");
-        $query->bindValue(1, $this->selection->getID()); // Substitui interrogação na query pelo ID passado
+        $query->bindValue(1, $this->application->getSelection()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn ($application) => Application::getInstanceOf($application), $this->fetchRecord($query));

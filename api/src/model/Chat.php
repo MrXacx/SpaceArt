@@ -27,8 +27,11 @@ class Chat extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Chat($attr[ChatDB::ARTIST], $attr[ChatDB::ENTERPRISE]);
+        $entity = new Chat();
         $entity->id = $attr['id'];
+        $entity->artist = $attr[ChatDB::ARTIST];
+        $entity->enterprise = $attr[ChatDB::ENTERPRISE];
+        
         return $entity;
     }
 
@@ -58,11 +61,19 @@ class Chat extends \App\Model\Template\Entity
         $this->artist = $this->validator->isUUID($enterprise) ? $enterprise : throw new DataFormmatException('enterprise id');
     }
 
+    /**
+     * Obtém ID do artista
+     * @return string
+     */
     public function getArtist(): string
     {
         return $this->artist;
     }
 
+    /**
+     * Obtém ID do empreedimento
+     * @return string
+     */
     public function getEnterprise(): string
     {
         return $this->enterprise;

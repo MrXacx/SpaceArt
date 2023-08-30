@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use DateTime;
 use App\DAO\ApplicationDB;
 use App\Util\DataFormmatException;
 
@@ -25,10 +26,10 @@ class Application extends \App\Model\Template\Entity
     private string $selection;
 
     /**
-     * Última alteração na aplicação
-     * @var string
+     * Data da última alteração na aplicação
+     * @var DateTime
      */
-    private string $lastChange;
+    private DateTime $lastChange;
 
 
     /**
@@ -70,7 +71,7 @@ class Application extends \App\Model\Template\Entity
     {
         $entity = new Application($attr[ApplicationDB::SELECTION]);
         $entity->user = $attr[ApplicationDB::ARTIST];
-        $entity->lastChange = $attr[ApplicationDB::LAST_CHANGE];
+        $entity->lastChange = DateTime::createFromFormat(ApplicationDB::DB_TIMESTAMP_FORMAT, $attr[ApplicationDB::LAST_CHANGE]);
 
         return $entity;
     }
@@ -80,7 +81,7 @@ class Application extends \App\Model\Template\Entity
         return [
             'selection' => $this->selection,
             'user' => $this->user,
-            'last_change' => $this->lastChange ?? null,
+            'last_change' => $this->lastChange->format(ApplicationDB::USUAL_TIMESTAMP_FORMAT),
         ];
     }
 }

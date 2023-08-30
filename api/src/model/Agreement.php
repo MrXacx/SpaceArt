@@ -139,7 +139,7 @@ class Agreement extends \App\Model\Template\Entity
     }
 
     /** 
-     * Obtém preço do contrato
+     * Define preço do contrato
      * @param float
      */
     function setPrice(float $price)
@@ -182,7 +182,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     public function setTime(DateTime $inital, DateTime $final): void
     {
-        $this->time = ['inital' => $inital->format('H:i:s'), 'final' => $final->format('H:i:s')];
+        $this->time = ['inital' => $inital->format(AgreementDB::DB_TIME_FORMAT), 'final' => $final->format(AgreementDB::DB_TIME_FORMAT)];
     }
 
     /**
@@ -237,9 +237,9 @@ class Agreement extends \App\Model\Template\Entity
             'hirer' => $this->hirer,
             'hired' => $this->hired,
             'price' => $this->price,
-            'date' => $this->date->format('d/m/Y'),
+            'date' => $this->date->format(AgreementDB::USUAL_DATE_FORMAT),
             'art' => $this->art ?? null,
-            'time' => $this->time ?? null,
+            'time' => array_map(fn(DateTime $time): string => $time->format(AgreementDB::DB_TIME_FORMAT), $this->time) ?? null,
             'status' => $this->status ?? null
         ]), fn ($value) => isset($value));
     }

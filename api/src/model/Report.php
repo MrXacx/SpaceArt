@@ -5,11 +5,35 @@ namespace App\Model;
 use App\DAO\ReportDB;
 use App\Util\DataFormmatException;
 
+/**
+ * Classe modelo de denúncia
+ * @package Model
+ * @author Ariel Santos (MrXacx)
+ */
 class Report extends \App\Model\Template\Entity
-{
+{   
+    /**
+     * ID do denunciador
+     * @var string
+     */
     private string $reporter;
+
+    /**
+     * ID do denunciado
+     * @var string
+     */
     private string $reported;
+
+    /**
+     * Motivo da denúncia
+     * @var string
+     */
     private string $reason;
+
+    /**
+     * Se a denúncia foi acolhida
+     * @var bool
+     */
     private bool $accepted;
 
     function __construct(string $reporter)
@@ -42,7 +66,7 @@ class Report extends \App\Model\Template\Entity
 
     /**
      * Obtém id do denunciador
-     * @return string
+     * @return string Denunciador
      */
     public function getReporter(): string
     {
@@ -51,7 +75,7 @@ class Report extends \App\Model\Template\Entity
 
     /**
      * Define id do denunciado
-     * @param string
+     * @param string Denunciado
      */
     public function setReported(string $reporter): void
     {
@@ -60,7 +84,7 @@ class Report extends \App\Model\Template\Entity
 
     /**
      * Obtém id do denunciado
-     * @return string
+     * @return string Denunciado
      */
     public function getReported(): string
     {
@@ -69,7 +93,7 @@ class Report extends \App\Model\Template\Entity
 
     /**
      * Define razão da denúncia
-     * @param string
+     * @param string Motivo da denúncia
      */
     public function setReason(string $reason): void
     {
@@ -78,7 +102,7 @@ class Report extends \App\Model\Template\Entity
 
     /**
      * Obtém razão da denúncia
-     * @return string
+     * @return string Motivo da denúncia
      */
     public function getReason(): string
     {

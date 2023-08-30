@@ -10,11 +10,12 @@ use App\Model\Enumerate\ArtType;
 use App\Util\DataFormmatException;
 
 /**
- * Classe modelo de usuário
+ * Classe modelo de artista
  * @package Model
+ * @abstract User
  * @author Ariel Santos (MrXacx)
  */
-class Artist extends User
+class Artist extends \APP\Model\Template\User
 {
     /**
      * Código de Pessoa Física
@@ -34,12 +35,6 @@ class Artist extends User
      */
     private string|float $wage;
 
-    /**
-     * Obtém um modelo de usuário inicializado
-     * 
-     * @param array $attr Array associativo contento todas as informações do modelo
-     * @return self Instância da classe
-     */
     public static function getInstanceOf(array $attr): self
     {
         $entity = new Artist();
@@ -72,7 +67,7 @@ class Artist extends User
     }
 
     /**
-     * Insere código de identificação do usuário
+     * Insere código de pessoa física
      * @param string $CPF código
      */
     public function setCPF(string $CPF): void
@@ -81,7 +76,7 @@ class Artist extends User
     }
 
     /**
-     * Obtém número de identificação do usuário
+     * Obtém código de pessoa física
      * @return string Número de identificação
      */
     public function getCPF(): string
@@ -116,7 +111,7 @@ class Artist extends User
     }
 
     /**
-     * Obtém número de identificação do usuário
+     * Obtém pretensão salarial
      * @return string Número de identificação
      */
     public function getWage(): float

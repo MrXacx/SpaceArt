@@ -11,12 +11,13 @@ use App\Util\DataFormmatException;
 /**
  * Classe modelo de empreendimento
  * @package Model
+ * @abstract User
  * @author Ariel Santos (MrXacx)
  */
-class Enterprise extends User
+class Enterprise extends \App\Model\Template\User
 {
     /**
-     * Número de identificação nacional de empreendimentos
+     * Código nacional de pessoa jurídica
      * @var string
      */
     private string $CNPJ;
@@ -58,7 +59,7 @@ class Enterprise extends User
     }
 
     /**
-     * Insere código de identificação do empreendimento
+     * Insere código nacional de pessoa jurídica
      * @param string $CNPJ código
      */
     public function setCNPJ(string $CNPJ): void
@@ -67,8 +68,8 @@ class Enterprise extends User
     }
 
     /**
-     * Obtém número de identificação do empreendimento
-     * @return string Número de identificação
+     * Obtém código nacional de pessoa jurídica
+     * @return string
      */
     public function getCNPJ(): string
     {

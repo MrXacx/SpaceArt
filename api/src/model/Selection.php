@@ -122,7 +122,7 @@ class Selection extends \App\Model\Template\Entity
      */
     public function setDate(DateTime $inital, DateTime $final)
     {
-        $this->date = ['inital' => $inital->format('d/m/Y'), 'final' => $final->format('d/m/Y')];
+        $this->date = ['inital' => $inital->format(SelectionDB::DB_DATE_FORMAT), 'final' => $final->format(SelectionDB::DB_DATE_FORMAT)];
     }
 
     /**
@@ -133,7 +133,7 @@ class Selection extends \App\Model\Template\Entity
      */
     public function setTime(DateTime $inital, DateTime $final)
     {
-        $this->time = ['inital' => $inital->format('H:i:s'), 'final' => $final->format('H:i:s')];
+        $this->time = ['inital' => $inital, 'final' => $final];
     }
 
     /**
@@ -169,11 +169,19 @@ class Selection extends \App\Model\Template\Entity
         return $this->art;
     }
 
+    /**
+     * Define se a seleção foi finalizada
+     * @param bool
+     */
     public function setLocked(bool $locked): void
     {
         $this->locked = $locked;
     }
 
+    /**
+     * Checa se a seleção foi finalizada
+     * @return bool
+     */
     public function isLocked(): bool
     {
         return $this->locked;
