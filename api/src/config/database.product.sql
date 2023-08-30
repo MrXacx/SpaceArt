@@ -62,7 +62,7 @@ CREATE TABLE agreement(
   id char(36) PRIMARY KEY,
   hirer char(36) NOT NULL,
   hired char(36) NOT NULL,
-  price mediumint(5) unsigned NOT NULL,
+  price float unsigned NOT NULL,
   date date NOT NULL,
   inital_time time NOT NULL,
   final_time  time NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE selection(
 
   id char(36) PRIMARY KEY,
   owner char(36) NOT NULL,
-  price mediumint(5) unsigned NOT NULL,
+  price float unsigned NOT NULL,
   inital_datetime datetime NOT NULL,
   final_datetime datetime NOT NULL,
   art varchar(191) NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE rate(
     author char(36),
     agreement char(36),
     rate float NOT NULL,
-	description varchar(191),
+    description varchar(191),
 
     PRIMARY KEY(author, agreement),
     CONSTRAINT author_fk FOREIGN KEY (author) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
