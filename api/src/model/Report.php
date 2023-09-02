@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use App\DAO\ReportDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 
 /**
  * Classe modelo de denúncia
@@ -11,7 +11,7 @@ use App\Util\DataFormmatException;
  * @author Ariel Santos (MrXacx)
  */
 class Report extends \App\Model\Template\Entity
-{   
+{
     /**
      * ID do denunciador
      * @var string
@@ -97,7 +97,7 @@ class Report extends \App\Model\Template\Entity
      */
     public function setReason(string $reason): void
     {
-        $this->reason = $this->validator->isFit($reason) ? $reason : throw new DataFormmatException('reason', DataFormmatException::LENGTH);
+        $this->reason = $this->validator->isFit($reason) ? $reason : throw new DataFormatException('reason', DataFormatException::LENGTH);
     }
 
     /**

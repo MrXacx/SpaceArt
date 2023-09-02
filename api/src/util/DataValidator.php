@@ -12,9 +12,7 @@ use App\DAO\RateDB;
 use App\DAO\ReportDB;
 use App\DAO\SelectionDB;
 use App\DAO\UsersDB;
-use App\Model\Agreement;
 use DateTime;
-use RuntimeException;
 
 
 /**
@@ -30,7 +28,7 @@ final class DataValidator
 
     public function isUUID(string $uuid): bool
     {
-        return preg_match('#^\d{4}-\d{4}-\d{4}-\d{4}$#', $uuid);
+        return preg_match('#^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$#', $uuid);
     }
 
     /**
@@ -141,7 +139,7 @@ final class DataValidator
      */
     public function isEmail(string $email): bool
     {
-        return preg_match('#^/\S+@\S+\.\S+/$#', $email); // 11 algarismos
+        return preg_match('#^\\S+@\\S+\\.\\S+$#', $email); // 11 algarismos
     }
 
     public function isDate(string $date): bool

@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use App\DAO\MessageDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use DateTime;
 
 /**
@@ -42,7 +42,7 @@ class Message extends \App\Model\Template\Entity
      */
     function __construct(string $chat)
     {
-        $this->chat = $this->validator->isUUID($chat) ? $chat : throw new DataFormmatException('chat id');
+        $this->chat = $this->validator->isUUID($chat) ? $chat : throw new DataFormatException('chat id');
     }
 
     public static function getInstanceOf(array $attr): self
@@ -71,7 +71,7 @@ class Message extends \App\Model\Template\Entity
      */
     public function setSender(string $sender)
     {
-        $this->sender = $this->validator->isUUID($sender) ? $sender : throw new DataFormmatException('SENDER ID');
+        $this->sender = $this->validator->isUUID($sender) ? $sender : throw new DataFormatException('SENDER ID');
     }
 
     /**
@@ -98,7 +98,7 @@ class Message extends \App\Model\Template\Entity
      */
     public function setContent(string $content): void
     {
-        $this->content = $this->validator->isFit($content) ? $content : throw new DataFormmatException('content', DataFormmatException::LENGTH);
+        $this->content = $this->validator->isFit($content) ? $content : throw new DataFormatException('content', DataFormatException::LENGTH);
     }
 
     /**
@@ -114,7 +114,8 @@ class Message extends \App\Model\Template\Entity
      * Define marco temporal do envio da mensagem
      * @param DateTime $timestemp
      */
-    public function setTimestamp(DateTime $timestamp): void{
+    public function setTimestamp(DateTime $timestamp): void
+    {
         $this->timestamp = $timestamp;
     }
 

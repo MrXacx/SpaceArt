@@ -41,7 +41,7 @@ CREATE TABLE artist(
   id varchar(36) PRIMARY KEY,
   CPF varchar(11) UNIQUE KEY NOT NULL,
   art enum("escultura", "pintura", "dança", "música") NOT NULL,
-  wage_to_hourly float NOT NULL,
+  wage float NOT NULL,
 
   FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -6,7 +6,7 @@ namespace App\Model;
 
 use App\DAO\UsersDB;
 use App\DAO\EnterpriseDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 
 /**
  * Classe modelo de empreendimento
@@ -64,7 +64,7 @@ class Enterprise extends \App\Model\Template\User
      */
     public function setCNPJ(string $CNPJ): void
     {
-        $this->CNPJ = $this->validator->isCNPJ($CNPJ) ? $CNPJ : throw new DataFormmatException('CNPJ');
+        $this->CNPJ = $this->validator->isCNPJ($CNPJ) ? $CNPJ : throw new DataFormatException('CNPJ');
     }
 
     /**
@@ -78,6 +78,6 @@ class Enterprise extends \App\Model\Template\User
 
     public function toArray(): array
     {
-        return array_merge(parent::toArray(), ['CNPJ' => $this->CNPJ]);
+        return array_merge(parent::toArray(), ['CNPJ' => $this->CNPJ ?? null]);
     }
 }

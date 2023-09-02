@@ -14,7 +14,7 @@ INSERT INTO enterprise (id, CNPJ, district, address) VALUES
 ('5', '55555', 'BAIRRO 3', "Travessa 3, nº 37, segundo andar"),
 ('7', '77777', 'BAIRRO 4', "Rua 4, s/n");
 
-INSERT INTO artist (id, CPF, wage_to_hourly, art) VALUES
+INSERT INTO artist (id, CPF, wage, art) VALUES
 ('2', '22222', '204', 'dança'),
 ('4', '44444', '234', 'música'),
 ('6', '66666', '420', 'escultura'),

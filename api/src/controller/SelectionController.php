@@ -7,7 +7,7 @@ use App\DAO\ApplicationDB;
 use App\Model\Application;
 use App\Model\Selection;
 use App\DAO\SelectionDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use App\Util\DataValidator;
 
 class UserController extends \App\Controller\Template\Controller
@@ -24,7 +24,7 @@ class UserController extends \App\Controller\Template\Controller
         $selection->setID($this->parameterList->getString('id')); // Obtém id informado
 
         $db = new SelectionDB($selection); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getSelection()->toArray())();
+        return $this->filterNulls($db->getSelection()->toArray());
 
     }
 
@@ -103,7 +103,7 @@ class UserController extends \App\Controller\Template\Controller
         $application->setID($this->parameterList->getString('id')); // Obtém id informado
 
         $db = new ApplicationDB($application); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getApplication()->toArray())();
+        return $this->filterNulls($db->getApplication()->toArray());
     }
 
     public function storeApplication(): bool

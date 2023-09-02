@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use App\DAO\RateDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 
 /**
  * Classe modelo de avaliação
@@ -44,7 +44,7 @@ class Rate extends \App\Model\Template\Entity
     function __construct(string $agreement)
     {
         parent::__construct();
-        $this->agreement = $this->validator->isUUID($agreement) ? $agreement : throw new DataFormmatException('AGREEMENT ID');
+        $this->agreement = $this->validator->isUUID($agreement) ? $agreement : throw new DataFormatException('AGREEMENT ID');
     }
 
     public static function getInstanceOf(array $attr): self

@@ -13,7 +13,7 @@ use App\Model\Enterprise;
 use App\Model\Enumerate\AccountType;
 use App\Model\Enumerate\ArtType;
 use App\Model\Report;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use App\Util\DataValidator;
 use RuntimeException;
 
@@ -37,7 +37,7 @@ class UserController extends \App\Controller\Template\Controller
         list($user, $db) = $this->getAccountType();
         $user->setID($this->parameterList->getString('id')); // Inicia usuário com o id informado
 
-        return $this->filterNulls($db->getUser()->toArray())();
+        return $this->filterNulls($db->getUser()->toArray());
 
     }
 
@@ -45,7 +45,7 @@ class UserController extends \App\Controller\Template\Controller
      * Obtém dados de acesso ao sistema
      * @return array vetor com dados de acesso
      */
-    public function getAcess(): array
+    public function getUserAcess(): array
     {
         /*
             No ato do login, o sistema servido deve possuir email e senha do usuário,
@@ -70,7 +70,7 @@ class UserController extends \App\Controller\Template\Controller
     public function getUserList(): array
     {
 
-        $type = $this->parameterList->getString('type'); // Obtém tipo da conta
+
         $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
         $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
 
@@ -82,11 +82,7 @@ class UserController extends \App\Controller\Template\Controller
             $offset = Server::DEFAULT_LIMIT;
         }
 
-        $dao = match ($type) { //Obtém objeto adequado para o tipo de conta
-            AccountType::ARTIST->value => new ArtistDB(),
-            AccountType::ENTERPRISE->value => new EnterpriseDB(),
-            default => throw new RuntimeException('O tipo da conta não foi informado ou não foi reconhecido') // Lança exceção
-        };
+        $dao = $this->getAccountType()[1];
 
         $list = $dao->getList($offset, $limit);
         return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
@@ -94,60 +90,57 @@ class UserController extends \App\Controller\Template\Controller
 
     /**
      * Armazena usuário
-     * @return true caso o usuário seja criado
+     * @return// true caso o usuário seja criado
      */
-    public function storeUser(): bool
+    public function storeUser()
     {
+        $user = false;
+        $db = false;
 
+        $a = 'nao foi';
 
-        if ($this->parameterList->getString('type') == AccountType::ARTIST) {
-            $user = new Artist();
+        switch ($this->parameterList->getEnum('type', AccountType::class)) {
+            case AccountType::ARTIST:
 
-            $this->createGeneralUser($user);
+                $user = new Artist();
 
-            $user->setCPF($this->parameterList->getString('cpf'));
-            $user->setArt(ArtType::tryFrom($this->parameterList->getString('art')));
-            $user->setWage($this->parameterList->get('wage'));
+                $user->setCPF($this->parameterList->getString('cpf'));
+                $user->setArt(ArtType::tryFrom($this->parameterList->getString('art')));
+                $user->setWage($this->parameterList->get('wage'));
+                $db = new ArtistDB($user);
 
-            $db = new ArtistDB($user);
-        } else if ($this->parameterList->getString('type') == AccountType::ENTERPRISE) {
-            $user = new Enterprise();
+                break;
 
-            $this->createGeneralUser($user);
+            case AccountType::ENTERPRISE:
+                $user = new Enterprise();
+                $user->setCNPJ($this->parameterList->getString('cnpj'));
+                $user->setDistrict($this->parameterList->getString('district'));
+                $user->setAddress($this->parameterList->getString('address'));
+                $db = new EnterpriseDB($user);
+                break;
 
-            $user->setCNPJ($this->parameterList->getString('cnpj'));
-            $user->setDistrict($this->parameterList->getString('district'));
-            $user->setAddress($this->parameterList->getString('address'));
-
-            $db = new EnterpriseDB($user);
+            case null: throw new DataFormatException('TYPE ACCOUNT');
         }
 
-        return $db->create();
+        if ($user instanceof User && $db instanceof UsersDB) {
+ 
+            $user->setName($this->parameterList->getString('name'));
+            $user->setEmail($this->parameterList->getString('email'));
+            $user->setPassword($this->parameterList->getString('password'));
+            $user->setPhone($this->parameterList->getString('phone'));
+            $user->setCEP($this->parameterList->getString('cep'));
+            $user->setFederation($this->parameterList->getString('federation'));
+            $user->setCity($this->parameterList->getString('city'));
+            $user->setImageURL($this->parameterList->getString('image'));
+            
+            return $db->create();
+        }
+       
+
+        return false;
+
     }
 
-    /**
-     * Inicia componentes genéricos de usuários
-     * @param Artist|Enterprise $user modelo de artista ou empreendimento a ser manipulado
-     */
-    private function createGeneralUser(Artist|Enterprise $user)
-    {
-        $name = $this->parameterList->getString('name');
-        $email = $this->parameterList->getString('email');
-        $password = $this->parameterList->getString('password');
-        $phone = $this->parameterList->getString('phone');
-        $cep = $this->parameterList->getString('cep');
-        $federation = $this->parameterList->getString('federation');
-        $city = $this->parameterList->getString('city');
-
-
-        $user->setName($name);
-        $user->setEmail($email);
-        $user->setPassword($password);
-        $user->setPhone($phone);
-        $user->setCEP($cep);
-        $user->setFederation($federation);
-        $user->setCity($city);
-    }
 
     /**
      * Obtém tipo de conta informado
@@ -155,11 +148,11 @@ class UserController extends \App\Controller\Template\Controller
      */
     private function getAccountType(): array
     {
-        return match ($this->parameterList->getString('type')) { // RECEBENDO O TIPO DA CONTA
+        return match ($this->parameterList->getEnum('type', AccountType::class, null)) { // RECEBENDO O TIPO DA CONTA
 
-            AccountType::ARTIST->value => [$artist = new Artist(), new ArtistDB($artist)],
-            AccountType::ENTERPRISE->value => [$enterprise = new Enterprise(), new EnterpriseDB($enterprise)],
-            default => throw new DataFormmatException('Account type')
+            AccountType::ARTIST => [$artist = new Artist(), new ArtistDB($artist)],
+            AccountType::ENTERPRISE => [$enterprise = new Enterprise(), new EnterpriseDB($enterprise)],
+            default => throw new DataFormatException('Account Type')
         };
     }
 
@@ -182,7 +175,7 @@ class UserController extends \App\Controller\Template\Controller
 
         $validator = new DataValidator();
 
-        
+
         if ($db->isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {
             return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
         }

@@ -19,7 +19,7 @@ class EnterpriseDB extends UsersDB
     public const DISTRICT = 'district';
     public const ADDRESS = 'address';
 
-    private Enterprise $enterprise;
+    private Enterprise|null $enterprise;
 
     /**
      * @param Enterprise $enterprise Modelo de empreendimento a ser manipulado
@@ -47,7 +47,12 @@ class EnterpriseDB extends UsersDB
         $query->bindValue(4, $this->enterprise->getAddress());
 
 
-        return $query->execute();
+        if (!$query->execute()) {
+            $this->delete();
+        } else {
+            return true;
+        }
+
     }
 
     /**
@@ -56,7 +61,7 @@ class EnterpriseDB extends UsersDB
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn ($user) => Enterprise::getInstanceOf($user), $this->fetchRecord($query));
@@ -71,7 +76,7 @@ class EnterpriseDB extends UsersDB
     public function getUnique(string $id): Enterprise
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id WHERE artist.id = ?');
+        $query = $this->getConnection()->prepare('SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id WHERE artist.id = ?');
         $query->bindValue(1, $id); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita

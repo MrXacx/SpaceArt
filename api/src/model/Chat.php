@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use App\DAO\ChatDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 
 /**
  * Classe modelo de chat
@@ -31,7 +31,7 @@ class Chat extends \App\Model\Template\Entity
         $entity->id = $attr['id'];
         $entity->artist = $attr[ChatDB::ARTIST];
         $entity->enterprise = $attr[ChatDB::ENTERPRISE];
-        
+
         return $entity;
     }
 
@@ -49,7 +49,7 @@ class Chat extends \App\Model\Template\Entity
      */
     public function setArtist(string $artist): void
     {
-        $this->artist = $this->validator->isUUID($artist) ? $artist : throw new DataFormmatException('artist id');
+        $this->artist = $this->validator->isUUID($artist) ? $artist : throw new DataFormatException('artist id');
     }
 
     /**
@@ -58,7 +58,7 @@ class Chat extends \App\Model\Template\Entity
      */
     public function setEnterprise(string $enterprise): void
     {
-        $this->artist = $this->validator->isUUID($enterprise) ? $enterprise : throw new DataFormmatException('enterprise id');
+        $this->artist = $this->validator->isUUID($enterprise) ? $enterprise : throw new DataFormatException('enterprise id');
     }
 
     /**

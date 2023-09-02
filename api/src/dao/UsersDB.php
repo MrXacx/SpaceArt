@@ -17,13 +17,13 @@ class UsersDB extends DatabaseAcess
 {
     public const EMAIL = 'email';
     public const PASSWORD = 'password';
-    public const NAME = 'NAME';
+    public const NAME = 'name';
     public const PHONE = 'phone';
     public const CEP = 'CEP';
     public const FEDERATION = 'federation';
     public const CITY = 'city';
     public const SITE = 'website';
-    public const IMAGE_URL = 'image_url';
+    public const IMAGE_URL = 'imageURL';
     public const RATE = 'rate';
 
     /**
@@ -41,7 +41,7 @@ class UsersDB extends DatabaseAcess
     public function create(): bool
     {
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO users (id, name, image_url, email, password, phone, CEP, federation, city) VALUES (?,?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO users (id, name, imageURL, email, password, phone, CEP, federation, city) VALUES (?,?,?,?,?,?,?,?,?)');
 
         $this->user->setID($this->getRandomID());
 
@@ -66,7 +66,7 @@ class UsersDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, name, image_url, CEP, federation, city, rate, website FROM users LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT id, name, imageURL, CEP, federation, city, rate, website FROM users LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn($user) => User::getInstanceOf($user), $this->fetchRecord($query));
@@ -81,7 +81,7 @@ class UsersDB extends DatabaseAcess
     public function getUnique(string $id): User
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, name, image_url, CEP, federation, city, rate, website FROM users WHERE id = ?');
+        $query = $this->getConnection()->prepare('SELECT id, name, imageURL, CEP, federation, city, rate, website FROM users WHERE id = ?');
         $query->bindValue(1, $id); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -101,7 +101,7 @@ class UsersDB extends DatabaseAcess
 
         // // Substitui as interrogações
         $query->bindValue(1, $this->user->getEmail());
-        $query->bindValue(1, $this->user->getPassword());
+        $query->bindValue(2, $this->user->getPassword());
 
         if ($query->execute()) { // Executa se a query for aceita
             return $this->fetchRecord($query, false);

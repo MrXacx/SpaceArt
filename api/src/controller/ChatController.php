@@ -22,7 +22,7 @@ class UserController extends \App\Controller\Template\Controller
         $chat->setID($this->parameterList->getString('id')); // Obtém id informado
 
         $db = new ChatDB($chat); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getChat()->toArray())();
+        return $this->filterNulls($db->getChat()->toArray());
 
     }
 

@@ -14,6 +14,6 @@ function getDatabaseSettings(bool $production = false): array{
 
 $_ENV = array_merge($_ENV, getDatabaseSettings());
 
-$routes = new App\RoutesBuilder(); // Inicia rotas do servidor
+
 
 ?>

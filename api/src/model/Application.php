@@ -4,7 +4,7 @@ namespace App\Model;
 
 use DateTime;
 use App\DAO\ApplicationDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 
 /**
  * Classe modelo de aplicação a uma seleção
@@ -37,7 +37,7 @@ class Application extends \App\Model\Template\Entity
      */
     function __construct(string $selection)
     {
-        $this->selection =  $this->validator->isUUID($selection) ? $selection : throw new DataFormmatException('selection id');
+        $this->selection = $this->validator->isUUID($selection) ? $selection : throw new DataFormatException('selection id');
     }
 
     /**
@@ -55,7 +55,7 @@ class Application extends \App\Model\Template\Entity
      */
     public function setUser(string $user): void
     {
-        $this->user = $this->validator->isUUID($user) ? $user : throw new DataFormmatException('user id');
+        $this->user = $this->validator->isUUID($user) ? $user : throw new DataFormatException('user id');
     }
 
     /**

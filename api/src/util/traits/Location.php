@@ -3,11 +3,11 @@
 namespace App\Util\Tool;
 
 trait Location {
-    private string $CEP;
-    private string $address;
-    private string $district;
-    private string $city;
-    private string $federation;
+    protected string $CEP;
+    protected string $address;
+    protected string $district;
+    protected string $city;
+    protected string $federation;
 
     /**
      * @param string $CEP

@@ -7,7 +7,7 @@ namespace App\Model;
 use App\DAO\AgreementDB;
 use App\Model\Enumerate\AgreementStatus;
 use App\Model\Enumerate\ArtType;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use DateTime;
 
 /**
@@ -108,7 +108,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     function setHirer(string $hirer)
     {
-        $this->hirer = $this->validator->isUUID($hirer) ? $hirer : throw new DataFormmatException('hirer id');
+        $this->hirer = $this->validator->isUUID($hirer) ? $hirer : throw new DataFormatException('hirer id');
     }
 
     /**
@@ -126,7 +126,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     function setHired(string $hired)
     {
-        $this->hired = $this->validator->isUUID($hired) ? $hired : throw new DataFormmatException('hired id');
+        $this->hired = $this->validator->isUUID($hired) ? $hired : throw new DataFormatException('hired id');
     }
 
     /**
@@ -241,6 +241,6 @@ class Agreement extends \App\Model\Template\Entity
             'art' => $this->art ?? null,
             'time' => array_map(fn(DateTime $time): string => $time->format(AgreementDB::DB_TIME_FORMAT), $this->time) ?? null,
             'status' => $this->status ?? null
-        ]), fn ($value) => isset($value));
+        ]), fn($value) => isset($value));
     }
 }

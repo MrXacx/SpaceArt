@@ -8,7 +8,7 @@ use App\DAO\AgreementDB;
 use App\Model\Agreement;
 use App\Model\Rate;
 use App\DAO\RateDB;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use App\Util\DataValidator;
 use DateTime;
 

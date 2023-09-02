@@ -7,7 +7,7 @@ namespace App\Model;
 use App\DAO\ArtistDB;
 use App\DAO\UsersDB;
 use App\Model\Enumerate\ArtType;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 
 /**
  * Classe modelo de artista
@@ -15,7 +15,7 @@ use App\Util\DataFormmatException;
  * @abstract User
  * @author Ariel Santos (MrXacx)
  */
-class Artist extends \APP\Model\Template\User
+class Artist extends \App\Model\Template\User
 {
     /**
      * Código de Pessoa Física
@@ -25,9 +25,9 @@ class Artist extends \APP\Model\Template\User
 
     /**
      * Tipo de art
-     * @var ArtType
+     * @var ArtType|string
      */
-    private ArtType $art;
+    private ArtType|string $art;
 
     /**
      * Pretensão salarial por hora
@@ -54,6 +54,7 @@ class Artist extends \APP\Model\Template\User
                 ArtistDB::ART => 'art',
                 ArtistDB::WAGE => 'wage',
                 UsersDB::SITE => 'website',
+                UsersDB::RATE => 'rate',
 
                 default => null
             };
@@ -61,6 +62,7 @@ class Artist extends \APP\Model\Template\User
             if (isset($atributeName)) {
                 $entity->$atributeName = $value;
             }
+
         }
 
         return $entity;
@@ -72,7 +74,7 @@ class Artist extends \APP\Model\Template\User
      */
     public function setCPF(string $CPF): void
     {
-        $this->CPF = $this->validator->isCPF($CPF) ? $CPF : throw new DataFormmatException('CPF');
+        $this->CPF = $this->validator->isCPF($CPF) ? $CPF : throw new DataFormatException('CPF');
     }
 
     /**
@@ -122,9 +124,9 @@ class Artist extends \APP\Model\Template\User
     public function toArray(): array
     {
         return array_merge(parent::toArray(), [
-            'CPF' => $this->CPF,
+            'CPF' => $this->CPF ?? null,
             'art' => $this->art,
-            'wage_to_hourly' => $this->wage,
+            'wage' => $this->wage,
         ]);
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Template;
 
 use App\Util\Tool\Location;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use Exception;
 
 /**
@@ -68,7 +68,8 @@ class User extends Entity
      * @return self Instância da classe
      * @throws Exception Caso chamado em User
      */
-    public static function getInstanceOf(array $attr): self{
+    public static function getInstanceOf(array $attr): self
+    {
         throw new Exception('Este método não está disponível nesta classe');
     }
 
@@ -78,7 +79,7 @@ class User extends Entity
     public function setID(string $id): void
     {
 
-        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormmatException('ID');
+        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormatException('ID');
     }
 
     /**
@@ -95,7 +96,7 @@ class User extends Entity
      */
     public function setEmail(string $email): void
     {
-        $this->email = $this->validator->isEmail($email) ? $email : throw new DataFormmatException('EMAIL');
+        $this->email = $this->validator->isEmail($email) ? $email : throw new DataFormatException('EMAIL');
     }
 
     /**
@@ -112,7 +113,7 @@ class User extends Entity
      */
     public function setPassword(string $password): void
     {
-        $this->password = $this->validator->isFit($password) ? $password : throw new DataFormmatException('PASSWORD', DataFormmatException::LENGTH);
+        $this->password = $this->validator->isFit($password) ? $password : throw new DataFormatException('PASSWORD', DataFormatException::LENGTH);
     }
 
     /**
@@ -129,7 +130,7 @@ class User extends Entity
      */
     public function setName(string $name): void
     {
-        $this->name = $this->validator->isFit($name) ? $name : throw new DataFormmatException('NAME', DataFormmatException::LENGTH);
+        $this->name = $this->validator->isFit($name) ? $name : throw new DataFormatException('NAME', DataFormatException::LENGTH);
     }
 
     /**
@@ -147,7 +148,7 @@ class User extends Entity
      */
     public function setPhone(string $phone): void
     {
-        $this->phone = $this->validator->isPhone($phone) ? $phone : throw new DataFormmatException('PHONE');
+        $this->phone = $this->validator->isPhone($phone) ? $phone : throw new DataFormatException('PHONE');
     }
 
     /**
@@ -164,7 +165,7 @@ class User extends Entity
      */
     public function setWebsite(string $website): void
     {
-        $this->website = $this->validator->isURL($website) ? $website : throw new DataFormmatException('website');
+        $this->website = $this->validator->isURL($website) ? $website : throw new DataFormatException('website');
     }
 
     /**
@@ -181,7 +182,7 @@ class User extends Entity
      */
     public function setImageURL(string $image): void
     {
-        $this->imageURL = $this->validator->isURL($image) ? $image : throw new DataFormmatException('image URL');
+        $this->imageURL = $this->validator->isURL($image) ? $image : throw new DataFormatException('image URL');
     }
 
     /**

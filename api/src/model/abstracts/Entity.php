@@ -2,7 +2,7 @@
 
 namespace App\Model\Template;
 
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use App\Util\DataValidator;
 
 /**
@@ -28,14 +28,14 @@ abstract class Entity
     {
         $this->validator = new DataValidator();
     }
-    
+
     /**
      * Define ID da entidade
      * @param string
      */
     public function setID(string $id): void
     {
-        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormmatException('ID');
+        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormatException('ID');
     }
 
     /**
@@ -51,7 +51,8 @@ abstract class Entity
      * Converte objeto em array
      * @return array
      */
-    public function toArray(): array{
+    public function toArray(): array
+    {
         return ['id' => $this->id ?? null];
     }
 

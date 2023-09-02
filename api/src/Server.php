@@ -3,7 +3,6 @@
 namespace App;
 
 use Symfony\Component\HttpFoundation\Request;
-use App\Http\SpecialRequest;
 
 
 /**
@@ -54,7 +53,11 @@ class Server
      */
     public static function getStrippedURI(): string
     {
-        return rawurldecode($_SERVER['PHP_SELF']);
+        $uri = static::getURI();
+        if(false !== $pos = strpos($uri, '?')){
+            $uri = substr($uri, 0, $pos);
+        }
+        return rawurldecode($uri);
     }
 
     public static function getParameters(): \Symfony\Component\HttpFoundation\ParameterBag{

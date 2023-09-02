@@ -6,7 +6,7 @@ namespace App\Model;
 
 use App\DAO\SelectionDB;
 use App\Model\Enumerate\ArtType;
-use App\Util\DataFormmatException;
+use App\Util\DataFormatException;
 use DateTime;
 
 /**
@@ -81,7 +81,7 @@ class Selection extends \App\Model\Template\Entity
      */
     function setOwner(string $owner)
     {
-        $this->owner = $this->validator->isUUID($owner) ? $owner : throw new DataFormmatException('ID');
+        $this->owner = $this->validator->isUUID($owner) ? $owner : throw new DataFormatException('ID');
     }
 
     /**
@@ -196,6 +196,6 @@ class Selection extends \App\Model\Template\Entity
             'date' => $this->date ?? null,
             'time' => $this->time ?? null,
             'locked' => boolval($this->time ?? null),
-        ]), fn ($value) => isset($value));
+        ]), fn($value) => isset($value));
     }
 }

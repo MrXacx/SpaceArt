@@ -38,16 +38,21 @@ class ArtistDB extends UsersDB
         if (parent::create()) { // Executa se o usuário foi criado
 
             // Passa query SQL de criação
-            $query = $this->getConnection()->prepare('INSERT INTO artist (id, CPF, art, wage_to_hourly, address) VALUES (?,?,?,?)');
+            $query = $this->getConnection()->prepare('INSERT INTO artist (id, CPF, art, wage) VALUES (?,?,?,?)');
 
             // Substitui interrogações pelos valores dos atributos
             $query->bindValue(1, $this->artist->getID());
             $query->bindValue(2, $this->artist->getCPF());
-            $query->bindValue(3, $this->artist->getArt());
+            $query->bindValue(3, $this->artist->getArt()->value);
             $query->bindValue(4, $this->artist->getWage());
 
 
-            return $query->execute();
+            if (!$query->execute()) {
+                $this->delete();
+            } else {
+                return true;
+            }
+
         }
 
         // Executa se houver alguma falha esperada
@@ -60,10 +65,10 @@ class ArtistDB extends UsersDB
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, name, image_url, CEP, federation, city, art, wage_to_hourly, rate, website FROM artist INNER JOIN users ON users.id = artist.id LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT users.id, name, imageURL, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($user) => Artist::getInstanceOf($user), $this->fetchRecord($query));
+            return array_map(fn($user) => Artist::getInstanceOf($user), $this->fetchRecord($query));
         }
         throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
     }
@@ -75,7 +80,7 @@ class ArtistDB extends UsersDB
     public function getUnique(string $id): Artist
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, name, image_url, CEP, federation, city, art, wage_to_hourly, rate, website FROM artist INNER JOIN users ON users.id = artist.id WHERE artist.id = ?');
+        $query = $this->getConnection()->prepare('SELECT id, name, imageURL, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id WHERE artist.id = ?');
         $query->bindValue(1, $id); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -93,7 +98,7 @@ class ArtistDB extends UsersDB
     {
 
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT * FROM artist INNER JOIN users ON artists.id = users.id WHERE artists.id = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM artist INNER JOIN users ON artist.id = users.id WHERE artist.id = ?');
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
