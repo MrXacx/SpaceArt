@@ -15,20 +15,20 @@ SET time_zone = "+00:00";
 -- Banco de dados: spaceart
 --
 -- --------------------------------------------------------
-DROP DATABASE spaceart;
+
 CREATE DATABASE spaceart;
 USE spaceart;
 
 
 CREATE TABLE users(
 
-  id char(36) PRIMARY KEY,
+  id varchar(36) PRIMARY KEY,
   name varchar(191) NOT NULL,
   email varchar(191) UNIQUE KEY NOT NULL,
-  phone char(11) NOT NULL,
+  phone varchar(11) NOT NULL,
   password varchar(191) NOT NULL,
   CEP varchar(8) NOT NULL,
-  federation char(2) NOT NULL,
+  federation varchar(2) NOT NULL,
   city varchar(50) NOT NULL,
   imageURL varchar(191),
   website varchar(191),
@@ -38,8 +38,8 @@ CREATE TABLE users(
 
 CREATE TABLE artist(
 
-  id char(36) PRIMARY KEY,
-  CPF char(11) UNIQUE KEY NOT NULL,
+  id varchar(36) PRIMARY KEY,
+  CPF varchar(11) UNIQUE KEY NOT NULL,
   art enum("escultura", "pintura", "dança", "música") NOT NULL,
   wage_to_hourly float NOT NULL,
 
@@ -48,8 +48,8 @@ CREATE TABLE artist(
 
 CREATE TABLE enterprise(
 
-  id char(36) PRIMARY KEY,
-  CNPJ char(14) UNIQUE KEY NOT NULL,
+  id varchar(36) PRIMARY KEY,
+  CNPJ varchar(14) UNIQUE KEY NOT NULL,
   district varchar(191) NOT NULL,
   address varchar(191) NOT NULL,
 
@@ -59,16 +59,15 @@ CREATE TABLE enterprise(
 
 CREATE TABLE agreement(
 
-  id char(36) PRIMARY KEY,
-  hirer char(36) NOT NULL,
-  hired char(36) NOT NULL,
+  id varchar(36) PRIMARY KEY,
+  hirer varchar(36) NOT NULL,
+  hired varchar(36) NOT NULL,
   price float unsigned NOT NULL,
   date date NOT NULL,
   inital_time time NOT NULL,
   final_time  time NOT NULL,
   art varchar(191) NOT NULL,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
-  rate int,
 
   FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -77,8 +76,8 @@ CREATE TABLE agreement(
 
 CREATE TABLE selection(
 
-  id char(36) PRIMARY KEY,
-  owner char(36) NOT NULL,
+  id varchar(36) PRIMARY KEY,
+  owner varchar(36) NOT NULL,
   price float unsigned NOT NULL,
   inital_datetime datetime NOT NULL,
   final_datetime datetime NOT NULL,
@@ -91,8 +90,8 @@ CREATE TABLE selection(
 
 CREATE TABLE selection_application(
 
-  selection char(36) NOT NULL,
-  artist char(36) NOT NULL,
+  selection varchar(36) NOT NULL,
+  artist varchar(36) NOT NULL,
   last_change timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
   PRIMARY KEY (selection, artist),
@@ -103,9 +102,9 @@ CREATE TABLE selection_application(
 
 CREATE TABLE report(
 
-  id char(36) PRIMARY KEY,
-  reporter char(36),
-  reported char(36) NOT NULL,
+  id varchar(36) PRIMARY KEY,
+  reporter varchar(36),
+  reported varchar(36) NOT NULL,
   reason varchar(191) NOT NULL,
   accepted boolean,
 
@@ -115,21 +114,21 @@ CREATE TABLE report(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE chat(
-  id char(36) PRIMARY KEY,
-  artist char(36),
-  enterprise char(36),
+  id varchar(36) PRIMARY KEY,
+  artist varchar(36),
+  enterprise varchar(36),
 
   FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE message(
-    chat char(36),
-    sender char(36),
+    chat varchar(36),
+    sender varchar(36),
     content varchar(191) NOT NULL,
     shipping_datetime timestamp DEFAULT CURRENT_TIMESTAMP,
     
-    PRIMARY KEY (chat, sender, shipping_datetime)
+    PRIMARY KEY (chat, sender, shipping_datetime),
     FOREIGN KEY (chat) REFERENCES chat (id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (sender) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 
@@ -137,8 +136,8 @@ CREATE TABLE message(
 
 CREATE TABLE rate(
 
-    author char(36),
-    agreement char(36),
+    author varchar(36),
+    agreement varchar(36),
     rate float NOT NULL,
     description varchar(191),
 
