@@ -56,6 +56,24 @@ class ApplicationDB extends DatabaseAcess
     }
 
     /**
+     * Obtém todos os dados de uma aplicação em específico
+     * @return Application objeto da aplicação
+     */
+    public function getApplication(): Application
+    {
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare('SELECT * FROM application WHERE id = ?');
+        $query->bindValue(1, $this->application->getID()); // Substitui interrogação na query pelo ID passado
+
+        if ($query->execute()) { // Executa se a query for aceita
+            return Application::getInstanceOf($this->fetchRecord($query, false));
+        }
+
+        // Executa em caso de falhas esperadas
+        throw new RuntimeException('Operação falhou!');
+    }
+
+    /**
      * @see abstracts/DatabaseAcess.php
      */
     public function getList(int $offset = 1, int $limit = 10): array
@@ -69,7 +87,7 @@ class ApplicationDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        throw new RuntimeException('Operação falhou!');
     }
 
     /**

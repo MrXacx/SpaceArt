@@ -182,7 +182,7 @@ class UserController extends \App\Controller\Template\Controller
 
         $validator = new DataValidator();
 
-        // VERIFICA SE O USERDB É NULO, E VERIFICA SE A COLUNA ESCOLHIDA PARA ALTERAÇÃO REALMENTE EXISTE NA TABELA ESCOLHIDA 
+        
         if ($db->isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {
             return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
         }

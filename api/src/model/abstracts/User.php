@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Model\Template;
 
-use App\DAO\UsersDB;
 use App\Util\Tool\Location;
 use App\Util\DataFormmatException;
+use Exception;
 
 /**
  * Classe modelo de usuário
  * @package Model
  * @author Ariel Santos (MrXacx)
  */
-abstract class User extends Entity
+class User extends Entity
 {
 
     use Location;
@@ -66,8 +66,11 @@ abstract class User extends Entity
      * 
      * @param array $attr Array associativo contento todas as informações do modelo
      * @return self Instância da classe
+     * @throws Exception Caso chamado em User
      */
-    abstract public static function getInstanceOf(array $attr): self;
+    public static function getInstanceOf(array $attr): self{
+        throw new Exception('Este método não está disponível nesta classe');
+    }
 
     /**
      * @param string $id ID do usuário
