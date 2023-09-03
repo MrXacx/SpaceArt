@@ -6,6 +6,7 @@ namespace App\Model;
 
 use App\DAO\UsersDB;
 use App\DAO\EnterpriseDB;
+use App\Model\Enumerate\AccountType;
 use App\Util\DataFormatException;
 
 /**
@@ -79,6 +80,6 @@ class Enterprise extends \App\Model\Template\User
 
     public function toArray(): array
     {
-        return array_merge(parent::toArray(), ['CNPJ' => $this->CNPJ ?? null]);
+        return array_merge(parent::toArray(), ['CNPJ' => $this->CNPJ ?? null, 'type' => AccountType::ENTERPRISE->value]);
     }
 }

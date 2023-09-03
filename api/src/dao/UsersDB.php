@@ -69,7 +69,8 @@ class UsersDB extends DatabaseAcess
         $query = $this->getConnection()->prepare("SELECT id, name, imageURL, CEP, federation, city, rate, website FROM users LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn($user) => User::getInstanceOf($user), $this->fetchRecord($query));
+            return  $this->fetchRecord($query);
+            //array_map(fn($user) => User::getInstanceOf($user), $this->fetchRecord($query));
         }
         throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
     }

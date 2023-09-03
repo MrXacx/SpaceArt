@@ -64,7 +64,10 @@ class ArtistDB extends UsersDB
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT users.id, name, imageURL, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare(
+            
+            "SELECT */*id, name, imageURL, CEP, federation, city, art, wage, rate, website*/ FROM artist INNER JOIN users ON users.id = artist.id LIMIT $limit OFFSET $offset"
+        );
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn($user) => Artist::getInstanceOf($user), $this->fetchRecord($query));

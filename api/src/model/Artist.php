@@ -6,6 +6,7 @@ namespace App\Model;
 
 use App\DAO\ArtistDB;
 use App\DAO\UsersDB;
+use App\Model\Enumerate\AccountType;
 use App\Model\Enumerate\ArtType;
 use App\Util\DataFormatException;
 
@@ -127,6 +128,7 @@ class Artist extends \App\Model\Template\User
             'CPF' => $this->CPF ?? null,
             'art' => $this->art,
             'wage' => $this->wage,
+            'type' => AccountType::ARTIST->value
         ]);
     }
 }

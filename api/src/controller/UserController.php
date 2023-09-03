@@ -73,8 +73,8 @@ class UserController extends \App\Controller\Template\Controller
     {
 
 
-        $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
+        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
+        $limit = intval($this->parameterList->getInt('limit', 10)); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
@@ -84,7 +84,7 @@ class UserController extends \App\Controller\Template\Controller
             $offset = Server::DEFAULT_LIMIT;
         }
 
-        $dao = $this->getAccountType()[1];
+        list($user, $dao) = $this->getAccountType();;
 
         $list = $dao->getList($offset, $limit);
         return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
@@ -150,7 +150,7 @@ class UserController extends \App\Controller\Template\Controller
      */
     private function getAccountType(): array
     {
-        return match ($this->parameterList->getEnum('type', AccountType::class, null)) { // RECEBENDO O TIPO DA CONTA
+        return match ($this->parameterList->getEnum('type', AccountType::class)) { // RECEBENDO O TIPO DA CONTA
 
             AccountType::ARTIST => [$artist = new Artist(), new ArtistDB($artist)],
             AccountType::ENTERPRISE => [$enterprise = new Enterprise(), new EnterpriseDB($enterprise)],

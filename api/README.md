@@ -93,8 +93,11 @@
 - Parâmetros **obrigatórios**:
 
 1. type: tipo de conta buscado
-2. offset: linha de início de consulta
-3. offset: máximo de registros retornados
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
 
 - Situação:
-> Falta testar
+> Funcionando

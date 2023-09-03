@@ -74,6 +74,7 @@ abstract class DatabaseAcess
         if (is_array($response)) {
             return $response;
         }
+
         throw new \RuntimeException('Registro(s) não encontrado(s)');
     }
 
