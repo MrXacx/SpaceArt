@@ -25,6 +25,7 @@ class UsersDB extends DatabaseAcess
     public const SITE = 'website';
     public const IMAGE_URL = 'imageURL';
     public const RATE = 'rate';
+    public const TOKEN = 'token';
 
     /**
      * @param User $user Modelo de usuário a ser manipulado
@@ -41,20 +42,17 @@ class UsersDB extends DatabaseAcess
     public function create(): bool
     {
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO users (id, name, imageURL, email, password, phone, CEP, federation, city) VALUES (?,?,?,?,?,?,?,?,?)');
-
-        $this->user->setID($this->getRandomID());
+        $query = $this->getConnection()->prepare('INSERT INTO users (id, name, imageURL, email, password, phone, CEP, federation, city) VALUES (UUID(),?,?,?,?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->user->getID());
-        $query->bindValue(2, $this->user->getName());
-        $query->bindValue(3, $this->user->getImageURL());
-        $query->bindValue(4, $this->user->getEmail());
-        $query->bindValue(5, $this->user->getPassword());
-        $query->bindValue(6, $this->user->getPhone());
-        $query->bindValue(7, $this->user->getCEP());
-        $query->bindValue(8, $this->user->getFederation());
-        $query->bindValue(9, $this->user->getCity());
+        $query->bindValue(1, $this->user->getName());
+        $query->bindValue(2, $this->user->getImageURL());
+        $query->bindValue(3, $this->user->getEmail());
+        $query->bindValue(4, $this->user->getPassword());
+        $query->bindValue(5, $this->user->getPhone());
+        $query->bindValue(6, $this->user->getCEP());
+        $query->bindValue(7, $this->user->getFederation());
+        $query->bindValue(8, $this->user->getCity());
 
 
         return $query->execute();
@@ -92,14 +90,34 @@ class UsersDB extends DatabaseAcess
     }
 
     /**
-     * @see abstracts/DatabaseAcess.php
+     * Obtém os dados de autentificação de um usuário
      */
-    public function getID(): array
+    public function updateTokenAcess(): bool
     {
-        // Passa query SQL para leitura da coluna id
-        $query = $this->getConnection()->prepare('SELECT id FROM users WHERE email = ? AND password = ?');
 
-        // // Substitui as interrogações
+
+        // atualiza coluna token do registro cujo id foi encontrado com base em email e senha
+        $query = $this->getConnection()->prepare('UPDATE users SET token = UUID() WHERE id = ALL (SELECT id FROM users WHERE email = ? AND password = ?)');
+
+        // // Substitui os termos pelos valores retornados
+
+        // $query->bindValue(':id', parent::getRandomID());
+        $query->bindValue(1, $this->user->getEmail());
+        $query->bindValue(2, $this->user->getPassword());
+
+        return $query->execute();
+    }
+
+    /**
+     * Obtém os dados de autentificação de um usuário
+     */
+    public function getAcess(): array
+    {
+
+        // Passa query SQL para leitura da coluna id
+        $query = $this->getConnection()->prepare('SELECT id, token, email FROM users WHERE email = ? AND password = ?');
+
+        // // Substitui os termos pelos valores retornados
         $query->bindValue(1, $this->user->getEmail());
         $query->bindValue(2, $this->user->getPassword());
 

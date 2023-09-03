@@ -59,7 +59,8 @@ class UserController extends \App\Controller\Template\Controller
         $user->setPassword($this->parameterList->getString('password'));
 
         $db = new UsersDB($user);
-        return $db->getID();
+        $db->updateTokenAcess();
+        return $db->getAcess();
 
     }
 

@@ -23,6 +23,7 @@ USE spaceart;
 CREATE TABLE users(
 
   id varchar(36) PRIMARY KEY,
+  token VARCHAR(36) UNIQUE KEY,
   name varchar(191) NOT NULL,
   email varchar(191) UNIQUE KEY NOT NULL,
   phone varchar(11) NOT NULL,
