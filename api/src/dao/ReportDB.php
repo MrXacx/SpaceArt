@@ -19,8 +19,8 @@ class ReportDB extends DatabaseAcess
 {
     public const REPORTER = 'reporter';
     public const REPORTED = 'reported';
-    public const REASON = 'selection';
-    public const ACCEPTED = 'last_change';
+    public const REASON = 'reason';
+    public const ACCEPTED = 'accepted';
 
     /**
      * Modelo de candidatura a ser manipulado
@@ -46,7 +46,7 @@ class ReportDB extends DatabaseAcess
         $this->report->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO report (id, reporter, reporter, reason) VALUES (UUID(),?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO report (id, reporter, reported, reason) VALUES (UUID(),?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->report->getReporter());
@@ -70,7 +70,7 @@ class ReportDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        throw new RuntimeException('Operação falhou!');
     }
 
     public function getReport(): Report
@@ -84,7 +84,7 @@ class ReportDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        throw new RuntimeException('Operação falhou!');
     }
 
     /**

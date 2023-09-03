@@ -84,7 +84,7 @@ class UserController extends \App\Controller\Template\Controller
             $offset = Server::DEFAULT_LIMIT;
         }
 
-        list($user, $dao) = $this->getAccountType();;
+        $dao = $this->getAccountType()[1];
 
         $list = $dao->getList($offset, $limit);
         return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
@@ -218,8 +218,23 @@ class UserController extends \App\Controller\Template\Controller
      */
     public function getReportList(): array
     {
-        $db = new ReportDB(new Report($this->parameterList->getString('reporter')));
-        return array_map(fn($report) => $report->toArray(), $db->getList());
+        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
+        $limit = intval($this->parameterList->getInt('limit', 10)); // Obtém máximo de elementos da leitura
+
+        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
+            $offset = Server::DEFAULT_OFFSET;
+        }
+
+        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
+            $offset = Server::DEFAULT_LIMIT;
+        }
+        
+        $db = new ReportDB(
+            new Report(
+                $this->parameterList->getString('reporter')
+            )
+        );
+        return array_map(fn($report) => $report->toArray(), $db->getList($offset, $limit));
     }
 
     /**

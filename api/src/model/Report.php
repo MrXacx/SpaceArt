@@ -38,8 +38,8 @@ class Report extends \App\Model\Template\Entity
 
     function __construct(string $reporter)
     {
-        $this->reporter = $reporter;
         parent::__construct();
+        $this->reporter = $this->validator->isUUID($reporter) ? $reporter : throw new DataFormatException('reporter id');
     }
 
     public static function getInstanceOf(array $attr): self
@@ -60,7 +60,7 @@ class Report extends \App\Model\Template\Entity
             'reporter' => $this->reporter,
             'reported' => $this->reported,
             'reason' => $this->reason,
-            'accepted' => $this->accepted,
+            'accepted' => boolval($this->accepted),
         ]);
     }
 
@@ -77,9 +77,9 @@ class Report extends \App\Model\Template\Entity
      * Define id do denunciado
      * @param string Denunciado
      */
-    public function setReported(string $reporter): void
+    public function setReported(string $reported): void
     {
-        $this->reporter = $reporter;
+        $this->reported = $this->validator->isUUID($reported) ? $reported : throw new DataFormatException('reported id');
     }
 
     /**

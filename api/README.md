@@ -101,3 +101,42 @@
 
 - Situação:
 > Funcionando
+
+## /user/report
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. id: id da denúncia
+2. reporter: id do denunciador
+
+- Situação:
+> Funcionando
+
+### POST
+
+- Parâmetros **obrigatórios**:
+
+1. reporter: id do denunciador
+2. reporte: id do denunciado
+3. reason: motivo da denúncia
+
+- Situação:
+> Funcionando
+
+## /user/report/list
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. reporter: id do denunciador
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
+
+- Situação:
+> Funcionando
