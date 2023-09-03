@@ -97,7 +97,7 @@ class ArtistDB extends UsersDB
     {
 
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT * FROM artist INNER JOIN users ON artist.id = users.id WHERE users.token = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM artist INNER JOIN users ON artist.id = users.id WHERE token = ?');
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -118,7 +118,7 @@ class ArtistDB extends UsersDB
         }
 
         // Passa query SQL de atualização
-        $query = $this->getConnection()->prepare("UPDATE artist SET $column = ? WHERE id = ?");
+        $query = $this->getConnection()->prepare("UPDATE artist SET $column = ? WHERE token = ?");
 
         // Substitui interrogações
         $query->bindValue(1, $value);

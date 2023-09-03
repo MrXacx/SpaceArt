@@ -118,7 +118,7 @@ class EnterpriseDB extends UsersDB
         }
 
         // Passa query SQL de atualização
-        $query = $this->getConnection()->prepare("UPDATE enterprise SET $column = ? WHERE id = ?");
+        $query = $this->getConnection()->prepare("UPDATE enterprise SET $column = ? WHERE token = ?");
 
         // Substitui interrogações
         $query->bindValue(1, $value);

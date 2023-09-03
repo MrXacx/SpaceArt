@@ -55,13 +55,13 @@
 ### UPDATE
 - Parâmetros **obrigatórios**:
 
-1. id: ID do usuário
+1. id: Token de acesso
 2. type: tipo da conta
 3. column: parâmetro a ser alterado
 4. info: novo valor do parâmetro
 
 - Situação:
-> Falta testar
+> Funcionando
 
 
 ### DELETE
