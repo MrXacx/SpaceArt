@@ -47,20 +47,17 @@ class SelectionDB extends DatabaseAcess
      */
     public function create(): bool
     {
-        $this->selection->setID($this->getRandomID()); // Gera uuid
         $datetime = $this->selection->getDatetime(); // Obtém datas e horários de início e fim
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO selection (id, owner, price, inital_datetime, final_datetime, art) VALUES (?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO selection (id, owner, price, inital_datetime, final_datetime, art) VALUES (UUID(),?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->selection->getID());
-        $query->bindValue(2, $this->selection->getOwner());
-        $query->bindValue(3, $this->selection->getPrice());
-        $query->bindValue(4, $datetime['inital']);
-        $query->bindValue(5, $datetime['final']);
-
-        $query->bindValue(6, $this->selection->getArt());
+        $query->bindValue(1, $this->selection->getOwner());
+        $query->bindValue(2, $this->selection->getPrice());
+        $query->bindValue(3, $datetime['inital']);
+        $query->bindValue(4, $datetime['final']);
+        $query->bindValue(5, $this->selection->getArt());
 
         return $query->execute();
     }

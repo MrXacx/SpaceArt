@@ -46,12 +46,11 @@ class ReportDB extends DatabaseAcess
         $this->report->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO report (id, reporter, reporter, reason) VALUES (?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO report (id, reporter, reporter, reason) VALUES (UUID(),?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->report->getID());
-        $query->bindValue(2, $this->report->getReporter());
-        $query->bindValue(3, $this->report->getReported());
+        $query->bindValue(1, $this->report->getReporter());
+        $query->bindValue(2, $this->report->getReported());
         $query->bindValue(3, $this->report->getReason());
 
         return $query->execute();

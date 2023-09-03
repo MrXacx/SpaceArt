@@ -48,22 +48,20 @@ class AgreementDB extends DatabaseAcess
      */
     public function create(): bool
     {
-        $this->agreement->setID($this->getRandomID()); // Gera uuid
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO agreement (id, hirer, hired, price, date, inital_time, final_time, art) VALUES (?,?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO agreement (id, hirer, hired, price, date, inital_time, final_time, art) VALUES (UUID(),?,?,?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->agreement->getID());
-        $query->bindValue(2, $this->agreement->getHirer());
-        $query->bindValue(3, $this->agreement->getHired());
-        $query->bindValue(4, $this->agreement->getPrice());
-        $query->bindValue(5, $this->agreement->getDate()->format(DatabaseAcess::DB_DATE_FORMAT));
+        $query->bindValue(1, $this->agreement->getHirer());
+        $query->bindValue(2, $this->agreement->getHired());
+        $query->bindValue(3, $this->agreement->getPrice());
+        $query->bindValue(4, $this->agreement->getDate()->format(DatabaseAcess::DB_DATE_FORMAT));
 
         $time = $this->agreement->getTime();
-        $query->bindValue(6, $time['inital']->format(DatabaseAcess::DB_TIME_FORMAT));
-        $query->bindValue(7, $time['final']->format(DatabaseAcess::DB_TIME_FORMAT));
-        $query->bindValue(8, $this->agreement->getArt()->value);
+        $query->bindValue(5, $time['inital']->format(DatabaseAcess::DB_TIME_FORMAT));
+        $query->bindValue(6, $time['final']->format(DatabaseAcess::DB_TIME_FORMAT));
+        $query->bindValue(7, $this->agreement->getArt()->value);
 
         return $query->execute();
     }

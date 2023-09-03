@@ -40,15 +40,12 @@ class ChatDB extends DatabaseAcess
     public function create(): bool
     {
 
-        $this->chat->setID($this->getRandomID()); // Gera uuid
-
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO chat (id, artist, enterprise) VALUES (?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO chat (id, artist, enterprise) VALUES (UUID(),?,?)');
 
         // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->chat->getID());
-        $query->bindValue(2, $this->chat->getArtist());
-        $query->bindValue(3, $this->chat->getEnterprise());
+        $query->bindValue(1, $this->chat->getArtist());
+        $query->bindValue(2, $this->chat->getEnterprise());
 
         return $query->execute();
     }
@@ -69,7 +66,7 @@ class ChatDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        throw new RuntimeException('Operação falhou!');
     }
 
     public function getChat(): Chat
@@ -83,7 +80,7 @@ class ChatDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        throw new RuntimeException('Operação falhou!');
     }
 
     /**
