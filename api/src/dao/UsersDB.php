@@ -44,6 +44,7 @@ class UsersDB extends DatabaseAcess
         // Passa query SQL de criação
         $query = $this->getConnection()->prepare('INSERT INTO users (id, name, imageURL, email, password, phone, CEP, federation, city) VALUES (?,?,?,?,?,?,?,?,?)');
 
+        $this->user->setID(parent::getRandomID());
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->user->getID());
         $query->bindValue(2, $this->user->getName());
@@ -77,11 +78,11 @@ class UsersDB extends DatabaseAcess
      * Obtém modelo de Usuário com dados não sensíveis
      * @return User Modelo de usuário
      */
-    public function getUnique(string $id): User
+    public function getUnique(): User
     {
         // Define query SQL para obter todas as colunas da linha do usuário
         $query = $this->getConnection()->prepare('SELECT id, name, imageURL, CEP, federation, city, rate, website FROM users WHERE id = ?');
-        $query->bindValue(1, $id); // Substitui interrogação pelo ID
+        $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return User::getInstanceOf($this->fetchRecord($query, false));

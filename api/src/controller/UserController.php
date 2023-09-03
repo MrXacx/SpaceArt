@@ -37,7 +37,8 @@ class UserController extends \App\Controller\Template\Controller
         list($user, $db) = $this->getAccountType();
         $user->setID($this->parameterList->getString('id')); // Inicia usuário com o id informado
 
-        return $this->filterNulls($db->getUser()->toArray());
+        // Caso o id seja o token de acesso, dados sigilosos serão consultados
+        return $this->filterNulls($this->parameterList->getBoolean('token') ? $db->getUser()->toArray() : $db->getUnique()->toArray());
 
     }
 

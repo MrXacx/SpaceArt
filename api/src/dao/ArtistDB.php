@@ -47,16 +47,15 @@ class ArtistDB extends UsersDB
             $query->bindValue(4, $this->artist->getWage());
 
 
-            if (!$query->execute()) {
-                $this->delete();
-            } else {
+            if ($query->execute()) { // Executa a inserção funcionar
                 return true;
             }
 
-        }
+            // Essa linha é essencial para não exista um registro em users que não possa ser encontrado em artist ou enterprise
+            $this->delete();
 
-        // Executa se houver alguma falha esperada
-        throw new RuntimeException('Operação falhou!');
+        }
+        return false;
     }
 
     /**
@@ -77,11 +76,11 @@ class ArtistDB extends UsersDB
      * Obtém modelo de artista com dados não sensíveis
      * @return Artist Modelo de artista
      */
-    public function getUnique(string $id): Artist
+    public function getUnique(): Artist
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT id, name, imageURL, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id WHERE artist.id = ?');
-        $query->bindValue(1, $id); // Substitui interrogação pelo ID
+        $query = $this->getConnection()->prepare('SELECT users.id, name, imageURL, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id WHERE users.id = ?');
+        $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return Artist::getInstanceOf($this->fetchRecord($query, false));
@@ -98,7 +97,7 @@ class ArtistDB extends UsersDB
     {
 
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT * FROM artist INNER JOIN users ON artist.id = users.id WHERE artist.id = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM artist INNER JOIN users ON artist.id = users.id WHERE users.token = ?');
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita

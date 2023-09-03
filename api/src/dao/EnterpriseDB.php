@@ -35,24 +35,27 @@ class EnterpriseDB extends UsersDB
      */
     public function create(): bool
     {
-        parent::create();
+        if(parent::create()){
 
-        // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO enterprise (id, CNPJ, district, address) VALUES (?,?,?,?)');
+            // Passa query SQL de criação
+            $query = $this->getConnection()->prepare('INSERT INTO enterprise (id, CNPJ, district, address) VALUES (?,?,?,?)');
 
-        // Substitui interrogações pelos valores dos atributos
-        $query->bindValue(1, $this->enterprise->getID());
-        $query->bindValue(2, $this->enterprise->getCNPJ());
-        $query->bindValue(3, $this->enterprise->getDistrict());
-        $query->bindValue(4, $this->enterprise->getAddress());
+            // Substitui interrogações pelos valores dos atributos
+            $query->bindValue(1, $this->enterprise->getID());
+            $query->bindValue(2, $this->enterprise->getCNPJ());
+            $query->bindValue(3, $this->enterprise->getDistrict());
+            $query->bindValue(4, $this->enterprise->getAddress());
 
 
-        if (!$query->execute()) {
+            if ($query->execute()) { // Executa a inserção funcionar
+                return true;    
+            }
+            
+            // Essa linha é essencial para não exista um registro em users que não possa ser encontrado em artist ou enterprise
             $this->delete();
-        } else {
-            return true;
         }
-
+        
+        return false;
     }
 
     /**
@@ -73,11 +76,11 @@ class EnterpriseDB extends UsersDB
      * Obtém modelo de empreendimento com dados não sensíveis
      * @return Enterprise Modelo de empreendimento
      */
-    public function getUnique(string $id): Enterprise
+    public function getUnique(): Enterprise
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id WHERE artist.id = ?');
-        $query->bindValue(1, $id); // Substitui interrogação pelo ID
+        $query = $this->getConnection()->prepare('SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id WHERE users.id = ?');
+        $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return Enterprise::getInstanceOf($this->fetchRecord($query, false));
@@ -94,7 +97,7 @@ class EnterpriseDB extends UsersDB
     {
 
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT * FROM enterprise INNER JOIN users ON enterprise.id = users.id WHERE enterprise.id = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM enterprise INNER JOIN users ON enterprise.id = users.id WHERE token = ?');
         $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita

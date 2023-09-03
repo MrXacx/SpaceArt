@@ -11,6 +11,10 @@
 1. id: ID do usuário
 2. type: tipo de conta do usuário
 
+- Parâmetros **opcionais**:
+
+1. token: true caso o ID seja um token de acesso. Padrão: false.
+
 - Situação:
 > Funcionando
 
@@ -37,6 +41,8 @@
 - Outros parâmetos **obrigatórios** caso type = enterprise
 
 1. cnpj: CNPJ do usuário
+2. district: região do município em que o estabelecimento se localiza
+2. address: conjunto restante do endereço (logradouro, número, complemento, ponto de referência e etc)
 
 
 - Situação:
@@ -44,7 +50,7 @@
 >> Funcionando
 >
 > Caso type = enterprise
->> Falta testar
+>> Funcionando
 
 ### UPDATE
 - Parâmetros **obrigatórios**:
