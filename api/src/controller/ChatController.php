@@ -8,7 +8,7 @@ use App\DAO\MessageDB;
 use App\Model\Chat;
 use App\Model\Message;
 
-class UserController extends \App\Controller\Template\Controller
+class AgreementController extends \App\Controller\Template\Controller
 {
 
 

@@ -28,7 +28,7 @@ abstract class DatabaseAcess
     public const USUAL_TIMESTAMP_FORMAT = 'd/m/Y H:i:s';
     public const DB_DATE_FORMAT = 'Y-m-d';
     public const USUAL_DATE_FORMAT = 'd/m/Y';
-    public const DB_TIME_FORMAT = 'Y-m-d';
+    public const DB_TIME_FORMAT = 'H:i';
 
     protected \App\Model\Template\User|null $user;
 

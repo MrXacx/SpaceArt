@@ -10,7 +10,7 @@ use App\DAO\SelectionDB;
 use App\Util\DataFormatException;
 use App\Util\DataValidator;
 
-class UserController extends \App\Controller\Template\Controller
+class AgreementController extends \App\Controller\Template\Controller
 {
 
 

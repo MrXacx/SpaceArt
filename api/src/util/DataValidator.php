@@ -149,7 +149,7 @@ final class DataValidator
 
     public function isTime(string $time): bool
     {
-        return DateTime::createFromFormat('H:i:s', $time) instanceof DateTime;
+        return DateTime::createFromFormat('H:i', $time) instanceof DateTime;
     }
 
     public function isTimestamp(string $timestamp): bool

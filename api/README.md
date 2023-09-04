@@ -140,3 +140,65 @@
 
 - Situação:
 > Funcionando
+
+## /agreement
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. id: ID do contrato
+
+- Situação:
+> Funcionando
+
+### POST
+
+- Parâmetros **obrigatórios**:
+
+1. hirer: ID do contratante
+2. hired: ID do contratado
+3. art: tipo de arte
+4. price: valor a ser pago
+5. date: data do evento
+6. inital_time: horário de início do evento
+7. final_time: horário de fim do evento
+
+- Situação:
+> Funcionando
+
+### UPDATE
+- Parâmetros **obrigatórios**:
+
+1. id: ID do contrato
+3. column: parâmetro a ser alterado
+4. info: novo valor do parâmetro
+
+- Situação:
+> Funcionando
+
+
+### DELETE
+- Parâmetros **obrigatórios**:
+
+1. id: ID do contrato
+
+- Situação:
+> Funcionando
+
+
+## /agreement/list
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. user: ID do contratante ou do contratado
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
+
+- Situação:
+> Funcionando

@@ -12,7 +12,7 @@ use App\Util\DataFormatException;
 use App\Util\DataValidator;
 use DateTime;
 
-class UserController extends \App\Controller\Template\Controller
+class AgreementController extends \App\Controller\Template\Controller
 {
 
 
@@ -37,8 +37,8 @@ class UserController extends \App\Controller\Template\Controller
     public function getAgreementList(): array
     {
 
-        $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
+        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
+        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
@@ -47,11 +47,14 @@ class UserController extends \App\Controller\Template\Controller
             $offset = Server::DEFAULT_LIMIT;
         }
 
-
         $agreement = new Agreement();
+        $agreement->setHirer($this->parameterList->getString('user'));
+        $agreement->setHired($this->parameterList->getString('user'));
         $db = new AgreementDB($agreement);
-        return array_map(fn($agreement) => Agreement::getInstanceOf($agreement), $db->getList($offset, $limit));
+        return array_map(fn($agreement) => $this->filterNulls($agreement->toArray()), $db->getList($offset, $limit));
     }
+
+
 
     /**
      * Armazena um contrato
@@ -65,6 +68,7 @@ class UserController extends \App\Controller\Template\Controller
         $agreement->setHirer($this->parameterList->getString('hirer')); // obtém id do contratante
         $agreement->setHired($this->parameterList->getString('hired')); // obtém id do contratado
         $agreement->setArt($this->parameterList->getEnum('art', ArtType::class)); // obtém tipo de arte
+        $agreement->setPrice(floatval($this->parameterList->getString('price')));
         $agreement->setDate(DateTime::createFromFormat(AgreementDB::USUAL_DATE_FORMAT, $this->parameterList->getString('date'))); // obtém data do evento
         $agreement->setTime(
             // obtém horários de início e fim do evento

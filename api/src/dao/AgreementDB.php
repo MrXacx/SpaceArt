@@ -59,8 +59,8 @@ class AgreementDB extends DatabaseAcess
         $query->bindValue(4, $this->agreement->getDate()->format(DatabaseAcess::DB_DATE_FORMAT));
 
         $time = $this->agreement->getTime();
-        $query->bindValue(5, $time['inital']->format(DatabaseAcess::DB_TIME_FORMAT));
-        $query->bindValue(6, $time['final']->format(DatabaseAcess::DB_TIME_FORMAT));
+        $query->bindValue(5, $time['inital']);
+        $query->bindValue(6, $time['final']);
         $query->bindValue(7, $this->agreement->getArt()->value);
 
         return $query->execute();
@@ -72,11 +72,11 @@ class AgreementDB extends DatabaseAcess
     public function getList(int $offset = 1, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT id, hirer, hired, price, date_point FROM agreement WHERE hirer = ? OR hired = ? ORDER BY ABS(DATEDIFF(date_point, CURDATE())) LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT id, hirer, hired, price, date FROM agreement WHERE hirer = ? OR hired = ? ORDER BY ABS(DATEDIFF(date, CURDATE())) LIMIT $limit OFFSET $offset");
 
-        $id = $this->user->getID();
-        $query->bindValue(1, $id);
-        $query->bindValue(2, $id);
+
+        $query->bindValue(1, $this->agreement->gethirer());
+        $query->bindValue(2, $this->agreement->gethired());
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn($agreement) => Agreement::getInstanceOf($agreement), $this->fetchRecord($query));

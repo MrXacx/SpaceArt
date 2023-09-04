@@ -239,8 +239,8 @@ class Agreement extends \App\Model\Template\Entity
             'price' => $this->price,
             'date' => $this->date->format(AgreementDB::USUAL_DATE_FORMAT),
             'art' => $this->art ?? null,
-            'time' => array_map(fn(DateTime $time): string => $time->format(AgreementDB::DB_TIME_FORMAT), $this->time) ?? null,
-            'status' => $this->status ?? null
+            'time' => $this->time ?? null,
+            'status' => $this->status->value ?? null
         ]), fn($value) => isset($value));
     }
 }
