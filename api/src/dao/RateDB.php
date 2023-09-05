@@ -27,16 +27,12 @@ class RateDB extends DatabaseAcess
      */
     private Rate $rate;
 
-    private Agreement $agreement;
-
     /**
      * @param Rate $rate Modelo de contrato a ser utilizado na manipulação
-     * @param Agreement $agreement Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(Rate $rate, Agreement $agreement = null)
+    function __construct(Rate $rate)
     {
         $this->rate = $rate;
-        $this->agreement = $agreement;
         parent::__construct();
     }
 
@@ -61,14 +57,14 @@ class RateDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getList(int $offset = 1, int $limit = 10): array
+    public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT * FROM rate WHERE agreement = ? LIMIT $limit OFFSET $offset");
-        $query->bindValue(1, $this->agreement->getID());
+        $query->bindValue(1, $this->rate->getAgreement());
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($rate) => Rate::getInstanceOf($rate), $this->fetchRecord($query));
+            return array_map(fn($rate) => Rate::getInstanceOf($rate), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas
@@ -82,7 +78,7 @@ class RateDB extends DatabaseAcess
     public function getRate(): Rate
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare('SELECT * FROM Rate WHERE agreement = ? AND author = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM rate WHERE agreement = ? AND author = ?');
         $query->bindValue(1, $this->rate->getAgreement());
         $query->bindValue(2, $this->rate->getAuthor());
 

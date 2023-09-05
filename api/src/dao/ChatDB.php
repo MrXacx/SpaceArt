@@ -53,16 +53,16 @@ class ChatDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getList(int $offset = 1, int $limit = 10): array
+    public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT * FROM chat WHERE artist = ? OR enterprise = ? LIMIT $limit OFFSET $offset");
 
         $query->bindValue(1, $this->chat->getArtist());
-        $query->bindValue(2,  $this->chat->getEnterprise());
+        $query->bindValue(2, $this->chat->getEnterprise());
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($chat) => Chat::getInstanceOf($chat), $this->fetchRecord($query));
+            return array_map(fn($chat) => Chat::getInstanceOf($chat), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas

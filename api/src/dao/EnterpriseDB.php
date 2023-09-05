@@ -35,7 +35,7 @@ class EnterpriseDB extends UsersDB
      */
     public function create(): bool
     {
-        if(parent::create()){
+        if (parent::create()) {
 
             // Passa query SQL de criação
             $query = $this->getConnection()->prepare('INSERT INTO enterprise (id, CNPJ, district, address) VALUES (?,?,?,?)');
@@ -48,26 +48,26 @@ class EnterpriseDB extends UsersDB
 
 
             if ($query->execute()) { // Executa a inserção funcionar
-                return true;    
+                return true;
             }
-            
+
             // Essa linha é essencial para não exista um registro em users que não possa ser encontrado em artist ou enterprise
             $this->delete();
         }
-        
+
         return false;
     }
 
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getList(int $offset = 1, int $limit = 10): array
+    public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($user) => Enterprise::getInstanceOf($user), $this->fetchRecord($query));
+            return array_map(fn($user) => Enterprise::getInstanceOf($user), $this->fetchRecord($query));
         }
         throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
     }

@@ -104,7 +104,7 @@ abstract class DatabaseAcess
      * @param int $limit Quantidade de registros a ser retornada
      * @return array Lista de registros
      */
-    abstract public function getList(int $offset = 1, int $limit = 10): array;
+    abstract public function getList(int $offset = 0, int $limit = 10): array;
 
     /**
      * Atualiza determinada célula do banco

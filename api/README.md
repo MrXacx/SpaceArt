@@ -171,8 +171,8 @@
 - Parâmetros **obrigatórios**:
 
 1. id: ID do contrato
-3. column: parâmetro a ser alterado
-4. info: novo valor do parâmetro
+2. column: parâmetro a ser alterado
+3. info: novo valor do parâmetro
 
 - Situação:
 > Funcionando
@@ -194,6 +194,69 @@
 - Parâmetros **obrigatórios**:
 
 1. user: ID do contratante ou do contratado
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
+
+- Situação:
+> Funcionando
+
+
+## /agreement/rate
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. agreement: ID do contrato
+2. author: ID do autor da avaliação
+
+- Situação:
+> Funcionando
+
+### POST
+
+- Parâmetros **obrigatórios**:
+
+1. agreement: ID do contrato
+2. author: ID do autor da avaliação
+3. rate: nota da avaliação
+4. description: descrição da avaliação
+
+- Situação:
+> Funcionando
+
+### UPDATE
+- Parâmetros **obrigatórios**:
+
+1. agreement: ID do contrato
+2. author: ID do autor da avaliação
+3. column: parâmetro a ser alterado
+4. info: novo valor do parâmetro
+
+- Situação:
+> Funcionando
+
+
+### DELETE
+- Parâmetros **obrigatórios**:
+
+1. agreement: ID do contrato
+2. author: ID do autor da avaliação
+
+- Situação:
+> Funcionando
+
+
+## /agreement/rate/list
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. agreement: ID do contrato
 
 - Parâmetros **opcionais**:
 

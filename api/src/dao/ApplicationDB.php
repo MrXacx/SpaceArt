@@ -76,14 +76,14 @@ class ApplicationDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getList(int $offset = 1, int $limit = 10): array
+    public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT * FROM selection_application WHERE selection = ? ORDER BY last_change LIMIT $limit OFFSET $offset");
         $query->bindValue(1, $this->application->getSelection()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
-            return array_map(fn ($application) => Application::getInstanceOf($application), $this->fetchRecord($query));
+            return array_map(fn($application) => Application::getInstanceOf($application), $this->fetchRecord($query));
         }
 
         // Executa em caso de falhas esperadas

@@ -81,6 +81,7 @@ class RoutesBuilder
                     $collector->addGroup('/rate', function (RouteCollector $collector) //rotas com início '/agreement/rate'
                     {
                         $collector->get('', AgreementController::class . '@getRate'); // Exibe uma avaliação
+                        $collector->get('/list', AgreementController::class . '@getRateList'); // Exibe lista de avaliações de um contrato
                         $collector->post('', AgreementController::class . '@storeRate'); // Cria uma nova avaliação
                         $collector->put('', AgreementController::class . '@updateRate'); // Atualiza as informações da avaliação
                         $collector->delete('', AgreementController::class . '@deleteRate'); // Deleta a avaliação

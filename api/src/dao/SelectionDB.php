@@ -65,7 +65,7 @@ class SelectionDB extends DatabaseAcess
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getList(int $offset = 1, int $limit = 10): array
+    public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare("SELECT * FROM selection WHERE owner_id = ? ORDER BY ABS(DATEDIFF(inital_date, CURDATE())) LIMIT $limit OFFSET $offset");

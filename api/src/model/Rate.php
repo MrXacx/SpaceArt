@@ -49,6 +49,7 @@ class Rate extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
+
         $entity = new Rate($attr[RateDB::AGREEMENT]);
 
         $entity->author = $attr[RateDB::AUTHOR];
@@ -83,7 +84,7 @@ class Rate extends \App\Model\Template\Entity
      */
     public function setAuthor(string $author): void
     {
-        $this->author = $author;
+        $this->author = $this->validator->isUUID($author)? $author : throw new DataFormatException('AUTHOR ID');
     }
 
     /**
@@ -100,8 +101,8 @@ class Rate extends \App\Model\Template\Entity
      * @param string Descrição
      */
     public function setDescription(string $description): void
-    {
-        $this->description = $description;
+    {   
+        $this->description = $this->validator->isFit($description) ? $description : throw new DataFormatException('DESCRIPTION', DataFormatException::LENGTH);
     }
 
     /**

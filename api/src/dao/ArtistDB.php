@@ -61,11 +61,11 @@ class ArtistDB extends UsersDB
     /**
      * @see abstracts/DatabaseAcess.php
      */
-    public function getList(int $offset = 1, int $limit = 10): array
+    public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare(
-            
+
             "SELECT */*id, name, imageURL, CEP, federation, city, art, wage, rate, website*/ FROM artist INNER JOIN users ON users.id = artist.id LIMIT $limit OFFSET $offset"
         );
 

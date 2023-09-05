@@ -112,15 +112,7 @@ class AgreementController extends \App\Controller\Template\Controller
         }
         return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
     }
-    public function getRate(): array
-    {
-        $rate = new Rate($this->parameterList->getString('agreement'));
-        $rate->setID($this->parameterList->getString('id')); // Obtém id informado
 
-        $db = new RateDB($rate); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getRate()->toArray());
-
-    }
     public function storeRate(): bool
     {
         $rate = new Rate($this->parameterList->getString('agreement')); // inicia modelo de avaliação
@@ -132,10 +124,40 @@ class AgreementController extends \App\Controller\Template\Controller
         return $db->create(); // armazena avaliação
     }
 
+    public function getRate(): array
+    {
+        $rate = new Rate($this->parameterList->getString('agreement'));
+        $rate->setAuthor($this->parameterList->getString('author')); // Obtém id informado
+
+        $db = new RateDB($rate); // Inicia objeto para manipular o chat
+        return $this->filterNulls($db->getRate()->toArray());
+
+    }
+
+    public function getRateList(): array
+    {
+
+        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
+        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
+
+        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
+            $offset = Server::DEFAULT_OFFSET;
+        }
+        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
+            $offset = Server::DEFAULT_LIMIT;
+        }
+
+        $rate = new Rate($this->parameterList->getString('agreement'));
+
+        $db = new RateDB($rate); // Inicia objeto para manipular o chat
+        return array_map(fn($rate) =>  $this->filterNulls($rate->toArray()), $db->getList($offset, $limit));
+
+    }
+
     public function deleteRate(): bool
     {
         $rate = new Rate($this->parameterList->getString('agreement')); // inicia modelo de avaliação
-        $rate->setID($this->parameterList->getString('id')); // obtém id da avaliação
+        $rate->setAuthor($this->parameterList->getString('author')); // obtém id da avaliação
 
         $db = new RateDB($rate); // inicia banco
         return $db->delete(); // deleta avaliação
@@ -148,7 +170,7 @@ class AgreementController extends \App\Controller\Template\Controller
         $info = $this->parameterList->getString('info'); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
 
         $rate = new Rate($this->parameterList->getString('agreement')); // INICIANDO MODELO DO USUÁRIO 
-        $rate->setID($this->parameterList->getString('id')); // PASSA O ID DO CONTRATO PARA O MODELO
+        $rate->setAuthor($this->parameterList->getString('author')); // PASSA O ID DO AUTOR
 
         $validator = new DataValidator();
 
