@@ -53,7 +53,7 @@ class Agreement extends \App\Model\Template\Entity
 
     /**
      * Horários de início e fim do evento
-     * @var array
+     * @var array<DateTime>
      */
     private array $time;
 

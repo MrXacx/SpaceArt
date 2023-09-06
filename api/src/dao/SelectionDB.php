@@ -53,9 +53,9 @@ class SelectionDB extends DatabaseAcess
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->selection->getOwner());
         $query->bindValue(2, $this->selection->getPrice());
-        $query->bindValue(3, $datetime['inital']);
-        $query->bindValue(4, $datetime['final']);
-        $query->bindValue(5, $this->selection->getArt());
+        $query->bindValue(3, $datetime['inital']->format(parent::DB_TIMESTAMP_FORMAT));
+        $query->bindValue(4, $datetime['final']->format(parent::DB_TIMESTAMP_FORMAT));
+        $query->bindValue(5, $this->selection->getArt()->value);
 
         return $query->execute();
     }
@@ -66,7 +66,7 @@ class SelectionDB extends DatabaseAcess
     public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM selection WHERE owner = ? ORDER BY ABS(DATEDIFF(inital_date, CURDATE())) LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT * FROM selection AS sel WHERE owner = ? ORDER BY sel.inital_datetime LIMIT $limit OFFSET $offset");
 
         $query->bindValue(1, $this->selection->getOwner()); // Substitui interrogação na query pelo ID passado
 
@@ -74,7 +74,7 @@ class SelectionDB extends DatabaseAcess
             return array_map(fn($agreement) => Selection::getInstanceOf($agreement), $this->fetchRecord($query));
         }
 
-        throw new \RuntimeException('Operação falhou!'); // Executa em caso de falhas esperadas
+        throw new RuntimeException('Operação falhou!'); // Executa em caso de falhas esperadas
     }
 
     /**
@@ -94,7 +94,7 @@ class SelectionDB extends DatabaseAcess
         }
 
         // Executa em caso de falhas esperadas
-        throw new \RuntimeException('Operação falhou!');
+        throw new RuntimeException('Operação falhou!');
     }
 
     /**
@@ -103,7 +103,7 @@ class SelectionDB extends DatabaseAcess
     public function update(string $column, string $value): bool
     {
         // Passa query SQL de atualização
-        $query = $this->getConnection()->prepare("UPDATE selection \SET $column = ? WHERE id = ?");
+        $query = $this->getConnection()->prepare("UPDATE selection SET $column = ? WHERE id = ?");
 
         // Substitui interrogações pelos valores das variáveis
         $query->bindValue(1, $value);

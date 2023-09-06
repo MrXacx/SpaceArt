@@ -264,3 +264,125 @@
 
 - Situação:
 > Funcionando
+
+
+## /selection
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. id: ID da seleção
+
+- Situação:
+> Funcionando
+
+### POST
+
+- Parâmetros **obrigatórios**:
+
+1. owner: ID do criador da seleção
+2. date: datas de abertura e fechamento da seleção. Devem estar separadas por ';'
+3. time: horários de abertura e fechamento da seleção. Devem estar separados por ';'
+4. price: valor a ser pago
+5. art: tipo de arte do evento
+
+- Situação:
+> Funcionando
+
+### UPDATE
+- Parâmetros **obrigatórios**:
+
+1. id: ID da seleção
+2. column: parâmetro a ser alterado
+3. info: novo valor do parâmetro
+
+- Situação:
+> Funcionando
+
+
+### DELETE
+- Parâmetros **obrigatórios**:
+
+1. id: ID da seleção
+
+- Situação:
+> Funcionando
+
+
+## /selection/list
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. owner: ID do criador da seleção
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
+
+- Situação:
+> Funcionando
+
+
+## /selection/application
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. selection: ID da seleção
+2. artist: ID do artista que se aplicou no processo
+
+- Situação:
+> Funcionando
+
+### POST
+
+- Parâmetros **obrigatórios**:
+
+1. selection: ID da seleção
+2. artist: ID do artista que se aplicou no processo
+
+- Situação:
+> Funcionando
+
+### UPDATE
+- Parâmetros **obrigatórios**:
+
+1. selection: ID da seleção
+2. artist: ID do artista que se aplicou no processo
+3. column: parâmetro a ser alterado
+4. info: novo valor do parâmetro
+
+- Situação:
+> Funcionando
+
+
+### DELETE
+- Parâmetros **obrigatórios**:
+
+1. selection: ID da seleção
+2. artist: ID do artista que se aplicou no processo
+
+- Situação:
+> Funcionando
+
+
+## /selection/application/list
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. owner: ID do criador da seleção
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
+
+- Situação:
+> Falhando devido à versão do MariaDB

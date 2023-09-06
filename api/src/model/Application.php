@@ -37,6 +37,7 @@ class Application extends \App\Model\Template\Entity
      */
     function __construct(string $selection)
     {
+        parent::__construct();
         $this->selection = $this->validator->isUUID($selection) ? $selection : throw new DataFormatException('selection id');
     }
 

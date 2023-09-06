@@ -12,7 +12,7 @@ use App\Util\DataFormatException;
 use App\Util\DataValidator;
 use DateTime;
 
-class AgreementController extends \App\Controller\Template\Controller
+class SelectionController extends \App\Controller\Template\Controller
 {
 
     /**
@@ -33,7 +33,7 @@ class AgreementController extends \App\Controller\Template\Controller
         );
 
         $time = explode(';', $this->parameterList->getString('time'));
-        $selection->setDate(
+        $selection->setTime(
             DateTime::createFromFormat(SelectionDB::USUAL_TIME_FORMAT, $time[0]),
             DateTime::createFromFormat(SelectionDB::USUAL_TIME_FORMAT, $time[1])
         );
@@ -80,7 +80,7 @@ class AgreementController extends \App\Controller\Template\Controller
         $selection = new Selection;
         $selection->setOwner($this->parameterList->getString('owner'));
         $db = new SelectionDB($selection);
-        return array_map(fn($selection) => Selection::getInstanceOf($selection), $db->getList($offset, $limit));
+        return array_map(fn($selection) => $selection->toArray(), $db->getList($offset, $limit));
     }
 
     /**
@@ -108,18 +108,33 @@ class AgreementController extends \App\Controller\Template\Controller
         $selection->setID($this->parameterList->getString('id')); // PASSA O ID DO SELEÇÃO PARA O MODELO
 
         $validator = new DataValidator;
+        
 
         if (SelectionDB::isColumn(SelectionDB::class, $column) && $validator->isValidToFlag($info, $column)) {
+            
+            if ($column == SelectionDB::INITAL_DATETIME || $column == SelectionDB::FINAL_DATETIME) {
+                $timestamp = DateTime::createFromFormat(
+                    SelectionDB::USUAL_TIMESTAMP_FORMAT,
+                    $info
+                );
+                
+                if(is_bool($timestamp)){
+                    goto failed;
+                }
+
+                $info = $timestamp->format(SelectionDB::DB_TIMESTAMP_FORMAT);
+            }
 
             $db = new SelectionDB($selection);
             return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
         }
-        return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
+        
+        failed: return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
     }
     public function getApplication(): array
     {
         $application = new Application($this->parameterList->getString('selection'));
-        $application->setID($this->parameterList->getString('id')); // Obtém id informado
+        $application->setUser($this->parameterList->getString('artist')); // Obtém id informado
 
         $db = new ApplicationDB($application); // Inicia objeto para manipular o chat
         return $this->filterNulls($db->getApplication()->toArray());
@@ -127,39 +142,48 @@ class AgreementController extends \App\Controller\Template\Controller
 
     public function storeApplication(): bool
     {
-        $application = new Application($this->parameterList->getString('application'));
+        $application = new Application($this->parameterList->getString('selection'));
+        $application->setUser($this->parameterList->getString('artist'));
+
         $db = new ApplicationDB($application);
         return $db->create();
     }
 
+    /**
+     * Obtém lista de aplicações a uma seleção
+     * @return array
+     */
+    public function getApplicationList(): array
+    {
+
+        $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
+        $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
+
+        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
+            $offset = Server::DEFAULT_OFFSET;
+        }
+        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
+            $offset = Server::DEFAULT_LIMIT;
+        }
+
+    
+        $db = new ApplicationDB(
+            new Application($this->parameterList->getString('selection'))
+        );
+
+        $list = $db->getList($offset, $limit);
+        if (count($list) == 0){
+            throw new \Exception('vazio');
+        }
+        return array_map(fn($application) => $application->toArray(), $list);
+    }
+
     public function deleteApplication(): bool
     {
-        $application = new Application($this->parameterList->getString('application'));
-        $application->setID($this->parameterList->getString('id'));
+        $application = new Application($this->parameterList->getString('selection'));
+        $application->setUser($this->parameterList->getString('artist'));
 
         $db = new ApplicationDB($application);
         return $db->delete();
     }
-
-    public function updateApplication(): bool
-    {
-
-        $column = ($this->parameterList->getString('column')); // RECEBE A COLUNA QUE SERÁ ALTERADA
-        $info = ($this->parameterList->getString('info')); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
-
-        $application = new Application($this->parameterList->getString('application')); // INICIANDO MODELO DO USUÁRIO 
-
-
-        //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
-        $application->setID($this->parameterList->getString('id')); // PASSA O ID DO SELEÇÃO PARA O MODELO
-
-        $validator = new DataValidator;
-
-        $db = new ApplicationDB($application);
-        if ($db->isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {
-            return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
-        }
-        return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
-    }
-
 }

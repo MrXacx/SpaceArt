@@ -7,6 +7,7 @@ namespace App\Model;
 use App\DAO\SelectionDB;
 use App\Model\Enumerate\ArtType;
 use App\Util\DataFormatException;
+use DateInterval;
 use DateTime;
 
 /**
@@ -36,13 +37,13 @@ class Selection extends \App\Model\Template\Entity
 
     /**
      * Datas de início e fim
-     * @var array
+     * @var array<DateTime>
      */
     private array $date;
 
     /**
      * Datas de início e fim
-     * @var array
+     * @var array<DateTime>
      */
     private array $time;
 
@@ -66,11 +67,18 @@ class Selection extends \App\Model\Template\Entity
         $entity->id = $attr['id'];
         $entity->owner = $attr[SelectionDB::OWNER];
         $entity->price = $attr[SelectionDB::PRICE];
-        $entity->art = $attr[SelectionDB::ART];
+        $entity->art = ArtType::tryFrom($attr[SelectionDB::ART]);
 
-        $datetime = [explode(' ', $attr[SelectionDB::INITAL_DATETIME]), explode(' ', $attr[SelectionDB::FINAL_DATETIME])];
-        $entity->date = ['inital' => $datetime[0][0], 'final' => $datetime[1][0]];
-        $entity->time = ['inital' => $datetime[0][1], 'final' => $datetime[1][1]];
+        $iDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::INITAL_DATETIME]);
+        $fDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::FINAL_DATETIME]);
+
+        $entity->date  = [
+            'inital' => $iDateTime,
+            'final'  => $fDateTime
+        ];
+
+        $entity->time = $entity->date;
+
         $entity->locked = boolval($attr[SelectionDB::LOCKED]);
 
         return $entity;
@@ -122,7 +130,7 @@ class Selection extends \App\Model\Template\Entity
      */
     public function setDate(DateTime $inital, DateTime $final)
     {
-        $this->date = ['inital' => $inital->format(SelectionDB::DB_DATE_FORMAT), 'final' => $final->format(SelectionDB::DB_DATE_FORMAT)];
+        $this->date = ['inital' => $inital, 'final' => $final];
     }
 
     /**
@@ -139,14 +147,19 @@ class Selection extends \App\Model\Template\Entity
     /**
      * Obtém Datas e horários de início e fim do modelo
      * 
-     * @return array Vetor de datetimes
+     * @return array<DateTime> Vetor de datetimes
      */
     public function getDatetime(): array
-    {
-        return [
-            'inital' => $this->date['inital'] . " " . $this->time['inital'],
-            'final' => $this->date['final'] . " " . $this->time['final']
-        ];
+    {        
+        $datetime = [];
+        foreach($this->date as $key => $date){
+            $datetime[$key] = DateTime::createFromFormat(
+                    SelectionDB::USUAL_TIMESTAMP_FORMAT,
+                    $date->format(SelectionDB::USUAL_DATE_FORMAT) . " " . $this->time[$key]->format(SelectionDB::DB_TIME_FORMAT)
+                );
+        }
+        
+        return $datetime;
     }
 
     /**
@@ -193,8 +206,8 @@ class Selection extends \App\Model\Template\Entity
             'owner' => $this->owner,
             'price' => $this->price ?? null,
             'art' => $this->art ?? null,
-            'date' => $this->date ?? null,
-            'time' => $this->time ?? null,
+            'date' => array_map(fn(DateTime $date) => $date->format(SelectionDB::USUAL_DATE_FORMAT), $this->date ?? []),
+            'time' => array_map(fn(DateTime $time) => $time->format(SelectionDB::USUAL_TIME_FORMAT), $this->time ?? []),
             'locked' => boolval($this->time ?? null),
         ]), fn($value) => isset($value));
     }

@@ -144,7 +144,7 @@ final class DataValidator
 
     public function isDate(string $date): bool
     {
-        return DateTime::createFromFormat('Y-m-d', $date) instanceof DateTime;
+        return DateTime::createFromFormat('d/m/Y', $date) instanceof DateTime;
     }
 
     public function isTime(string $time): bool
@@ -154,7 +154,7 @@ final class DataValidator
 
     public function isTimestamp(string $timestamp): bool
     {
-        return DateTime::createFromFormat('Y-m-d H:i:s', $timestamp) instanceof DateTime;
+        return DateTime::createFromFormat('d/m/Y H:i:s', $timestamp) instanceof DateTime;
     }
 }
 
