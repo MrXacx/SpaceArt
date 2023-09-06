@@ -33,12 +33,10 @@ class SelectionDB extends DatabaseAcess
 
     /**
      * @param Selection $selection Modelo de seleção a ser manipulado
-     * @param User $user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(Selection $selection, User $user = null)
+    function __construct(Selection $selection)
     {
         $this->selection = $selection;
-        $this->user = $user;
         parent::__construct();
     }
 
@@ -68,9 +66,9 @@ class SelectionDB extends DatabaseAcess
     public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM selection WHERE owner_id = ? ORDER BY ABS(DATEDIFF(inital_date, CURDATE())) LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT * FROM selection WHERE owner = ? ORDER BY ABS(DATEDIFF(inital_date, CURDATE())) LIMIT $limit OFFSET $offset");
 
-        $query->bindValue(1, $this->user->getID()); // Substitui interrogação na query pelo ID passado
+        $query->bindValue(1, $this->selection->getOwner()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn($agreement) => Selection::getInstanceOf($agreement), $this->fetchRecord($query));
@@ -98,25 +96,6 @@ class SelectionDB extends DatabaseAcess
         // Executa em caso de falhas esperadas
         throw new \RuntimeException('Operação falhou!');
     }
-
-    /**
-     * @see abstracts/DatabaseAcess.php
-     */
-    /* public function getRandomList(): array
-     {
-         $query = parent::getConnection()->prepare("SELECT * FROM selection");
-
-         $id =  $this->user->getID();
-
-         $query->bindParam(1, $id);
-         $query->bindParam(2, $id);
-
-         if ($query->execute()) {
-             return $this->fetchRecord($query);
-         }
-
-         throw new RuntimeException("Operação falhou");
-     }*/
 
     /**
      * @see abstracts/DatabaseAcess.php

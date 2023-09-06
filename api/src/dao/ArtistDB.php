@@ -83,7 +83,7 @@ class ArtistDB extends UsersDB
     {
         // Define query SQL para obter todas as colunas da linha do usuário
         $query = $this->getConnection()->prepare('SELECT users.id, name, imageURL, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id WHERE users.id = ?');
-        $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
+        $query->bindValue(1, $this->artistststst->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return Artist::getInstanceOf($this->fetchRecord($query, false));
@@ -101,7 +101,7 @@ class ArtistDB extends UsersDB
 
         // Define query SQL para obter todas as colunas da linha do usuário
         $query = $this->getConnection()->prepare('SELECT * FROM artist INNER JOIN users ON artist.id = users.id WHERE token = ?');
-        $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
+        $query->bindValue(1, $this->artistst->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return Artist::getInstanceOf($this->fetchRecord($query, false));

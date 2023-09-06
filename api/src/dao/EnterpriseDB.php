@@ -80,7 +80,7 @@ class EnterpriseDB extends UsersDB
     {
         // Define query SQL para obter todas as colunas da linha do usuário
         $query = $this->getConnection()->prepare('SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id WHERE users.id = ?');
-        $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
+        $query->bindValue(1, $this->enterprise->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return Enterprise::getInstanceOf($this->fetchRecord($query, false));
@@ -98,7 +98,7 @@ class EnterpriseDB extends UsersDB
 
         // Define query SQL para obter todas as colunas da linha do usuário
         $query = $this->getConnection()->prepare('SELECT * FROM enterprise INNER JOIN users ON enterprise.id = users.id WHERE token = ?');
-        $query->bindValue(1, $this->user->getID()); // Substitui interrogação pelo ID
+        $query->bindValue(1, $this->enterpriserprise->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return Enterprise::getInstanceOf($this->fetchRecord($query, false));

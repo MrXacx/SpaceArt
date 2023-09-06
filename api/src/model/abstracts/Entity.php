@@ -26,7 +26,7 @@ abstract class Entity
 
     function __construct()
     {
-        $this->validator = new DataValidator();
+        $this->validator = new DataValidator;
     }
 
     /**

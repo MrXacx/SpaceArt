@@ -66,7 +66,7 @@ class Agreement extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Agreement();
+        $entity = new Agreement;
         foreach ($attr as $key => $value) {
             switch ($key) {
                 case 'id':
@@ -82,13 +82,13 @@ class Agreement extends \App\Model\Template\Entity
                     $entity->price = $value;
                     break;
                 case AgreementDB::DATE:
-                    $entity->date = DateTime::createFromFormat('Y-m-d', $value);
+                    $entity->date = DateTime::createFromFormat(AgreementDB::DB_DATE_FORMAT, $value);
                     break;
                 case AgreementDB::INITAL_TIME:
-                    $entity->time['inital'] = $value;
+                    $entity->time['inital'] = DateTime::createFromFormat(AgreementDB::DB_TIME_FORMAT, $value);
                     break;
                 case AgreementDB::FINAL_TIME:
-                    $entity->time['final'] = $value;
+                    $entity->time['final'] = DateTime::createFromFormat(AgreementDB::DB_TIME_FORMAT, $value);
                     break;
                 case AgreementDB::ART:
                     $entity->art = ArtType::tryFrom($value);
@@ -182,7 +182,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     public function setTime(DateTime $inital, DateTime $final): void
     {
-        $this->time = ['inital' => $inital->format(AgreementDB::DB_TIME_FORMAT), 'final' => $final->format(AgreementDB::DB_TIME_FORMAT)];
+        $this->time = ['inital' => $inital, 'final' => $final];
     }
 
     /**
@@ -239,7 +239,7 @@ class Agreement extends \App\Model\Template\Entity
             'price' => $this->price,
             'date' => $this->date->format(AgreementDB::USUAL_DATE_FORMAT),
             'art' => $this->art ?? null,
-            'time' => $this->time ?? null,
+            'time' => array_map(fn($time) => $time->format(AgreementDB::USUAL_TIME_FORMAT), $this->time ?? []),
             'status' => $this->status->value ?? null
         ]), fn($value) => isset($value));
     }

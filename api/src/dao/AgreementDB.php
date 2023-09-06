@@ -34,12 +34,10 @@ class AgreementDB extends DatabaseAcess
 
     /**
      * @param Agreement $agreement Modelo de contrato a ser utilizado na manipulação
-     * @param User #user Modelo de usuário a ser considerado na manipulação [opcional]
      */
-    function __construct(Agreement $agreement, User $user = null)
+    function __construct(Agreement $agreement)
     {
         $this->agreement = $agreement;
-        $this->user = $user;
         parent::__construct();
     }
 
@@ -56,11 +54,11 @@ class AgreementDB extends DatabaseAcess
         $query->bindValue(1, $this->agreement->getHirer());
         $query->bindValue(2, $this->agreement->getHired());
         $query->bindValue(3, $this->agreement->getPrice());
-        $query->bindValue(4, $this->agreement->getDate()->format(DatabaseAcess::DB_DATE_FORMAT));
+        $query->bindValue(4, $this->agreement->getDate()->format(parent::DB_DATE_FORMAT));
 
         $time = $this->agreement->getTime();
-        $query->bindValue(5, $time['inital']);
-        $query->bindValue(6, $time['final']);
+        $query->bindValue(5, $time['inital']->format(parent::DB_TIME_FORMAT));
+        $query->bindValue(6, $time['final']->format(parent::DB_TIME_FORMAT));
         $query->bindValue(7, $this->agreement->getArt()->value);
 
         return $query->execute();

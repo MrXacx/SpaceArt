@@ -54,7 +54,7 @@ class UserController extends \App\Controller\Template\Controller
             o id consultado com base nos dados informados.  
         */
 
-        $user = new User();
+        $user = new User;
 
         $user->setEmail($this->parameterList->getString('email'));
         $user->setPassword($this->parameterList->getString('password'));
@@ -104,7 +104,7 @@ class UserController extends \App\Controller\Template\Controller
         switch ($this->parameterList->getEnum('type', AccountType::class)) {
             case AccountType::ARTIST:
 
-                $user = new Artist();
+                $user = new Artist;
 
                 $user->setCPF($this->parameterList->getString('cpf'));
                 $user->setArt(ArtType::tryFrom($this->parameterList->getString('art')));
@@ -114,18 +114,19 @@ class UserController extends \App\Controller\Template\Controller
                 break;
 
             case AccountType::ENTERPRISE:
-                $user = new Enterprise();
+                $user = new Enterprise;
                 $user->setCNPJ($this->parameterList->getString('cnpj'));
                 $user->setDistrict($this->parameterList->getString('district'));
                 $user->setAddress($this->parameterList->getString('address'));
                 $db = new EnterpriseDB($user);
                 break;
 
-            case null: throw new DataFormatException('TYPE ACCOUNT');
+            case null:
+                throw new DataFormatException('TYPE ACCOUNT');
         }
 
         if ($user instanceof User && $db instanceof UsersDB) {
- 
+
             $user->setName($this->parameterList->getString('name'));
             $user->setEmail($this->parameterList->getString('email'));
             $user->setPassword($this->parameterList->getString('password'));
@@ -134,10 +135,10 @@ class UserController extends \App\Controller\Template\Controller
             $user->setFederation($this->parameterList->getString('federation'));
             $user->setCity($this->parameterList->getString('city'));
             $user->setImageURL($this->parameterList->getString('image'));
-            
+
             return $db->create();
         }
-       
+
 
         return false;
 
@@ -168,17 +169,15 @@ class UserController extends \App\Controller\Template\Controller
         $column = ($this->parameterList->getString('column')); // RECEBE A COLUNA QUE SERÁ ALTERADA
         $info = ($this->parameterList->getString('info')); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
 
-        $user = new User(); // INICIANDO MODELO DO USUÁRIO 
-
         list($user, $db) = $this->getAccountType();
 
         //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
         $user->setID($this->parameterList->getString('id')); // PASSA O ID DO USUARIO PARA O MODELO
 
-        $validator = new DataValidator();
+        $validator = new DataValidator;
 
 
-        if ($db->isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {
+        if ($db::isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {
             return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
         }
         return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
@@ -191,7 +190,7 @@ class UserController extends \App\Controller\Template\Controller
     public function deleteUser(): bool
     {
 
-        $user = new User(); //MODELO DE USUÁRIO
+        $user = new User; //MODELO DE USUÁRIO
         $user->setID($this->parameterList->getString('id')); //PASSA O ID DE USUÁRIO PARA O MODELO
 
         $db = new UsersDB($user); //LIGA O BANCO
@@ -228,7 +227,7 @@ class UserController extends \App\Controller\Template\Controller
         if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
             $offset = Server::DEFAULT_LIMIT;
         }
-        
+
         $db = new ReportDB(
             new Report(
                 $this->parameterList->getString('reporter')

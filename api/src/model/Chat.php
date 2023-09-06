@@ -27,7 +27,7 @@ class Chat extends \App\Model\Template\Entity
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Chat();
+        $entity = new Chat;
         $entity->id = $attr['id'];
         $entity->artist = $attr[ChatDB::ARTIST];
         $entity->enterprise = $attr[ChatDB::ENTERPRISE];

@@ -38,7 +38,7 @@ class Artist extends \App\Model\Template\User
 
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Artist();
+        $entity = new Artist;
 
         foreach ($attr as $key => $value) {
 

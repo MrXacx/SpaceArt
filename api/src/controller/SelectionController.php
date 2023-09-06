@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Enumerate\ArtType;
 use App\Server;
 use App\DAO\ApplicationDB;
 use App\Model\Application;
@@ -9,10 +10,40 @@ use App\Model\Selection;
 use App\DAO\SelectionDB;
 use App\Util\DataFormatException;
 use App\Util\DataValidator;
+use DateTime;
 
 class AgreementController extends \App\Controller\Template\Controller
 {
 
+    /**
+     * Armazena um contrato
+     * @return bool true caso a operação funcione corretamente
+     */
+    public function storeSelection(): bool
+    {
+
+        $selection = new Selection;
+        $selection->setOwner($this->parameterList->getString('owner'));
+        $selection->setPrice(floatval($this->parameterList->getString('owner')));
+
+        $date = explode(';', $this->parameterList->getString('date'));
+        $selection->setDate(
+            DateTime::createFromFormat(SelectionDB::USUAL_DATE_FORMAT, $date[0]),
+            DateTime::createFromFormat(SelectionDB::USUAL_DATE_FORMAT, $date[1])
+        );
+
+        $time = explode(';', $this->parameterList->getString('time'));
+        $selection->setDate(
+            DateTime::createFromFormat(SelectionDB::USUAL_TIME_FORMAT, $time[0]),
+            DateTime::createFromFormat(SelectionDB::USUAL_TIME_FORMAT, $time[1])
+        );
+
+        $selection->setArt($this->parameterList->getEnum('art', ArtType::class));
+
+        $db = new SelectionDB($selection);
+        return $db->create();
+
+    }
 
     /**
      * Obtém dados de um contrato em específico
@@ -20,7 +51,7 @@ class AgreementController extends \App\Controller\Template\Controller
      */
     public function getSelection(): array
     {
-        $selection = new Selection($this->parameterList->getString('selection'));
+        $selection = new Selection;
         $selection->setID($this->parameterList->getString('id')); // Obtém id informado
 
         $db = new SelectionDB($selection); // Inicia objeto para manipular o chat
@@ -46,22 +77,10 @@ class AgreementController extends \App\Controller\Template\Controller
         }
 
 
-        $selection = new Selection();
+        $selection = new Selection;
+        $selection->setOwner($this->parameterList->getString('owner'));
         $db = new SelectionDB($selection);
         return array_map(fn($selection) => Selection::getInstanceOf($selection), $db->getList($offset, $limit));
-    }
-
-    /**
-     * Armazena um contrato
-     * @return bool true caso a operação funcione corretamente
-     */
-    public function storeSelection(): bool
-    {
-
-        $selection = new Selection();
-        $db = new SelectionDB($selection);
-        return $db->create();
-
     }
 
     /**
@@ -70,7 +89,7 @@ class AgreementController extends \App\Controller\Template\Controller
      */
     public function deleteSelection(): bool
     {
-        $selection = new Selection();
+        $selection = new Selection;
         $selection->setID($this->parameterList->getString('id'));
 
         $db = new SelectionDB($selection);
@@ -80,19 +99,19 @@ class AgreementController extends \App\Controller\Template\Controller
     public function updateSelection(): bool
     {
 
-        $column = ($this->parameterList->getString('column')); // RECEBE A COLUNA QUE SERÁ ALTERADA
-        $info = ($this->parameterList->getString('info')); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
+        $column = $this->parameterList->getString('column'); // RECEBE A COLUNA QUE SERÁ ALTERADA
+        $info = $this->parameterList->getString('info'); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
 
-        $selection = new Selection(); // INICIANDO MODELO DO USUÁRIO 
+        $selection = new Selection; // INICIANDO MODELO DO USUÁRIO 
 
         //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
         $selection->setID($this->parameterList->getString('id')); // PASSA O ID DO SELEÇÃO PARA O MODELO
 
+        $validator = new DataValidator;
 
-        $validator = new DataValidator();
-        $db = new SelectionDB($selection);
+        if (SelectionDB::isColumn(SelectionDB::class, $column) && $validator->isValidToFlag($info, $column)) {
 
-        if ($db->isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {
+            $db = new SelectionDB($selection);
             return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
         }
         return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
@@ -134,7 +153,7 @@ class AgreementController extends \App\Controller\Template\Controller
         //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
         $application->setID($this->parameterList->getString('id')); // PASSA O ID DO SELEÇÃO PARA O MODELO
 
-        $validator = new DataValidator();
+        $validator = new DataValidator;
 
         $db = new ApplicationDB($application);
         if ($db->isColumn($db::class, $column) && $validator->isValidToFlag($info, $column)) {

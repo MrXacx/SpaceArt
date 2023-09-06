@@ -18,7 +18,7 @@ class AgreementController extends \App\Controller\Template\Controller
      */
     public function getChat(): array
     {
-        $chat = new Chat();
+        $chat = new Chat;
         $chat->setID($this->parameterList->getString('id')); // Obtém id informado
 
         $db = new ChatDB($chat); // Inicia objeto para manipular o chat
@@ -44,7 +44,7 @@ class AgreementController extends \App\Controller\Template\Controller
         }
 
 
-        $chat = new Chat();
+        $chat = new Chat;
         $person = $this->parameterList->getString('person');
         $chat->setEnterprise($person);
         $chat->setArtist($person);
@@ -61,7 +61,7 @@ class AgreementController extends \App\Controller\Template\Controller
     public function storeChat(): bool
     {
 
-        $chat = new Chat();
+        $chat = new Chat;
         $chat->setArtist($this->parameterList->getString('artist'));
         $chat->setEnterprise($this->parameterList->getString('enterprise'));
 
@@ -76,7 +76,7 @@ class AgreementController extends \App\Controller\Template\Controller
      */
     public function deleteChat(): bool
     {
-        $chat = new Chat();
+        $chat = new Chat;
         $chat->setID($this->parameterList->getString('id'));
 
         $db = new ChatDB($chat);
@@ -121,8 +121,8 @@ class AgreementController extends \App\Controller\Template\Controller
             $offset = Server::DEFAULT_LIMIT;
         }
 
-        $message = new Message($this->parameterList->getString('chat'));      
-   
+        $message = new Message($this->parameterList->getString('chat'));
+
         $list = (new MessageDB($message))->getList($offset, $limit);
         return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
     }

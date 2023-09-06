@@ -161,8 +161,7 @@
 3. art: tipo de arte
 4. price: valor a ser pago
 5. date: data do evento
-6. inital_time: horário de início do evento
-7. final_time: horário de fim do evento
+6. time: horários de início e fim do evento separeados por ';'
 
 - Situação:
 > Funcionando

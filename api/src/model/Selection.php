@@ -62,7 +62,7 @@ class Selection extends \App\Model\Template\Entity
     public static function getInstanceOf(array $attr): self
     {
 
-        $entity = new Selection();
+        $entity = new Selection;
         $entity->id = $attr['id'];
         $entity->owner = $attr[SelectionDB::OWNER];
         $entity->price = $attr[SelectionDB::PRICE];

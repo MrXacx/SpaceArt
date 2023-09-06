@@ -28,9 +28,9 @@ abstract class DatabaseAcess
     public const USUAL_TIMESTAMP_FORMAT = 'd/m/Y H:i:s';
     public const DB_DATE_FORMAT = 'Y-m-d';
     public const USUAL_DATE_FORMAT = 'd/m/Y';
-    public const DB_TIME_FORMAT = 'H:i';
+    public const DB_TIME_FORMAT = 'H:i:s';
+    public const USUAL_TIME_FORMAT = 'H:i';
 
-    protected \App\Model\Template\User|null $user;
 
     function __construct()
     {
@@ -78,7 +78,7 @@ abstract class DatabaseAcess
         throw new \RuntimeException('Registro(s) não encontrado(s)');
     }
 
-    final public function isColumn(string $class, string $column): bool
+    final public static function isColumn(string $class, string $column): bool
     {
         $cases = (new \ReflectionClass($class))->getConstants(ReflectionClassConstant::IS_PUBLIC);
         return false !== array_search($column, $cases, true);

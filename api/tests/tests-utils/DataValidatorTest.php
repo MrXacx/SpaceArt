@@ -18,7 +18,7 @@ class DataValidatorTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->validator = new DataValidator();
+        $this->validator = new DataValidator;
     }
 
     public function testValidateFutureDateTime(): void

@@ -32,7 +32,7 @@ class Enterprise extends \App\Model\Template\User
      */
     public static function getInstanceOf(array $attr): self
     {
-        $entity = new Enterprise();
+        $entity = new Enterprise;
 
         foreach ($attr as $key => $value) {
             $atributeName = match ($key) {

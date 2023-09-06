@@ -27,6 +27,8 @@ class UsersDB extends DatabaseAcess
     public const RATE = 'rate';
     public const TOKEN = 'token';
 
+    private User $user;
+
     /**
      * @param User $user Modelo de usuário a ser manipulado
      */
