@@ -386,3 +386,81 @@
 
 - Situação:
 > Funcionando
+
+## /chat
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. id: ID do chat
+
+- Situação:
+> Funcionando
+
+### POST
+
+- Parâmetros **obrigatórios**:
+
+1. artist: ID do artista
+2. enterprise: ID do empreedimento
+
+- Situação:
+> Funcionando
+
+
+## /chat/list
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. user: ID do usuário
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
+
+- Situação:
+> Funcionando
+
+## /chat/message
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. chat: ID do chat
+2. sender: ID do emissor
+3. timestamp: Timestamp do envio
+
+- Situação:
+> Funcionando
+
+### POST
+
+- Parâmetros **obrigatórios**:
+
+1. chat: ID do chat
+2. sender: ID do emissor
+
+- Situação:
+> Funcionando
+
+
+## /chat/list
+
+### GET
+
+- Parâmetros **obrigatórios**:
+
+1. chat: ID do chat
+
+- Parâmetros **opcionais**:
+
+1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
+2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
+
+- Situação:
+> Funcionando
