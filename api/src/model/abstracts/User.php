@@ -1,10 +1,9 @@
 <?php
 
 declare(strict_types=1);
-
 namespace App\Model\Template;
 
-use App\Util\Tool\Location;
+use App\Model\Tool\Location;
 use App\Util\DataFormatException;
 use Exception;
 

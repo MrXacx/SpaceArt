@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Util\Tool;
+namespace App\Model\Tool;
 
 trait Location {
     protected string $CEP;

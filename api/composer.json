@@ -13,6 +13,7 @@
       "App\\Model\\": "src/model/",
       "App\\Model\\Enumerate\\": "src/model/enum/",
       "App\\Model\\Template\\": "src/model/abstracts/",
+      "App\\Model\\Tool\\": "src/model/traits/",
       "App\\Util\\": "src/util/",
       "App\\Util\\Tool\\": "src/util/traits/",
       "App\\Util\\Enumerate\\": "src/util/enum/"
