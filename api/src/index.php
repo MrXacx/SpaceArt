@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/config/setup.php';
+require_once __DIR__ . '/../config/setup.php';
 
 App\RoutesBuilder::build();
 
