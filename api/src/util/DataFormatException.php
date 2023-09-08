@@ -1,16 +1,28 @@
 <?php
 namespace App\Util;
 
-use RuntimeException;
+use Exception;
 
-class DataFormatException extends RuntimeException
+class DataFormatException extends Exception
 {
     const LENGTH = 0;
-    const FORMAT = 1;
+    const REGEX = 1;
 
-    function __construct(string $format, int $code = self::FORMAT)
+    public static function throw(string $variable, int $code = self::REGEX): void
     {
-        parent::__construct("Incorrect $format", $code);
+        $message = 
+            'O formato do seguinte dado não é aceito por esta API: '
+                . strtolower($variable)
+                . '\n'
+                . PHP_EOL
+                . match($code) {
+                    self::LENGTH => 'Comprimento não condiz com o esperado',
+                    self::REGEX => 'Expressão regular não condiz com o esperado',
+                    default => 'Motivo desconhecido.'
+                };
+        
+  
+       throw new DataFormatException($message, $code);
     }
 }
 

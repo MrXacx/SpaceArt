@@ -78,7 +78,7 @@ class User extends Entity
     public function setID(string $id): void
     {
 
-        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormatException('ID');
+        $this->id = $this->validator->isUUID($id) ? $id : DataFormatException::throw('ID');
     }
 
     /**
@@ -95,7 +95,7 @@ class User extends Entity
      */
     public function setEmail(string $email): void
     {
-        $this->email = $this->validator->isEmail($email) ? $email : throw new DataFormatException('EMAIL');
+        $this->email = $this->validator->isEmail($email) ? $email : DataFormatException::throw('EMAIL');
     }
 
     /**
@@ -112,7 +112,7 @@ class User extends Entity
      */
     public function setPassword(string $password): void
     {
-        $this->password = $this->validator->isFit($password) ? $password : throw new DataFormatException('PASSWORD', DataFormatException::LENGTH);
+        $this->password = $this->validator->isFit($password) ? $password : DataFormatException::throw('PASSWORD', DataFormatException::LENGTH);
     }
 
     /**
@@ -129,7 +129,7 @@ class User extends Entity
      */
     public function setName(string $name): void
     {
-        $this->name = $this->validator->isFit($name) ? $name : throw new DataFormatException('NAME', DataFormatException::LENGTH);
+        $this->name = $this->validator->isFit($name) ? $name : DataFormatException::throw('NAME', DataFormatException::LENGTH);
     }
 
     /**
@@ -147,7 +147,7 @@ class User extends Entity
      */
     public function setPhone(string $phone): void
     {
-        $this->phone = $this->validator->isPhone($phone) ? $phone : throw new DataFormatException('PHONE');
+        $this->phone = $this->validator->isPhone($phone) ? $phone : DataFormatException::throw('PHONE');
     }
 
     /**
@@ -164,7 +164,7 @@ class User extends Entity
      */
     public function setWebsite(string $website): void
     {
-        $this->website = $this->validator->isURL($website) ? $website : throw new DataFormatException('website');
+        $this->website = $this->validator->isURL($website) ? $website : DataFormatException::throw('website');
     }
 
     /**
@@ -181,7 +181,7 @@ class User extends Entity
      */
     public function setImageURL(string $image): void
     {
-        $this->imageURL = $this->validator->isURL($image) ? $image : throw new DataFormatException('image URL');
+        $this->imageURL = $this->validator->isURL($image) ? $image : DataFormatException::throw('image URL');
     }
 
     /**

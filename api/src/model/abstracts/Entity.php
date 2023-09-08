@@ -35,7 +35,7 @@ abstract class Entity
      */
     public function setID(string $id): void
     {
-        $this->id = $this->validator->isUUID($id) ? $id : throw new DataFormatException('ID');
+        $this->id = $this->validator->isUUID($id) ? $id : DataFormatException::throw('ID');
     }
 
     /**

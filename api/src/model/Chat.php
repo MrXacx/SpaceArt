@@ -49,7 +49,7 @@ class Chat extends \App\Model\Template\Entity
      */
     public function setArtist(string $artist): void
     {
-        $this->artist = $this->validator->isUUID($artist) ? $artist : throw new DataFormatException('artist id');
+        $this->artist = $this->validator->isUUID($artist) ? $artist : DataFormatException::throw('artist id');
     }
 
     /**
@@ -58,7 +58,7 @@ class Chat extends \App\Model\Template\Entity
      */
     public function setEnterprise(string $enterprise): void
     {
-        $this->enterprise = $this->validator->isUUID($enterprise) ? $enterprise : throw new DataFormatException('enterprise id');
+        $this->enterprise = $this->validator->isUUID($enterprise) ? $enterprise : DataFormatException::throw('enterprise id');
     }
 
     /**

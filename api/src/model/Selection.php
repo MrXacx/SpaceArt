@@ -72,9 +72,9 @@ class Selection extends \App\Model\Template\Entity
         $iDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::INITAL_DATETIME]);
         $fDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::FINAL_DATETIME]);
 
-        $entity->date  = [
+        $entity->date = [
             'inital' => $iDateTime,
-            'final'  => $fDateTime
+            'final' => $fDateTime
         ];
 
         $entity->time = $entity->date;
@@ -89,7 +89,7 @@ class Selection extends \App\Model\Template\Entity
      */
     function setOwner(string $owner)
     {
-        $this->owner = $this->validator->isUUID($owner) ? $owner : throw new DataFormatException('ID');
+        $this->owner = $this->validator->isUUID($owner) ? $owner : DataFormatException::throw('ID');
     }
 
     /**
@@ -150,15 +150,15 @@ class Selection extends \App\Model\Template\Entity
      * @return array<DateTime> Vetor de datetimes
      */
     public function getDatetime(): array
-    {        
+    {
         $datetime = [];
-        foreach($this->date as $key => $date){
+        foreach ($this->date as $key => $date) {
             $datetime[$key] = DateTime::createFromFormat(
-                    SelectionDB::USUAL_TIMESTAMP_FORMAT,
-                    $date->format(SelectionDB::USUAL_DATE_FORMAT) . " " . $this->time[$key]->format(SelectionDB::DB_TIME_FORMAT)
-                );
+                SelectionDB::USUAL_TIMESTAMP_FORMAT,
+                $date->format(SelectionDB::USUAL_DATE_FORMAT) . " " . $this->time[$key]->format(SelectionDB::DB_TIME_FORMAT)
+            );
         }
-        
+
         return $datetime;
     }
 

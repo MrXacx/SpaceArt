@@ -108,7 +108,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     function setHirer(string $hirer)
     {
-        $this->hirer = $this->validator->isUUID($hirer) ? $hirer : throw new DataFormatException('hirer id');
+        $this->hirer = $this->validator->isUUID($hirer) ? $hirer : DataFormatException::throw('hirer id');
     }
 
     /**
@@ -126,7 +126,7 @@ class Agreement extends \App\Model\Template\Entity
      */
     function setHired(string $hired)
     {
-        $this->hired = $this->validator->isUUID($hired) ? $hired : throw new DataFormatException('hired id');
+        $this->hired = $this->validator->isUUID($hired) ? $hired : DataFormatException::throw('hired id');
     }
 
     /**

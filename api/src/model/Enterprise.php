@@ -66,7 +66,7 @@ class Enterprise extends \App\Model\Template\User
      */
     public function setCNPJ(string $CNPJ): void
     {
-        $this->CNPJ = $this->validator->isCNPJ($CNPJ) ? $CNPJ : throw new DataFormatException('CNPJ');
+        $this->CNPJ = $this->validator->isCNPJ($CNPJ) ? $CNPJ : DataFormatException::throw('CNPJ');
     }
 
     /**

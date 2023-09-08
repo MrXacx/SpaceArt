@@ -75,7 +75,7 @@ class Artist extends \App\Model\Template\User
      */
     public function setCPF(string $CPF): void
     {
-        $this->CPF = $this->validator->isCPF($CPF) ? $CPF : throw new DataFormatException('CPF');
+        $this->CPF = $this->validator->isCPF($CPF) ? $CPF : DataFormatException::throw('CPF');
     }
 
     /**

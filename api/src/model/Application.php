@@ -38,7 +38,7 @@ class Application extends \App\Model\Template\Entity
     function __construct(string $selection)
     {
         parent::__construct();
-        $this->selection = $this->validator->isUUID($selection) ? $selection : throw new DataFormatException('selection id');
+        $this->selection = $this->validator->isUUID($selection) ? $selection : DataFormatException::throw('selection id');
     }
 
     /**
@@ -56,7 +56,7 @@ class Application extends \App\Model\Template\Entity
      */
     public function setUser(string $user): void
     {
-        $this->user = $this->validator->isUUID($user) ? $user : throw new DataFormatException('user id');
+        $this->user = $this->validator->isUUID($user) ? $user : DataFormatException::throw('user id');
     }
 
     /**

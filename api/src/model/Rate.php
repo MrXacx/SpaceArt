@@ -44,7 +44,7 @@ class Rate extends \App\Model\Template\Entity
     function __construct(string $agreement)
     {
         parent::__construct();
-        $this->agreement = $this->validator->isUUID($agreement) ? $agreement : throw new DataFormatException('AGREEMENT ID');
+        $this->agreement = $this->validator->isUUID($agreement) ? $agreement : DataFormatException::throw('AGREEMENT ID');
     }
 
     public static function getInstanceOf(array $attr): self
@@ -84,7 +84,7 @@ class Rate extends \App\Model\Template\Entity
      */
     public function setAuthor(string $author): void
     {
-        $this->author = $this->validator->isUUID($author)? $author : throw new DataFormatException('AUTHOR ID');
+        $this->author = $this->validator->isUUID($author) ? $author : DataFormatException::throw('AUTHOR ID');
     }
 
     /**
@@ -101,8 +101,8 @@ class Rate extends \App\Model\Template\Entity
      * @param string Descrição
      */
     public function setDescription(string $description): void
-    {   
-        $this->description = $this->validator->isFit($description) ? $description : throw new DataFormatException('DESCRIPTION', DataFormatException::LENGTH);
+    {
+        $this->description = $this->validator->isFit($description) ? $description : DataFormatException::throw('DESCRIPTION', DataFormatException::LENGTH);
     }
 
     /**

@@ -122,7 +122,7 @@ class UserController extends \App\Controller\Template\Controller
                 break;
 
             case null:
-                throw new DataFormatException('TYPE ACCOUNT');
+                DataFormatException::throw('TYPE ACCOUNT');
         }
 
         if ($user instanceof User && $db instanceof UsersDB) {
@@ -155,7 +155,7 @@ class UserController extends \App\Controller\Template\Controller
 
             AccountType::ARTIST => [$artist = new Artist(), new ArtistDB($artist)],
             AccountType::ENTERPRISE => [$enterprise = new Enterprise(), new EnterpriseDB($enterprise)],
-            default => throw new DataFormatException('Account Type')
+            default => DataFormatException::throw('Account Type')
         };
     }
 

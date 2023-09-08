@@ -43,7 +43,7 @@ class Message extends \App\Model\Template\Entity
     function __construct(string $chat)
     {
         parent::__construct();
-        $this->chat = $this->validator->isUUID($chat) ? $chat : throw new DataFormatException('chat id');
+        $this->chat = $this->validator->isUUID($chat) ? $chat : DataFormatException::throw('chat id');
     }
 
     public static function getInstanceOf(array $attr): self
@@ -72,7 +72,7 @@ class Message extends \App\Model\Template\Entity
      */
     public function setSender(string $sender)
     {
-        $this->sender = $this->validator->isUUID($sender) ? $sender : throw new DataFormatException('SENDER ID');
+        $this->sender = $this->validator->isUUID($sender) ? $sender : DataFormatException::throw('SENDER ID');
     }
 
     /**
@@ -99,7 +99,7 @@ class Message extends \App\Model\Template\Entity
      */
     public function setContent(string $content): void
     {
-        $this->content = $this->validator->isFit($content) ? $content : throw new DataFormatException('content', DataFormatException::LENGTH);
+        $this->content = $this->validator->isFit($content) ? $content : DataFormatException::throw('content', DataFormatException::LENGTH);
     }
 
     /**

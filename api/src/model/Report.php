@@ -39,7 +39,7 @@ class Report extends \App\Model\Template\Entity
     function __construct(string $reporter)
     {
         parent::__construct();
-        $this->reporter = $this->validator->isUUID($reporter) ? $reporter : throw new DataFormatException('reporter id');
+        $this->reporter = $this->validator->isUUID($reporter) ? $reporter : DataFormatException::throw('reporter id');
     }
 
     public static function getInstanceOf(array $attr): self
@@ -79,7 +79,7 @@ class Report extends \App\Model\Template\Entity
      */
     public function setReported(string $reported): void
     {
-        $this->reported = $this->validator->isUUID($reported) ? $reported : throw new DataFormatException('reported id');
+        $this->reported = $this->validator->isUUID($reported) ? $reported : DataFormatException::throw('reported id');
     }
 
     /**
@@ -97,7 +97,7 @@ class Report extends \App\Model\Template\Entity
      */
     public function setReason(string $reason): void
     {
-        $this->reason = $this->validator->isFit($reason) ? $reason : throw new DataFormatException('reason', DataFormatException::LENGTH);
+        $this->reason = $this->validator->isFit($reason) ? $reason : DataFormatException::throw('reason', DataFormatException::LENGTH);
     }
 
     /**
