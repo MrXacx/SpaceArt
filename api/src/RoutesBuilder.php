@@ -64,8 +64,7 @@ class RoutesBuilder
                     {
                         $collector->get('', ChatController::class . '@getMessage'); //Abre a conversa selecionada
                         $collector->post('', ChatController::class . '@storeMessage'); //Cria um chat novo
-                        $collector->put('', ChatController::class . '@updateMessage'); //Atualiza as informações do chat
-                        $collector->delete('', ChatController::class . '@deletMessage'); //Deleta um chat existente
+                        $collector->delete('', ChatController::class . '@deleteMessage'); //Deleta um chat existente
                         $collector->get('/list', ChatController::class . '@getMessageList'); //Abre a conversa selecionada
                     });
                 });

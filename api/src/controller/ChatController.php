@@ -101,14 +101,14 @@ class ChatController extends \App\Controller\Template\Controller
     public function getMessageList(): array
     {
 
-        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getInt('limit')); // Obtém máximo de elementos da leitura
+        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
+        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
         }
         if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
+            $limit = Server::DEFAULT_LIMIT;
         }
 
         $message = new Message($this->parameterList->getString('chat'));
@@ -124,7 +124,7 @@ class ChatController extends \App\Controller\Template\Controller
     public function storeMessage(): bool
     {
 
-        $message = new Message($this->parameterList->getString('id'));
+        $message = new Message($this->parameterList->getString('chat'));
         $message->setSender($this->parameterList->getString('sender'));
         $message->setContent($this->parameterList->getString('content'));
         $message->setTimestamp(new \DateTime());

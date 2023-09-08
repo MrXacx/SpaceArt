@@ -42,6 +42,7 @@ class Message extends \App\Model\Template\Entity
      */
     function __construct(string $chat)
     {
+        parent::__construct();
         $this->chat = $this->validator->isUUID($chat) ? $chat : throw new DataFormatException('chat id');
     }
 
