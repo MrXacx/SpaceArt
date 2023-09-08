@@ -1,10 +1,10 @@
-# Node.js
-node_modules/
-.ntvs_analysis.dat
-
 # VS Code
 .vscode
 .history/
 *.code-workspace
 *.coverage
 *.coveragexml
+
+# Composer
+vendor/
+.ini
