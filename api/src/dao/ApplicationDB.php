@@ -82,7 +82,7 @@ class ApplicationDB extends DatabaseAcess
     {
         // Determina query SQL de leitura
 
-        $query = $this->getConnection()->prepare("SELECT * FROM selection_application WHERE selection = ? ORDER BY ABS(DIFF(last_change, CURRENT_TIMESTAMP())) LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT * FROM selection_application WHERE selection = ? LIMIT $limit OFFSET $offset");
         $query->bindValue(1, $this->application->getSelection()); // Substitui interrogação na query pelo ID passado
 
         if ($query->execute()) { // Executa se consulta não falhar

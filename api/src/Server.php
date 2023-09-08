@@ -16,7 +16,7 @@ class Server
      * Linha padrão de início de consulta
      * @var int
      */
-    const DEFAULT_OFFSET = 1;
+    const DEFAULT_OFFSET = 0;
 
     /**
      * Quantidade padrão de linhas máximas de retornos de consultas

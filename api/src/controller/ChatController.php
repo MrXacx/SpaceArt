@@ -33,8 +33,8 @@ class AgreementController extends \App\Controller\Template\Controller
     public function getChatList(): array
     {
 
-        $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
+        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
+        $limit = intval($this->parameterList->getInt('limit')); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
@@ -111,8 +111,8 @@ class AgreementController extends \App\Controller\Template\Controller
     public function getMessageList(): array
     {
 
-        $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
+        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
+        $limit = intval($this->parameterList->getInt('limit')); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;

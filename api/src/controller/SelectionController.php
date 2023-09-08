@@ -66,8 +66,8 @@ class SelectionController extends \App\Controller\Template\Controller
     public function getSelectionList(): array
     {
 
-        $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
+        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
+        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
@@ -108,17 +108,17 @@ class SelectionController extends \App\Controller\Template\Controller
         $selection->setID($this->parameterList->getString('id')); // PASSA O ID DO SELEÇÃO PARA O MODELO
 
         $validator = new DataValidator;
-        
+
 
         if (SelectionDB::isColumn(SelectionDB::class, $column) && $validator->isValidToFlag($info, $column)) {
-            
+
             if ($column == SelectionDB::INITAL_DATETIME || $column == SelectionDB::FINAL_DATETIME) {
                 $timestamp = DateTime::createFromFormat(
                     SelectionDB::USUAL_TIMESTAMP_FORMAT,
                     $info
                 );
-                
-                if(is_bool($timestamp)){
+
+                if (is_bool($timestamp)) {
                     goto failed;
                 }
 
@@ -128,8 +128,9 @@ class SelectionController extends \App\Controller\Template\Controller
             $db = new SelectionDB($selection);
             return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
         }
-        
-        failed: return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
+
+        failed:
+        return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
     }
     public function getApplication(): array
     {
@@ -156,26 +157,22 @@ class SelectionController extends \App\Controller\Template\Controller
     public function getApplicationList(): array
     {
 
-        $offset = intval($this->parameterList->getString('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getString('limit')); // Obtém máximo de elementos da leitura
+        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
+        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
         }
         if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
+            $limit = Server::DEFAULT_LIMIT;
         }
 
-    
+
         $db = new ApplicationDB(
             new Application($this->parameterList->getString('selection'))
         );
 
-        $list = $db->getList($offset, $limit);
-        if (count($list) == 0){
-            throw new \Exception('vazio');
-        }
-        return array_map(fn($application) => $application->toArray(), $list);
+        return array_map(fn($application) => $application->toArray(), $db->getList($offset, $limit));
     }
 
     public function deleteApplication(): bool

@@ -385,4 +385,4 @@
 2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
 
 - Situação:
-> Falhando devido à versão do MariaDB
+> Funcionando
