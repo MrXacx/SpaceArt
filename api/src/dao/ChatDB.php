@@ -97,11 +97,6 @@ class ChatDB extends DatabaseAcess
      */
     public function delete(): bool
     {
-        // Deleta candidatura do banco
-        $query = $this->getConnection()->prepare('DELETE FROM chat WHERE id = ?');
-
-        $query->bindValue(1, $this->chat->getID());
-
-        return $query->execute();
+        throw new RuntimeException('Não há suporte para deletamentos na tabela chat');
     }
 }

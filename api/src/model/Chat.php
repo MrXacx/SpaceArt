@@ -58,7 +58,7 @@ class Chat extends \App\Model\Template\Entity
      */
     public function setEnterprise(string $enterprise): void
     {
-        $this->artist = $this->validator->isUUID($enterprise) ? $enterprise : throw new DataFormatException('enterprise id');
+        $this->enterprise = $this->validator->isUUID($enterprise) ? $enterprise : throw new DataFormatException('enterprise id');
     }
 
     /**

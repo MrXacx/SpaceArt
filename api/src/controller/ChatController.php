@@ -8,7 +8,7 @@ use App\DAO\MessageDB;
 use App\Model\Chat;
 use App\Model\Message;
 
-class AgreementController extends \App\Controller\Template\Controller
+class ChatController extends \App\Controller\Template\Controller
 {
 
 
@@ -19,7 +19,9 @@ class AgreementController extends \App\Controller\Template\Controller
     public function getChat(): array
     {
         $chat = new Chat;
-        $chat->setID($this->parameterList->getString('id')); // Obtém id informado
+        $chat->setID($this->parameterList->getString('id'));
+        $chat->setArtist($this->parameterList->getString('artist')); // Obtém id do artista
+        $chat->setEnterprise($this->parameterList->getString('enterprise')); // Obtém id do empreedimento
 
         $db = new ChatDB($chat); // Inicia objeto para manipular o chat
         return $this->filterNulls($db->getChat()->toArray());
@@ -33,21 +35,21 @@ class AgreementController extends \App\Controller\Template\Controller
     public function getChatList(): array
     {
 
-        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getInt('limit')); // Obtém máximo de elementos da leitura
+        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
+        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
 
         if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
             $offset = Server::DEFAULT_OFFSET;
         }
         if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
+            $limit = Server::DEFAULT_LIMIT;
         }
 
 
         $chat = new Chat;
-        $person = $this->parameterList->getString('person');
-        $chat->setEnterprise($person);
-        $chat->setArtist($person);
+        $user = $this->parameterList->getString('user');
+        $chat->setEnterprise($user);
+        $chat->setArtist($user);
 
         $db = new ChatDB($chat);
         $list = $db->getList($offset, $limit);
@@ -70,18 +72,6 @@ class AgreementController extends \App\Controller\Template\Controller
 
     }
 
-    /**
-     * Deleta chat
-     * @return bool true caso a operação funcione corretamente
-     */
-    public function deleteChat(): bool
-    {
-        $chat = new Chat;
-        $chat->setID($this->parameterList->getString('id'));
-
-        $db = new ChatDB($chat);
-        return $db->delete();
-    }
 
     /**
      * Obtém dados de uma mensagem
