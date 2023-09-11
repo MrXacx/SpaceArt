@@ -10,6 +10,7 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+SET event_scheduler = ON;
 
 --
 -- Banco de dados: spaceart
@@ -19,6 +20,7 @@ SET time_zone = "+00:00";
 CREATE DATABASE spaceart;
 USE spaceart;
 
+-- CRIAÇÃO DAS ENTIDADES
 
 CREATE TABLE users(
 
@@ -31,7 +33,7 @@ CREATE TABLE users(
   CEP varchar(8) NOT NULL,
   federation varchar(2) NOT NULL,
   city varchar(50) NOT NULL,
-  imageURL varchar(191),
+  image blob,
   website varchar(191),
   rate float DEFAULT 0
 
@@ -65,8 +67,8 @@ CREATE TABLE agreement(
   hired varchar(36) NOT NULL,
   price float unsigned NOT NULL,
   date date NOT NULL,
-  inital_time time NOT NULL,
-  final_time  time NOT NULL,
+  start_time time NOT NULL,
+  end_time  time NOT NULL,
   art varchar(191) NOT NULL,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
@@ -80,10 +82,10 @@ CREATE TABLE selection(
   id varchar(36) PRIMARY KEY,
   owner varchar(36) NOT NULL,
   price float unsigned NOT NULL,
-  inital_datetime datetime NOT NULL,
-  final_datetime datetime NOT NULL,
+  start_timestamp timestamp NOT NULL,
+  end_timestamp timestamp NOT NULL,
   art varchar(191) NOT NULL,
-  locked boolean DEFAULT 0,
+  locked boolean DEFAULT 1,
 
   FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
 
@@ -147,3 +149,23 @@ CREATE TABLE rate(
     CONSTRAINT agreement_fk FOREIGN KEY (agreement) REFERENCES agreement (id) ON UPDATE CASCADE ON DELETE CASCADE
     
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- CRIA EVENTOS
+
+-- LIBERA SELEÇÕES CUJO TIMESTAMP INICAL FOI ALCANÇADO E O END NÃO
+CREATE EVENT start_selection ON SCHEDULE EVERY 5 MINUTE DO
+  BEGIN
+    UPDATE selection SET locked = 0
+    WHERE locked = 1
+    AND start_timestamp <= CURRENT_TIMESTAMP
+    AND end_timestamp > CURRENT_TIMESTAMP;
+  END;
+
+-- TRANCA SELEÇÕES CUJO TIMESTAMP END FOI ALCANÇADO
+CREATE EVENT start_selection ON SCHEDULE EVERY 5 MINUTE DO
+  BEGIN
+    UPDATE selection SET locked = 1
+    WHERE locked = 0
+    AND end_timestamp <= CURRENT_TIMESTAMP;
+  END;
