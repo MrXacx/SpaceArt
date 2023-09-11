@@ -138,12 +138,12 @@ class ArtistDB extends UsersDB
         $query = $this->getConnection()->prepare(
             "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist
             INNER JOIN users ON users.id = artist.id
-            WHERE name = ?
+            WHERE name LIKE ?
             ORDER BY name
             LIMIT $limit OFFSET $offset"
         );
 
-        $query->bindValue(1, $this->artist->getName());
+        $query->bindValue(1, $this->artist->getName() . '%');
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn($user) => Artist::getInstanceOf($user), $this->fetchRecord($query));

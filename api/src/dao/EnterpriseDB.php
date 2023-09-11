@@ -111,12 +111,12 @@ class EnterpriseDB extends UsersDB
         $query = $this->getConnection()->prepare(
             "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM enterprise
             INNER JOIN users ON users.id = enterprise.id
-            WHERE name = ?
+            WHERE name LIKE ?
             ORDER BY name
             LIMIT $limit OFFSET $offset"
         );
 
-        $query->bindValue(1, $this->enterprise->getName());
+        $query->bindValue(1, $this->enterprise->getName() . '%');
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn($user) => Enterprise::getInstanceOf($user), $this->fetchRecord($query));
