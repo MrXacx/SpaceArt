@@ -3,12 +3,11 @@
 namespace App\Controller;
 
 use App\Model\Enumerate\ArtType;
-use App\Server;
+
 use App\DAO\AgreementDB;
 use App\Model\Agreement;
 use App\Model\Rate;
 use App\DAO\RateDB;
-use App\Util\DataFormatException;
 use App\Util\DataValidator;
 use DateTime;
 
@@ -37,15 +36,8 @@ class AgreementController extends \App\Controller\Template\Controller
     public function getAgreementList(): array
     {
 
-        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
-        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
         $agreement = new Agreement;
         $agreement->setHirer($this->parameterList->getString('user'));
@@ -140,15 +132,8 @@ class AgreementController extends \App\Controller\Template\Controller
     public function getRateList(): array
     {
 
-        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
-        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
         $rate = new Rate($this->parameterList->getString('agreement'));
 

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Server;
+
 use App\DAO\UsersDB;
 use App\DAO\ArtistDB;
 use App\DAO\EnterpriseDB;
@@ -15,17 +15,9 @@ use App\Model\Enumerate\ArtType;
 use App\Model\Report;
 use App\Util\DataFormatException;
 use App\Util\DataValidator;
-use RuntimeException;
 
 class UserController extends \App\Controller\Template\Controller
 {
-
-    /**
-     * Remove registros nulos de um vetor
-     * @param array $arr vetor a ser lido
-     * @return array vetor limpo
-     */
-
 
     /**
      * Obtém usuário
@@ -71,23 +63,22 @@ class UserController extends \App\Controller\Template\Controller
      */
     public function getUserList(): array
     {
-
-
-        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getInt('limit', 10)); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
         $dao = $this->getAccountType()[1];
 
         $list = $dao->getList($offset, $limit);
         return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
+    }
+
+    private function getRandomUserListByLocation(): array
+    {
+        return [];
+    }
+    private function getRandomUserListByArt(): array
+    {
+        return [];
     }
 
     /**
@@ -134,7 +125,7 @@ class UserController extends \App\Controller\Template\Controller
             $user->setCEP($this->parameterList->getString('cep'));
             $user->setFederation($this->parameterList->getString('federation'));
             $user->setCity($this->parameterList->getString('city'));
-            $user->setImageURL($this->parameterList->getString('image'));
+            $user->setImage($this->parameterList->getString('image'));
 
             return $db->create();
         }
@@ -217,16 +208,8 @@ class UserController extends \App\Controller\Template\Controller
      */
     public function getReportList(): array
     {
-        $offset = intval($this->parameterList->getInt('offset')); // Obtém posição de início da leitura
-        $limit = intval($this->parameterList->getInt('limit', 10)); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
         $db = new ReportDB(
             new Report(

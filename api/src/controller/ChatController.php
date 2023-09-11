@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Server;
+
 use App\DAO\ChatDB;
 use App\DAO\MessageDB;
 use App\Model\Chat;
@@ -35,15 +35,8 @@ class ChatController extends \App\Controller\Template\Controller
     public function getChatList(): array
     {
 
-        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
-        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $limit = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
 
         $chat = new Chat;
@@ -101,15 +94,8 @@ class ChatController extends \App\Controller\Template\Controller
     public function getMessageList(): array
     {
 
-        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
-        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $limit = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
         $message = new Message($this->parameterList->getString('chat'));
 

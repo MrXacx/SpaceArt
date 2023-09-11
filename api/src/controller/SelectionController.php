@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Enumerate\ArtType;
-use App\Server;
+
 use App\DAO\ApplicationDB;
 use App\Model\Application;
 use App\Model\Selection;
@@ -60,27 +60,64 @@ class SelectionController extends \App\Controller\Template\Controller
     }
 
     /**
+     * Obtém lista aleatória de seleções filtrada pelo tipo de arte
+     * 
+     * @param Selection $selection Modelo de seleção
+     * @param SelectionDB $db Classe de conexão
+     * @param int $limit Quantidade máxima de itens da lista
+     * @return array<Selection> Lista de seleções
+     */
+    private function getRandomSelectionListByArt(Selection $selection, SelectionDB $db, int $limit): array
+    {
+        $selection->setArt($this->parameterList->getEnum('art', ArtType::class));
+        return $db->getList(0, $limit);
+    }
+
+    /**
+     * Obtém lista aleatória de seleções filtrada pelo tipo de arte
+     * 
+     * @param Selection $selection Modelo de seleção
+     * @param SelectionDB $db Classe de conexão
+     * @param int $offset Linha inicial da consulta
+     * @param int $limit Quantidade máxima de itens da lista
+     * @return array<Selection> Lista de seleções
+     */
+    private function getSelectionListByOwner(Selection $selection, SelectionDB $db, int $offset, int $limit): array
+    {
+        $selection->setOwner($this->parameterList->getString('owner'));
+        return $db->getListOfOwner($offset, $limit);
+    }
+
+
+    /**
      * Obtém lista de contratos
      * @return array
      */
     public function getSelectionList(): array
     {
-
-        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
-        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $offset = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
 
         $selection = new Selection;
-        $selection->setOwner($this->parameterList->getString('owner'));
         $db = new SelectionDB($selection);
-        return array_map(fn($selection) => $selection->toArray(), $db->getList($offset, $limit));
+
+
+        $list = match ($this->parameterList->getString('filter')) {
+            default => $this->getRandomSelectionListByArt(
+                $selection,
+                $db,
+                $limit
+            ),
+            'owner' => $this->getSelectionListByOwner(
+                $selection,
+                $db,
+                $offset,
+                $limit
+            )
+        };
+
+        return array_map(fn($selection) => $selection->toArray(), $list);
     }
 
     /**
@@ -112,7 +149,7 @@ class SelectionController extends \App\Controller\Template\Controller
 
         if (SelectionDB::isColumn(SelectionDB::class, $column) && $validator->isValidToFlag($info, $column)) {
 
-            if ($column == SelectionDB::INITAL_DATETIME || $column == SelectionDB::FINAL_DATETIME) {
+            if ($column == SelectionDB::START_TIMESTAMP || $column == SelectionDB::END_TIMESTAMP) {
                 $timestamp = DateTime::createFromFormat(
                     SelectionDB::USUAL_TIMESTAMP_FORMAT,
                     $info
@@ -157,15 +194,8 @@ class SelectionController extends \App\Controller\Template\Controller
     public function getApplicationList(): array
     {
 
-        $offset = $this->parameterList->getInt('offset'); // Obtém posição de início da leitura
-        $limit = $this->parameterList->getInt('limit'); // Obtém máximo de elementos da leitura
-
-        if ($offset < Server::DEFAULT_OFFSET) { // Executa se o offset for menor que o valor padrão
-            $offset = Server::DEFAULT_OFFSET;
-        }
-        if ($limit <= 0 || $limit > Server::MAX_LIMIT) { // Executa se o limite for nulo, negativo ou ultrapassar o valor máximo
-            $limit = Server::DEFAULT_LIMIT;
-        }
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
 
         $db = new ApplicationDB(
