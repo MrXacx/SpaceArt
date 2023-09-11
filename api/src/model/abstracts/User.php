@@ -181,7 +181,7 @@ class User extends Entity
      */
     public function setImage(string $image): void
     {
-        $this->image = $this->validator->isURL($image) ? $image : DataFormatException::throw('image URL');
+        $this->image = $image;
     }
 
     /**
