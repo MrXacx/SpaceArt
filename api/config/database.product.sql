@@ -87,6 +87,10 @@ CREATE TABLE selection(
   art varchar(191) NOT NULL,
   locked boolean DEFAULT 1,
 
+  CONSTRAINT start_timestamp_is_future CHECK start_timestamp > CURRENT_TIMESTAMP,
+  CONSTRAINT end_timestamp_is_future CHECK end_timestamp > start_timestamp,
+
+
   FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
