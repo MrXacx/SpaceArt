@@ -9,4 +9,6 @@
 vendor/
 .ini
 
+cache/
+log/
 *.todo
