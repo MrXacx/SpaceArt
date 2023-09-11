@@ -61,8 +61,8 @@ final class DataValidator
             ReportDB::REPORTER, ReportDB::REPORTED => $this->isUUID($content),
 
             AgreementDB::PRICE, SelectionDB::PRICE, UsersDB::RATE, RateDB::RATE => is_numeric($content),
-            SelectionDB::INITAL_DATETIME, SelectionDB::FINAL_DATETIME, MessageDB::DATETIME => $this->isTimestamp($content),
-            AgreementDB::INITAL_TIME, AgreementDB::FINAL_TIME => $this->isTime($content),
+            SelectionDB::START_TIMESTAMP, SelectionDB::END_TIMESTAMP, MessageDB::DATETIME => $this->isTimestamp($content),
+            AgreementDB::START_TIME, AgreementDB::END_TIME => $this->isTime($content),
             AgreementDB::DATE => $this->isDate($content),
             
             UsersDB::SITE, UsersDB::IMAGE_URL => $this->isURL($content),
