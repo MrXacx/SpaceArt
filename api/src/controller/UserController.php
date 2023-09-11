@@ -66,19 +66,58 @@ class UserController extends \App\Controller\Template\Controller
         $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
         $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
-        $dao = $this->getAccountType()[1];
+        list($user, $dao) = $this->getAccountType();
 
-        $list = $dao->getList($offset, $limit);
+        $list = match ($this->parameterList->getString('filter')) {
+            'location' => $this->getRandomUserListByLocation($user, $dao, $limit),
+            'art' => $this->getRandomUserListByArt($user, $dao, $limit),
+            'name' => $this->getUserListByName($user, $dao, $offset, $limit),
+            default => $dao->getList($offset, $limit)
+        };
+
         return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
     }
 
-    private function getRandomUserListByLocation(): array
+
+    /**
+     * Obtém lista randômica de usuários filtrados por cidade e estado
+     * 
+     * @param Artist|Enterprise $user Usuário
+     * @param ArtistDB|EnterpriseDB $db Tabela do banco
+     * @param int $limit Número máximo de itens esperados
+     */
+    private function getRandomUserListByLocation(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $limit): array
     {
-        return [];
+        $user->setCity($this->parameterList->getString('city'));
+        $user->setFederation($this->parameterList->getString('federation'));
+        return $db->getRandomListByLocation(0, $limit);
     }
-    private function getRandomUserListByArt(): array
+
+    /**
+     * Obtém lista randômica de usuários filtrados por tipo de arte
+     * 
+     * @param Artist|Enterprise $user Usuário
+     * @param ArtistDB|EnterpriseDB $db Tabela do banco
+     * @param int $limit Número máximo de itens esperados
+     */
+    private function getRandomUserListByArt(Artist $user, ArtistDB $db, int $limit): array
     {
-        return [];
+        $user->setArt($this->parameterList->getEnum('art', ArtType::class));
+        return $db->getRandomListByArt(0, $limit);
+    }
+
+    /**
+     * Obtém lista de usuários filtrados pelo nome
+     * 
+     * @param Artist|Enterprise $user Usuário
+     * @param ArtistDB|EnterpriseDB $db Tabela do banco
+     * @param int $offset Posição inicial da consulta
+     * @param int $limit Número máximo de itens esperados
+     */
+    private function getUserListByName(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $offset, int $limit): array
+    {
+        $user->setName($this->parameterList->getString('name'));
+        return $db->getListByName($offset, $limit);
     }
 
     /**
@@ -90,8 +129,6 @@ class UserController extends \App\Controller\Template\Controller
         $user = false;
         $db = false;
 
-        $a = 'nao foi';
-
         switch ($this->parameterList->getEnum('type', AccountType::class)) {
             case AccountType::ARTIST:
 
@@ -101,7 +138,6 @@ class UserController extends \App\Controller\Template\Controller
                 $user->setArt(ArtType::tryFrom($this->parameterList->getString('art')));
                 $user->setWage($this->parameterList->get('wage'));
                 $db = new ArtistDB($user);
-
                 break;
 
             case AccountType::ENTERPRISE:

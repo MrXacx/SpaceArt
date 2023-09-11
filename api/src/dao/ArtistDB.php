@@ -75,6 +75,83 @@ class ArtistDB extends UsersDB
     }
 
     /**
+     * Consulta lista aleatória de artistas na tabela filtrada pela localização
+     * 
+     * @param int $offset Linha inicial da consulta
+     * @param int $limit Número máximo de registros retornados
+     */
+    public function getRandomListByLocation(int $offset = 0, int $limit = 10): array
+    {
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare(
+            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist
+            INNER JOIN users ON users.id = artist.id
+            WHERE city = ? AND federation = ?
+            ORDER BY RAND()
+            LIMIT $limit OFFSET $offset"
+        );
+
+        $query->bindValue(1, $this->artist->getCity()); 
+        $query->bindValue(2, $this->artist->getFederation()); 
+
+        if ($query->execute()) { // Executa se consulta não falhar
+            return array_map(fn($user) => Artist::getInstanceOf($user), $this->fetchRecord($query));
+        }
+        throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
+    }
+
+    /**
+     * Consulta lista aleatória de artistas na tabela filtrada pelo tipo de arte
+     * 
+     * @param int $offset Linha inicial da consulta
+     * @param int $limit Número máximo de registros retornados
+     */
+    public function getRandomListByArt(int $offset = 0, int $limit = 10): array
+    {
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare(
+            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist
+            INNER JOIN users ON users.id = artist.id
+            WHERE art = ?
+            ORDER BY RAND()
+            LIMIT $limit OFFSET $offset"
+        );
+
+        $query->bindValue(1, $this->artist->getArt()->value);
+
+        if ($query->execute()) { // Executa se consulta não falhar
+            return array_map(fn($user) => Artist::getInstanceOf($user), $this->fetchRecord($query));
+        }
+        throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
+    }
+
+    /**
+     * Consulta lista de artistas na tabela filtrada pelo nome
+     * 
+     * @param int $offset Linha inicial da consulta
+     * @param int $limit Número máximo de registros retornados
+     */
+
+    public function getListByName(int $offset = 0, int $limit = 10): array
+    {
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare(
+            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist
+            INNER JOIN users ON users.id = artist.id
+            WHERE name = ?
+            ORDER BY name
+            LIMIT $limit OFFSET $offset"
+        );
+
+        $query->bindValue(1, $this->artist->getName());
+
+        if ($query->execute()) { // Executa se consulta não falhar
+            return array_map(fn($user) => Artist::getInstanceOf($user), $this->fetchRecord($query));
+        }
+        throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
+    }
+
+    /**
      * Obtém modelo de artista com dados não sensíveis
      * @return Artist Modelo de artista
      */

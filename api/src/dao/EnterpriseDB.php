@@ -73,6 +73,58 @@ class EnterpriseDB extends UsersDB
     }
 
     /**
+     * Consulta lista aleatória de artistas na tabela filtrada pela localização
+     * 
+     * @param int $offset Linha inicial da consulta
+     * @param int $limit Número máximo de registros retornados
+     */
+    public function getRandomListByLocation(int $offset = 0, int $limit = 10): array
+    {
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare(
+            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM enterprise
+            INNER JOIN users ON users.id = enterprise.id
+            WHERE city = ? AND federation = ?
+            ORDER BY RAND()
+            LIMIT $limit OFFSET $offset"
+        );
+
+        $query->bindValue(1, $this->enterprise->getCity());
+        $query->bindValue(2, $this->enterprise->getFederation());
+
+        if ($query->execute()) { // Executa se consulta não falhar
+            return array_map(fn($user) => Enterprise::getInstanceOf($user), $this->fetchRecord($query));
+        }
+        throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
+    }
+
+    /**
+     * Consulta lista de artistas na tabela filtrada pelo nome
+     * 
+     * @param int $offset Linha inicial da consulta
+     * @param int $limit Número máximo de registros retornados
+     */
+
+    public function getListByName(int $offset = 0, int $limit = 10): array
+    {
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare(
+            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM enterprise
+            INNER JOIN users ON users.id = enterprise.id
+            WHERE name = ?
+            ORDER BY name
+            LIMIT $limit OFFSET $offset"
+        );
+
+        $query->bindValue(1, $this->enterprise->getName());
+
+        if ($query->execute()) { // Executa se consulta não falhar
+            return array_map(fn($user) => Enterprise::getInstanceOf($user), $this->fetchRecord($query));
+        }
+        throw new RuntimeException('Operação falhou!'); // Executa se alguma falha esperdada ocorrer
+    }
+
+    /**
      * Obtém modelo de empreendimento com dados não sensíveis
      * @return Enterprise Modelo de empreendimento
      */
