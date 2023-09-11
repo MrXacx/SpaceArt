@@ -72,6 +72,10 @@ CREATE TABLE agreement(
   art varchar(191) NOT NULL,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
+  CONSTRAINT start_time_is_future CHECK start_time > CURRENT_TIME,
+  CONSTRAINT end_time_is_future CHECK end_time > start_time,
+
+
   FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
 
@@ -89,7 +93,6 @@ CREATE TABLE selection(
 
   CONSTRAINT start_timestamp_is_future CHECK start_timestamp > CURRENT_TIMESTAMP,
   CONSTRAINT end_timestamp_is_future CHECK end_timestamp > start_timestamp,
-
 
   FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
 
