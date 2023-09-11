@@ -64,7 +64,7 @@ class EnterpriseDB extends UsersDB
     public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT users.id, name, image, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id LIMIT $limit OFFSET $offset");
 
         if ($query->execute()) { // Executa se consulta não falhar
             return array_map(fn($user) => Enterprise::getInstanceOf($user), $this->fetchRecord($query));
@@ -79,7 +79,7 @@ class EnterpriseDB extends UsersDB
     public function getUnique(): Enterprise
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT users.id, name, imageURL, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id WHERE users.id = ?');
+        $query = $this->getConnection()->prepare('SELECT users.id, name, image, CEP, federation, district, city, address, rate, website FROM enterprise INNER JOIN users ON users.id = enterprise.id WHERE users.id = ?');
         $query->bindValue(1, $this->enterprise->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
@@ -98,7 +98,7 @@ class EnterpriseDB extends UsersDB
 
         // Define query SQL para obter todas as colunas da linha do usuário
         $query = $this->getConnection()->prepare('SELECT * FROM enterprise INNER JOIN users ON enterprise.id = users.id WHERE token = ?');
-        $query->bindValue(1, $this->enterpriserprise->getID()); // Substitui interrogação pelo ID
+        $query->bindValue(1, $this->enterprise->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
             return Enterprise::getInstanceOf($this->fetchRecord($query, false));

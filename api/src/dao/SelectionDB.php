@@ -20,8 +20,8 @@ class SelectionDB extends DatabaseAcess
 
     public const OWNER = 'owner';
     public const ART = 'art';
-    public const INITAL_DATETIME = 'inital_datetime';
-    public const FINAL_DATETIME = 'final_datetime';
+    public const START_TIMESTAMP = 'start_timestamp';
+    public const END_TIMESTAMP = 'end_timestamp';
     public const PRICE = 'price';
     public const LOCKED = 'locked';
 
@@ -48,13 +48,13 @@ class SelectionDB extends DatabaseAcess
         $datetime = $this->selection->getDatetime(); // Obtém datas e horários de início e fim
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO selection (id, owner, price, inital_datetime, final_datetime, art) VALUES (UUID(),?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO selection (id, owner, price, start_timestamp, end_timestamp, art) VALUES (UUID(),?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->selection->getOwner());
         $query->bindValue(2, $this->selection->getPrice());
-        $query->bindValue(3, $datetime['inital']->format(parent::DB_TIMESTAMP_FORMAT));
-        $query->bindValue(4, $datetime['final']->format(parent::DB_TIMESTAMP_FORMAT));
+        $query->bindValue(3, $datetime['start']->format(parent::DB_TIMESTAMP_FORMAT));
+        $query->bindValue(4, $datetime['end']->format(parent::DB_TIMESTAMP_FORMAT));
         $query->bindValue(5, $this->selection->getArt()->value);
 
         return $query->execute();
@@ -66,7 +66,24 @@ class SelectionDB extends DatabaseAcess
     public function getList(int $offset = 0, int $limit = 10): array
     {
         // Determina query SQL de leitura
-        $query = $this->getConnection()->prepare("SELECT * FROM selection AS sel WHERE owner = ? ORDER BY sel.inital_datetime LIMIT $limit OFFSET $offset");
+        $query = $this->getConnection()->prepare("SELECT * FROM selection AS sel WHERE art = ? ORDER BY sel.start_timestamp LIMIT $limit OFFSET $offset");
+
+        $query->bindValue(1, $this->selection->getArt()->value);
+
+        if ($query->execute()) { // Executa se consulta não falhar
+            return array_map(fn($agreement) => Selection::getInstanceOf($agreement), $this->fetchRecord($query));
+        }
+
+        throw new RuntimeException('Operação falhou!'); // Executa em caso de falhas esperadas
+    }
+
+    /**
+     * @see abstracts/DatabaseAcess.php
+     */
+    public function getListOfOwner(int $offset = 0, int $limit = 10): array
+    {
+        // Determina query SQL de leitura
+        $query = $this->getConnection()->prepare("SELECT * FROM selection AS sel WHERE owner = ? ORDER BY sel.start_timestamp LIMIT $limit OFFSET $offset");
 
         $query->bindValue(1, $this->selection->getOwner()); // Substitui interrogação na query pelo ID passado
 

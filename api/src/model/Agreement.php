@@ -84,11 +84,11 @@ class Agreement extends \App\Model\Template\Entity
                 case AgreementDB::DATE:
                     $entity->date = DateTime::createFromFormat(AgreementDB::DB_DATE_FORMAT, $value);
                     break;
-                case AgreementDB::INITAL_TIME:
-                    $entity->time['inital'] = DateTime::createFromFormat(AgreementDB::DB_TIME_FORMAT, $value);
+                case AgreementDB::START_TIME:
+                    $entity->time['start'] = DateTime::createFromFormat(AgreementDB::DB_TIME_FORMAT, $value);
                     break;
-                case AgreementDB::FINAL_TIME:
-                    $entity->time['final'] = DateTime::createFromFormat(AgreementDB::DB_TIME_FORMAT, $value);
+                case AgreementDB::END_TIME:
+                    $entity->time['end'] = DateTime::createFromFormat(AgreementDB::DB_TIME_FORMAT, $value);
                     break;
                 case AgreementDB::ART:
                     $entity->art = ArtType::tryFrom($value);
@@ -177,12 +177,12 @@ class Agreement extends \App\Model\Template\Entity
     /**
      * Define Horários de início e fim do evento
      * 
-     * @param DateTime $inital Horário de início
-     * @param DateTime $final Horário de fim
+     * @param DateTime $start Horário de início
+     * @param DateTime $end Horário de fim
      */
-    public function setTime(DateTime $inital, DateTime $final): void
+    public function setTime(DateTime $start, DateTime $end): void
     {
-        $this->time = ['inital' => $inital, 'final' => $final];
+        $this->time = ['start' => $start, 'end' => $end];
     }
 
     /**

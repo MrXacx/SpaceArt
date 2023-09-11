@@ -48,10 +48,10 @@ class User extends Entity
     protected string|null $website = null;
 
     /**
-     * ImageURLm de perfil do usuário
+     * Imagem de perfil do usuário
      * @var string
      */
-    protected string|null $imageURL = null;
+    protected string|null $image = null;
 
     /**
      * Nota média do usuário
@@ -179,18 +179,18 @@ class User extends Entity
     /**
      * @param string $image URL do imagem de perfil do usuário
      */
-    public function setImageURL(string $image): void
+    public function setImage(string $image): void
     {
-        $this->imageURL = $this->validator->isURL($image) ? $image : DataFormatException::throw('image URL');
+        $this->image = $this->validator->isURL($image) ? $image : DataFormatException::throw('image URL');
     }
 
     /**
      * Obtém ID do usuário
      * @return string ID 
      */
-    public function getImageURL(): string
+    public function getImage(): string
     {
-        return $this->imageURL;
+        return $this->image;
     }
 
     public function setRate(float $rate): void
@@ -207,7 +207,7 @@ class User extends Entity
     {
         return array_merge(parent::toArray(), [
             'name' => $this->name,
-            'imageURL' => $this->imageURL,
+            'image' => $this->image,
             'email' => $this->email ?? null,
             'password' => $this->password ?? null,
             'phone' => $this->phone ?? null,

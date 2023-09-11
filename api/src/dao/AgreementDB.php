@@ -6,7 +6,6 @@ namespace App\DAO;
 
 use App\DAO\Template\DatabaseAcess;
 use App\Model\Agreement;
-use App\Model\Template\User;
 
 /**
  * Classe de maniupulação da tabela Agreements
@@ -22,8 +21,8 @@ class AgreementDB extends DatabaseAcess
     public const PRICE = 'price';
     public const ART = 'art';
     public const DATE = 'date';
-    public const INITAL_TIME = 'inital_time';
-    public const FINAL_TIME = 'final_time';
+    public const START_TIME = 'start_time';
+    public const END_TIME = 'end_time';
     public const STATUS = 'status';
 
     /**
@@ -48,7 +47,7 @@ class AgreementDB extends DatabaseAcess
     {
 
         // Passa query SQL de criação
-        $query = $this->getConnection()->prepare('INSERT INTO agreement (id, hirer, hired, price, date, inital_time, final_time, art) VALUES (UUID(),?,?,?,?,?,?,?)');
+        $query = $this->getConnection()->prepare('INSERT INTO agreement (id, hirer, hired, price, date, start_time, end_time, art) VALUES (UUID(),?,?,?,?,?,?,?)');
 
         // Substitui interrogações pelos valores dos atributos
         $query->bindValue(1, $this->agreement->getHirer());
@@ -57,8 +56,8 @@ class AgreementDB extends DatabaseAcess
         $query->bindValue(4, $this->agreement->getDate()->format(parent::DB_DATE_FORMAT));
 
         $time = $this->agreement->getTime();
-        $query->bindValue(5, $time['inital']->format(parent::DB_TIME_FORMAT));
-        $query->bindValue(6, $time['final']->format(parent::DB_TIME_FORMAT));
+        $query->bindValue(5, $time['start']->format(parent::DB_TIME_FORMAT));
+        $query->bindValue(6, $time['end']->format(parent::DB_TIME_FORMAT));
         $query->bindValue(7, $this->agreement->getArt()->value);
 
         return $query->execute();

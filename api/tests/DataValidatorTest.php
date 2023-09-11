@@ -7,6 +7,7 @@ use App\DAO\SelectionDB;
 use App\DAO\UsersDB;
 use App\Util\DataValidator;
 use PHPUnit\Framework\TestCase as Test;
+
 /**
  * Classe de teste do serviço DataValidator
  * 
@@ -95,12 +96,14 @@ class DataValidatorTest extends Test
         $this->assertFalse($this->validator->isCNPJ('2831557294a'));
     }
 
-    public function testValidateCorrectEmail(): void{
+    public function testValidateCorrectEmail(): void
+    {
         $this->assertTrue($this->validator->isEmail('email@gmail.com'));
         $this->assertTrue($this->validator->isEmail('email@gmail.org.br'));
         $this->assertTrue($this->validator->isEmail('email12@[127.0.0.1].com'));
     }
-    public function testValidateIncorrectEmail(): void{
+    public function testValidateIncorrectEmail(): void
+    {
         $this->assertFalse($this->validator->isEmail('email@@gmail.com'));
         $this->assertFalse($this->validator->isEmail('emáil@gmail.com'));
         $this->assertFalse($this->validator->isEmail('email@'));
@@ -114,7 +117,7 @@ class DataValidatorTest extends Test
         $this->assertTrue($this->validator->isValidToFlag('24873944813', ArtistDB::CPF));
         $this->assertTrue($this->validator->isValidToFlag('91614582', EnterpriseDB::CEP));
         $this->assertTrue($this->validator->isValidToFlag('01/07/2023', AgreementDB::DATE));
-        $this->assertTrue($this->validator->isValidToFlag('01/07/2023 00:22:25', SelectionDB::FINAL_DATETIME));
+        $this->assertTrue($this->validator->isValidToFlag('01/07/2023 00:22:25', SelectionDB::END_TIMESTAMP));
     }
 
     public function testValidateAnyColumnWithIncorrectValue(): void
@@ -122,6 +125,6 @@ class DataValidatorTest extends Test
         $this->assertFalse($this->validator->isValidToFlag('', UsersDB::NAME));
         $this->assertFalse($this->validator->isValidToFlag('2e483944813', ArtistDB::CPF));
         $this->assertFalse($this->validator->isValidToFlag('2023-12-32', AgreementDB::DATE));
-        $this->assertFalse($this->validator->isValidToFlag('2023-7-01 00:22', SelectionDB::FINAL_DATETIME));
+        $this->assertFalse($this->validator->isValidToFlag('2023-7-01 00:22', SelectionDB::END_TIMESTAMP));
     }
 }

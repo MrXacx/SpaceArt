@@ -69,12 +69,12 @@ class Selection extends \App\Model\Template\Entity
         $entity->price = $attr[SelectionDB::PRICE];
         $entity->art = ArtType::tryFrom($attr[SelectionDB::ART]);
 
-        $iDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::INITAL_DATETIME]);
-        $fDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::FINAL_DATETIME]);
+        $iDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::START_TIMESTAMP]);
+        $fDateTime = DateTime::createFromFormat(SelectionDB::DB_TIMESTAMP_FORMAT, $attr[SelectionDB::END_TIMESTAMP]);
 
         $entity->date = [
-            'inital' => $iDateTime,
-            'final' => $fDateTime
+            'start' => $iDateTime,
+            'end' => $fDateTime
         ];
 
         $entity->time = $entity->date;
@@ -125,23 +125,23 @@ class Selection extends \App\Model\Template\Entity
     /**
      * Define datas de início e fim da seleção
      * 
-     * @param DateTime $inital Data de início
-     * @param DateTime $inital Data de fim
+     * @param DateTime $start Data de início
+     * @param DateTime $start Data de fim
      */
-    public function setDate(DateTime $inital, DateTime $final)
+    public function setDate(DateTime $start, DateTime $end)
     {
-        $this->date = ['inital' => $inital, 'final' => $final];
+        $this->date = ['start' => $start, 'end' => $end];
     }
 
     /**
      * Define Horários de início e fim da seleção
      * 
-     * @param DateTime $inital Horário de início
-     * @param DateTime $inital Horário de fim
+     * @param DateTime $start Horário de início
+     * @param DateTime $start Horário de fim
      */
-    public function setTime(DateTime $inital, DateTime $final)
+    public function setTime(DateTime $start, DateTime $end)
     {
-        $this->time = ['inital' => $inital, 'final' => $final];
+        $this->time = ['start' => $start, 'end' => $end];
     }
 
     /**
@@ -183,7 +183,7 @@ class Selection extends \App\Model\Template\Entity
     }
 
     /**
-     * Define se a seleção foi finalizada
+     * Define se a seleção foi endizada
      * @param bool
      */
     public function setLocked(bool $locked): void
@@ -192,7 +192,7 @@ class Selection extends \App\Model\Template\Entity
     }
 
     /**
-     * Checa se a seleção foi finalizada
+     * Checa se a seleção foi endizada
      * @return bool
      */
     public function isLocked(): bool
