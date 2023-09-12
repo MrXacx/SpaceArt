@@ -1,391 +1,244 @@
 # Controle de testes de rotas
 
-> http://localhost:<port>/<path>?<parameters>
+> `http://localhost:<port>/<path>?<parameters>`
+
+| Rota | Métodos suportados | Status |
+| :--- | :----------------- | :----: |
+| /user | GET, POST, PUT, DELETE | Funcionando |
+| /user/sign-in | GET | Funcionando |
+
 
 ## /user
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. id: ID do usuário
-2. type: tipo de conta do usuário
-
-- Parâmetros **opcionais**:
-
-1. token: true caso o ID seja um token de acesso. Padrão: false.
-
-- Situação:
-> Funcionando
-
-### POST
-
-- Parâmetros **obrigatórios**:
-
-1. name: nome do usuário
-2. type: tipo de conta
-3. email: email do usuário
-4. password: senha do usuário
-5. phone: número de celular do usuário
-6. federation: unidade federativa do usuário
-7. city: município do usuário
-8. cep: CEP do usuário
-9. image: URL da foto de perfil do usuário
-
-- Outros parâmetos **obrigatórios** caso type = artist
-
-1. wage: pretensão salarial
-2. cpf: CPF do usuário
-3. art: tipo de arte do usuário
-
-- Outros parâmetos **obrigatórios** caso type = enterprise
-
-1. cnpj: CNPJ do usuário
-2. district: região do município em que o estabelecimento se localiza
-2. address: conjunto restante do endereço (logradouro, número, complemento, ponto de referência e etc)
-
-
-- Situação:
-> Caso type = artist
->> Funcionando
->
-> Caso type = enterprise
->> Funcionando
-
-### UPDATE
-- Parâmetros **obrigatórios**:
-
-1. id: Token de acesso
-2. type: tipo da conta
-3. column: parâmetro a ser alterado
-4. info: novo valor do parâmetro
-
-- Situação:
-> Funcionando
-
-
-### DELETE
-- Parâmetros **obrigatórios**:
-
-1. id: ID do usuário
-
-- Situação:
-> Funcionando
-
+  ### GET  
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID do usuário | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | type | tipo de conta do usuário | artist OR enterprise | true |
+  | token | se o token informado é o token de acesso;<br>OBS: true para obter dados sensíveis.<br>Default: false | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | false |
+  
+  ### POST  
+  | Parâmetro | Descrição | Formato | Obrigatório | Caso |
+  | :-------- | :------- | :----- | :--------- | :-- |
+  | name | nome do usuário | \w{1,191} | true | `default` |
+  | type | tipo de conta | artist OR enterprise | true | `default` |
+  | email | email |  | true | `default` |
+  | password | senha | \w{1,191} | true | `default` |
+  | phone | número de celular | \d{2}9\d{8} | true | `default` |
+  | federation | unidade federativa | \w{2} | true | `default` |
+  | city | município | \w{1,191} | true | `default` |
+  | cep | CEP | \d{8} | true | `default` |
+  | image | base64 da imagem |  | true | `default` |
+  | wage | pretensão salarial |  | true | `type=artist` |
+  | cpf | CPF | \d{11} | true | `type=artist` |
+  | cnpj | CNPJ | \d{11} | true | `type=enterprise` |
+  | art | tipo de arte |   | true | `type=artist` |
+  | neighborhood | bairro | \w{0,191} | true | `type=enterprise` |
+  | address | logradouro, número, complemento, ponto de referência e etc | \w{0,191} | true | `type=enterprise` |
+  
+  ### PUT
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID do usuário | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | type | tipo de conta do usuário | artist OR enterprise | true |
+  | column | parâmetro a ser alterado | | true |
+  | info | novo valor do parâmetro | | true |
+  
+  
+  ### DELETE
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID do usuário | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
 ## /user/sign-in
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. email: email do usuário
-2. password: senha do usuário
-
-- Situação:
-> Funcionando
-
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | email | email | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | password | senha | \w{0,191} | true |
 
 ## /user/list
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. type: tipo de conta buscado
-
-- Parâmetros **opcionais**:
-
-1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
-2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
-
-- Situação:
-> Funcionando
+  ### GET  
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID do usuário | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | offset | linha de início da consulta.<br>Default: 0. | 0 =< offset | false |
+  | limit | máximo de dados retornados.<br>Default: 10. | 0 < limit =< 500  | false |
 
 ## /user/report
 
-### GET
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID da denúncia | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | reporter | ID do denunciador | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  
+  ### POST
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | reporter | ID do denunciador | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | reported | ID do denunciado | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | reason | motivo da denúncia | \w{0,191} | true |
+  
+  ## /user/report/list
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | reporter | ID do denunciador | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | offset | linha de início da consulta.<br>Default: 0. | 0 =< offset | false |
+  | limit | máximo de dados retornados.<br>Default: 10. | 0 < limit =< 500  | false |
 
-- Parâmetros **obrigatórios**:
-
-1. id: id da denúncia
-2. reporter: id do denunciador
-
-- Situação:
-> Funcionando
-
-### POST
-
-- Parâmetros **obrigatórios**:
-
-1. reporter: id do denunciador
-2. reporte: id do denunciado
-3. reason: motivo da denúncia
-
-- Situação:
-> Funcionando
-
-## /user/report/list
-
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. reporter: id do denunciador
-
-- Parâmetros **opcionais**:
-
-1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
-2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
-
-- Situação:
-> Funcionando
 
 ## /agreement
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. id: ID do contrato
-
-- Situação:
-> Funcionando
-
-### POST
-
-- Parâmetros **obrigatórios**:
-
-1. hirer: ID do contratante
-2. hired: ID do contratado
-3. art: tipo de arte
-4. price: valor a ser pago
-5. date: data do evento
-6. time: horários de início e fim do evento separeados por ';'
-
-- Situação:
-> Funcionando
-
-### UPDATE
-- Parâmetros **obrigatórios**:
-
-1. id: ID do contrato
-2. column: parâmetro a ser alterado
-3. info: novo valor do parâmetro
-
-- Situação:
-> Funcionando
-
-
-### DELETE
-- Parâmetros **obrigatórios**:
-
-1. id: ID do contrato
-
-- Situação:
-> Funcionando
-
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  
+  ### POST  
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | hirer | ID do contrante | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | hired | ID do contratado | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | art | tipo de arte | | true |
+  | price | preço | float | true |
+  | date | data do evento | dd/mm/yyyy | true |
+  | time | horários de início e fim do evento respectivamente | hh:mm;hh:mm | true |
+  
+  ### PUT  
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | column | parâmetro a ser alterado | | true |
+  | info | novo valor do parâmetro | | true |
+  
+  ### DELETE
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
 ## /agreement/list
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. user: ID do contratante ou do contratado
-
-- Parâmetros **opcionais**:
-
-1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
-2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
-
-- Situação:
-> Funcionando
-
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | user | ID do contratante ou do contratado | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | offset | linha de início da consulta.<br>Default: 0. | 0 =< offset | false |
+  | limit | máximo de dados retornados.<br>Default: 10. | 0 < limit =< 500  | false |
 
 ## /agreement/rate
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. agreement: ID do contrato
-2. author: ID do autor da avaliação
-
-- Situação:
-> Funcionando
-
-### POST
-
-- Parâmetros **obrigatórios**:
-
-1. agreement: ID do contrato
-2. author: ID do autor da avaliação
-3. rate: nota da avaliação
-4. description: descrição da avaliação
-
-- Situação:
-> Funcionando
-
-### UPDATE
-- Parâmetros **obrigatórios**:
-
-1. agreement: ID do contrato
-2. author: ID do autor da avaliação
-3. column: parâmetro a ser alterado
-4. info: novo valor do parâmetro
-
-- Situação:
-> Funcionando
-
-
-### DELETE
-- Parâmetros **obrigatórios**:
-
-1. agreement: ID do contrato
-2. author: ID do autor da avaliação
-
-- Situação:
-> Funcionando
-
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | agreemnt | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | author | ID de autor | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+    
+  ### POST
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | agreemnt | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | author | ID de autor | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | rate | Nota da avaliação | float | true |
+  | description | ID de autor | \w{0,191} | true |
+  
+  ### PUT
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | agreemnt | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | author | ID de autor | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | column | parâmetro a ser alterado | | true |
+  | info | novo valor do parâmetro | | true |
+  
+  ### DELETE
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | agreemnt | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | author | ID de autor | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
 ## /agreement/rate/list
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. agreement: ID do contrato
-
-- Parâmetros **opcionais**:
-
-1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
-2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
-
-- Situação:
-> Funcionando
-
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | agreemnt | ID do contrato | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | offset | linha de início da consulta.<br>Default: 0. | 0 =< offset | false |
+  | limit | máximo de dados retornados.<br>Default: 10. | 0 < limit =< 500  | false |
 
 ## /selection
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
-### GET
+  ### POST
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | owner | ID do criador | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | date | datas de início e fim da seleção repectivamente | dd/mm/yyyy;dd/mm/yyyy | true |
+  | time | horários de início e fim da seleção repectivamente | hh:mm;hh:mm | true |
+  | price | preço | float | true |
+  | art | tipo de arte buscado |  | true |
 
-- Parâmetros **obrigatórios**:
+  ### PUT
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | column | parâmetro a ser alterado | | true |
+  | info | novo valor do parâmetro | | true |
 
-1. id: ID da seleção
-
-- Situação:
-> Funcionando
-
-### POST
-
-- Parâmetros **obrigatórios**:
-
-1. owner: ID do criador da seleção
-2. date: datas de abertura e fechamento da seleção. Devem estar separadas por ';'
-3. time: horários de abertura e fechamento da seleção. Devem estar separados por ';'
-4. price: valor a ser pago
-5. art: tipo de arte do evento
-
-- Situação:
-> Funcionando
-
-### UPDATE
-- Parâmetros **obrigatórios**:
-
-1. id: ID da seleção
-2. column: parâmetro a ser alterado
-3. info: novo valor do parâmetro
-
-- Situação:
-> Funcionando
-
-
-### DELETE
-- Parâmetros **obrigatórios**:
-
-1. id: ID da seleção
-
-- Situação:
-> Funcionando
+  ### DELETE
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | id | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
 
 ## /selection/list
 
-### GET
-
-- Parâmetros **obrigatórios**:
-
-1. owner: ID do criador da seleção
-
-- Parâmetros **opcionais**:
-
-1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
-2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
-
-- Situação:
-> Funcionando
-
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | owner | ID do criador | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | offset | linha de início da consulta.<br>Default: 0. | 0 =< offset | false |
+  | limit | máximo de dados retornados.<br>Default: 10. | 0 < limit =< 500  | false |
 
 ## /selection/application
 
-### GET
+  ### GET
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | selection | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | artist | ID do artista | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
-- Parâmetros **obrigatórios**:
+  ### POST
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | selection | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | artist | ID do artista | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
-1. selection: ID da seleção
-2. artist: ID do artista que se aplicou no processo
+  ### PUT
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | selection | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | artist | ID do artista | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | column | parâmetro a ser alterado | | true |
+  | info | novo valor do parâmetro | | true |
 
-- Situação:
-> Funcionando
-
-### POST
-
-- Parâmetros **obrigatórios**:
-
-1. selection: ID da seleção
-2. artist: ID do artista que se aplicou no processo
-
-- Situação:
-> Funcionando
-
-### UPDATE
-- Parâmetros **obrigatórios**:
-
-1. selection: ID da seleção
-2. artist: ID do artista que se aplicou no processo
-3. column: parâmetro a ser alterado
-4. info: novo valor do parâmetro
-
-- Situação:
-> Funcionando
-
-
-### DELETE
-- Parâmetros **obrigatórios**:
-
-1. selection: ID da seleção
-2. artist: ID do artista que se aplicou no processo
-
-- Situação:
-> Funcionando
+  ### DELETE
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | selection | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | artist | ID do artista | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
 
 ## /selection/application/list
 
 ### GET
-
-- Parâmetros **obrigatórios**:
-
-1. owner: ID do criador da seleção
-
-- Parâmetros **opcionais**:
-
-1. offset: linha de início de consulta. Padrão: 0, mínimo: 0.
-2. limit: máximo de registros retornados. Padrão: 10, mínimo: 0, máximo: 500.
-
-- Situação:
-> Funcionando
+  | Parâmetro | Descrição | Formato | Obrigatório |
+  | :------- | :-------- | :------ | :---------- |
+  | selection | ID da seleção | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
 
 ## /chat
 
