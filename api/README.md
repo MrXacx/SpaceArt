@@ -3,9 +3,24 @@
 > `http://localhost:<port>/<path>?<parameters>`
 
 | Rota | Métodos suportados | Status |
-| :--- | :----------------- | :----: |
-| /user | GET, POST, PUT, DELETE | Funcionando |
-| /user/sign-in | GET | Funcionando |
+| :--- | :----------------: | :----: |
+| /agreement | `GET`, `POST`, `PUT`, `DELETE` | Funcionando |
+| /agreement/list | `GET` | Funcionando |
+| /agreement/rate | `GET`, `POST`, `PUT`, `DELETE` | Funcionando |
+| /agreement/rate/list | `GET` | Funcionando |
+| /chat | `GET`, `POST` | Funcionando |
+| /chat/list | `GET` | Funcionando |
+| /chat/message | `GET`, `POST` | Funcionando |
+| /chat/message/list | `GET` | Funcionando |
+| /user | `GET`, `POST`, `PUT`, `DELETE` | Funcionando |
+| /selection | `GET`, `POST`, `PUT`, `DELETE` | Funcionando |
+| /selection/list | `GET` | Funcionando |
+| /selection/application | `GET`, `POST`, `PUT`, `DELETE` | Funcionando |
+| /selection/application/list | `GET` | Funcionando |
+| /user/sign-in | `GET` | Funcionando |
+| /user/list | `GET` | Funcionando |
+| /user/report | `GET`, `POST` | Funcionando |
+| /user/report/list | `GET` | Funcionando |
 
 
 ## /user
