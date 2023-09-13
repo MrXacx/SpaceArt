@@ -9,20 +9,19 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
-SET event_scheduler = ON;
+-- SET time_zone = "+00:00";
 
 --
 -- Banco de dados: spaceart
 --
 -- --------------------------------------------------------
 
-CREATE DATABASE spaceart;
+CREATE DATABASE IF NOT EXISTS spaceart;
 USE spaceart;
 
 -- CRIAÇÃO DAS ENTIDADES
 
-CREATE TABLE users(
+CREATE TABLE IF NOT EXISTS users(
 
   id varchar(36) PRIMARY KEY,
   token VARCHAR(36) UNIQUE KEY,
@@ -39,7 +38,7 @@ CREATE TABLE users(
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE artist(
+CREATE TABLE IF NOT EXISTS artist(
 
   id varchar(36) PRIMARY KEY,
   CPF varchar(11) UNIQUE KEY NOT NULL,
@@ -49,7 +48,7 @@ CREATE TABLE artist(
   FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE enterprise(
+CREATE TABLE IF NOT EXISTS enterprise(
 
   id varchar(36) PRIMARY KEY,
   CNPJ varchar(14) UNIQUE KEY NOT NULL,
@@ -60,7 +59,7 @@ CREATE TABLE enterprise(
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE agreement(
+CREATE TABLE IF NOT EXISTS agreement(
 
   id varchar(36) PRIMARY KEY,
   hirer varchar(36) NOT NULL,
@@ -72,8 +71,7 @@ CREATE TABLE agreement(
   art varchar(191) NOT NULL,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
-  CONSTRAINT start_time_is_future CHECK start_time > CURRENT_TIME,
-  CONSTRAINT end_time_is_future CHECK end_time > start_time,
+  -- CONSTRAINT time_is_future CHECK (start_time > CURRENT_TIME AND end_time > start_time),
 
 
   FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -81,7 +79,7 @@ CREATE TABLE agreement(
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE selection(
+CREATE TABLE IF NOT EXISTS selection(
 
   id varchar(36) PRIMARY KEY,
   owner varchar(36) NOT NULL,
@@ -90,15 +88,14 @@ CREATE TABLE selection(
   end_timestamp timestamp NOT NULL,
   art varchar(191) NOT NULL,
   locked boolean DEFAULT 1,
-
-  CONSTRAINT start_timestamp_is_future CHECK start_timestamp > CURRENT_TIMESTAMP,
-  CONSTRAINT end_timestamp_is_future CHECK end_timestamp > start_timestamp,
-
+  
+  -- CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
   FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
+  
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE selection_application(
+CREATE TABLE IF NOT EXISTS selection_application(
 
   selection varchar(36) NOT NULL,
   artist varchar(36) NOT NULL,
@@ -110,7 +107,7 @@ CREATE TABLE selection_application(
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE report(
+CREATE TABLE IF NOT EXISTS report(
 
   id varchar(36) PRIMARY KEY,
   reporter varchar(36),
@@ -123,7 +120,7 @@ CREATE TABLE report(
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE chat(
+CREATE TABLE IF NOT EXISTS chat(
   id varchar(36) PRIMARY KEY,
   artist varchar(36),
   enterprise varchar(36),
@@ -132,7 +129,7 @@ CREATE TABLE chat(
   FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE message(
+CREATE TABLE IF NOT EXISTS message(
     chat varchar(36),
     sender varchar(36),
     content varchar(191) NOT NULL,
@@ -144,7 +141,7 @@ CREATE TABLE message(
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE rate(
+CREATE TABLE IF NOT EXISTS rate(
 
     author varchar(36),
     agreement varchar(36),
@@ -160,19 +157,18 @@ CREATE TABLE rate(
 
 -- CRIA EVENTOS
 
+SET GLOBAL event_scheduler = 1;
+SET @@GLOBAL.event_scheduler = 1;
+
 -- LIBERA SELEÇÕES CUJO TIMESTAMP INICAL FOI ALCANÇADO E O END NÃO
-CREATE EVENT start_selection ON SCHEDULE EVERY 5 MINUTE DO
-  BEGIN
-    UPDATE selection SET locked = 0
-    WHERE locked = 1
+CREATE EVENT IF NOT EXISTS
+    start_selection ON SCHEDULE EVERY 5 MINUTE DO
+    UPDATE selection SET locked = 0 WHERE locked = 1
     AND start_timestamp <= CURRENT_TIMESTAMP
     AND end_timestamp > CURRENT_TIMESTAMP;
-  END;
 
 -- TRANCA SELEÇÕES CUJO TIMESTAMP END FOI ALCANÇADO
-CREATE EVENT start_selection ON SCHEDULE EVERY 5 MINUTE DO
-  BEGIN
-    UPDATE selection SET locked = 1
-    WHERE locked = 0
+CREATE EVENT IF NOT EXISTS
+ finish_selection ON SCHEDULE EVERY 5 MINUTE DO
+    UPDATE selection SET locked = 1 WHERE locked = 0
     AND end_timestamp <= CURRENT_TIMESTAMP;
-  END;
