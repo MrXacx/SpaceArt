@@ -16,8 +16,8 @@ START TRANSACTION;
 --
 -- --------------------------------------------------------
 
-CREATE DATABASE IF NOT EXISTS spaceart;
-USE spaceart;
+CREATE DATABASE IF NOT EXISTS id21258140_dbspaceart;
+USE id21258140_dbspaceart;
 
 -- CRIAÇÃO DAS ENTIDADES
 
@@ -25,15 +25,15 @@ CREATE TABLE IF NOT EXISTS users(
 
   id varchar(36) PRIMARY KEY,
   token VARCHAR(36) UNIQUE KEY,
-  name varchar(191) NOT NULL,
-  email varchar(191) UNIQUE KEY NOT NULL,
+  name varchar(256) NOT NULL,
+  email varchar(256) UNIQUE KEY NOT NULL,
   phone varchar(11) NOT NULL,
-  password varchar(191) NOT NULL,
+  password varchar(256) NOT NULL,
   CEP varchar(8) NOT NULL,
   federation varchar(2) NOT NULL,
   city varchar(50) NOT NULL,
-  image blob,
-  website varchar(191),
+  image varchar(256),
+  website varchar(256),
   rate float DEFAULT 0
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS enterprise(
 
   id varchar(36) PRIMARY KEY,
   CNPJ varchar(14) UNIQUE KEY NOT NULL,
-  district varchar(191) NOT NULL,
-  address varchar(191) NOT NULL,
+  district varchar(256) NOT NULL,
+  address varchar(256) NOT NULL,
 
   FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS agreement(
   date date NOT NULL,
   start_time time NOT NULL,
   end_time  time NOT NULL,
-  art varchar(191) NOT NULL,
+  art varchar(256) NOT NULL,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
   -- CONSTRAINT time_is_future CHECK (start_time > CURRENT_TIME AND end_time > start_time),
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS selection(
   price float unsigned NOT NULL,
   start_timestamp timestamp NOT NULL,
   end_timestamp timestamp NOT NULL,
-  art varchar(191) NOT NULL,
+  art varchar(256) NOT NULL,
   locked boolean DEFAULT 1,
   
   -- CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS report(
   id varchar(36) PRIMARY KEY,
   reporter varchar(36),
   reported varchar(36) NOT NULL,
-  reason varchar(191) NOT NULL,
+  reason varchar(256) NOT NULL,
   accepted boolean,
 
   FOREIGN KEY (reporter) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL,
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS chat(
 CREATE TABLE IF NOT EXISTS message(
     chat varchar(36),
     sender varchar(36),
-    content varchar(191) NOT NULL,
+    content varchar(256) NOT NULL,
     shipping_datetime timestamp DEFAULT CURRENT_TIMESTAMP,
     
     PRIMARY KEY (chat, sender, shipping_datetime),
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS rate(
     author varchar(36),
     agreement varchar(36),
     rate float NOT NULL,
-    description varchar(191),
+    description varchar(256),
 
     PRIMARY KEY(author, agreement),
     CONSTRAINT author_fk FOREIGN KEY (author) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
