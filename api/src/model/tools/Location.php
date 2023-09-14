@@ -2,10 +2,11 @@
 
 namespace App\Model\Tool;
 
-trait Location {
+trait Location
+{
     protected string $CEP;
     protected string $address;
-    protected string $district;
+    protected string $neighborhood;
     protected string $city;
     protected string $federation;
 
@@ -42,19 +43,19 @@ trait Location {
     }
 
     /**
-     * @param string $district
+     * @param string $neighborhood
      */
-    public function setDistrict(string $district): void
+    public function setNeighborhood(string $neighborhood): void
     {
-        $this->district = $district;
+        $this->neighborhood = $neighborhood;
     }
 
     /** 
-     * @return string district
+     * @return string neighborhood
      */
-    public function getDistrict(): string
+    public function getNeighborhood(): string
     {
-        return $this->district;
+        return $this->neighborhood;
     }
 
     /**
@@ -89,11 +90,12 @@ trait Location {
         return $this->federation;
     }
 
-    private function toLocationArray(): array{
+    private function toLocationArray(): array
+    {
         return array_filter([
             'CEP' => $this->CEP,
             'address' => $this->address ?? null,
-            'district' => $this->district ?? null,
+            'neighborhood' => $this->neighborhood ?? null,
             'city' => $this->city,
             'federation' => $this->federation,
         ], fn($value) => isset($value));

@@ -118,8 +118,8 @@ class UserController
     private function getUserListByName(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $offset, int $limit): array
     {
         $user->setName($this->parameterList->getString('name'));
-        $list =  $db->getListByName($offset, $limit);
-        
+        $list = $db->getListByName($offset, $limit);
+
         static::$cache->create($list, 5);
         return $list;
     }
@@ -147,7 +147,7 @@ class UserController
             case AccountType::ENTERPRISE:
                 $user = new Enterprise;
                 $user->setCNPJ($this->parameterList->getString('cnpj'));
-                $user->setDistrict($this->parameterList->getString('district'));
+                $user->setNeighborhood($this->parameterList->getString('neighborhood'));
                 $user->setAddress($this->parameterList->getString('address'));
                 $db = new EnterpriseDB($user);
                 break;

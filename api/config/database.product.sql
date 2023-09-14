@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS enterprise(
 
   id varchar(36) PRIMARY KEY,
   CNPJ varchar(14) UNIQUE KEY NOT NULL,
-  district varchar(256) NOT NULL,
+  neighborhood varchar(256) NOT NULL,
   address varchar(256) NOT NULL,
 
   FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS selection(
   art varchar(256) NOT NULL,
   locked boolean DEFAULT 1,
   
-  -- CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
+  CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
   FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
   
 

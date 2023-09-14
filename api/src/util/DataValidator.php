@@ -41,11 +41,11 @@ final class DataValidator
     public function isFit(string $content, string $column = ''): bool
     {
         $length = strlen($content);
-        return  $length > 0 && $length <= match ($column) {
+        return $length > 0 && $length <= match ($column) {
             ArtistDB::CPF, UsersDB::PHONE => 11,
             UsersDB::CEP => 8,
             UsersDB::FEDERATION => 2,
-            UsersDB::CITY, EnterpriseDB::DISTRICT => 30,
+            UsersDB::CITY, EnterpriseDB::NEIGHBORHOOD => 30,
             EnterpriseDB::CNPJ => 14,
             default => 191
         };
@@ -54,7 +54,7 @@ final class DataValidator
     public function isValidToFlag(string $content, string $flag): bool
     {
 
-        return match($flag){
+        return match ($flag) {
             AgreementDB::HIRER, AgreementDB::HIRED, ChatDB::ARTIST, ChatDB::ENTERPRISE,
             SelectionDB::OWNER, ApplicationDB::ARTIST,
             ApplicationDB::SELECTION, MessageDB::CHAT, MessageDB::SENDER,
@@ -64,7 +64,7 @@ final class DataValidator
             SelectionDB::START_TIMESTAMP, SelectionDB::END_TIMESTAMP, MessageDB::DATETIME => $this->isTimestamp($content),
             AgreementDB::START_TIME, AgreementDB::END_TIME => $this->isTime($content),
             AgreementDB::DATE => $this->isDate($content),
-            
+
             UsersDB::SITE, UsersDB::IMAGE_URL => $this->isURL($content),
             UsersDB::EMAIL => $this->isEmail($content),
 
@@ -157,4 +157,3 @@ final class DataValidator
         return DateTime::createFromFormat('d/m/Y H:i:s', $timestamp) instanceof DateTime;
     }
 }
-
