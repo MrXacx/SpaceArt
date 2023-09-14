@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS artist(
   art enum("escultura", "pintura", "dança", "música") NOT NULL,
   wage float NOT NULL,
 
-  FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT user_fk FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS enterprise(
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS enterprise(
   neighborhood varchar(256) NOT NULL,
   address varchar(256) NOT NULL,
 
-  FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT user_fk FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -71,11 +71,9 @@ CREATE TABLE IF NOT EXISTS agreement(
   art varchar(256) NOT NULL,
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
-  -- CONSTRAINT time_is_future CHECK (start_time > CURRENT_TIME AND end_time > start_time),
-
-
-  FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT chk_time_is_future CHECK (start_time > CURRENT_TIME AND end_time > start_time),
+  CONSTRAINT hirer_fk FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT hired_fk FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -89,8 +87,8 @@ CREATE TABLE IF NOT EXISTS selection(
   art varchar(256) NOT NULL,
   locked boolean DEFAULT 1,
   
-  CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
-  FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT chk_time_is_future CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
+  CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
   
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -102,8 +100,8 @@ CREATE TABLE IF NOT EXISTS selection_application(
   last_change timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   
   PRIMARY KEY (selection, artist),
-  FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT selection_fk FOREIGN KEY (selection) REFERENCES selection (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -115,8 +113,8 @@ CREATE TABLE IF NOT EXISTS report(
   reason varchar(256) NOT NULL,
   accepted boolean,
 
-  FOREIGN KEY (reporter) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL,
-  FOREIGN KEY (reported) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT reported_fk FOREIGN KEY (reported) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -125,8 +123,8 @@ CREATE TABLE IF NOT EXISTS chat(
   artist varchar(36),
   enterprise varchar(36),
 
-  FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT enterprise_fk FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS message(
@@ -136,8 +134,8 @@ CREATE TABLE IF NOT EXISTS message(
     shipping_datetime timestamp DEFAULT CURRENT_TIMESTAMP,
     
     PRIMARY KEY (chat, sender, shipping_datetime),
-    FOREIGN KEY (chat) REFERENCES chat (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (sender) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT chat_fk FOREIGN KEY (chat) REFERENCES chat (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT sender_fk FOREIGN KEY (sender) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -154,6 +152,16 @@ CREATE TABLE IF NOT EXISTS rate(
     
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- CRIA VIEWS
+CREATE VIEW  artist_view AS
+SELECT usr.id, usr.name, usr.image, usr.CEP, usr.federation, usr.city, artist.art, artist.wage, usr.rate, usr.website
+FROM artist, users AS usr
+WHERE usr.id = artist.id;
+
+CREATE VIEW enterprise_view AS
+SELECT usr.id, usr.name, usr.image, usr.CEP, usr.federation, usr.city, ent.neighborhood, ent.address, usr.rate, usr.website
+FROM enterprise AS ent, users AS usr
+WHERE usr.id = ent.id;
 
 -- CRIA EVENTOS
 
