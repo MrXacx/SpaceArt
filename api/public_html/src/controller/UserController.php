@@ -116,8 +116,12 @@ class UserController
      * @param int $limit Número máximo de itens esperados
      */
     private function getUserListByName(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $offset, int $limit): array
-    {
-        $user->setName($this->parameterList->getString('name'));
+    {   
+        $name = $this->parameterList->getString('name');
+        if($name == '%'){
+            DataFormatException::throw('name');
+        }
+        $user->setName($name);
         $list = $db->getListByName($offset, $limit);
 
         static::$cache->create($list, 5);
