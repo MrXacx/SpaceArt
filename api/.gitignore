@@ -7,8 +7,15 @@
 
 # Composer
 vendor/
-.ini
 
+# Enviroment
+*.ini
+
+# Product
 cache/
 log/
+
+# Development
 *.todo
+*.zip
+
