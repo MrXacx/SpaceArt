@@ -90,7 +90,7 @@
   | id | ID do usuário | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
   | offset | linha de início da consulta.<br>Default: 0. | 0 =< offset | false |
   | limit | máximo de dados retornados.<br>Default: 10. | 0 < limit =< 500  | false |
-  | filter | Tipo de filtro da busca | `name`, `location` ou `art` | false
+  | filter | Tipo de filtro da busca | `name`, `location` ou `art` | false |
   <br>
 
   >> Filters
@@ -270,9 +270,17 @@
   
   | Parâmetro | Descrição | Formato | Obrigatório |
   | :------- | :-------- | :------ | :---------- |
-  | owner | ID do criador | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | true |
+  | owner | ID do criador | \d{8}-\d{4}-\d{4}-\d{4}-\d{12} | false |
   | offset | linha de início da consulta.<br>Default: 0. | 0 =< offset | false |
   | limit | máximo de dados retornados.<br>Default: 10. | 0 < limit =< 500  | false |
+  | filter | Tipo de filtro da busca | `name`, `location` ou `art` | true |
+  <br>
+
+  >> Filters
+  | Filtro | Descrição | Parâmetros |
+  | :----- | :-------- | :--------- |
+  | art | Tipo de arte buscado | art |
+  | owner | ID do criador da seleção | owner |
 
 ## /selection/application
 
