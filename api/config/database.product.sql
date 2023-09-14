@@ -9,14 +9,14 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
--- SET time_zone = "+00:00";
+SET time_zone = "+00:00";
 
 --
--- Banco de dados: spaceart
+-- Banco de dados: id21258140_dbspaceart
 --
 -- --------------------------------------------------------
-
-CREATE DATABASE IF NOT EXISTS id21258140_dbspaceart;
+DROP DATABASE IF EXISTS id21258140_dbspaceart;
+CREATE DATABASE id21258140_dbspaceart;
 USE id21258140_dbspaceart;
 
 -- CRIAÇÃO DAS ENTIDADES
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS artist(
   art enum("escultura", "pintura", "dança", "música") NOT NULL,
   wage float NOT NULL,
 
-  CONSTRAINT user_fk FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT artist_user_fk FOREIGN KEY (id) REFERENCES users(id)  ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS enterprise(
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS enterprise(
   neighborhood varchar(256) NOT NULL,
   address varchar(256) NOT NULL,
 
-  CONSTRAINT user_fk FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT enterprise_user_fk FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS agreement(
   status enum("send", "accepted", "recused", "canceled")  DEFAULT "send",
 
   CONSTRAINT chk_time_is_future CHECK (start_time > CURRENT_TIME AND end_time > start_time),
-  CONSTRAINT hirer_fk FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT hired_fk FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT hirer_user_fk FOREIGN KEY (hirer) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT hired_user_fk FOREIGN KEY (hired) REFERENCES artist(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS selection(
   art varchar(256) NOT NULL,
   locked boolean DEFAULT 1,
   
-  CONSTRAINT chk_time_is_future CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
+  CONSTRAINT chk_timestamp_is_future CHECK (start_timestamp > CURRENT_TIMESTAMP AND end_timestamp > start_timestamp),
   CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES enterprise(id) ON UPDATE CASCADE ON DELETE CASCADE
   
 
@@ -113,8 +113,8 @@ CREATE TABLE IF NOT EXISTS report(
   reason varchar(256) NOT NULL,
   accepted boolean,
 
-  CONSTRAINT reporter_fk FOREIGN KEY (reporter) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL,
-  CONSTRAINT reported_fk FOREIGN KEY (reported) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT reporter_user_fk FOREIGN KEY (reporter) REFERENCES users (id) ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT reported_user_fk FOREIGN KEY (reported) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -123,8 +123,8 @@ CREATE TABLE IF NOT EXISTS chat(
   artist varchar(36),
   enterprise varchar(36),
 
-  CONSTRAINT artist_fk FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT enterprise_fk FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT artist_member_fk FOREIGN KEY (artist) REFERENCES artist (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT enterprise_member_fk FOREIGN KEY (enterprise) REFERENCES enterprise (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS message(
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS message(
     
     PRIMARY KEY (chat, sender, shipping_datetime),
     CONSTRAINT chat_fk FOREIGN KEY (chat) REFERENCES chat (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT sender_fk FOREIGN KEY (sender) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT sender_user_fk FOREIGN KEY (sender) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS rate(
     description varchar(256),
 
     PRIMARY KEY(author, agreement),
-    CONSTRAINT author_fk FOREIGN KEY (author) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT author_user_fk FOREIGN KEY (author) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT agreement_fk FOREIGN KEY (agreement) REFERENCES agreement (id) ON UPDATE CASCADE ON DELETE CASCADE
     
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
