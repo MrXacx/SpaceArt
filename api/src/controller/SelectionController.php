@@ -12,9 +12,10 @@ use App\Util\DataFormatException;
 use App\Util\DataValidator;
 use DateTime;
 
-class SelectionController extends \App\Controller\Template\Controller
+class SelectionController
 {
-
+    use \App\Controller\Tool\Controller;
+    
     /**
      * Armazena um contrato
      * @return bool true caso a operação funcione corretamente

@@ -8,10 +8,9 @@ use App\DAO\MessageDB;
 use App\Model\Chat;
 use App\Model\Message;
 
-class ChatController extends \App\Controller\Template\Controller
+class ChatController
 {
-
-
+    use \App\Controller\Tool\Controller;
     /**
      * Obtém dados de um chat em específico
      * @return array Todos os dados de um chat em específico

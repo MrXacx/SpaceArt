@@ -16,8 +16,9 @@ use App\Model\Report;
 use App\Util\DataFormatException;
 use App\Util\DataValidator;
 
-class UserController extends \App\Controller\Template\Controller
+class UserController
 {
+    use \App\Controller\Tool\Controller;
 
     /**
      * Obtém usuário
@@ -117,7 +118,10 @@ class UserController extends \App\Controller\Template\Controller
     private function getUserListByName(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $offset, int $limit): array
     {
         $user->setName($this->parameterList->getString('name'));
-        return $db->getListByName($offset, $limit);
+        $list =  $db->getListByName($offset, $limit);
+        
+        static::$cache->create($list, 5);
+        return $list;
     }
 
     /**

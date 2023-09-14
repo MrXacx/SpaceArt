@@ -11,9 +11,9 @@ use App\DAO\RateDB;
 use App\Util\DataValidator;
 use DateTime;
 
-class AgreementController extends \App\Controller\Template\Controller
+class AgreementController
 {
-
+    use \App\Controller\Tool\Controller;
 
     /**
      * Obtém dados de um contrato em específico

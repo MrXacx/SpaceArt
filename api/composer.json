@@ -7,15 +7,15 @@
     "psr-4": {
       "App\\": "src/",
       "App\\Controller\\": "src/controller/",
-      "App\\Controller\\Template\\": "src/controller/abstracts/",
+      "App\\Controller\\Tool\\": "src/controller/tools/",
       "App\\DAO\\": "src/dao/",
       "App\\DAO\\Template\\": "src/dao/abstracts/",
       "App\\Model\\": "src/model/",
       "App\\Model\\Enumerate\\": "src/model/enum/",
       "App\\Model\\Template\\": "src/model/abstracts/",
-      "App\\Model\\Tool\\": "src/model/traits/",
+      "App\\Model\\Tool\\": "src/model/tools/",
       "App\\Util\\": "src/util/",
-      "App\\Util\\Tool\\": "src/util/traits/",
+      "App\\Util\\Tool\\": "src/util/tools/",
       "App\\Util\\Enumerate\\": "src/util/enum/"
     }
   },
