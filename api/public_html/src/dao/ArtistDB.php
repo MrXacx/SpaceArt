@@ -65,7 +65,7 @@ class ArtistDB extends UsersDB
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare(
-            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id LIMIT $limit OFFSET $offset"
+            "SELECT * FROM artist_view LIMIT $limit OFFSET $offset"
         );
 
         if ($query->execute()) { // Executa se consulta não falhar
@@ -84,8 +84,7 @@ class ArtistDB extends UsersDB
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare(
-            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist
-            INNER JOIN users ON users.id = artist.id
+            "SELECT * FROM artist_view
             WHERE city = ? AND federation = ?
             ORDER BY RAND()
             LIMIT $limit OFFSET $offset"
@@ -110,8 +109,7 @@ class ArtistDB extends UsersDB
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare(
-            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist
-            INNER JOIN users ON users.id = artist.id
+            "SELECT * FROM artist_view
             WHERE art = ?
             ORDER BY RAND()
             LIMIT $limit OFFSET $offset"
@@ -136,8 +134,7 @@ class ArtistDB extends UsersDB
     {
         // Determina query SQL de leitura
         $query = $this->getConnection()->prepare(
-            "SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist
-            INNER JOIN users ON users.id = artist.id
+            "SELECT * FROM artist_view
             WHERE name LIKE ?
             ORDER BY name
             LIMIT $limit OFFSET $offset"
@@ -158,7 +155,7 @@ class ArtistDB extends UsersDB
     public function getUnique(): Artist
     {
         // Define query SQL para obter todas as colunas da linha do usuário
-        $query = $this->getConnection()->prepare('SELECT users.id, name, image, CEP, federation, city, art, wage, rate, website FROM artist INNER JOIN users ON users.id = artist.id WHERE users.id = ?');
+        $query = $this->getConnection()->prepare('SELECT * FROM artist_view WHERE id = ?');
         $query->bindValue(1, $this->artist->getID()); // Substitui interrogação pelo ID
 
         if ($query->execute()) { // Executa se a query for aceita
