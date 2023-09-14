@@ -2,7 +2,7 @@
 use App\Controller\Tool\Controller;
 use App\Util\Cache;
 
-require_once __DIR__ . '/../config/setup.php';
+require_once __DIR__ . '/../../config/setup.php';
 
 App\RoutesBuilder::build();
 
@@ -18,7 +18,7 @@ if($cache->isInvalid()){
     
     $routes = new App\RoutesBuilder; // Inicia rotas do servidor
     $routes->fetchResponse($response, $routes->dispatch()); // Obtém a resposta da rota   
-    $cache->create($response->getContent(), 1);
+   // $cache->create($response->getContent(), 1);
 } else {
 
     $response->setContent(

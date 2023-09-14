@@ -29,7 +29,7 @@ class RoutesBuilder
      */
     public static function build()
     {
-
+        
         static::$dispatcher = FastRoute\simpleDispatcher(
             function (RouteCollector $collector) { // Inicia rotas
     
@@ -109,6 +109,7 @@ class RoutesBuilder
 
             }
         );
+        
     }
 
     /**
@@ -157,6 +158,7 @@ class RoutesBuilder
                     // Define status de falha como erro de requisição exclusivamente em casos de execeções de formatação de parâmetros
                     $status = $ex instanceof DataFormatException ? Response::HTTP_BAD_REQUEST : Response::HTTP_INTERNAL_SERVER_ERROR;
                     $responseHandler->setStatusCode($status);
+                    $responseHandler->setContent($ex->getFile().PHP_EOL.$ex->getMessage());
                     return;
                 }
 
