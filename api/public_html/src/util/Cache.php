@@ -7,7 +7,7 @@ class Cache{
     public const LARGE_INTERVAL_STORAGE = 7;
     readonly public string $path;
     public function __construct(string $fileName) {
-        $this->path = __DIR__."/../../cache/$fileName.txt";
+        $this->path = __DIR__."/../../../tmp/cache/$fileName.txt";
     }
 
     public function create(string|array $content, int $expireTimeInMinutes): bool{

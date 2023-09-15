@@ -15,7 +15,5 @@ vendor/
 cache/
 log/
 
-# Development
-*.todo
-*.zip
+
 
