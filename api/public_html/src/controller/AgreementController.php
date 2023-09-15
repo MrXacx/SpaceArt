@@ -1,52 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Model\Enumerate\ArtType;
-
-use App\DAO\AgreementDB;
+use DateTime;
 use App\Model\Agreement;
+use App\DAO\AgreementDB;
 use App\Model\Rate;
 use App\DAO\RateDB;
+use App\Model\Enumerate\ArtType;
 use App\Util\DataValidator;
-use DateTime;
+use App\Util\Cache;
 
-class AgreementController
+/**
+ * Controlador de contrato e avaliações
+ * 
+ * @package Controller
+ * @author Ariel Santos <MrXacx>
+ * @author Marcos Vinícius <>
+ * @author Matheus Silva <>
+ */
+final class AgreementController
 {
     use \App\Controller\Tool\Controller;
-
-    /**
-     * Obtém dados de um contrato em específico
-     * @return array Todos os dados de um chat em específico
-     */
-    public function getAgreement(): array
-    {
-        $agreement = new Agreement;
-        $agreement->setID($this->parameterList->getString('id')); // Obtém id informado
-
-        $db = new AgreementDB($agreement); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getAgreement()->toArray());
-
-    }
-
-    /**
-     * Obtém lista de contratos
-     * @return array
-     */
-    public function getAgreementList(): array
-    {
-
-        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
-        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
-
-        $agreement = new Agreement;
-        $agreement->setHirer($this->parameterList->getString('user'));
-        $agreement->setHired($this->parameterList->getString('user'));
-        $db = new AgreementDB($agreement);
-        return array_map(fn($agreement) => $this->filterNulls($agreement->toArray()), $db->getList($offset, $limit));
-    }
-
-
 
     /**
      * Armazena um contrato
@@ -77,18 +54,45 @@ class AgreementController
     }
 
     /**
-     * Deleta contrato
-     * @return bool true caso a operação funcione corretamente
+     * Obtém dados de um contrato em específico
+     * @return array Todos os dados de um chat em específico
      */
-    public function deleteAgreement(): bool
+    public function getAgreement(): array
     {
         $agreement = new Agreement;
-        $agreement->setID($this->parameterList->getString('id')); // obtém id do contrato
+        $agreement->setID($this->parameterList->getString('id')); // Obtém id informado
 
-        $db = new AgreementDB($agreement); // inicia banco com modelo de contrato
-        return $db->delete(); // deleta contrato
+        $db = new AgreementDB($agreement); // Inicia objeto para manipular o chat
+        $agreement = $this->filterNulls($db->getAgreement()->toArray());
+
+        static::$cache->create($agreement, Cache::TINY_INTERVAL_STORAGE);
+        return $agreement;
+
     }
 
+    /**
+     * Obtém lista de contratos
+     * @return array
+     */
+    public function getAgreementList(): array
+    {
+
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
+
+        $agreement = new Agreement;
+        $agreement->setHirer($this->parameterList->getString('user'));
+        $agreement->setHired($this->parameterList->getString('user'));
+        $db = new AgreementDB($agreement);
+        $list = array_map(fn($agreement) => $this->filterNulls($agreement->toArray()), $db->getList($offset, $limit));
+
+        static::$cache->create($list, Cache::MEDIUM_INTERVAL_STORAGE);
+        return $list;
+    }
+
+    /**
+     * Atualiza dado de um contrato
+     */
     public function updateAgreement(): bool
     {
 
@@ -108,6 +112,22 @@ class AgreementController
         return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
     }
 
+    /**
+     * Deleta contrato
+     * @return bool true caso a operação funcione corretamente
+     */
+    public function deleteAgreement(): bool
+    {
+        $agreement = new Agreement;
+        $agreement->setID($this->parameterList->getString('id')); // obtém id do contrato
+
+        $db = new AgreementDB($agreement); // inicia banco com modelo de contrato
+        return $db->delete(); // deleta contrato
+    }
+   
+    /**
+     * Armazena avalização
+     */
     public function storeRate(): bool
     {
         $rate = new Rate($this->parameterList->getString('agreement')); // inicia modelo de avaliação
@@ -119,16 +139,24 @@ class AgreementController
         return $db->create(); // armazena avaliação
     }
 
+    /**
+     * Obtém dados de uma avaliação
+     */
     public function getRate(): array
     {
         $rate = new Rate($this->parameterList->getString('agreement'));
         $rate->setAuthor($this->parameterList->getString('author')); // Obtém id informado
 
         $db = new RateDB($rate); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getRate()->toArray());
+        $rate = $this->filterNulls($db->getRate()->toArray());
 
+        static::$cache->create($rate, Cache::TINY_INTERVAL_STORAGE);
+        return $rate;
     }
 
+    /**
+     * Obtém lista de avaliações de um contrato
+     */
     public function getRateList(): array
     {
 
@@ -138,19 +166,15 @@ class AgreementController
         $rate = new Rate($this->parameterList->getString('agreement'));
 
         $db = new RateDB($rate); // Inicia objeto para manipular o chat
-        return array_map(fn($rate) => $this->filterNulls($rate->toArray()), $db->getList($offset, $limit));
-
+        $list = array_map(fn($rate) => $this->filterNulls($rate->toArray()), $db->getList($offset, $limit));
+        
+        static::$cache->create($list, Cache::TINY_INTERVAL_STORAGE);
+        return $list;
     }
 
-    public function deleteRate(): bool
-    {
-        $rate = new Rate($this->parameterList->getString('agreement')); // inicia modelo de avaliação
-        $rate->setAuthor($this->parameterList->getString('author')); // obtém id da avaliação
-
-        $db = new RateDB($rate); // inicia banco
-        return $db->delete(); // deleta avaliação
-    }
-
+    /**
+     * Atualiza dados de uma avaliação
+     */
     public function updateRate(): bool
     {
 
@@ -170,4 +194,18 @@ class AgreementController
         return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
     }
 
+    /**
+     * Deleta avaliação
+     */
+    public function deleteRate(): bool
+    {
+        $rate = new Rate($this->parameterList->getString('agreement')); // inicia modelo de avaliação
+        $rate->setAuthor($this->parameterList->getString('author')); // obtém id da avaliação
+
+        $db = new RateDB($rate); // inicia banco
+        return $db->delete(); // deleta avaliação
+    }
+
 }
+
+?>

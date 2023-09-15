@@ -1,16 +1,42 @@
 <?php
 
-namespace App\Controller;
+declare(strict_types=1);
 
+namespace App\Controller;
 
 use App\DAO\ChatDB;
 use App\DAO\MessageDB;
 use App\Model\Chat;
 use App\Model\Message;
 
-class ChatController
+/**
+ * Controlador de chat e mensagens
+ * 
+ * @package Controller
+ * @author Ariel Santos <MrXacx>
+ * @author Marcos Vinícius <>
+ * @author Matheus Silva <>
+ */
+final class ChatController
 {
     use \App\Controller\Tool\Controller;
+
+    /**
+     * Armazena um chat
+     * @return bool true caso a operação funcione corretamente
+     */
+    public function storeChat(): bool
+    {
+
+        $chat = new Chat;
+        $chat->setArtist($this->parameterList->getString('artist'));
+        $chat->setEnterprise($this->parameterList->getString('enterprise'));
+
+        $db = new ChatDB($chat);
+        return $db->create();
+
+    }
+
     /**
      * Obtém dados de um chat em específico
      * @return array Todos os dados de um chat em específico
@@ -49,21 +75,21 @@ class ChatController
     }
 
     /**
-     * Armazena um chat
+     * Armazena uma mensagem
      * @return bool true caso a operação funcione corretamente
      */
-    public function storeChat(): bool
+    public function storeMessage(): bool
     {
 
-        $chat = new Chat;
-        $chat->setArtist($this->parameterList->getString('artist'));
-        $chat->setEnterprise($this->parameterList->getString('enterprise'));
+        $message = new Message($this->parameterList->getString('chat'));
+        $message->setSender($this->parameterList->getString('sender'));
+        $message->setContent($this->parameterList->getString('content'));
+        $message->setTimestamp(new \DateTime());
 
-        $db = new ChatDB($chat);
+        $db = new MessageDB($message);
         return $db->create();
 
     }
-
 
     /**
      * Obtém dados de uma mensagem
@@ -100,24 +126,7 @@ class ChatController
 
         $list = (new MessageDB($message))->getList($offset, $limit);
         return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
-    }
-
-    /**
-     * Armazena uma mensagem
-     * @return bool true caso a operação funcione corretamente
-     */
-    public function storeMessage(): bool
-    {
-
-        $message = new Message($this->parameterList->getString('chat'));
-        $message->setSender($this->parameterList->getString('sender'));
-        $message->setContent($this->parameterList->getString('content'));
-        $message->setTimestamp(new \DateTime());
-
-        $db = new MessageDB($message);
-        return $db->create();
-
-    }
+    } 
 
     /**
      * Deleta chat
@@ -139,3 +148,5 @@ class ChatController
     }
 
 }
+
+?>

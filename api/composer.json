@@ -16,7 +16,7 @@
       "App\\Model\\Tool\\": "public_html/src/model/tools/",
       "App\\Util\\": "public_html/src/util/",
       "App\\Util\\Tool\\": "public_html/src/util/tools/",
-      "App\\Util\\Enumerate\\": "public_html/src/util/enum/"
+      "App\\Util\\Exception\\": "public_html/src/util/exceptions/"
     }
   },
   "require": {

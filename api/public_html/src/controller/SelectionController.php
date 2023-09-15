@@ -1,21 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Model\Enumerate\ArtType;
-
 use App\DAO\ApplicationDB;
 use App\Model\Application;
 use App\Model\Selection;
 use App\DAO\SelectionDB;
-use App\Util\DataFormatException;
+use App\Util\Cache;
 use App\Util\DataValidator;
+use App\Util\Exception\UnexpectedHttpParameter;
 use DateTime;
 
-class SelectionController
+/**
+ * Controlador de seleções e submissões
+ * 
+ * @package Controller
+ * @author Ariel Santos <MrXacx>
+ * @author Marcos Vinícius <>
+ * @author Matheus Silva <>
+ */
+final class SelectionController
 {
     use \App\Controller\Tool\Controller;
-    
+
     /**
      * Armazena um contrato
      * @return bool true caso a operação funcione corretamente
@@ -56,7 +66,10 @@ class SelectionController
         $selection->setID($this->parameterList->getString('id')); // Obtém id informado
 
         $db = new SelectionDB($selection); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getSelection()->toArray());
+
+        $selection = $this->filterNulls($db->getSelection()->toArray());
+        static::$cache->create($selection, Cache::MEDIUM_INTERVAL_STORAGE);
+        return $selection;
 
     }
 
@@ -89,7 +102,6 @@ class SelectionController
         return $db->getListOfOwner($offset, $limit);
     }
 
-
     /**
      * Obtém lista de contratos
      * @return array
@@ -99,13 +111,12 @@ class SelectionController
         $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
         $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
 
-
         $selection = new Selection;
         $db = new SelectionDB($selection);
 
-
-        $list = match ($this->parameterList->getString('filter')) {
-            default => $this->getRandomSelectionListByArt(
+        $filter = $this->parameterList->getString('filter');
+        $list = match ($filter) {
+            'art' => $this->getRandomSelectionListByArt(
                 $selection,
                 $db,
                 $limit
@@ -115,10 +126,38 @@ class SelectionController
                 $db,
                 $offset,
                 $limit
-            )
+            ),
+            default => UnexpectedHttpParameter::throw($filter, 'filter')
         };
 
-        return array_map(fn($selection) => $selection->toArray(), $list);
+        $list = array_map(fn($selection) => $selection->toArray(), $list);
+        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
+        return $list;
+    }
+
+    /**
+     * Atualiza dados de uma seleção
+     * @return true caso a atualização funcione
+     */
+    public function updateSelection(): bool
+    {
+
+        $column = $this->parameterList->getString('column'); // RECEBE A COLUNA QUE SERÁ ALTERADA
+        $info = $this->parameterList->getString('info'); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
+
+        $selection = new Selection; // INICIANDO MODELO DO USUÁRIO 
+
+        //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
+        $selection->setID($this->parameterList->getString('id')); // PASSA O ID DO SELEÇÃO PARA O MODELO
+
+        $validator = new DataValidator;
+
+        if (SelectionDB::isColumn(SelectionDB::class, $column) && $validator->isValidToFlag($info, $column)) {
+            $db = new SelectionDB($selection);
+            return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
+        }
+
+        return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
     }
 
     /**
@@ -134,51 +173,10 @@ class SelectionController
         return $db->delete();
     }
 
-    public function updateSelection(): bool
-    {
-
-        $column = $this->parameterList->getString('column'); // RECEBE A COLUNA QUE SERÁ ALTERADA
-        $info = $this->parameterList->getString('info'); // RECEBE A INFORMAÇÃO QUE ELE DESEJA ALTERAR DE ACORDO COM A CONTA EM QUE ESTÁ CADASTRADO O ID
-
-        $selection = new Selection; // INICIANDO MODELO DO USUÁRIO 
-
-        //REALIZA A INICIALIZAÇÃO DO BANCO A PARTIR DA VERIFICAÇÃO DO TIPO DE CONTA
-        $selection->setID($this->parameterList->getString('id')); // PASSA O ID DO SELEÇÃO PARA O MODELO
-
-        $validator = new DataValidator;
-
-
-        if (SelectionDB::isColumn(SelectionDB::class, $column) && $validator->isValidToFlag($info, $column)) {
-
-            if ($column == SelectionDB::START_TIMESTAMP || $column == SelectionDB::END_TIMESTAMP) {
-                $timestamp = DateTime::createFromFormat(
-                    SelectionDB::USUAL_TIMESTAMP_FORMAT,
-                    $info
-                );
-
-                if (is_bool($timestamp)) {
-                    goto failed;
-                }
-
-                $info = $timestamp->format(SelectionDB::DB_TIMESTAMP_FORMAT);
-            }
-
-            $db = new SelectionDB($selection);
-            return $db->update($column, $info); //RETORNA SE ALTEROU OU NÃO, DE ACORDO COM A VERIFICAÇÃO DO IF
-        }
-
-        failed:
-        return false; // RETORNA FALSO CASO NÃO TENHA PASSADO DA VERIFICAÇÃO
-    }
-    public function getApplication(): array
-    {
-        $application = new Application($this->parameterList->getString('selection'));
-        $application->setUser($this->parameterList->getString('artist')); // Obtém id informado
-
-        $db = new ApplicationDB($application); // Inicia objeto para manipular o chat
-        return $this->filterNulls($db->getApplication()->toArray());
-    }
-
+    /**
+     * Armazena aplicação
+     * @return true caso funcione
+     */
     public function storeApplication(): bool
     {
         $application = new Application($this->parameterList->getString('selection'));
@@ -186,6 +184,23 @@ class SelectionController
 
         $db = new ApplicationDB($application);
         return $db->create();
+    }
+
+    /**
+     * Obtém dados de uma aplicação a uma seleção
+     * @return array
+     */
+    public function getApplication(): array
+    {
+        $application = new Application($this->parameterList->getString('selection'));
+        $application->setUser($this->parameterList->getString('artist')); // Obtém id informado
+
+        $db = new ApplicationDB($application); // Inicia objeto para manipular o chat
+
+        $application = $this->filterNulls($db->getApplication()->toArray());
+        static::$cache->create($application, Cache::LARGE_INTERVAL_STORAGE);
+        return $application;
+
     }
 
     /**
@@ -203,7 +218,9 @@ class SelectionController
             new Application($this->parameterList->getString('selection'))
         );
 
-        return array_map(fn($application) => $application->toArray(), $db->getList($offset, $limit));
+        $list = array_map(fn($application) => $application->toArray(), $db->getList($offset, $limit));
+        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
+        return $list;
     }
 
     public function deleteApplication(): bool
@@ -215,3 +232,5 @@ class SelectionController
         return $db->delete();
     }
 }
+
+?>

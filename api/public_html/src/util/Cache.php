@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Util;
-use stdClass;
-
 class Cache{
-
+    public const TINY_INTERVAL_STORAGE = 3;
+    public const MEDIUM_INTERVAL_STORAGE = 5;
+    public const LARGE_INTERVAL_STORAGE = 7;
     readonly public string $path;
     public function __construct(string $fileName) {
         $this->path = __DIR__."/../../cache/$fileName.txt";
@@ -28,7 +28,7 @@ class Cache{
         return strtotime( "+ $expireTimeInMinutes Minutes", filectime($this->path)) <= strtotime('now');
     }
 
-    public function isInvalid(): bool{
+    public function isNotUsable(): bool{
 
         return !file_exists($this->path) || strtotime(
             json_decode(file_get_contents($this->path))->expiration
@@ -36,10 +36,6 @@ class Cache{
     }
 
     public function getContent(): string{
-        return 
-        json_encode(
-                json_decode(file_get_contents($this->path))->data,
-                JSON_INVALID_UTF8_SUBSTITUTE
-        );
+        return json_decode(file_get_contents($this->path))->data;
     }
 }

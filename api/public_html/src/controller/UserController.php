@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+declare(strict_types=1);
 
+namespace App\Controller;
 
 use App\DAO\UsersDB;
 use App\DAO\ArtistDB;
@@ -13,120 +14,21 @@ use App\Model\Enterprise;
 use App\Model\Enumerate\AccountType;
 use App\Model\Enumerate\ArtType;
 use App\Model\Report;
-use App\Util\DataFormatException;
+use App\Util\Cache;
+use App\Util\Exception\DataFormatException;
 use App\Util\DataValidator;
 
-class UserController
+/**
+ * Controlador de usuários e denúncia
+ * 
+ * @package Controller
+ * @author Ariel Santos <MrXacx>
+ * @author Marcos Vinícius <>
+ * @author Matheus Silva <>
+ */
+final class UserController
 {
     use \App\Controller\Tool\Controller;
-
-    /**
-     * Obtém usuário
-     * @return array dados de um usuário
-     */
-    public function getUser(): array
-    {
-
-        list($user, $db) = $this->getAccountType();
-        $user->setID($this->parameterList->getString('id')); // Inicia usuário com o id informado
-
-        // Caso o id seja o token de acesso, dados sigilosos serão consultados
-        return $this->filterNulls($this->parameterList->getBoolean('token') ? $db->getUser()->toArray() : $db->getUnique()->toArray());
-
-    }
-
-    /**
-     * Obtém dados de acesso ao sistema
-     * @return array vetor com dados de acesso
-     */
-    public function getUserAcess(): array
-    {
-        /*
-            No ato do login, o sistema servido deve possuir email e senha do usuário,
-            mas pode não ter acesso ao id desse. Portanto, a API deve retornar apenas
-            o id consultado com base nos dados informados.  
-        */
-
-        $user = new User;
-
-        $user->setEmail($this->parameterList->getString('email'));
-        $user->setPassword($this->parameterList->getString('password'));
-
-        $db = new UsersDB($user);
-        $db->updateTokenAcess();
-        return $db->getAcess();
-
-    }
-
-    /**
-     * Obtém lista de usuários
-     * @return array
-     */
-    public function getUserList(): array
-    {
-        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
-        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
-
-        list($user, $dao) = $this->getAccountType();
-
-        $list = match ($this->parameterList->getString('filter')) {
-            'location' => $this->getRandomUserListByLocation($user, $dao, $limit),
-            'art' => $this->getRandomUserListByArt($user, $dao, $limit),
-            'name' => $this->getUserListByName($user, $dao, $offset, $limit),
-            default => $dao->getList($offset, $limit)
-        };
-
-        return array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
-    }
-
-
-    /**
-     * Obtém lista randômica de usuários filtrados por cidade e estado
-     * 
-     * @param Artist|Enterprise $user Usuário
-     * @param ArtistDB|EnterpriseDB $db Tabela do banco
-     * @param int $limit Número máximo de itens esperados
-     */
-    private function getRandomUserListByLocation(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $limit): array
-    {
-        $user->setCity($this->parameterList->getString('city'));
-        $user->setFederation($this->parameterList->getString('federation'));
-        return $db->getRandomListByLocation(0, $limit);
-    }
-
-    /**
-     * Obtém lista randômica de usuários filtrados por tipo de arte
-     * 
-     * @param Artist|Enterprise $user Usuário
-     * @param ArtistDB|EnterpriseDB $db Tabela do banco
-     * @param int $limit Número máximo de itens esperados
-     */
-    private function getRandomUserListByArt(Artist $user, ArtistDB $db, int $limit): array
-    {
-        $user->setArt($this->parameterList->getEnum('art', ArtType::class));
-        return $db->getRandomListByArt(0, $limit);
-    }
-
-    /**
-     * Obtém lista de usuários filtrados pelo nome
-     * 
-     * @param Artist|Enterprise $user Usuário
-     * @param ArtistDB|EnterpriseDB $db Tabela do banco
-     * @param int $offset Posição inicial da consulta
-     * @param int $limit Número máximo de itens esperados
-     */
-    private function getUserListByName(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $offset, int $limit): array
-    {   
-        $name = $this->parameterList->getString('name');
-        if($name == '%'){
-            DataFormatException::throw('name');
-        }
-        $user->setName($name);
-        $list = $db->getListByName($offset, $limit);
-
-        static::$cache->create($list, 5);
-        return $list;
-    }
 
     /**
      * Armazena usuário
@@ -179,6 +81,120 @@ class UserController
 
     }
 
+    /**
+     * Obtém usuário
+     * @return array dados de um usuário
+     */
+    public function getUser(): array
+    {
+
+        list($user, $db) = $this->getAccountType();
+        $user->setID($this->parameterList->getString('id')); // Inicia usuário com o id informado
+
+        // Caso o id seja o token de acesso, dados sigilosos serão consultados
+        $user = $this->filterNulls($this->parameterList->getBoolean('token') ? $db->getUser()->toArray() : $db->getUnique()->toArray());
+        static::$cache->create($user, Cache::MEDIUM_INTERVAL_STORAGE);
+        return $user;
+
+    }
+
+    /**
+     * Obtém dados de acesso ao sistema
+     * @return array vetor com dados de acesso
+     */
+    public function getUserAcess(): array
+    {
+        /*
+            No ato do login, o sistema servido deve possuir email e senha do usuário,
+            mas pode não ter acesso ao id desse. Portanto, a API deve retornar apenas
+            o id consultado com base nos dados informados.  
+        */
+
+        $user = new User;
+
+        $user->setEmail($this->parameterList->getString('email'));
+        $user->setPassword($this->parameterList->getString('password'));
+
+        $db = new UsersDB($user);
+        $db->updateTokenAcess(); // Gera novo token de acesso
+        $access = $db->getAcess(); // Obtém dados de acesso
+
+        static::$cache->create($access, Cache::MEDIUM_INTERVAL_STORAGE); // Armazena em cache
+        return $access;
+
+    }
+
+    /**
+     * Obtém lista de usuários
+     * @return array
+     */
+    public function getUserList(): array
+    {
+        $offset = $this->fetchListOffset(); // Obtém posição de início da leitura
+        $limit = $this->fetchListLimit(); // Obtém máximo de elementos da leitura
+
+        list($user, $dao) = $this->getAccountType();
+
+        $list = match ($this->parameterList->getString('filter')) {
+            'location' => $this->getRandomUserListByLocation($user, $dao, $limit),
+            'art' => $this->getRandomUserListByArt($user, $dao, $limit),
+            'name' => $this->getUserListByName($user, $dao, $offset, $limit),
+            default => $dao->getList($offset, $limit)
+        };
+
+        $list = array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
+        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE); // Armazena em cache
+        return $list;
+    }
+
+
+    /**
+     * Obtém lista randômica de usuários filtrados por cidade e estado
+     * 
+     * @param Artist|Enterprise $user Usuário
+     * @param ArtistDB|EnterpriseDB $db Tabela do banco
+     * @param int $limit Número máximo de itens esperados
+     */
+    private function getRandomUserListByLocation(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $limit): array
+    {
+        $user->setCity($this->parameterList->getString('city'));
+        $user->setFederation($this->parameterList->getString('federation'));
+        return $db->getRandomListByLocation(0, $limit);
+    }
+
+    /**
+     * Obtém lista randômica de usuários filtrados por tipo de arte
+     * 
+     * @param Artist|Enterprise $user Usuário
+     * @param ArtistDB|EnterpriseDB $db Tabela do banco
+     * @param int $limit Número máximo de itens esperados
+     */
+    private function getRandomUserListByArt(Artist $user, ArtistDB $db, int $limit): array
+    {
+        $user->setArt($this->parameterList->getEnum('art', ArtType::class));
+        return $db->getRandomListByArt(0, $limit);
+    }
+
+    /**
+     * Obtém lista de usuários filtrados pelo nome
+     * 
+     * @param Artist|Enterprise $user Usuário
+     * @param ArtistDB|EnterpriseDB $db Tabela do banco
+     * @param int $offset Posição inicial da consulta
+     * @param int $limit Número máximo de itens esperados
+     */
+    private function getUserListByName(Artist|Enterprise $user, ArtistDB|EnterpriseDB $db, int $offset, int $limit): array
+    {
+        $name = $this->parameterList->getString('name');
+        if ($name == '%') {
+            DataFormatException::throw('name');
+        }
+        $user->setName($name);
+        $list = $db->getListByName($offset, $limit);
+
+        static::$cache->create($list, 5);
+        return $list;
+    }
 
     /**
      * Obtém tipo de conta informado
@@ -234,6 +250,20 @@ class UserController
     }
 
     /**
+     * Armazena denúncia
+     * @return bool true se a denúncia foi armazenada
+     */
+    public function storeReport(): bool
+    {
+        $report = new Report($this->parameterList->getString('reporter'));
+        $report->setReported($this->parameterList->getString('reported'));
+        $report->setReason($this->parameterList->getString('reason'));
+
+        $db = new ReportDB($report);
+        return $db->create();
+    }
+
+    /**
      * Obtém denúncia de um usuário
      * @return array todos os dados da denúncia
      */
@@ -243,7 +273,9 @@ class UserController
         $report->setID($this->parameterList->getString('id'));
 
         $db = new ReportDB($report);
-        return $db->getReport()->toArray();
+        $report = $db->getReport()->toArray();
+        static::$cache->create($report, Cache::LARGE_INTERVAL_STORAGE);
+        return $report;
     }
 
     /**
@@ -260,21 +292,12 @@ class UserController
                 $this->parameterList->getString('reporter')
             )
         );
-        return array_map(fn($report) => $report->toArray(), $db->getList($offset, $limit));
-    }
+        $list = array_map(fn($report) => $report->toArray(), $db->getList($offset, $limit));
+        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
+        return $list;
 
-    /**
-     * Armazena denúncia
-     * @return bool true se a denúncia foi armazenada
-     */
-    public function storeReport(): bool
-    {
-        $report = new Report($this->parameterList->getString('reporter'));
-        $report->setReported($this->parameterList->getString('reported'));
-        $report->setReason($this->parameterList->getString('reason'));
-
-        $db = new ReportDB($report);
-        return $db->create();
     }
 
 }
+
+?>
