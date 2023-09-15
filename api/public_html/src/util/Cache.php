@@ -8,7 +8,7 @@ class Cache{
 
     readonly public string $path;
     public function __construct(string $fileName) {
-        $this->path = __DIR__."/../../../tmp/cache/$fileName.cache";
+        $this->path = __DIR__."/../../../tmp/cache/$fileName.txt";
     }
 
     public function create(string|array $content, int $expireTimeInMinutes): bool{
