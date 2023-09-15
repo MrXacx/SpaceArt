@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Template;
 
 use App\Model\Tool\Location;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 use Exception;
 
 /**

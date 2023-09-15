@@ -7,7 +7,7 @@ namespace App\Model;
 use App\DAO\AgreementDB;
 use App\Model\Enumerate\AgreementStatus;
 use App\Model\Enumerate\ArtType;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 use DateTime;
 
 /**

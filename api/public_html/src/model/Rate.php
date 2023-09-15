@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use App\DAO\RateDB;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 
 /**
  * Classe modelo de avaliação

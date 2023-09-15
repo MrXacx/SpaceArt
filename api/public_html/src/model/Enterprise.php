@@ -7,7 +7,7 @@ namespace App\Model;
 use App\DAO\UsersDB;
 use App\DAO\EnterpriseDB;
 use App\Model\Enumerate\AccountType;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 
 /**
  * Classe modelo de empreendimento

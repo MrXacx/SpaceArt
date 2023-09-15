@@ -6,7 +6,7 @@ namespace App\Model;
 
 use App\DAO\SelectionDB;
 use App\Model\Enumerate\ArtType;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 use DateInterval;
 use DateTime;
 

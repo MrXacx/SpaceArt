@@ -2,7 +2,7 @@
 
 namespace App\Model\Template;
 
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 use App\Util\DataValidator;
 
 /**

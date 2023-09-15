@@ -8,7 +8,7 @@ use App\DAO\ArtistDB;
 use App\DAO\UsersDB;
 use App\Model\Enumerate\AccountType;
 use App\Model\Enumerate\ArtType;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 
 /**
  * Classe modelo de artista

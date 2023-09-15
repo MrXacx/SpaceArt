@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
+use App\Util\Exception\UnexpectedHttpParameterException;
 use Exception;
 use FastRoute;
 use FastRoute\RouteCollector;
@@ -29,7 +30,7 @@ class RoutesBuilder
      */
     public static function build()
     {
-        
+
         static::$dispatcher = FastRoute\simpleDispatcher(
             function (RouteCollector $collector) { // Inicia rotas
     
@@ -59,7 +60,7 @@ class RoutesBuilder
                     $collector->get('', ChatController::class . '@getChat'); // Exibe um chat
                     $collector->post('', ChatController::class . '@storeChat'); // Cria um chat
                     $collector->get('/list', ChatController::class . '@getChatList'); // Exibe lista de chats
-
+    
                     $collector->addGroup('/message', function (RouteCollector $collector) // rotas com início "/chat/message"
                     {
                         $collector->get('', ChatController::class . '@getMessage'); //Abre a conversa selecionada
@@ -109,7 +110,7 @@ class RoutesBuilder
 
             }
         );
-        
+
     }
 
     /**
@@ -156,9 +157,9 @@ class RoutesBuilder
                     $content = call_user_func_array([new $class, $method], $vars); // Instancia classe e chama o método passando os parâmetros retornados pela rota
                 } catch (Exception $ex) {
                     // Define status de falha como erro de requisição exclusivamente em casos de execeções de formatação de parâmetros
-                    $status = $ex instanceof DataFormatException ? Response::HTTP_BAD_REQUEST : Response::HTTP_INTERNAL_SERVER_ERROR;
+                    $status = $ex instanceof DataFormatException || $ex instanceof UnexpectedHttpParameterException ? Response::HTTP_BAD_REQUEST : Response::HTTP_INTERNAL_SERVER_ERROR;
                     $responseHandler->setStatusCode($status);
-                    $responseHandler->setContent($ex->getFile().PHP_EOL.$ex->getMessage());
+                    $responseHandler->setContent($ex->getFile() . PHP_EOL . $ex->getMessage());
                     return;
                 }
 
@@ -182,7 +183,7 @@ class RoutesBuilder
 
 
 
-                
+
 
 
         }

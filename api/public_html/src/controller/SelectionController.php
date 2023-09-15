@@ -11,7 +11,7 @@ use App\Model\Selection;
 use App\DAO\SelectionDB;
 use App\Util\Cache;
 use App\Util\DataValidator;
-use App\Util\Exception\UnexpectedHttpParameter;
+use App\Util\Exception\UnexpectedHttpParameterException;
 use DateTime;
 
 /**
@@ -127,7 +127,7 @@ final class SelectionController
                 $offset,
                 $limit
             ),
-            default => UnexpectedHttpParameter::throw($filter, 'filter')
+            default => UnexpectedHttpParameterException::throw($filter, 'filter')
         };
 
         $list = array_map(fn($selection) => $selection->toArray(), $list);

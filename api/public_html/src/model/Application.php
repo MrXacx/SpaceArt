@@ -4,7 +4,7 @@ namespace App\Model;
 
 use DateTime;
 use App\DAO\ApplicationDB;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 
 /**
  * Classe modelo de aplicação a uma seleção

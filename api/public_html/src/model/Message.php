@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use App\DAO\MessageDB;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 use DateTime;
 
 /**

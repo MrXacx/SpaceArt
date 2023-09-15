@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use App\DAO\ReportDB;
-use App\Util\DataFormatException;
+use App\Util\Exception\DataFormatException;
 
 /**
  * Classe modelo de denúncia
