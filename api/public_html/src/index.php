@@ -13,13 +13,10 @@ Controller::$cache = new Cache(
     str_replace('/','@', \App\Server::getURI())
 );
 
-if($cache->isNotUsable()){
-
+if(!Controller::$cache->isUsable()){
     $routes = new App\RoutesBuilder; // Inicia rotas do servidor
     $routes->fetchResponse($response, $routes->dispatch()); // Obtém a resposta da rota   
-
 } else {
-
     $response->setContent(
         Controller::$cache->getContent()
     );

@@ -11,6 +11,7 @@ use App\Model\Selection;
 use App\DAO\SelectionDB;
 use App\Util\Cache;
 use App\Util\DataValidator;
+use App\Controller\Tool\Controller;
 use App\Util\Exception\UnexpectedHttpParameterException;
 use DateTime;
 
@@ -24,7 +25,7 @@ use DateTime;
  */
 final class SelectionController
 {
-    use \App\Controller\Tool\Controller;
+    use Controller;
 
     /**
      * Armazena um contrato
@@ -68,7 +69,7 @@ final class SelectionController
         $db = new SelectionDB($selection); // Inicia objeto para manipular o chat
 
         $selection = $this->filterNulls($db->getSelection()->toArray());
-        static::$cache->create($selection, Cache::MEDIUM_INTERVAL_STORAGE);
+        Controller::$cache->create($selection, Cache::MEDIUM_INTERVAL_STORAGE);
         return $selection;
 
     }
@@ -131,7 +132,7 @@ final class SelectionController
         };
 
         $list = array_map(fn($selection) => $selection->toArray(), $list);
-        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
+        Controller::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
         return $list;
     }
 
@@ -198,7 +199,7 @@ final class SelectionController
         $db = new ApplicationDB($application); // Inicia objeto para manipular o chat
 
         $application = $this->filterNulls($db->getApplication()->toArray());
-        static::$cache->create($application, Cache::LARGE_INTERVAL_STORAGE);
+        Controller::$cache->create($application, Cache::LARGE_INTERVAL_STORAGE);
         return $application;
 
     }
@@ -219,7 +220,7 @@ final class SelectionController
         );
 
         $list = array_map(fn($application) => $application->toArray(), $db->getList($offset, $limit));
-        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
+        Controller::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
         return $list;
     }
 

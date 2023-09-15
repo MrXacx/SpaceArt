@@ -17,6 +17,7 @@ use App\Model\Report;
 use App\Util\Cache;
 use App\Util\Exception\DataFormatException;
 use App\Util\DataValidator;
+use App\Controller\Tool\Controller;
 
 /**
  * Controlador de usuários e denúncia
@@ -28,7 +29,7 @@ use App\Util\DataValidator;
  */
 final class UserController
 {
-    use \App\Controller\Tool\Controller;
+    use Controller;
 
     /**
      * Armazena usuário
@@ -46,7 +47,7 @@ final class UserController
 
                 $user->setCPF($this->parameterList->getString('cpf'));
                 $user->setArt(ArtType::tryFrom($this->parameterList->getString('art')));
-                $user->setWage($this->parameterList->get('wage'));
+                $user->setWage(floatval($this->parameterList->getString('wage')));
                 $db = new ArtistDB($user);
                 break;
 
@@ -93,7 +94,7 @@ final class UserController
 
         // Caso o id seja o token de acesso, dados sigilosos serão consultados
         $user = $this->filterNulls($this->parameterList->getBoolean('token') ? $db->getUser()->toArray() : $db->getUnique()->toArray());
-        static::$cache->create($user, Cache::MEDIUM_INTERVAL_STORAGE);
+        Controller::$cache->create($user, Cache::MEDIUM_INTERVAL_STORAGE);
         return $user;
 
     }
@@ -119,7 +120,7 @@ final class UserController
         $db->updateTokenAcess(); // Gera novo token de acesso
         $access = $db->getAcess(); // Obtém dados de acesso
 
-        static::$cache->create($access, Cache::MEDIUM_INTERVAL_STORAGE); // Armazena em cache
+        Controller::$cache->create($access, Cache::MEDIUM_INTERVAL_STORAGE); // Armazena em cache
         return $access;
 
     }
@@ -143,7 +144,7 @@ final class UserController
         };
 
         $list = array_map(fn($user) => $this->filterNulls($user->toArray()), $list);
-        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE); // Armazena em cache
+        Controller::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE); // Armazena em cache
         return $list;
     }
 
@@ -192,7 +193,7 @@ final class UserController
         $user->setName($name);
         $list = $db->getListByName($offset, $limit);
 
-        static::$cache->create($list, 5);
+        Controller::$cache->create($list, 5);
         return $list;
     }
 
@@ -274,7 +275,7 @@ final class UserController
 
         $db = new ReportDB($report);
         $report = $db->getReport()->toArray();
-        static::$cache->create($report, Cache::LARGE_INTERVAL_STORAGE);
+        Controller::$cache->create($report, Cache::LARGE_INTERVAL_STORAGE);
         return $report;
     }
 
@@ -293,7 +294,7 @@ final class UserController
             )
         );
         $list = array_map(fn($report) => $report->toArray(), $db->getList($offset, $limit));
-        static::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
+        Controller::$cache->create($list, Cache::LARGE_INTERVAL_STORAGE);
         return $list;
 
     }

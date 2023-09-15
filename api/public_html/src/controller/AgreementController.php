@@ -12,6 +12,7 @@ use App\DAO\RateDB;
 use App\Model\Enumerate\ArtType;
 use App\Util\DataValidator;
 use App\Util\Cache;
+use App\Controller\Tool\Controller;
 
 /**
  * Controlador de contrato e avaliações
@@ -23,7 +24,7 @@ use App\Util\Cache;
  */
 final class AgreementController
 {
-    use \App\Controller\Tool\Controller;
+    use Controller;
 
     /**
      * Armazena um contrato
@@ -65,7 +66,7 @@ final class AgreementController
         $db = new AgreementDB($agreement); // Inicia objeto para manipular o chat
         $agreement = $this->filterNulls($db->getAgreement()->toArray());
 
-        static::$cache->create($agreement, Cache::TINY_INTERVAL_STORAGE);
+        Controller::$cache->create($agreement, Cache::TINY_INTERVAL_STORAGE);
         return $agreement;
 
     }
@@ -86,7 +87,7 @@ final class AgreementController
         $db = new AgreementDB($agreement);
         $list = array_map(fn($agreement) => $this->filterNulls($agreement->toArray()), $db->getList($offset, $limit));
 
-        static::$cache->create($list, Cache::MEDIUM_INTERVAL_STORAGE);
+        Controller::$cache->create($list, Cache::MEDIUM_INTERVAL_STORAGE);
         return $list;
     }
 
@@ -124,7 +125,7 @@ final class AgreementController
         $db = new AgreementDB($agreement); // inicia banco com modelo de contrato
         return $db->delete(); // deleta contrato
     }
-   
+
     /**
      * Armazena avalização
      */
@@ -150,7 +151,7 @@ final class AgreementController
         $db = new RateDB($rate); // Inicia objeto para manipular o chat
         $rate = $this->filterNulls($db->getRate()->toArray());
 
-        static::$cache->create($rate, Cache::TINY_INTERVAL_STORAGE);
+        Controller::$cache->create($rate, Cache::TINY_INTERVAL_STORAGE);
         return $rate;
     }
 
@@ -167,8 +168,8 @@ final class AgreementController
 
         $db = new RateDB($rate); // Inicia objeto para manipular o chat
         $list = array_map(fn($rate) => $this->filterNulls($rate->toArray()), $db->getList($offset, $limit));
-        
-        static::$cache->create($list, Cache::TINY_INTERVAL_STORAGE);
+
+        Controller::$cache->create($list, Cache::TINY_INTERVAL_STORAGE);
         return $list;
     }
 

@@ -106,7 +106,7 @@ class Artist extends \App\Model\Template\User
     }
     /**
      * Insere pretensão salarial
-     * @param string $wage
+     * @param float $wage
      */
     public function setWage(float $wage): void
     {
