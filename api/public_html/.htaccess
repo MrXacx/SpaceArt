@@ -1,0 +1,13 @@
+# HTID:22252382: DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES BELOW
+php_value display_errors 1
+# DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES ABOVE HTID:22252382:
+
+RewriteEngine On
+RewriteBase /
+
+# Verifica se a solicitação não é um arquivo ou diretório existente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redireciona rota amigável para index.php
+RewriteRule ^(.*)$ index.php/$1 [L,QSA]

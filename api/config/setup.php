@@ -1,19 +1,25 @@
 <?php
 
-require_once '../vendor/autoload.php'; // Carrega dependências
+ini_set('display_errors', 0); // Deixa de exibir erros 
+header('Access-Control-Allow-Origin: *'); // Libera o acesso à API
+
+require_once __DIR__.'/../vendor/autoload.php'; // Carrega dependências
+
+use App\Server;
+use App\Util\Log;
+use Monolog\Logger;
+use Monolog\Level;
 
 Locale::setDefault('pt-BR'); // Define charset
 
-/**
- * Obtém as variáveis de ambiente para o banco de dados
- * @param bool $production true caso a execução seja para produção, false caso seja para desenvolvimento
- */
-function getDatabaseSettings(bool $production): array{
-    return parse_ini_file('setup.ini', true)[ $production ? 'DATABASE_PROUCTION' : 'DATABASE_DEVELOPMENT'];  
-}
+$_ENV = array_merge($_ENV, parse_ini_file('setup.ini', true));
+$_ENV = array_merge($_ENV, $_ENV['DATABASE_PROUCTION']) ;
 
-$_ENV = array_merge($_ENV, getDatabaseSettings(false));
+Server::$logger = new Log(
+    new Logger('SpaceartAPI'),
+    Level::Warning
+);
 
-
+App\RoutesBuilder::build(); // Inicia rotas do servidor
 
 ?>
