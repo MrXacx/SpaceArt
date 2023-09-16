@@ -51,7 +51,7 @@ class Server
      */
     public static function getURI(): string
     {
-        return $_SERVER['REQUEST_URI'];
+        return str_replace('src/index.php/', '', $_SERVER['REQUEST_URI']);
     }
 
     /**
