@@ -133,11 +133,9 @@ class RoutesBuilder
      */
     public function fetchResponse(Response $responseHandler, array $fetchParams): void
     {
-        // Obtém status da consulta à rota
-        $status = $fetchParams[0];
 
         //Busca callback para o status da requisição
-        switch ($status) {
+        switch ($fetchParams[0]) {
 
             case Dispatcher::NOT_FOUND: // Caso a rota seja desconhecida
                 Server::$logger->push(
@@ -160,19 +158,20 @@ class RoutesBuilder
                     'a rota ' . Server::getStrippedURI() . ' foi acionada',
                     Level::Debug
                 );
-                $status = Response::HTTP_ACCEPTED;
-
+                
                 list($status, $handler, $vars) = $fetchParams; // Obtém manipulador da rota e parâmetros de manipulação
                 list($class, $method) = explode('@', $handler); // Obtém classe e método a ser executado
 
                 try {
+                    $status = Response::HTTP_ACCEPTED;
+
                     try {
                         $content = call_user_func_array([new $class, $method], $vars); // Instancia classe e chama o método passando os parâmetros retornados pela rota
+                        $this->handleResponse($responseHandler, $content);
                     } catch (PDOException $ex) {
                         DatabaseException::throw($ex->getMessage());
                     }
 
-                    $this->handleResponse($responseHandler, $content);
                 } catch (DataFormatException $ex) {
 
                     Server::$logger->push('formato ou tamanho do atributo ' . $ex->getMessage() . ' não foi aceito na model', Level::Debug);
@@ -232,7 +231,8 @@ class RoutesBuilder
 
             $status = match (Server::getHTTPMethod()) { // Obtém código HTTP adequado
                 'DELETE', 'PUT' => Response::HTTP_NO_CONTENT, // Funcionou, mas não retorna dados
-                'POST' => Response::HTTP_CREATED // Novo recurso disponível
+                'POST' => Response::HTTP_CREATED, // Novo recurso disponível
+                default => Response::HTTP_INTERNAL_SERVER_ERROR,
             };
             $responseHandler->setStatusCode($status); // Define o status da resposta
 
