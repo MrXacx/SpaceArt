@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 1); // Deixa de exibir erros 
+ini_set('display_errors', 0); // Deixa de exibir erros 
 header('Access-Control-Allow-Origin: *'); // Libera o acesso à API
 
 require_once __DIR__.'/../vendor/autoload.php'; // Carrega dependências
@@ -13,11 +13,11 @@ use Monolog\Level;
 Locale::setDefault('pt-BR'); // Define charset
 
 $_ENV = array_merge($_ENV, parse_ini_file('setup.ini', true));
-$_ENV = array_merge($_ENV, $_ENV['DATABASE_DEVELOPMENT']) ;
+$_ENV = array_merge($_ENV, $_ENV['DATABASE_PROUCTION']) ;
 
 Server::$logger = new Log(
     new Logger('SpaceartAPI'),
-    Level::Debug
+    Level::Warning
 );
 
 App\RoutesBuilder::build(); // Inicia rotas do servidor
