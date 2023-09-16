@@ -14,8 +14,8 @@ Server::$logger->build(); // Cria log para o dia
 // Armazena endereço do client
 Server::$logger->push('requisição feita por ' . Server::getClientIP(), Level::Info);
 
-$response->headers->set('Content-Type', 'application/json'); // Define o formato da resposta
 $response = new Symfony\Component\HttpFoundation\Response; // Inicia objeto de resposta
+$response->headers->set('Content-Type', 'application/json'); // Define o formato da resposta
 
 Controller::$cache = new Cache(
     // Inicializa manipulação de cache
