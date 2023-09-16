@@ -84,6 +84,7 @@ abstract class DatabaseAcess
 
     function __destruct()
     {
+    
         unset($this->connection);
     }
 

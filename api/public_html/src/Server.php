@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Util\Log;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -29,6 +30,12 @@ class Server
      * @var int
      */
     const MAX_LIMIT = 500;
+
+    public static Log $logger;
+
+    public static function getClientIP(): string{
+        return $_SERVER['REMOTE_ADDR'];
+    }
 
     /**
      * Obtém método HTTP

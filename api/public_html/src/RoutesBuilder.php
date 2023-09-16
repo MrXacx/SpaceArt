@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Server;
+use App\Util\Exception\DatabaseException;
 use App\Util\Exception\DataFormatException;
 use App\Util\Exception\UnexpectedHttpParameterException;
 use Exception;
 use FastRoute;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
+use Monolog\Level;
+use PDOException;
 use Symfony\Component\HttpFoundation\Response;
 use App\Controller\UserController;
 use App\Controller\ChatController;
@@ -122,7 +126,6 @@ class RoutesBuilder
         return static::$dispatcher->dispatch(Server::getHTTPMethod(), Server::getStrippedURI());
     }
 
-
     /**
      * Busca resposta para a rota executada
      * @param Response Objeto manipulador de resposta
@@ -133,61 +136,115 @@ class RoutesBuilder
         // Obtém status da consulta à rota
         $status = $fetchParams[0];
 
-
         //Busca callback para o status da requisição
         switch ($status) {
 
             case Dispatcher::NOT_FOUND: // Caso a rota seja desconhecida
+                Server::$logger->push(
+                    'a rota ' . Server::getStrippedURI() . ' não foi localizada',
+                    Level::Info
+                );
                 $responseHandler->setStatusCode(Response::HTTP_NOT_FOUND);
 
                 return;
             case Dispatcher::METHOD_NOT_ALLOWED: // Caso a rota seja conhecida, mas não esteja esperando o método utilizado
+                Server::$logger->push(
+                    'tentativa falha de utilizar o método ' . Server::getHTTPMethod() . ' na rota ' . Server::getStrippedURI(),
+                    Level::Info
+                );
                 $responseHandler->setStatusCode(Response::HTTP_METHOD_NOT_ALLOWED);
                 return;
 
             case Dispatcher::FOUND: // Caso a rota esteja correta
-                $responseHandler->setStatusCode(Response::HTTP_ACCEPTED);
+                Server::$logger->push(
+                    'a rota ' . Server::getStrippedURI() . ' foi acionada',
+                    Level::Debug
+                );
+                $status = Response::HTTP_ACCEPTED;
 
                 list($status, $handler, $vars) = $fetchParams; // Obtém manipulador da rota e parâmetros de manipulação
-
-
                 list($class, $method) = explode('@', $handler); // Obtém classe e método a ser executado
 
                 try {
-                    $content = call_user_func_array([new $class, $method], $vars); // Instancia classe e chama o método passando os parâmetros retornados pela rota
+                    try {
+                        $content = call_user_func_array([new $class, $method], $vars); // Instancia classe e chama o método passando os parâmetros retornados pela rota
+                    } catch (PDOException $ex) {
+                        DatabaseException::throw($ex->getMessage());
+                    }
+
+                    $this->handleResponse($responseHandler, $content);
+                } catch (DataFormatException $ex) {
+
+                    Server::$logger->push('formato ou tamanho do atributo ' . $ex->getMessage() . ' não foi aceito na model', Level::Debug);
+                    $status = Response::HTTP_BAD_REQUEST;
+
+                } catch (DatabaseException $ex) {
+                    switch ($ex->getCode()) {
+                        case 1062:
+                            $responseHandler->setContent(json_encode($ex->getMessage()));
+                        case 2013:
+                        case 2008:
+                            $level = Level::Warning;
+                            break;
+
+                        case 2002:
+                            $level = Level::Alert;
+                            break;
+
+                        case 1045:
+                        case 1114:
+                            $level = Level::Emergency;
+                            break;
+
+                        case 2006:
+                        default:
+                            $level = Level::Critical;
+                    }
+
+                    Server::$logger->push($ex->getMessage(), $level);
+                    $status = Response::HTTP_BAD_REQUEST;
+
+                } catch (UnexpectedHttpParameterException $ex) {
+
+                    Server::$logger->push('parâmetro HTTP ' . $ex->getMessage() . ' não condiz com as opções', Level::Debug);
+                    $status = Response::HTTP_BAD_REQUEST;
+
                 } catch (Exception $ex) {
-                    // Define status de falha como erro de requisição exclusivamente em casos de execeções de formatação de parâmetros
-                    $status = $ex instanceof DataFormatException || $ex instanceof UnexpectedHttpParameterException ? Response::HTTP_BAD_REQUEST : Response::HTTP_INTERNAL_SERVER_ERROR;
+
+                    Server::$logger->push(
+                        'Exceção lançada: ' . $ex->getMessage()
+                        ,
+                        Level::Critical
+                    );
+                    $status = Response::HTTP_INTERNAL_SERVER_ERROR;
+
+                } finally {
+
                     $responseHandler->setStatusCode($status);
-                    $responseHandler->setContent($ex->getFile() . PHP_EOL . $ex->getMessage());
-                    return;
+
                 }
-
-                if ($content === true) { // Executa caso o retorno seja true
-
-                    $status = match (Server::getHTTPMethod()) { // Obtém código HTTP adequado
-                        'DELETE', 'PUT' => Response::HTTP_NO_CONTENT, // Funcionou, mas não retorna dados
-                        'POST' => Response::HTTP_CREATED // Novo recurso disponível
-                    };
-                    $responseHandler->setStatusCode($status); // Define o status da resposta
-
-                } else if (is_array($content)) { // Executa caso o conteúdo obtido seja um vetor
-
-                    $responseHandler->setStatusCode(Response::HTTP_OK); // Funcionou e retorna conteúdo
-                    $responseHandler->setContent(json_encode($content, JSON_INVALID_UTF8_IGNORE)); // Define conteúdo a ser repondido ao cliente
-
-                } else { // Caso a execução falhe
-
-                    $responseHandler->setStatusCode(Response::HTTP_BAD_REQUEST); // Erro na requisição
-                }
-
-
-
-
-
-
         }
+    }
 
+    private function handleResponse(Response $responseHandler, mixed $content): void
+    {
+        if ($content === true) { // Executa caso o retorno seja true
+
+            $status = match (Server::getHTTPMethod()) { // Obtém código HTTP adequado
+                'DELETE', 'PUT' => Response::HTTP_NO_CONTENT, // Funcionou, mas não retorna dados
+                'POST' => Response::HTTP_CREATED // Novo recurso disponível
+            };
+            $responseHandler->setStatusCode($status); // Define o status da resposta
+
+        } else if (is_array($content)) { // Executa caso o conteúdo obtido seja um vetor
+
+            $responseHandler->setStatusCode(Response::HTTP_OK); // Funcionou e retorna conteúdo
+            $responseHandler->setContent(json_encode($content, JSON_INVALID_UTF8_IGNORE)); // Define conteúdo a ser repondido ao cliente
+
+        } else { // Caso a execução falhe
+
+            $responseHandler->setStatusCode(Response::HTTP_BAD_REQUEST); // Erro na requisição
+        }
     }
 
 }
