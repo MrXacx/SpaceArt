@@ -1,7 +1,7 @@
 <?php
 
-ini_set('display_errors', 0); // Deixa de exibir erros 
-header('Acess-Control-Allow-Origin: *'); // Libera o acesso à API
+ini_set('display_errors', 1); // Deixa de exibir erros 
+header('Access-Control-Allow-Origin: *'); // Libera o acesso à API
 
 require_once __DIR__.'/../vendor/autoload.php'; // Carrega dependências
 
