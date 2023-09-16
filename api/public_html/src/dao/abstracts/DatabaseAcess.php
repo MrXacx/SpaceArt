@@ -8,6 +8,8 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use ReflectionClassConstant;
+use App\Server;
+use Monolog\Level;
 
 /**
  * Classe de conexão com o banco de dados
@@ -34,7 +36,9 @@ abstract class DatabaseAcess
     {
         try {
             $this->connection = new PDO($_ENV['db_host'], $_ENV['db_user'], $_ENV['db_pwd']);
+            Server::$logger->push('conexão com banco foi iniciada', Level::Notice);
         } catch (\Exception $ex) {
+            Server::$logger->push('conexão com banco falhou', Level::Critical);
             throw new \RuntimeException($ex->getMessage());
         }
     }
@@ -84,8 +88,8 @@ abstract class DatabaseAcess
 
     function __destruct()
     {
-    
         unset($this->connection);
+        Server::$logger->push('conexão com banco foi encerrada', Level::Notice);
     }
 
     /**
