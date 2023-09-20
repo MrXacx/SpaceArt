@@ -1,0 +1,30 @@
+{
+  "name": "spaceart",
+  "version": "1.0.0",
+  "description": "Aplicação Web com intuito de aproximar artistas informais e empreededores interessados em contratá-los no Brasil",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrXacx/spaceart.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "SpaceArt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrXacx/spaceart/issues"
+  },
+  "homepage": "https://github.com/MrXacx/spaceart#readme",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "path": "^0.12.7",
+    "sass": "^1.67.0"
+  }
+}
