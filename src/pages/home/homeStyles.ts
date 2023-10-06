@@ -21,7 +21,7 @@ export const OpeningBannerContent = styled.div`
     font-size: 70px;
     color: #fff;
     font-weight: 600;
-    padding: 150px 0 0 0;
+    padding: 37vh 0 0 0;
     text-align: right;
 
     a {

@@ -29,7 +29,7 @@ export const HeaderLogo = styled.header`
 export const SignContainer = styled.form`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   display: flex;
   flex-wrap: wrap;
   width: 50vw;
@@ -37,7 +37,8 @@ export const SignContainer = styled.form`
 `;
 
 export const FormInputFullField = styled.input`
-  width: 100%;
+  width: 75%;
+  height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
@@ -64,7 +65,7 @@ export const FormInputFullField = styled.input`
 `;
 
 export const FormInputButton = styled.button`
-  width: 100%;
+  width: 77%;
   background-color: #ff8311;
   padding: 0.5rem;
   border-radius: 3px;
