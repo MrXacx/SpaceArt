@@ -2,7 +2,7 @@ import axios from "axios";
 import { HTTPRequestError, RegExError } from "../errors/*.jsx";
 
 export const PostalCode = {
-  strip: (code) => code.replace(/\D/, ""),
+  strip: (code) => code.replaceAll(/\D/gi, ""),
 
   matches: (code) => cep.match(/^\d{8}$/),
 
