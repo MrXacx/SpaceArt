@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignIn from "./pages/signIn/signIn";
 import SignUpEnterprise from "./pages/signUpEnterprise/signUpEnterprise";
 import SignUpArtist from "./pages/signUpArtist/signUpArtist";
+import Config from "./pages/config/config";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up-enterprise" element={<SignUpEnterprise />} />
           <Route path="/sign-up-artist" element={<SignUpArtist />} />
+          <Route path="/config" element={<Config />} />
         </Routes>
       </BrowserRouter>
     </div>

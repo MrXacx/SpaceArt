@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
-  margin-top: 2.5rem;
   color: #fff;
   display: flex;
   flex-direction: column;
