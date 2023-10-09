@@ -6,13 +6,14 @@ export const FooterContainer = styled.footer`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #000;
+  background-color: #fff;
   padding: 1rem 0;
+  box-shadow: 0 -3px 30px #f0f0f0;
 
   hr {
     width: 65%;
     margin: 1.2rem 0;
-    border: 1px solid #fff;
+    border: 1px solid #d9d9d9;
     opacity: 45%;
   }
 `;
@@ -62,16 +63,18 @@ export const FooterTitle = styled.span`
   font-weight: 800;
   font-size: 17px;
   margin: 1.5rem 0;
+
 `;
 
 export const ArtTypeContainer = styled.ul`
   display: grid;
   list-style: none;
-  color: #fff;
+  color: #000;
   padding: 0;
 `;
 
 export const ArtTypeItem = styled.li`
   padding: 0.3rem;
   font-size: 14px;
+  font-weight: 800;
 `;
