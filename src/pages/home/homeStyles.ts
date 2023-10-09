@@ -134,7 +134,7 @@ export const CategoryContainer = styled.div`
 export const CategoryInput = styled.select`
   height: 50px;
   border: none;
-  border-radius: 5px;
+  border-radius: 15px;
 `;
 
 export const CategoryButton = styled.button`
@@ -157,7 +157,7 @@ export const CardProfileContainer = styled.div`
 
 export const CardProfileContent = styled.div`
   width: 300px;
-  border-radius: 20px 20px 20px 20px;
+  border-radius: 20% 20px 20px 20px;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
 
   img {
