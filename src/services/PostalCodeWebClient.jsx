@@ -22,7 +22,7 @@ export const PostalCodeWebClient = {
      *  @return string[]
      */
   fetch: async (code) => {
-    code = PostalCode.sanitize(code); // Remove caracteres especiais
+    code: PostalCode.sanitize(code); // Remove caracteres especiais
 
     if (!PostalCode.matches(code)) { // Executa se o CEP tiver um formato inválido
       WebServiceClient.error.RegExError.throw(`Formato do CEP está inválido: ${code}.`);
@@ -34,6 +34,12 @@ export const PostalCodeWebClient = {
       WebServiceClient.error.HTTPRequestError.throw();
     }
 
-    return response.data;
+    let data = response.data;
+    return {
+      code: data.cep,
+      city: data.city,
+      state: data.state,
+      neighborhood: data.neighborhood
+    }
   }
 };

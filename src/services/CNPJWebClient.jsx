@@ -21,7 +21,7 @@ export const CNPJWebClient = {
      *  @return string[]
      */
     fetch: async (code) => {
-        code = CNPJ.sanitize(code); // Remove caracteres especiais
+        code: CNPJ.sanitize(code); // Remove caracteres especiais
 
         if (!CNPJ.matches(code)) { // Executa se o código não foir válido
             WebServiceClient.error.RegExError.throw(`Formato do CNPJ está incorreto: ${code}.`);
@@ -33,6 +33,11 @@ export const CNPJWebClient = {
             WebServiceClient.error.HTTPRequestError.throw();
         }
 
-        return response.data;
+        let data =  response.data;
+        return {
+            code: data.cnpj,
+            razaoSocial: data.razao_social,
+            nomeFantasia: data.nome_fantasia
+        };
     }
 };
