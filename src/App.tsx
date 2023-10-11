@@ -1,23 +1,23 @@
-import Home from "./pages/home/home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignIn from "./pages/signIn/signIn";
 import SignUpEnterprise from "./pages/signUpEnterprise/signUpEnterprise";
 import SignUpArtist from "./pages/signUpArtist/signUpArtist";
 import Config from "./pages/config/config";
+import LandingPage from "./pages/landingPage/landingPage";
+import Feed from "./pages/feed/feed";
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up-enterprise" element={<SignUpEnterprise />} />
-          <Route path="/sign-up-artist" element={<SignUpArtist />} />
-          <Route path="/config" element={<Config />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up-enterprise" element={<SignUpEnterprise />} />
+        <Route path="/sign-up-artist" element={<SignUpArtist />} />
+        <Route path="/config" element={<Config />} />
+        <Route path="/feed" element={<Feed />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

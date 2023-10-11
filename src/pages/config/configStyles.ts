@@ -15,7 +15,7 @@ export const BoxContainer = styled.div`
 
 export const ConfigContainer = styled.div`
   width: 100%;
-  max-width: 60%;
+  max-width: 40%;
   border-radius: 10px;
   display: flex;
   flex-direction: column;

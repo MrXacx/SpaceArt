@@ -16,7 +16,7 @@ import {
   OpeningBannerContent,
   SearchArtistContainer,
   UserCardDetailContainer,
-} from "./homeStyles";
+} from "./landingPageStyles";
 import AboutUsImage from "../../assets/about_us_banner.png";
 import MicImage from "../../assets/mic_banner.png";
 import ArtImage from "../../assets/art_banner.png";
@@ -28,7 +28,7 @@ import LocalIcon from "../../assets/local.svg";
 import WageIcon from "../../assets/wage.svg";
 import Footer from "../../components/footer/footer";
 
-function Home() {
+function LandingPage() {
   const artItems = [
     { image: MicImage, name: "MÚSICA" },
     { image: ArtImage, name: "PINTURA" },
@@ -127,4 +127,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default LandingPage;
