@@ -1,3 +1,15 @@
+class User {
+    id; index; token; type; email; password; phone; location; name;
+
+    signIn (acessData = {
+        email: this.email,
+        password: this.password
+    }){
+        // Code here
+    }
+}
+
+
 class Artist extends User {
     constructor() {
         super();
