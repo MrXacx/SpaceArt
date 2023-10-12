@@ -1,4 +1,4 @@
-import WebServiceClient from "WebServiceClient.jsx";
+import { WebServiceClient } from "./WebServiceClient";
 
 export const PostalCodeWebClient = {
 
@@ -28,7 +28,7 @@ export const PostalCodeWebClient = {
       WebServiceClient.error.RegExError.throw(`Formato do CEP está inválido: ${code}.`);
     }
 
-    let response = await WebServiceClient.query.get(`https://brasilapi.com.br/api/cep/v1/${code}`);
+    let response = await WebServiceClient.request.get(`https://brasilapi.com.br/api/cep/v1/${code}`);
 
     if (response.status !== 200) { // Executa caso a resposta não seja de sucesso
       WebServiceClient.error.HTTPRequestError.throw();

@@ -1,4 +1,4 @@
-import WebServiceClient from 'WebServiceClient.jsx';
+import { WebServiceClient } from "./WebServiceClient";
 
 export const CNPJWebClient = {
     /**
