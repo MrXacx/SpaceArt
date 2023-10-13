@@ -5,6 +5,7 @@ import SignUpArtist from "./pages/signUpArtist/signUpArtist";
 import Config from "./pages/config/config";
 import LandingPage from "./pages/landingPage/landingPage";
 import Feed from "./pages/feed/feed";
+import Profile from "./pages/profile/profile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/sign-up-artist" element={<SignUpArtist />} />
         <Route path="/config" element={<Config />} />
         <Route path="/feed" element={<Feed />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
