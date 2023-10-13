@@ -1,12 +1,23 @@
 import { WebServiceClient } from "../services/WebServiceClient";
 
-class User {
-    id; index; token; type; email; password; phone; name; image;
-    location = {};
-    url = 'https://service-spaceart.000webhostapp.com/user';
 
-    factory(user = {}) {
+/**
+ * Classe de consulta de dados de usuários
+ */
+class User {
+    id; index; token; type; email; password; phone; name; image; // Todos os atributos úteis retornados
+    location = {}; // Objeto para dados de localização
+
+    url = 'https://service-spaceart.000webhostapp.com/user'; // URL base para consulta
+
+    /**
+     * Preenche todos os atributos da classe
+     * @param object Atributos da classe em objeto literal
+     * @returns User 
+     */
+    factory(user) {
         this.id = user.id;
+        this.index = user.index;
         this.name = user.name;
         this.email = user.email;
         this.password = user.password;
@@ -18,17 +29,29 @@ class User {
         }
 
         this.image = user.image;
+        return this;
     }
 
-    async signIn(acessData = {
-        email: this.email,
-        password: this.password
-    }) {
+    /**
+     * Consulta dados de identificação
+     * @param string email
+     * @param string password
+     * @returns object
+     */
+    async signIn(
+        email = this.email,
+        password = this.password
+    ) {
         let response = await WebServiceClient.request.get(
-            `${this.url}?email=${acessData.email}&password=${acessData.type}`
+            `${this.url}?email=${email}&password=${password}`
         );
     }
 
+    /**
+     * Consulta dados gerais
+     * @param boolean true para obter dados sigilosos
+     * @returns object 
+     */
     async fetch(isToken = false) {
         let response = await WebServiceClient.request.get(
             `${this.url}?id=${this.id}&token=${isToken}&type=${this.type}`
@@ -37,7 +60,15 @@ class User {
         return response.data;
     }
 
-    async fetchList(offset = 0, limit = 25, filter = '', data = {}) {
+    /**
+     * Busca lista de usuários
+     * @param int posição de início da consulta
+     * @param int limite de itens retornados
+     * @param string filtro de busca
+     * @param object dados associados ao filtro (nome, localização e etc)
+     * @returns object[]
+     */
+    async fetchList(offset = 0, limit = 25, filter = null, data = {}) {
         let url = `${this.url}/list?offset=${offset}&limit=${limit}&type=${this.type}`;
 
         if (filter === 'name') {
@@ -49,25 +80,40 @@ class User {
         let response = await WebServiceClient.request.get(url);
     }
 
-    updateList(token, attributes = []) {
+    /**
+     * Atualiza lista de atributos
+     * @param string token
+     * @param object[] lista de atributos a serem atualizados
+     */
+    updateList(token, attributes = [{ name: null, value:null}]) {
         attributes.forEach(column => {
             this.update({
                 id: token,
                 type: this.type,
                 column: column.name,
                 info: column.value
-            })
+            });
 
+            
         });
     }
 
-    async update(data = {}) {
+    /**
+     * Atualiza um atributo específico
+     * @param object body da requisição
+     * @returns boolean
+     */
+    async update(data) {
         let response = await WebServiceClient.request.post(
             `${this.url}/update`, data
         );
     }
 
-
+    /**
+     * Deleta usuário
+     * @param string token
+     * @returns boolean
+     */
     async delete(token) {
         let response = await WebServiceClient.request.get(
             `${this.url}/delete`, { id: token }
@@ -84,7 +130,7 @@ export class Artist extends User {
         this.type = 'artist';
     }
 
-    factory(artist = {}) {
+    factory(artist) {
 
         super.factory(artist);
         this.wage = artist.wage;
@@ -95,8 +141,13 @@ export class Artist extends User {
         this.cnpj = enterprise.cnpj;
         this.location.neighborhood = enterprise.neighborhood;
         this.location.adress = enterprise.adress;
+
+        return this;
     }
 
+    /**
+     * Cadastra um usuário
+     */
     async signUp() {
         let response = WebServiceClient.request.post(
             this.url,
@@ -117,6 +168,7 @@ export class Artist extends User {
             });
     }
 
+    
     async fetch(token = false) {
         let response = super.fetch(token);
     }
@@ -136,8 +188,13 @@ export class Enterprise extends User {
         this.companyName = enterprise.companyName;
         this.location.neighborhood = enterprise.neighborhood;
         this.location.adress = enterprise.adress;
+
+        return this;
     }
 
+    /**
+     * Cadastra um usuário
+     */
     async signUp() {
         let response = WebServiceClient.request.post(
             this.url,
