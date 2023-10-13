@@ -104,6 +104,7 @@ export class Artist extends User {
                 name: this.name,
                 image: this.image,
                 type: this.type,
+                phone: this.phone,
                 email: this.email,
                 password: this.password,
                 birthday: this.birthday,
@@ -122,7 +123,7 @@ export class Artist extends User {
 }
 
 export class Enterprise extends User {
-    cnpj;
+    cnpj; companyName;
 
     constructor() {
         super();
@@ -132,6 +133,7 @@ export class Enterprise extends User {
     factory(enterprise = {}) {
         super.factory(enterprise);
         this.cnpj = enterprise.cnpj;
+        this.companyName = enterprise.companyName;
         this.location.neighborhood = enterprise.neighborhood;
         this.location.adress = enterprise.adress;
     }
@@ -141,7 +143,9 @@ export class Enterprise extends User {
             this.url,
             {
                 name: this.name,
+                companyName: this.companyName,
                 image: this.image,
+                phone: this.phone,
                 type: this.type,
                 email: this.email,
                 password: this.password,
