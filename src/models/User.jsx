@@ -1,5 +1,7 @@
 import { WebServiceClient } from "../services/WebServiceClient";
 
+const HTTPRequestError = WebServiceClient.error.HTTPRequestError;
+const api = WebServiceClient.request;
 
 /**
  * Classe de consulta de dados de usuários
@@ -42,9 +44,22 @@ class User {
         email = this.email,
         password = this.password
     ) {
-        let response = await WebServiceClient.request.get(
+        let response = await api.get(
             `${this.url}?email=${email}&password=${password}`
         );
+
+        if (response.status !== 200) { // Executa caso o código da resposta não seja OK
+            HTTPRequestError.throw(response.statusText); // Emite exceção
+        }
+
+        response = response.data;
+
+        return {
+            id: response.id,
+            token: response.token,
+            index: response.index,
+            type: response.type
+        }
     }
 
     /**
@@ -53,9 +68,13 @@ class User {
      * @returns object 
      */
     async fetch(isToken = false) {
-        let response = await WebServiceClient.request.get(
+        let response = await api.get(
             `${this.url}?id=${this.id}&token=${isToken}&type=${this.type}`
         );
+
+        if (response.status !== 200) {
+            HTTPRequestError.throw(response.statusText);
+        }
 
         return response.data;
     }
@@ -77,47 +96,68 @@ class User {
             url += `&state=${data.state}&city=${data.city}`;
         }
 
-        let response = await WebServiceClient.request.get(url);
+        let response = await api.get(url);
+
+
+        return response.data;
     }
 
     /**
      * Atualiza lista de atributos
      * @param string token
      * @param object[] lista de atributos a serem atualizados
+     * @returns string[] lista de exceções obtidas
      */
-    updateList(token, attributes = [{ name: null, value:null}]) {
-        attributes.forEach(column => {
-            this.update({
-                id: token,
-                type: this.type,
-                column: column.name,
-                info: column.value
-            });
+    updateList(token, attributes = [{ name: null, value: null }]) {
+        let errors = []
+        attributes.forEach(column => { // itera colunas a serem atualizadas
+            try {
+                this.update({ // atualiza dados da api
+                    id: token,
+                    type: this.type,
+                    column: column.name,
+                    info: column.value
+                });
 
-            
+                this[column.name] = column.value; // Atualiza dados localmente
+            } catch (error) {
+                errors
+                    .push( // Guarda exceção para ser retornada
+                        `Não foi possível atualizar o item ${column.name} com o valor ${column.value}`
+                    );
+            }
+
         });
+
+        return errors;
     }
 
     /**
      * Atualiza um atributo específico
      * @param object body da requisição
-     * @returns boolean
      */
     async update(data) {
-        let response = await WebServiceClient.request.post(
+        let response = await api.post(
             `${this.url}/update`, data
         );
+
+        if (response.status !== 204) {
+            HTTPRequestError.throw(response.statusText);
+        }
     }
 
     /**
      * Deleta usuário
      * @param string token
-     * @returns boolean
      */
     async delete(token) {
-        let response = await WebServiceClient.request.get(
+        let response = await api.get(
             `${this.url}/delete`, { id: token }
         );
+
+        if (response.status !== 204) {
+            HTTPRequestError.throw(response.statusText);
+        }
     }
 
 }
@@ -149,7 +189,7 @@ export class Artist extends User {
      * Cadastra um usuário
      */
     async signUp() {
-        let response = WebServiceClient.request.post(
+        let response = await api.post(
             this.url,
             {
                 name: this.name,
@@ -166,11 +206,22 @@ export class Artist extends User {
                 art: this.art,
                 wage: this.wage
             });
+
+        if (response.status !== 201) {
+            HTTPRequestError.throw((await response).statusText);
+        }
     }
 
-    
-    async fetch(token = false) {
-        let response = super.fetch(token);
+
+    fetch(token = false) {
+        return new Artist().factory(super.fetch(token)); // Intancia o retorno
+    }
+
+    fetchList(offset = 0, limit = 25, filter = null, data = {}) {
+
+        return super
+            .fetchList(offset, limit, filter, data)
+            .map(new Artist().factory); // Instancia todos os registor retornados
     }
 }
 
@@ -196,7 +247,7 @@ export class Enterprise extends User {
      * Cadastra um usuário
      */
     async signUp() {
-        let response = WebServiceClient.request.post(
+        let response = await api.post(
             this.url,
             {
                 name: this.name,
@@ -214,9 +265,20 @@ export class Enterprise extends User {
                 neighborhood: this.location.neighborhood,
                 address: this.location.address
             });
+
+        if (response.status !== 201) {
+            HTTPRequestError.throw((await response).statusText);
+        }
     }
 
     fetch(token = false) {
-        let response = super.fetch(token);
+        return new Artist().factory(super.fetch(token)); // Intancia o retorno
+    }
+
+    fetchList(offset = 0, limit = 25, filter = null, data = {}) {
+
+        return super
+            .fetchList(offset, limit, filter, data)
+            .map(new Artist().factory); // Instancia todos os registor retornados
     }
 }
