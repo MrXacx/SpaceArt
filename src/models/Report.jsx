@@ -12,12 +12,19 @@ export class Report {
         this.reporter = reporter;
     }
 
+    /**
+     * Preenche todos os atributos
+     * @param object
+     */
     factory(report) {
         this.id = report.id;
         this.reported = report.reported;
         this.reason = report.reason;
     }
 
+    /**
+     * Cria nova denúncia na API
+     */
     async create() {
         api.post(this.url,
             {
@@ -31,6 +38,11 @@ export class Report {
             });
     }
 
+    /**
+     * Obtém lista de denúncia s de usuário
+     * @param int posição de início da leitura
+     * @param int limite de itens
+     */
     async getList(offset = 0, limit = 10) {
         let response = await api.get(
             `${this.url}?offset=${offset}&limit=${limit}&reporter=${this.reporter}`
