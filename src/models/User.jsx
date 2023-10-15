@@ -2,6 +2,7 @@ import { WebServiceClient } from "../services/WebServiceClient";
 
 const HTTPRequestError = WebServiceClient.error.HTTPRequestError;
 const api = WebServiceClient.request;
+const status = WebServiceClient.status;
 
 /**
  * Classe de consulta de dados de usuários
@@ -48,7 +49,7 @@ class User {
             `${this.url}?email=${email}&password=${password}`
         );
 
-        if (response.status !== 200) { // Executa caso o código da resposta não seja OK
+        if (response.status !== status.OK) { // Executa caso o código da resposta não seja OK
             HTTPRequestError.throw(response.statusText); // Emite exceção
         }
 
@@ -72,7 +73,7 @@ class User {
             `${this.url}?id=${this.id}&token=${isToken}&type=${this.type}`
         );
 
-        if (response.status !== 200) {
+        if (response.status !== status.OK) {
             HTTPRequestError.throw(response.statusText);
         }
 
@@ -98,6 +99,9 @@ class User {
 
         let response = await api.get(url);
 
+        if (response.status !== status.OK) {
+            HTTPRequestError.throw(response.statusText);
+        }
 
         return response.data;
     }
@@ -141,7 +145,7 @@ class User {
             `${this.url}/update`, data
         );
 
-        if (response.status !== 204) {
+        if (response.status !== status.NO_CONTENT) {
             HTTPRequestError.throw(response.statusText);
         }
     }
@@ -155,7 +159,7 @@ class User {
             `${this.url}/delete`, { id: token }
         );
 
-        if (response.status !== 204) {
+        if (response.status !== status.NO_CONTENT) {
             HTTPRequestError.throw(response.statusText);
         }
     }
@@ -207,7 +211,7 @@ export class Artist extends User {
                 wage: this.wage
             });
 
-        if (response.status !== 201) {
+        if (response.status !== status.CREATED) {
             HTTPRequestError.throw((await response).statusText);
         }
     }
@@ -266,7 +270,7 @@ export class Enterprise extends User {
                 address: this.location.address
             });
 
-        if (response.status !== 201) {
+        if (response.status !== status.CREATED) {
             HTTPRequestError.throw((await response).statusText);
         }
     }
