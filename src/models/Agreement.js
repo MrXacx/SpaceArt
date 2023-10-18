@@ -1,30 +1,79 @@
-class Agreement extends User{
-    constructor() {
-        super();
-        this.id = '';
+import { WebServiceClient } from '../services/WebServiceClient';
+const { request, error, status } = WebServiceClient;
+
+class Agreement{
+    id; hirer; hired; art; price;
+    date = {};
+    time = {};
+    url = 'https://service-spaceart.000webhostapp.com/agreement';
+    factory(agreement){
+        this.id = agreement.id;
+        this.hirer = agreement.hirer;
+        this.hired = agreement.hired;
+        this.art = agreement.art;
+        this.price = agreement.price;
+        this.date = agreement.date;
+        this.time = agreement.time;
+
+        return this;
     }
-    
-}
 
-class AgreementGet{
+    async create(){
+        let response = await request.post(
+            this.url, {
+                hirer: this.hirer,
+                hired: this.hired,
+                art: this.art,
+                price: this.price,
+                date: Object.entries(this.date).join(';'),
+                time: Object.entries(this.time).join(';')
+            }
+        );
 
-        constructor (Agreement){
-            this.id = Agreement.id;           
+        if(response.status !== status.OK){
+            error.HTTPRequestError.throw("Não foi possível criar um contrato");
         }
-    
-}
-class AgreementPost{
-
-    constructor (Agreement){
-        this.hirer = User.id;
-        this.hired = User.id;
-        this.art = User.art;
-        this.price = Agreement.price;
-        this.date = Agreement.date;
-        this.time = Agreement.time;
     }
 
+    async fetch(){
+        let response = await request.get(`${this.url}?id=${this.id}`);
+
+        if(response.status !== status.OK){
+            error.HTTPRequestError.throw(`Não foi possível encontrar o contrato ${this.id}`);
+        }
+
+        let agreement = response.data;
+
+        return {
+            id: agreement.id,
+            hirer: agreement.hirer,
+            hired: agreement.hired,
+            art: agreement.art,
+            price: agreement.price,
+            date: agreement.date.split(';'),
+            price: agreement.price.split(';')
+        }
+    }
+
+    async fetchList(user, offset = 0, limit = 10){
+        let response = await request.get(`${this.url}/list?user=${user}`);
+
+        if(response.status !== status.OK){
+            error.HTTPRequestError.throw(`Não foi possível contratos do usuário ${user}`);
+        }
+    }
+
+    async delete(){
+        let response = await request.post(`${this.url}/delete`, {id: this.id});
+
+        if(response.status !== status.NO_CONTENT){
+            error.HTTPRequestError.throw(`Não foi possível deleter o contrato ${this.id}`);
+        }
+    }
+    
 }
+
+
 class AgreementPut{
 
     constructor (Agreement){
