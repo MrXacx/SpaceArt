@@ -181,11 +181,6 @@ export class Artist extends User {
         this.cpf = artist.cpf;
         this.art = artist.art;
 
-        let enterprise = artist;
-        this.cnpj = enterprise.cnpj;
-        this.location.neighborhood = enterprise.neighborhood;
-        this.location.adress = enterprise.adress;
-
         return this;
     }
 
