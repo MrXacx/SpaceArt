@@ -10,6 +10,11 @@ export class Selection {
     applications = [];
     url = 'service-spaceart.000webhostapp.com/selection';
 
+    /**
+     * Preenche todos os atributos
+     * @param object 
+     * @returns Selection
+     */
     factory(selection){
         this.id = selection.id;
         this.art = selection.art;
@@ -20,6 +25,9 @@ export class Selection {
         return this;
     }
 
+    /**
+     * Cria seleção
+     */
     async create() {
         let response = await request.post(
             this.url,
@@ -37,6 +45,13 @@ export class Selection {
         }
     }
 
+    /**
+     * Buca lista de seleções com base num filtro
+     * @param int offset 
+     * @param int limit 
+     * @param string filter 
+     * @returns Selection[]
+     */
     async fetchList(offset = 0, limit = 15, filter = 'owner') {
         let url = `${this.url}/list?offset=${offset}&limit=${limit}`;
         switch (filter) {
@@ -59,7 +74,10 @@ export class Selection {
         return response.data.map(selection => new Selection().factory(selection));
     }
 
-
+    /**
+     * Busca uma seleção
+     * @returns Selection
+     */
     async fetch() {
         let response = await request.get(`${this.url}?id=${this.id}`);
 
@@ -77,7 +95,10 @@ export class Selection {
             time: selection.time.split(';'),
         }
     }
-
+    
+    /**
+     * Deleta uma seleção
+     */
     async delete() {
         let response = await request.post(
             `${this.url}/delete`, { id: this.id }
@@ -88,11 +109,15 @@ export class Selection {
         }
     }
 
+    /**
+     * Submete um artista à seleção
+     * @param Artist artist 
+     */
     async submitApplication(artist) {
         let response = await request.post(
             `${this.url}/application`,
             {
-                artist,
+                artist: artist.id,
                 selection: this.selection
             }
         );
@@ -102,6 +127,12 @@ export class Selection {
         }
     }
 
+    /**
+     * Busca uma lista de seleções
+     * @param int offset 
+     * @param int limit 
+     * @returns object
+     */
     async fetchApplications(offset = 0, limit = 15){
         let response = await request.get(
             `${this.url}/application/list?offset=${offset}&limit=${limit}&selection=${this.id}`
@@ -110,8 +141,6 @@ export class Selection {
         if (response.status !== status.OK){
             error.HTTPRequestError.throw(`Não foi encontrar aplicações para a seleção ${this.selection}`);
         }
-
-        response.data.forEach(this.applications.push);
-        return this.applications;
+        return response.data;
     }
 }
