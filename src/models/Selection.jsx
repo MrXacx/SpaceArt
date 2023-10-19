@@ -31,6 +31,10 @@ export class Selection {
                 time: this.time.join(';')
             }
         );
+
+        if (response.status !== status.CREATED) {
+            error.HTTPRequestError.throw(`Não foi possível criar uma seleção`)
+        }
     }
 
     async fetchList(offset = 0, limit = 15, filter = 'owner') {
@@ -108,6 +112,6 @@ export class Selection {
         }
 
         response.data.forEach(this.applications.push);
-        return this;
+        return this.applications;
     }
 }
