@@ -38,6 +38,7 @@ import ChatIcon from "../../assets/chat.svg";
 import ReportIcon from "../../assets/report.svg";
 import ShareIcon from "../../assets/share.svg";
 import MusicIcon from "../../assets/music.svg";
+import Footer from "../../components/footer/footer";
 
 function Profile() {
   function iterateSpan() {
@@ -146,6 +147,7 @@ function Profile() {
           </Post>
         </PostWrapper>
       </Wrapper>
+      <Footer />
     </>
   );
 }
