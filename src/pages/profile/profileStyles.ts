@@ -155,7 +155,7 @@ export const Wrapper = styled.div`
 export const CalendarContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  background-color: var(--black);
+  background-color: #202020;
   padding: 2rem 0;
   width: 63%;
   max-height: 40vh;
@@ -178,6 +178,7 @@ export const CalendarHeader = styled.header`
   span {
     color: #fff;
     font-weight: 800;
+    text-align: center;
   }
 `;
 
@@ -203,7 +204,106 @@ export const DaysOfWeek = styled.div`
 `;
 
 export const CalendarNumberContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   background-color: #000;
-  padding: 1rem 0;
+  padding: 1rem 1rem;
   border-radius: 0 0 5px 5px;
+  color: #fff;
+
+  span {
+    border-radius: 50%;
+    padding: 0.6rem 0.15rem;
+    transition: 300ms;
+    cursor: pointer;
+    text-align: center;
+  }
+`;
+
+export const JobsDayContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const DateHeader = styled.span`
+  border-left: 2px solid #ff8311;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 5px #0005;
+  color: #fff;
+  width: 60%;
+  background-color: #000;
+  border-radius: 5px;
+  padding: 1rem;
+`;
+
+export const JobWrapper = styled.div`
+  height: 33vh;
+  width: 100%;
+  overflow-y: scroll;
+`;
+
+export const Jobs = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: hidden;
+  height: auto;
+  width: 100%;
+`;
+
+export const JobInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.75rem 0;
+  transition: 300ms;
+  width: 60%;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  padding: 1rem;
+`;
+
+export const JobHour = styled.span`
+  color: #fff;
+`;
+
+export const TypeJobIcon = styled.div`
+  background-color: #ff8311;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 0.5rem;
+
+  ${Icon} {
+    width: 20px;
+  }
+`;
+
+export const PostWrapper = styled.ol`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
+
+export const Post = styled.li`
+  margin: 1rem;
+  padding: 1vw;
+  background-color: #202020;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px #0005;
+
+  img {
+    border-radius: 5px;
+    width: 20vw;
+    object-fit: cover;
+    transition: 300ms;
+    margin: 0.25rem;
+  }
 `;

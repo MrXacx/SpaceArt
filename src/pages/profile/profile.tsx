@@ -4,14 +4,23 @@ import {
   CalendarContainer,
   CalendarHeader,
   CalendarNumberContainer,
+  DateHeader,
   DaysOfWeek,
   DescriptionContainer,
   Icon,
+  JobHour,
+  JobInfo,
+  JobWrapper,
+  Jobs,
+  JobsDayContainer,
   MonthNavbar,
+  Post,
+  PostWrapper,
   ProfileContent,
   ProfileGlobalStyle,
   ProfileHeader,
   ProfileTools,
+  TypeJobIcon,
   UserDetails,
   UserDetailsHeader,
   UserImage,
@@ -25,11 +34,21 @@ import ProfileImage from "../../assets/verified.svg";
 import LocationIcon from "../../assets/location.svg";
 import StarIcon from "../../assets/star.svg";
 import GlobalIcon from "../../assets/global.svg";
-import ChatIcon from "../../assets/chat.svg"
-import ReportIcon from "../../assets/report.svg"
-import ShareIcon from "../../assets/share.svg"
+import ChatIcon from "../../assets/chat.svg";
+import ReportIcon from "../../assets/report.svg";
+import ShareIcon from "../../assets/share.svg";
+import MusicIcon from "../../assets/music.svg";
 
 function Profile() {
+  function iterateSpan() {
+    const t = [];
+    for (let i = 1; i <= 35; i++) {
+      t.push(<span>{i}</span>);
+    }
+    return t;
+  }
+
+  const SpanCalender = iterateSpan();
   return (
     <>
       <ProfileGlobalStyle />
@@ -70,9 +89,9 @@ function Profile() {
               </ul>
             </UserDetails>
             <ProfileTools>
-              <Icon src={ChatIcon} alt="nova conversa"/>
-              <Icon src={ReportIcon} alt="denunciar"/>
-              <Icon src={ShareIcon} alt="compartilhar"/>
+              <Icon src={ChatIcon} alt="nova conversa" />
+              <Icon src={ReportIcon} alt="denunciar" />
+              <Icon src={ShareIcon} alt="compartilhar" />
             </ProfileTools>
           </UserInfo>
         </ProfileContent>
@@ -105,11 +124,27 @@ function Profile() {
                 <span>Sab</span>
               </DaysOfWeek>
             </CalendarHeader>
-            <CalendarNumberContainer>
-              <span></span>
-            </CalendarNumberContainer>
+            <CalendarNumberContainer>{SpanCalender}</CalendarNumberContainer>
           </Calendar>
+          <JobsDayContainer>
+            <DateHeader>Outubro, dia 5</DateHeader>
+            <JobWrapper>
+              <Jobs>
+                <JobInfo>
+                  <JobHour>13:00 - 14:50</JobHour>
+                  <TypeJobIcon>
+                    <Icon alt="" src={MusicIcon} />
+                  </TypeJobIcon>
+                </JobInfo>
+              </Jobs>
+            </JobWrapper>
+          </JobsDayContainer>
         </CalendarContainer>
+        <PostWrapper>
+          <Post>
+            <img src="https://thispersondoesnotexist.com/" alt="postagem" />
+          </Post>
+        </PostWrapper>
       </Wrapper>
     </>
   );
