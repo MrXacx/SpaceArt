@@ -46,7 +46,7 @@ export const CardProfileContainer = styled.div`
   margin: 0 auto;
   width: 73%;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+  gap: 4rem;
   padding: 50px 0;
 `;
 

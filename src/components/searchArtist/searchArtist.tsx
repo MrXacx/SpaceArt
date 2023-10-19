@@ -31,6 +31,18 @@ function SearchArtist() {
       </CategoryContainer>
       <CardProfileContainer>
         <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        
       </CardProfileContainer>
     </SearchArtistContainer>
   );

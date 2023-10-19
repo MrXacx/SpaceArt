@@ -6,6 +6,7 @@ import Config from "./pages/config/config";
 import LandingPage from "./pages/landingPage/landingPage";
 import Feed from "./pages/feed/feed";
 import Profile from "./pages/profile/profile";
+import Search from "./pages/search/search";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/config" element={<Config />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );
