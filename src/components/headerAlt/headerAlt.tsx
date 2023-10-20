@@ -10,7 +10,7 @@ import {
   SpaceartTitle,
 } from "./headerAltStyles";
 
-function Header() {
+function HeaderAlt() {
   return (
     <HeaderContainer>
       <SpaceartContainer>
@@ -29,12 +29,12 @@ function Header() {
       </NavContainer>
       <NavContainer>
         <NavItemContainer>
-          <NavItems>ENTRAR</NavItems>
-          <SignUpButton>CADASTRAR</SignUpButton>
+          <NavItems visibility="hidden">ENTRAR</NavItems>
+          <SignUpButton visibility="hidden">CADASTRAR</SignUpButton>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>
   );
 }
 
-export default Header;
+export default HeaderAlt;
