@@ -23,13 +23,14 @@ export const CategoryContainer = styled.div`
   flex-direction: column;
   padding: 30px;
   column-gap: 60px;
-  border-radius: 5px;
+  border-radius: 15px;
 `;
 
 export const CategoryInput = styled.select`
   height: 50px;
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
+  padding-left: 10px;
 `;
 
 export const CategoryButton = styled.button`
@@ -39,6 +40,7 @@ export const CategoryButton = styled.button`
   background-color: #fa8b08;
   border: none;
   color: #fff;
+  border-radius: 15px;
 `;
 
 export const CardProfileContainer = styled.div`
