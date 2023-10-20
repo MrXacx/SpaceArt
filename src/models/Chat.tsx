@@ -7,14 +7,15 @@ export class Chat extends APISpaceArtClient {
   private id: string | undefined;
   private artist: string | undefined;
   private enterprise: string | undefined;
-  public messages = [];
+  private messager = new Message();
+  messages = [];
 
-  private path = "https://service-spaceart.000webhostapp.com/chat";
+  private path = "/chat";
 
-  public factory(chat: {
-    id: string | undefined,
-    artist: string,
-    enterprise: string,
+  factory(chat: {
+    id: string | undefined;
+    artist: string;
+    enterprise: string;
   }) {
     this.id = chat.id;
     this.artist = chat.artist;
@@ -26,7 +27,7 @@ export class Chat extends APISpaceArtClient {
   /**
    * Cria uma conversa
    */
-  public async create() {
+  async create() {
     let response = await this.request.post(`${this.path}`, {
       artist: this.artist,
       enterprise: this.enterprise,
@@ -43,7 +44,7 @@ export class Chat extends APISpaceArtClient {
    * Busca uma conversa
    * @returns Chat
    */
-  public async fetch(): Promise<Chat> {
+  async fetch(): Promise<Chat> {
     let response = await this.request.get(`${this.path}?id=${this.id}`);
 
     if (response.status !== this.httpStatusCode.OK) {
@@ -62,7 +63,7 @@ export class Chat extends APISpaceArtClient {
    * @param int limit
    * @returns Chat[]
    */
-  public async fetchList(user: string, offset = 0, limit = 10): Promise<Chat[]> {
+  async fetchList(user: string, offset = 0, limit = 10): Promise<Chat[]> {
     let response = await this.request.get(
       `${this.path}?offset=${offset}&limit=${limit}user=${user}`
     );
@@ -76,26 +77,16 @@ export class Chat extends APISpaceArtClient {
     return response.data.map((chat: any) => {
       const chatModel = new Chat().factory(chat); // Instancia chat com base no objeto literal
 
-      chatModel.fetchMessages()  // Obtém as mensagens iniciais da conversa
-        .then(messages => messages
-          .forEach(chatModel.messages.push)); // Armazena mensagens
+      chatModel
+        .fetchMessages() // Obtém as mensagens iniciais da conversa
+        .then((messages: any) => messages.forEach(chatModel.messages.push)); // Armazena mensagens
 
       return chatModel; // Retorna a conversa
     });
   }
 
-  public async send(sender: string, content: string) {
-    let response = await this.request.post(`${this.path}/message`, {
-      sender,
-      content,
-    });
-
-    if (response.status !== this.httpStatusCode.CREATED) {
-      error.HTTPRequestError.throw(
-        "Não foi possível enviar uma mensagem para o banco"
-      );
-    }
-  }
+  sendMessage = async (sender: string, content: string) =>
+    this.messager.create(this.id as string, sender, content);
 
   /**
    * Busca uma lista de mensagens de uma conversa
@@ -104,42 +95,64 @@ export class Chat extends APISpaceArtClient {
    * @param int limit
    * @returns Message[]
    */
-  public async fetchMessages(offset = 0, limit = 10) {
-    let response = await this.request.get(
-      `${this.path}/message?offset=${offset}&limit=${limit}&chat=${this.id}`
-    );
-
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(
-        `Não foi possível buscar as mensagens do chat ${this.id}`
-      );
-    }
-
-    return response.data.map((message: any) => new Message(message));
-  }
+  fetchMessages = async (offset = 0, limit = 10) =>
+    this.messager.fetchList(this.id as string, offset, limit);
 }
 
-class Message {
+class Message extends APISpaceArtClient {
+  private content: string | undefined;
+  private sender: string | undefined;
+  private timestamp: string | undefined;
 
-  private content: string;
-  private sender: string;
-  private timestamp: string;
+  private path = "/chat/message";
 
-  constructor(data: {
-    content: string,
-    sender: string,
-    timestamp: string
-  }) {
+  factory(data: { content: string; sender: string; timestamp: string }) {
     this.content = data.content;
     this.sender = data.sender;
     this.timestamp = data.timestamp;
   }
 
-  public toObject(){
-    return {
-      content: this.content,
-      sender: this.sender,
-      timestamp: this.timestamp,
+  async create(chat: string, sender: string, content: string) {
+    let response = await this.request.post(this.path, {
+      chat,
+      sender,
+      content,
+    });
+
+    if (response.status !== this.httpStatusCode.CREATED) {
+      error.HTTPRequestError.throw(
+        "Não foi possível criar uma mensagem no banco"
+      );
     }
+  }
+
+  /**
+   * Busca uma lista de mensagens de uma conversa
+   *
+   * @param string id do chat
+   * @param int offset
+   * @param int limit
+   * @returns Message[]
+   */
+  async fetchList(chat: string, offset = 0, limit = 10) {
+    let response = await this.request.get(
+      `${this.path}?offset=${offset}&limit=${limit}&chat=${chat}`
+    );
+
+    if (response.status !== this.httpStatusCode.OK) {
+      error.HTTPRequestError.throw(
+        `Não foi possível buscar as mensagens do chat ${chat}`
+      );
+    }
+
+    return response.data.map((message: any) => new Message().factory(message));
+  }
+
+  toObject() {
+    return {
+      content: this.content as string,
+      sender: this.sender as string,
+      timestamp: this.timestamp as string,
+    };
   }
 }
