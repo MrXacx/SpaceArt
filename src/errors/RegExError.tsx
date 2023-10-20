@@ -1,5 +1,6 @@
 export class RegExError extends Error {
-  constructor(message) {
+  constructor(message: string) {
+    super();
     this.message = message;
   }
 

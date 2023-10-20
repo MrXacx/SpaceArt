@@ -1,5 +1,6 @@
 export class HTTPRequestError extends Error {
-  constructor(message) {
+  constructor(message:string) {
+    super();
     this.message = message;
   }
 
