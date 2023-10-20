@@ -1,17 +1,18 @@
 import { WebServiceClient } from "../services/WebServiceClient";
-
+import { APISpaceArtClient } from "./APISpaceArtClient";
 const api = WebServiceClient.request;
 const HTTPRequestError = WebServiceClient.error.HTTPRequestError;
 const status = WebServiceClient.status;
 
-export class Report {
-  id;
-  reporter;
-  reported;
-  reason;
-  url = "https://service-spaceart.000webhostapp.com/user/report";
+export class Report extends APISpaceArtClient {
+  private id: string | undefined;
+  private reporter: string;
+  private reported: string | undefined;
+  private reason: string | undefined;
+  private path = "/user/report";
 
-  constructor(reporter) {
+  constructor(reporter: string) {
+    super();
     this.reporter = reporter;
   }
 
@@ -19,7 +20,11 @@ export class Report {
    * Preenche todos os atributos
    * @param object
    */
-  factory(report) {
+  factory(report:{
+    id: string | undefined,
+    reported: string,
+    reason: string,
+  }) {
     this.id = report.id;
     this.reported = report.reported;
     this.reason = report.reason;
@@ -30,11 +35,7 @@ export class Report {
    */
   async create() {
     api
-      .post(this.url, {
-        reporter: this.reporter,
-        reported: this.reported,
-        reason: this.reason,
-      })
+      .post(this.path, this.toObject())
       .then((response) => {
         if (response.status !== status.OK) {
           HTTPRequestError.throw(response.statusText);
@@ -49,15 +50,24 @@ export class Report {
    */
   async getList(offset = 0, limit = 10) {
     let response = await api.get(
-      `${this.url}?offset=${offset}&limit=${limit}&reporter=${this.reporter}`
+      `${this.path}?offset=${offset}&limit=${limit}&reporter=${this.reporter}`
     );
 
     if (response.status !== status.OK) {
       HTTPRequestError.throw(response.statusText);
     }
 
-    return response.data.map((report) =>
+    return response.data.map((report: any) =>
       new Report(report.reporter).factory(report)
     ); // Instancia todos as denúncias obtidas
+  }
+
+  toObject() {
+    return {
+      id: this.id as string,
+      reporter: this.reporter as string,
+      reported: this.reported as string,
+      reason: this.reason as string
+    }
   }
 }

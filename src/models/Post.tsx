@@ -11,7 +11,7 @@ export class Post extends APISpaceArtClient{
   private path = "/post";
 
   factory(post:{
-    id: string,
+    id: string | undefined,
     author: string,
     content: string,
     media: string,
