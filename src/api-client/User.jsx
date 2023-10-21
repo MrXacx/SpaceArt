@@ -7,7 +7,7 @@ const status = WebServiceClient.status;
 /**
  * Classe de consulta de dados de usuários
  */
-class User {
+export class User {
   id;
   index;
   token;

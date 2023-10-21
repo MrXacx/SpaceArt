@@ -1,6 +1,7 @@
 import { WebServiceClient } from "../services/WebServiceClient";
 import { APISpaceArtClient } from "./APISpaceArtClient";
 import { Message } from "./Message";
+import { User } from "./User";
 
 const { error } = WebServiceClient;
 
@@ -8,8 +9,8 @@ export class Chat extends APISpaceArtClient {
   private id: string | undefined;
   private artist: string | undefined;
   private enterprise: string | undefined;
-  private messager = new Message();
-  messages = [];
+
+  messages: Message[] = [];
 
   private path = "/chat";
 
@@ -64,9 +65,9 @@ export class Chat extends APISpaceArtClient {
    * @param int limit
    * @returns Chat[]
    */
-  async fetchList(user: string, offset = 0, limit = 10): Promise<Chat[]> {
+  async fetchList(user: User, offset = 0, limit = 10): Promise<Chat[]> {
     let response = await this.request.get(
-      `${this.path}?offset=${offset}&limit=${limit}user=${user}`
+      `${this.path}?offset=${offset}&limit=${limit}user=${user.id}`
     );
 
     if (response.status !== this.httpStatusCode.OK) {
@@ -86,8 +87,8 @@ export class Chat extends APISpaceArtClient {
     });
   }
 
-  sendMessage = async (sender: string, content: string) =>
-    this.messager.create(this.id as string, sender, content);
+  sendMessage = async (sender: User, content: string) =>
+    new Message(this).factory({ content, sender, timestamp: '' }).create();
 
   /**
    * Busca uma lista de mensagens de uma conversa
@@ -96,6 +97,11 @@ export class Chat extends APISpaceArtClient {
    * @param int limit
    * @returns Message[]
    */
-  fetchMessages = async (offset = 0, limit = 10) =>
-    this.messager.fetchList(this.id as string, offset, limit);
+  fetchMessages = async (offset = 0, limit = 10) => {
+    const list = await new Message(this).fetchList(offset, limit);
+    list.forEach(this.messages.push);
+    return list;
+  }
+
+  getID = () => this.id as string
 }
