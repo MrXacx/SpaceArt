@@ -1,12 +1,11 @@
-import { WebServiceClient } from "../services/WebServiceClient";
-import { APISpaceArtClient } from "./APISpaceArtClient";
-const { error } = WebServiceClient;
+import { Artist, Enterprise } from "./User";
+import { IndexedAPIClient, SpaceArtAPIClient } from "./abstracts/APIClient";
 
-export class Selection extends APISpaceArtClient {
-  private id: string | undefined;
+export class Selection extends IndexedAPIClient {
+
   private art: string | undefined;
   private price: number | undefined;
-  private owner: string | undefined;
+  private owner: Enterprise | undefined;
 
   time: string[] = [];
   date: string[] = [];
@@ -16,13 +15,11 @@ export class Selection extends APISpaceArtClient {
 
   /**
    * Preenche todos os atributos
-   * @param object
-   * @returns Selection
    */
   factory(selection: {
     id: string,
     art: string,
-    owner: string,
+    owner: Enterprise,
     price: number,
     date: string[],
     time: string[]
@@ -50,17 +47,15 @@ export class Selection extends APISpaceArtClient {
       time: this.time.join(";"),
     });
 
-    if (response.status !== this.httpStatusCode.CREATED) {
-      error.HTTPRequestError.throw(`Não foi possível criar uma seleção`);
+    if (response.status !== Selection.httpStatusCode.CREATED) {
+      Selection.errorTypes
+      .HTTPRequestError
+      .throw(`Não foi possível criar uma seleção`);
     }
   }
 
   /**
    * Buca lista de seleções com base num filtro
-   * @param int offset
-   * @param int limit
-   * @param string filter
-   * @returns Selection[]
    */
   async fetchList(offset = 0, limit = 15, filter = "owner") {
     let path = `${this.path}/list?offset=${offset}&limit=${limit}`;
@@ -80,8 +75,10 @@ export class Selection extends APISpaceArtClient {
 
     let response = await this.request.get(path);
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(`Não foi possível buscar uma lista de seleções utilizando o filtro ${filter}`);
+    if (response.status !== Selection.httpStatusCode.OK) {
+      Selection.errorTypes
+      .HTTPRequestError
+      .throw(`Não foi possível buscar uma lista de seleções utilizando o filtro ${filter}`);
     }
 
     return response.data.map((selection: any) => new Selection().factory(selection));
@@ -89,13 +86,14 @@ export class Selection extends APISpaceArtClient {
 
   /**
    * Busca uma seleção
-   * @returns Selection
    */
   async fetch() {
     let response = await this.request.get(`${this.path}?id=${this.id}`);
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(`Não foi possível encontrar a seleção ${this.id}`);
+    if (response.status !== Selection.httpStatusCode.OK) {
+      Selection.errorTypes
+      .HTTPRequestError
+      .throw(`Não foi possível encontrar a seleção ${this.id}`);
     }
 
     let selection = response.data;
@@ -103,7 +101,7 @@ export class Selection extends APISpaceArtClient {
     return this.factory({
       id: selection.id as string,
       art: selection.art as string,
-      owner: selection.owner as string,
+      owner: selection.owner,
       price: selection.price as number,
       date: (selection.date as string).split(";"),
       time: (selection.time as string).split(";"),
@@ -116,8 +114,10 @@ export class Selection extends APISpaceArtClient {
   async delete() {
     let response = await this.request.post(`${this.path}/delete`, { id: this.id });
 
-    if (response.status !== this.httpStatusCode.NO_CONTENT) {
-      error.HTTPRequestError.throw(
+    if (response.status !== Selection.httpStatusCode.NO_CONTENT) {
+      Selection.errorTypes
+      .HTTPRequestError
+      .throw(
         `Não foi possível deletar a seleção ${this.id}`
       );
     }
@@ -125,34 +125,28 @@ export class Selection extends APISpaceArtClient {
 
   /**
    * Submete um artista à seleção
-   * @param Artist artist
    */
-  async submitApplication(artist: string) {
-    let application = new SelectionApplication();
-    application.create(artist, this.id as string); // Cria aplicação
+  async submitApplication(artist: Artist) {
+    let application = new SelectionApplication(this, artist);
+    application.create(); // Cria aplicação
 
     this.applications.push(application); // Guarda a aplicação realizada no array
   }
 
   /**
-   * Busca uma lista de seleções
-   * @param int offset
-   * @param int limit
-   * @returns object
+   * Busca uma lista de artistas que se eubmeteram à seleção
    */
   async fetchApplications(offset = 0, limit = 15) {
-    let application = new SelectionApplication();
+    let application = new SelectionApplication(this);
     return this.applications = this.applications
-      .concat(
-        await application.fetchList(this.id as string, offset, limit)
-      );
+      .concat( await application.fetchList(offset, limit));
   }
 
   toObject() {
     return {
       id: this.id as string,
       art: this.art as string,
-      owner: this.owner as string,
+      owner: this.owner,
       price: this.price as number,
       date: this.date,
       time: this.time
@@ -160,52 +154,59 @@ export class Selection extends APISpaceArtClient {
   }
 }
 
-class SelectionApplication extends APISpaceArtClient {
-  private artist: string | undefined;
-  private selection: string | undefined;
+class SelectionApplication extends SpaceArtAPIClient {
+  private artist: Artist | undefined;
+  private selection: Selection;
 
   private path = '/selection/application';
 
 
-  constructor(artist = '', selection = '') {
+  constructor(selection: Selection, artist: Artist | null = null) {
     super();
-    this.artist = artist;
+    
     this.selection = selection;
+    this.artist = artist ?? undefined;
   }
 
   /**
    * Submete um artista à seleção
    * @param Artist artist
    */
-  async create(artist: string, selection: string) {
-    let response = await this.request.post(`${this.path}`, { artist, selection });
+  async create() {
+    let response = await this.request.post(`${this.path}`, { artist: this.artist?.id, selection: this.selection.getID() });
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(`Não foi possível submeter uma aplicação à seleção ${selection}`);
+    if (response.status !== Selection.httpStatusCode.OK) {
+      SelectionApplication.errorTypes
+      .HTTPRequestError
+        .throw(`Não foi possível submeter uma aplicação à seleção ${this.selection.getID()}`);
     }
   }
 
   /**
    * Busca uma lista de seleções
-   * @param int offset
-   * @param int limit
-   * @returns object
    */
-  async fetchList(selection: string, offset = 0, limit = 15) {
+  async fetchList( offset = 0, limit = 15) {
     let response = await this.request
-      .get(`${this.path}/list?offset=${offset}&limit=${limit}&selection=${selection}`);
+      .get(`${this.path}/list?offset=${offset}&limit=${limit}&selection=${this.selection.getID()}`);
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(`Não foi encontrar aplicações para a seleção ${selection}`);
+    if (response.status !== Selection.httpStatusCode.OK) {
+      SelectionApplication.errorTypes
+      .HTTPRequestError
+        .throw(`Não foi encontrar aplicações para a seleção ${this.selection.getID()}`);
     }
 
-    return response.data.map((application: any) => new SelectionApplication(application.artist, application.selection))
+    return response.data.map((data: any) => {
+      const artist = new Artist();
+      artist.id = data.id;
+      
+      return new SelectionApplication(this.selection, artist);
+    })
   }
 
   toObject() {
     return {
-      artist: this.artist as string,
-      selection: this.selection as string
+      artist: this.artist,
+      selection: this.selection
     }
   }
 }

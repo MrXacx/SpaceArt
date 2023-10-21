@@ -1,12 +1,9 @@
-import { WebServiceClient } from "../services/WebServiceClient";
-import { APISpaceArtClient } from "./APISpaceArtClient";
+import { IndexedAPIClient } from "./abstracts/APIClient";
 import { Message } from "./Message";
 import { User } from "./User";
 
-const { error } = WebServiceClient;
+export class Chat extends IndexedAPIClient {
 
-export class Chat extends APISpaceArtClient {
-  private id: string | undefined;
   private artist: string | undefined;
   private enterprise: string | undefined;
 
@@ -35,10 +32,9 @@ export class Chat extends APISpaceArtClient {
       enterprise: this.enterprise,
     });
 
-    if (response.status !== this.httpStatusCode.CREATED) {
-      error.HTTPRequestError.throw(
-        "Não foi possível enviar uma mensagem para o banco"
-      );
+    if (response.status !== Chat.httpStatusCode.CREATED) {
+      Chat.errorTypes
+        .HTTPRequestError.throw("Não foi possível enviar uma mensagem para o banco");
     }
   }
 
@@ -46,13 +42,13 @@ export class Chat extends APISpaceArtClient {
    * Busca uma conversa
    * @returns Chat
    */
-  async fetch(): Promise<Chat> {
+  async fetch() {
     let response = await this.request.get(`${this.path}?id=${this.id}`);
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(
-        `Não foi possível buscar a conversa ${this.id}`
-      );
+    if (response.status !== Chat.httpStatusCode.OK) {
+      Chat.errorTypes
+        .HTTPRequestError
+          .throw(`Não foi possível buscar a conversa ${this.id}`);
     }
 
     return new Chat().factory(response.data);
@@ -70,8 +66,9 @@ export class Chat extends APISpaceArtClient {
       `${this.path}?offset=${offset}&limit=${limit}user=${user.id}`
     );
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(
+    if (response.status !== Chat.httpStatusCode.OK) {
+      Chat.errorTypes
+        .HTTPRequestError.throw(
         "Não foi possível buscar uma lista de conversas"
       );
     }
@@ -102,6 +99,4 @@ export class Chat extends APISpaceArtClient {
     list.forEach(this.messages.push);
     return list;
   }
-
-  getID = () => this.id as string
 }

@@ -1,12 +1,11 @@
-import { WebServiceClient } from "../services/WebServiceClient";
-import { APISpaceArtClient } from "./APISpaceArtClient"
+import { Agreement } from "./Agreement";
+import { User } from "./User";
+import { SpaceArtAPIClient } from "./abstracts/APIClient";
 
-const { error } = WebServiceClient;
+export class Rate extends SpaceArtAPIClient {
 
-export class Rate extends APISpaceArtClient {
-
-  private agreement: string;
-  private author: string | undefined;
+  private agreement: Agreement;
+  private author: User | undefined;
   private description: string | undefined;
   private rate: number | undefined;
 
@@ -15,7 +14,7 @@ export class Rate extends APISpaceArtClient {
   /** 
    * @param string ID do contrato
    */
-  constructor(agreement: string) {
+  constructor(agreement: Agreement) {
     super();
     this.agreement = agreement;
   }
@@ -23,11 +22,7 @@ export class Rate extends APISpaceArtClient {
   /** 
    * Preenche todos dos atributos
    */
-  public factory(rate: {
-    author: string,
-    description: string,
-    rate: number,
-  }) {
+  public factory(rate: { author: User, description: string, rate: number }) {
     this.author = rate.author;
     this.description = rate.description;
     this.rate = rate.rate;
@@ -37,36 +32,42 @@ export class Rate extends APISpaceArtClient {
 
   public async create(): Promise<void> {
     let response = await this.request.post(this.path, {
-      agreement: this.agreement,
-      author: this.author,
+      agreement: this.agreement.getID(),
+      author: this.author?.id,
       rate: this.rate,
     });
 
-    if (response.status !== this.httpStatusCode.CREATED) {
-      error.HTTPRequestError.throw(
-        `Não foi possível adicionar uma avaliação para o contrato ${this.agreement}`
-      );
+    if (response.status !== Rate.httpStatusCode.CREATED) {
+      Rate.errorTypes
+        .HTTPRequestError.throw(
+          `Não foi possível adicionar uma avaliação para o contrato ${this.agreement.getID()}`
+        );
     }
   }
 
   public async fetchList(): Promise<Rate[]> {
 
     let response = await this.request.get(
-      `${this.path}/list?offset=0&limit=2&agreement=${this.agreement}`
+      `${this.path}/list?offset=0&limit=2&agreement=${this.agreement.getID()}`
     );
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(
-        `Não foram encontradas avaliações para o contrato ${this.agreement}`
-      );
+    if (response.status !== Rate.httpStatusCode.OK) {
+      Rate.errorTypes
+        .HTTPRequestError.throw(
+          `Não foram encontradas avaliações para o contrato ${this.agreement.getID()}`
+        );
     }
 
-    return response.data.map((rate: any) =>
-      new Rate(rate.agreement).factory({
-        author: rate.author,
+    return response.data.map((rate: any) => {
+      const author = new User();
+      author.id = rate.author;
+
+      return new Rate(rate.agreement).factory({
+        author,
         description: rate.description,
         rate: rate.rate,
       })
+    }
     );
   }
 
@@ -74,43 +75,50 @@ export class Rate extends APISpaceArtClient {
    * Atualiza nota de descrição da avaliação
    */
   public async update() {
-    let response = await this.request.post(`${this.path}/update`, {
-      agreement: this.agreement,
-      author: this.author,
-      column: "rate",
-      info: this.rate,
-    });
+    const agreement = this.agreement.getID();
+    const author = this.author?.id;
 
-    if (response.status !== this.httpStatusCode.NO_CONTENT) {
-      error.HTTPRequestError.throw(
-        `Não foi possível atualizar a nota de uma avaliação do contrato ${this.agreement}`
-      );
+    const requestBodies = [ // Corpos das requisições
+      {
+        agreement, author,
+        column: "rate",
+        info: this.rate,
+      },
+      {
+        agreement, author,
+        column: "rate",
+        info: this.rate,
+      }
+    ];
+
+    let [rateResponse, descriptionResponse] = await Promise.all( // Executa as duas requisições simultaneamente
+      requestBodies.map(body => this.request.post(`${this.path}/update`, body))
+    )
+
+
+    if (rateResponse.status !== Rate.httpStatusCode.NO_CONTENT) {
+      Rate.errorTypes
+        .HTTPRequestError
+        .throw(`Não foi possível atualizar a nota de uma avaliação do contrato ${this.agreement.getID()}`);
     }
 
-    response = await this.request.post(`${this.path}/update`, {
-      agreement: this.agreement,
-      author: this.author,
-      column: "description",
-      info: this.description,
-    });
-
-    if (response.status !== this.httpStatusCode.NO_CONTENT) {
-      error.HTTPRequestError.throw(
-        `Não foi possível atualizar a descrição de uma avaliação do contrato ${this.agreement}`
-      );
+    if (descriptionResponse.status !== Rate.httpStatusCode.NO_CONTENT) {
+      Rate.errorTypes
+        .HTTPRequestError
+        .throw(`Não foi possível atualizar a descrição de uma avaliação do contrato ${this.agreement.getID()}`);
     }
   }
 
   public async delete() {
     let response = await this.request.post(`${this.path}/delete`, {
-      agreement: this.agreement,
+      agreement: this.agreement.getID(),
       author: this.author,
     });
 
-    if (response.status !== this.httpStatusCode.NO_CONTENT) {
-      error.HTTPRequestError.throw(
-        `Não foi possível deletar uma avaliação do contrato ${this.agreement}`
-      );
+    if (response.status !== Rate.httpStatusCode.NO_CONTENT) {
+      Rate.errorTypes
+        .HTTPRequestError
+        .throw(`Não foi possível deletar uma avaliação do contrato ${this.agreement.getID()}`);
     }
   }
 

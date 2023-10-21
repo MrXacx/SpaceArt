@@ -1,11 +1,7 @@
-import { WebServiceClient } from "../services/WebServiceClient";
 import { Rate } from "./Rate";
-import { APISpaceArtClient } from "./APISpaceArtClient";
+import { IndexedAPIClient } from "./abstracts/APIClient";
 
-const { error } = WebServiceClient;
-
-export class Agreement extends APISpaceArtClient {
-  private id: string | undefined;
+export class Agreement extends IndexedAPIClient {
   private hirer: string | undefined;
   private hired: string | undefined;
   private art: string | undefined;
@@ -58,8 +54,8 @@ export class Agreement extends APISpaceArtClient {
       time: this.time?.join(";"),
     });
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw("Não foi possível criar um contrato");
+    if (response.status !== Agreement.httpStatusCode.OK) {
+      Agreement.errorTypes.HTTPRequestError.throw("Não foi possível criar um contrato");
     }
   }
 
@@ -70,10 +66,10 @@ export class Agreement extends APISpaceArtClient {
   async fetch(): Promise<Agreement> {
     let response = await this.request.get(`${this.path}?id=${this.id}`);
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(
-        `Não foi possível encontrar o contrato ${this.id}`
-      );
+    if (response.status !== Agreement.httpStatusCode.OK) {
+      Agreement.errorTypes
+        .HTTPRequestError
+          .throw(`Não foi possível encontrar o contrato ${this.id}`);
     }
 
     let agreement = response.data;
@@ -103,8 +99,8 @@ export class Agreement extends APISpaceArtClient {
   public async fetchList(user: string, offset = 0, limit = 10): Promise<Agreement[]> {
     let response = await this.request.get(`${this.path}/list?user=${user}&offset=${offset}&limit=${limit}`);
 
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(
+    if (response.status !== Agreement.httpStatusCode.OK) {
+      Agreement.errorTypes.HTTPRequestError.throw(
         `Não foi possível contratos do usuário ${user}`
       );
     }
@@ -129,8 +125,8 @@ export class Agreement extends APISpaceArtClient {
   public async delete() {
     let response = await this.request.post(`${this.path}/delete`, { id: this.id });
 
-    if (response.status !== this.httpStatusCode.NO_CONTENT) {
-      error.HTTPRequestError.throw(
+    if (response.status !== Agreement.httpStatusCode.NO_CONTENT) {
+      Agreement.errorTypes.HTTPRequestError.throw(
         `Não foi possível deleter o contrato ${this.id}`
       );
     }

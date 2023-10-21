@@ -1,11 +1,8 @@
-import { WebServiceClient } from "../services/WebServiceClient";
-import { APISpaceArtClient } from "./APISpaceArtClient";
 import { Chat } from "./Chat";
 import { User } from "./User";
+import { IndexedAPIClient } from "./abstracts/APIClient";
 
-const { error } = WebServiceClient;
-
-export class Message extends APISpaceArtClient {
+export class Message extends IndexedAPIClient {
     private content: string | undefined;
     private sender: User | undefined;
     private timestamp: string | undefined;
@@ -14,7 +11,7 @@ export class Message extends APISpaceArtClient {
 
     constructor(private readonly chat: Chat){super()}
 
-    factory(data: { content: string; sender: User; timestamp: string | undefined }) {
+  factory(data: { sender: User; content: string; timestamp: string | undefined }) {
       this.content = data.content;
       this.sender = data.sender;
       this.timestamp = data.timestamp;
@@ -24,34 +21,30 @@ export class Message extends APISpaceArtClient {
   
     async create() {
       let response = await this.request.post(this.path, {
-        chat: this.chat,
+        chat: this.chat.getID(),
         sender: this.sender,
         content: this.content,
       });
   
-      if (response.status !== this.httpStatusCode.CREATED) {
-        error.HTTPRequestError.throw(
-          "Não foi possível criar uma mensagem no banco"
-        );
+      if (response.status !== Message.httpStatusCode.CREATED) {
+        Message
+          .errorTypes
+            .HTTPRequestError
+              .throw("Não foi possível criar uma mensagem no banco");
       }
     }
   
     /**
      * Busca uma lista de mensagens de uma conversa
-     *
-     * @param string id do chat
-     * @param int offset
-     * @param int limit
-     * @returns Message[]
      */
     async fetchList( offset = 0, limit = 10) {
       let response = await this.request.get(
-        `${this.path}?offset=${offset}&limit=${limit}&chat=${this.chat}`
+        `${this.path}?offset=${offset}&limit=${limit}&chat=${this.chat.getID()}`
       );
   
-      if (response.status !== this.httpStatusCode.OK) {
-        error.HTTPRequestError.throw(
-          `Não foi possível buscar as mensagens do chat ${this.chat}`
+      if (response.status !== Message.httpStatusCode.OK) {
+        Message.errorTypes.HTTPRequestError.throw(
+          `Não foi possível buscar as mensagens do chat ${this.chat.getID()}`
         );
       }
   
@@ -60,8 +53,9 @@ export class Message extends APISpaceArtClient {
   
     toObject() {
       return {
+        chat: this.chat,
         content: this.content as string,
-        sender: this.sender?.id,
+        sender: this.sender,
         timestamp: this.timestamp as string,
       };
     }

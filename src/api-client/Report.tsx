@@ -1,17 +1,13 @@
-import { WebServiceClient } from "../services/WebServiceClient";
-import { APISpaceArtClient } from "./APISpaceArtClient";
-const api = WebServiceClient.request;
-const HTTPRequestError = WebServiceClient.error.HTTPRequestError;
-const status = WebServiceClient.status;
+import { User } from "./User";
+import { IndexedAPIClient } from "./abstracts/APIClient";
 
-export class Report extends APISpaceArtClient {
-  private id: string | undefined;
-  private reporter: string;
-  private reported: string | undefined;
+export class Report extends IndexedAPIClient {
+  private reporter: User;
+  private reported: User | undefined;
   private reason: string | undefined;
   private path = "/user/report";
 
-  constructor(reporter: string) {
+  constructor(reporter: User) {
     super();
     this.reporter = reporter;
   }
@@ -20,9 +16,9 @@ export class Report extends APISpaceArtClient {
    * Preenche todos os atributos
    * @param object
    */
-  factory(report:{
+  factory(report: {
     id: string | undefined,
-    reported: string,
+    reported: User,
     reason: string,
   }) {
     this.id = report.id;
@@ -34,39 +30,39 @@ export class Report extends APISpaceArtClient {
    * Cria nova denúncia na API
    */
   async create() {
-    api
-      .post(this.path, this.toObject())
-      .then((response) => {
-        if (response.status !== status.OK) {
-          HTTPRequestError.throw(response.statusText);
-        }
-      });
+    let response = await this.request.post(this.path, this.toObject());
+
+    if (response.status !== Report.httpStatusCode.OK) {
+      Report.errorTypes
+        .HTTPRequestError
+        .throw(response.statusText);
+    }
   }
 
   /**
    * Obtém lista de denúncia s de usuário
-   * @param int posição de início da leitura
-   * @param int limite de itens
    */
   async getList(offset = 0, limit = 10) {
-    let response = await api.get(
+    let response = await this.request.get(
       `${this.path}?offset=${offset}&limit=${limit}&reporter=${this.reporter}`
     );
 
-    if (response.status !== status.OK) {
-      HTTPRequestError.throw(response.statusText);
+    if (response.status !== Report.httpStatusCode.OK) {
+      Report.errorTypes
+        .HTTPRequestError
+        .throw(response.statusText);
     }
 
     return response.data.map((report: any) =>
-      new Report(report.reporter).factory(report)
+      new Report(this.reporter).factory(report)
     ); // Instancia todos as denúncias obtidas
   }
 
   toObject() {
     return {
       id: this.id as string,
-      reporter: this.reporter as string,
-      reported: this.reported as string,
+      reporter: this.reporter,
+      reported: this.reported,
       reason: this.reason as string
     }
   }
