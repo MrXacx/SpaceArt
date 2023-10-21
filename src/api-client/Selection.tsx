@@ -11,7 +11,7 @@ export class Selection extends IndexedAPIClient {
   date: string[] = [];
   applications: SelectionApplication[] = [];
 
-  path = "service-spaceart.000webhostapp.com/selection";
+  path = "/selection";
 
   /**
    * Preenche todos os atributos
