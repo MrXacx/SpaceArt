@@ -1,11 +1,11 @@
 import { IndexedAPIClient } from "./abstracts/APIClient";
 import { Message } from "./Message";
-import { User } from "./User";
+import { Artist, Enterprise, User } from "./User";
 
 export class Chat extends IndexedAPIClient {
 
-  private artist: string | undefined;
-  private enterprise: string | undefined;
+  private artist: Artist | undefined;
+  private enterprise: Enterprise | undefined;
 
   messages: Message[] = [];
 
@@ -13,8 +13,8 @@ export class Chat extends IndexedAPIClient {
 
   factory(chat: {
     id: string | undefined;
-    artist: string;
-    enterprise: string;
+    artist: Artist;
+    enterprise: Enterprise;
   }) {
     this.id = chat.id;
     this.artist = chat.artist;
@@ -28,8 +28,8 @@ export class Chat extends IndexedAPIClient {
    */
   async create() {
     let response = await this.request.post(`${this.path}`, {
-      artist: this.artist,
-      enterprise: this.enterprise,
+      artist: this.artist?.getID(),
+      enterprise: this.enterprise?.getID(),
     });
 
     if (response.status !== Chat.httpStatusCode.CREATED) {
@@ -40,7 +40,6 @@ export class Chat extends IndexedAPIClient {
 
   /**
    * Busca uma conversa
-   * @returns Chat
    */
   async fetch() {
     let response = await this.request.get(`${this.path}?id=${this.id}`);
@@ -48,29 +47,29 @@ export class Chat extends IndexedAPIClient {
     if (response.status !== Chat.httpStatusCode.OK) {
       Chat.errorTypes
         .HTTPRequestError
-          .throw(`Não foi possível buscar a conversa ${this.id}`);
+        .throw(`Não foi possível buscar a conversa ${this.id}`);
     }
 
-    return new Chat().factory(response.data);
+    const chatData = response.data;
+    chatData.artist = new Artist(chatData.artist)
+    chatData.enterprise = new Enterprise(chatData.enterprise);
+
+    return new Chat().factory(chatData);
   }
 
   /**
    * Busca uma lista de conversas e suas mensagens
-   * @param string user
-   * @param int offset
-   * @param int limit
-   * @returns Chat[]
    */
   async fetchList(user: User, offset = 0, limit = 10): Promise<Chat[]> {
     let response = await this.request.get(
-      `${this.path}?offset=${offset}&limit=${limit}user=${user.id}`
+      `${this.path}?offset=${offset}&limit=${limit}user=${user.getID()}`
     );
 
     if (response.status !== Chat.httpStatusCode.OK) {
       Chat.errorTypes
         .HTTPRequestError.throw(
-        "Não foi possível buscar uma lista de conversas"
-      );
+          "Não foi possível buscar uma lista de conversas"
+        );
     }
 
     return response.data.map((chat: any) => {

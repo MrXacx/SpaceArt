@@ -30,7 +30,11 @@ export class Report extends IndexedAPIClient {
    * Cria nova denúncia na API
    */
   async create() {
-    let response = await this.request.post(this.path, this.toObject());
+    let response = await this.request.post(this.path, {
+      reporter: this.reporter.getID(),
+      reported: this.reported?.getID(),
+      reason: this.reason as string
+    });
 
     if (response.status !== Report.httpStatusCode.OK) {
       Report.errorTypes
@@ -42,9 +46,9 @@ export class Report extends IndexedAPIClient {
   /**
    * Obtém lista de denúncia s de usuário
    */
-  async getList(offset = 0, limit = 10) {
+  async fetcList(offset = 0, limit = 10) {
     let response = await this.request.get(
-      `${this.path}?offset=${offset}&limit=${limit}&reporter=${this.reporter}`
+      `${this.path}?offset=${offset}&limit=${limit}&reporter=${this.reporter.getID()}`
     );
 
     if (response.status !== Report.httpStatusCode.OK) {
@@ -53,9 +57,10 @@ export class Report extends IndexedAPIClient {
         .throw(response.statusText);
     }
 
-    return response.data.map((report: any) =>
-      new Report(this.reporter).factory(report)
-    ); // Instancia todos as denúncias obtidas
+    return response.data.map((report: any) => {
+      report.reported = new User(report.reported);
+      return new Report(this.reporter).factory(report)
+    }); // Instancia todos as denúncias obtidas
   }
 
   toObject() {

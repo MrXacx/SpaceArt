@@ -1,9 +1,10 @@
 import { Rate } from "./Rate";
+import { Artist, Enterprise, User } from "./User";
 import { IndexedAPIClient } from "./abstracts/APIClient";
 
 export class Agreement extends IndexedAPIClient {
-  private hirer: string | undefined;
-  private hired: string | undefined;
+  private hirer: Enterprise | undefined;
+  private hired: Artist | undefined;
   private art: string | undefined;
   private price: number | undefined;
   private status: string | undefined;
@@ -21,8 +22,8 @@ export class Agreement extends IndexedAPIClient {
    */
   public factory(agreement: {
     id: string | undefined,
-    hirer: string | undefined,
-    hired: string | undefined,
+    hirer: Enterprise | undefined,
+    hired: Artist | undefined,
     art: string | undefined,
     price: number | undefined,
     date: string[] | undefined,
@@ -44,10 +45,10 @@ export class Agreement extends IndexedAPIClient {
   /**
    * Cria um contrato
    */
-  public async create(): Promise<void> {
+  public async create() {
     let response = await this.request.post(this.path, {
-      hirer: this.hirer,
-      hired: this.hired,
+      hirer: this.hirer?.getID(),
+      hired: this.hired?.getID(),
       art: this.art,
       price: this.price,
       date: this.date?.join(";"),
@@ -64,28 +65,28 @@ export class Agreement extends IndexedAPIClient {
    * @returns Agreement
    */
   async fetch(): Promise<Agreement> {
-    let response = await this.request.get(`${this.path}?id=${this.id}`);
+    const response = await this.request.get(`${this.path}?id=${this.id}`);
 
     if (response.status !== Agreement.httpStatusCode.OK) {
       Agreement.errorTypes
         .HTTPRequestError
-          .throw(`Não foi possível encontrar o contrato ${this.id}`);
+        .throw(`Não foi possível encontrar o contrato ${this.id}`);
     }
 
-    let agreement = response.data;
+    const agreementData = response.data;
 
-    agreement = new Agreement().factory({
-      id: agreement.id,
-      hirer: agreement.hirer,
-      hired: agreement.hired,
-      art: agreement.art,
-      price: agreement.price,
-      date: agreement.date.split(";"),
-      time: agreement.time.split(";"),
-      status: agreement.status,
+    const agreement = new Agreement().factory({
+      id: agreementData.id,
+      hirer: new Enterprise(agreementData.hirer),
+      hired: new Artist(agreementData.hired),
+      art: agreementData.art,
+      price: agreementData.price,
+      date: Object.entries(agreementData.date).map(item => item[1] as string),
+      time: Object.entries(agreementData.time).map(item => item[1] as string),
+      status: agreementData.status,
     });
 
-    agreement.rates = agreement.rates.concat(new Rate(agreement).fetchList()); // Obtém avaliações do contrato
+    agreement.rates = agreement.rates.concat(await new Rate(agreement).fetchList()); // Obtém avaliações do contrato
 
     return agreement;
   }
@@ -96,12 +97,12 @@ export class Agreement extends IndexedAPIClient {
    * @param int offset
    * @param int limit
    */
-  public async fetchList(user: string, offset = 0, limit = 10): Promise<Agreement[]> {
-    let response = await this.request.get(`${this.path}/list?user=${user}&offset=${offset}&limit=${limit}`);
+  public async fetchList(user: User, offset = 0, limit = 10): Promise<Agreement[]> {
+    let response = await this.request.get(`${this.path}/list?user=${user.getID()}&offset=${offset}&limit=${limit}`);
 
     if (response.status !== Agreement.httpStatusCode.OK) {
       Agreement.errorTypes.HTTPRequestError.throw(
-        `Não foi possível contratos do usuário ${user}`
+        `Não foi possível contratos do usuário ${user.getID()}`
       );
     }
 
@@ -140,14 +141,8 @@ export class Agreement extends IndexedAPIClient {
       price: this.price,
       art: this.art,
       status: this.status,
-      date: {
-        initial: this.date?.at(0),
-        final: this.date?.at(1),
-      },
-      time: {
-        initial: this.date?.at(0),
-        final: this.date?.at(1),
-      }
+      date: this.date,
+      time: this.time
     }
   }
 }

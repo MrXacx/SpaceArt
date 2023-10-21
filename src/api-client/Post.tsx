@@ -2,14 +2,14 @@ import { User } from "./User";
 import { IndexedAPIClient } from "./abstracts/APIClient";
 
 
-export class Post extends IndexedAPIClient{
+export class Post extends IndexedAPIClient {
   private author: User | undefined;
   private content: string | undefined;
   private media: string | undefined;
 
   private path = "/post";
 
-  factory(post:{
+  factory(post: {
     id: string | undefined,
     author: User,
     content: string,
@@ -29,14 +29,14 @@ export class Post extends IndexedAPIClient{
   async create() {
     let response = await this.request.post(this.path, {
       id: this.id as string,
-      author: this.author?.id,
+      author: this.author?.getID(),
       content: this.content as string,
       media: this.media as string,
     });
 
     if (response.status !== Post.httpStatusCode.CREATED) {
       Post.errorTypes
-      .HTTPRequestError.throw("Não foi possível publicar uma postagem");
+        .HTTPRequestError.throw("Não foi possível publicar uma postagem");
     }
   }
 
@@ -48,21 +48,14 @@ export class Post extends IndexedAPIClient{
 
     if (response.status !== Post.httpStatusCode.OK) {
       Post.errorTypes
-      .HTTPRequestError.throw(`Não foi possível buscar a postagem ${this.id}`);
+        .HTTPRequestError.throw(`Não foi possível buscar a postagem ${this.id}`);
     }
 
     return response.data.map((post: any) => {
-      const author = new User();
-      author.id = post.id;
-
-      return new Post().factory({
-        id: post.id,
-        content: post.content,
-        media: post.media,
-        author
-      });
+      post.author = new User(post.author);
+      return new Post().factory(post);
     });
-    
+
   }
 
   /**
@@ -75,10 +68,13 @@ export class Post extends IndexedAPIClient{
 
     if (response.status !== Post.httpStatusCode.OK) {
       Post.errorTypes
-      .HTTPRequestError.throw("Não foi possível buscar uma lista de postagens");
+        .HTTPRequestError.throw("Não foi possível buscar uma lista de postagens");
     }
 
-    return response.data.map((post: any) => new Post().factory(post));
+    return response.data.map((post: any) => {
+      post.author = new User(post.author);
+      return new Post().factory(post);
+    });
   }
 
   /**
@@ -89,11 +85,11 @@ export class Post extends IndexedAPIClient{
 
     if (response.status !== Post.httpStatusCode.NO_CONTENT) {
       Post.errorTypes
-      .HTTPRequestError.throw("Não foi possível deletar uma postagem");
+        .HTTPRequestError.throw("Não foi possível deletar uma postagem");
     }
   }
 
-  toObject(){
+  toObject() {
     return {
       id: this.id as string,
       author: this.author,

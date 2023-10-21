@@ -11,9 +11,6 @@ export class Rate extends SpaceArtAPIClient {
 
   private path = "/agreement/rate";
 
-  /** 
-   * @param string ID do contrato
-   */
   constructor(agreement: Agreement) {
     super();
     this.agreement = agreement;
@@ -33,7 +30,7 @@ export class Rate extends SpaceArtAPIClient {
   public async create(): Promise<void> {
     let response = await this.request.post(this.path, {
       agreement: this.agreement.getID(),
-      author: this.author?.id,
+      author: this.author?.getID(),
       rate: this.rate,
     });
 
@@ -59,16 +56,9 @@ export class Rate extends SpaceArtAPIClient {
     }
 
     return response.data.map((rate: any) => {
-      const author = new User();
-      author.id = rate.author;
-
-      return new Rate(rate.agreement).factory({
-        author,
-        description: rate.description,
-        rate: rate.rate,
-      })
-    }
-    );
+      rate.author = new User(rate.author);
+      return new Rate(rate.agreement).factory(rate);
+    });
   }
 
   /**
@@ -76,7 +66,7 @@ export class Rate extends SpaceArtAPIClient {
    */
   public async update() {
     const agreement = this.agreement.getID();
-    const author = this.author?.id;
+    const author = this.author?.getID();
 
     const requestBodies = [ // Corpos das requisições
       {
@@ -112,7 +102,7 @@ export class Rate extends SpaceArtAPIClient {
   public async delete() {
     let response = await this.request.post(`${this.path}/delete`, {
       agreement: this.agreement.getID(),
-      author: this.author,
+      author: this.author?.getID(),
     });
 
     if (response.status !== Rate.httpStatusCode.NO_CONTENT) {

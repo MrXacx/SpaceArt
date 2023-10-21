@@ -21,14 +21,19 @@ export abstract class APIClient {
 
 }
 
-export abstract class SpaceArtAPIClient extends APIClient{
+export abstract class SpaceArtAPIClient extends APIClient {
     protected request = new Axios({
         baseURL: 'https://service-spaceart.000webhostapp.com'
     });
 }
 
-export abstract class IndexedAPIClient extends SpaceArtAPIClient{
+export abstract class IndexedAPIClient extends SpaceArtAPIClient {
     protected id: string | undefined;
+
+    constructor(id: string | null = null) {
+        super();
+        this.id = id ?? undefined;
+    }
 
     setID = (id: string) => this.id = id;
     getID = () => this.id as string;
