@@ -1,4 +1,3 @@
-import Header from "../../components/header/header";
 import {
   FeedContainer,
   PostContainer,
@@ -8,11 +7,12 @@ import {
 } from "./feedStyles";
 import ProfilePicture from "../../assets/profile_user.png";
 import PlaceholderImage from "../../assets/placeholder_image.png";
+import HeaderLogged from "../../components/headerLogged/headerLogged";
 
 function Feed() {
   return (
     <>
-      <Header />
+      <HeaderLogged />
       <FeedContainer>
         <PostContainer>
           <ProfileContainer>

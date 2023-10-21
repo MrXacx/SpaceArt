@@ -10,6 +10,12 @@ import styled, { createGlobalStyle } from "styled-components";
     --white: #f5f5f5;
   }
 */
+
+export const Spacing = styled.div`
+  height: 100px;
+  background-color: #fff;
+`;
+
 export const ProfileGlobalStyle = createGlobalStyle`
   ul, ol {
     list-style-type: none;

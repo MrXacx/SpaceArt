@@ -1,17 +1,17 @@
-import Header from "../../components/header/header";
-import ArrowIcon from "../../assets/arrow.png";
 import {
   ArrowContainer,
   BoxContainer,
   ConfigContainer,
   MainContainer,
 } from "./configStyles";
+import ArrowIcon from "../../assets/arrow.png";
 import Footer from "../../components/footer/footer";
+import HeaderLogged from "../../components/headerLogged/headerLogged";
 
 function Config() {
   return (
     <>
-      <Header />
+      <HeaderLogged />
       <MainContainer>
         <BoxContainer>
           <ConfigContainer>

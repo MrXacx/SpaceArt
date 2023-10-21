@@ -4,18 +4,10 @@ import {
   AboutUsContainer,
   AboutUsText,
   ArtCardContainer,
-  CardProfileContainer,
-  CardProfileContent,
-  CardProfileDetail,
-  CategoryButton,
-  CategoryContainer,
-  CategoryInput,
   ChooseArtistCardContainer,
   ChooseArtistContainer,
   OpeningBannerContainer,
   OpeningBannerContent,
-  SearchArtistContainer,
-  UserCardDetailContainer,
 } from "./landingPageStyles";
 import AboutUsImage from "../../assets/about_us_banner.png";
 import MicImage from "../../assets/mic_banner.png";
@@ -23,9 +15,6 @@ import ArtImage from "../../assets/art_banner.png";
 import DancerImage from "../../assets/dancer_banner.png";
 import SculptureImage from "../../assets/sculpture_banner.png";
 import TheaterImage from "../../assets/theater_banner.png";
-import MarcoImage from "../../assets/marco_image.png";
-import LocalIcon from "../../assets/local.svg";
-import WageIcon from "../../assets/wage.svg";
 import Footer from "../../components/footer/footer";
 import SearchArtist from "../../components/searchArtist/searchArtist";
 

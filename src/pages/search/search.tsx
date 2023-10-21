@@ -1,4 +1,4 @@
-import Header from "../../components/header/header";
+import HeaderLogged from "../../components/headerLogged/headerLogged";
 import SearchArtist from "../../components/searchArtist/searchArtist";
 import { Spacing } from "./searchStyles";
 
@@ -6,7 +6,7 @@ import { Spacing } from "./searchStyles";
 function Search() {
   return (
     <>
-    <Header />
+    <HeaderLogged />
     <Spacing />
     <SearchArtist />
     </>

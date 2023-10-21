@@ -20,6 +20,7 @@ import {
   ProfileGlobalStyle,
   ProfileHeader,
   ProfileTools,
+  Spacing,
   TypeJobIcon,
   UserDetails,
   UserDetailsHeader,
@@ -39,6 +40,7 @@ import ReportIcon from "../../assets/report.svg";
 import ShareIcon from "../../assets/share.svg";
 import MusicIcon from "../../assets/music.svg";
 import Footer from "../../components/footer/footer";
+import HeaderLogged from "../../components/headerLogged/headerLogged";
 
 function Profile() {
   function iterateSpan() {
@@ -52,6 +54,8 @@ function Profile() {
   const SpanCalender = iterateSpan();
   return (
     <>
+      <HeaderLogged />
+      <Spacing />
       <ProfileGlobalStyle />
       <ProfileHeader>
         <ProfileContent>

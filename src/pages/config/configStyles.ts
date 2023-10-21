@@ -4,7 +4,7 @@ export const MainContainer = styled.div`
   display: flex;
   align-items: center;
   min-height: 100vh;
-  background: #f5f6fa;
+  background: #fff;
 `;
 
 export const BoxContainer = styled.div`

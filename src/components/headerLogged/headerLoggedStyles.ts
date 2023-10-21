@@ -1,9 +1,15 @@
 import styled from "styled-components";
 
+export const Icon = styled.img`
+  max-width: 23px;
+  max-height: 23px;
+  padding-right: 20px;
+`;
+
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 100px;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.96);
   padding: 0 32px;
   box-sizing: border-box;
   display: flex;
@@ -52,7 +58,7 @@ export const NavContainer = styled.nav`
 
 export const NavItems = styled.li`
   list-style: none;
-  color: #000;
+  color: #fff;
   cursor: pointer;
   font-size: 19px;
   font-weight: 500;
@@ -81,4 +87,12 @@ export const SignUpButton = styled.button`
   :hover {
     background-color: #f47c2e;
   }
+`;
+
+export const ProfilePicture = styled.img`
+  border-radius: 50px;
+  min-height: 40px;
+  min-width: 40px;
+  max-height: 40px;
+  max-width: 40px;
 `;
