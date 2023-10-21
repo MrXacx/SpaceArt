@@ -1,9 +1,8 @@
 import { WebServiceClient } from "../services/WebServiceClient";
 import { APISpaceArtClient } from "./APISpaceArtClient";
-import { Artist } from "./User";
-const { request, error, status } = WebServiceClient;
+const { error } = WebServiceClient;
 
-export class Selection extends APISpaceArtClient{
+export class Selection extends APISpaceArtClient {
   private id: string | undefined;
   private art: string | undefined;
   private price: number | undefined;
@@ -74,7 +73,7 @@ export class Selection extends APISpaceArtClient{
       case "art":
         path += "&art=" + this.art;
         break;
-        
+
       default:
         throw new Error("O filtro selecionado não era esperado por este método.");
     }
@@ -106,7 +105,7 @@ export class Selection extends APISpaceArtClient{
       art: selection.art as string,
       owner: selection.owner as string,
       price: selection.price as number,
-      date: (selection.date  as string).split(";"),
+      date: (selection.date as string).split(";"),
       time: (selection.time as string).split(";"),
     });
   }
@@ -129,7 +128,10 @@ export class Selection extends APISpaceArtClient{
    * @param Artist artist
    */
   async submitApplication(artist: string) {
-    new SelectionApplication().create(artist, this.id as string);
+    let application = new SelectionApplication();
+    application.create(artist, this.id as string); // Cria aplicação
+
+    this.applications.push(application); // Guarda a aplicação realizada no array
   }
 
   /**
@@ -139,19 +141,14 @@ export class Selection extends APISpaceArtClient{
    * @returns object
    */
   async fetchApplications(offset = 0, limit = 15) {
-    let response = await this.request.get(
-      `${this.path}/application/list?offset=${offset}&limit=${limit}&selection=${this.id}`
-    );
-
-    if (response.status !== this.httpStatusCode.OK) {
-      error.HTTPRequestError.throw(
-        `Não foi encontrar aplicações para a seleção ${this.id}`
+    let application = new SelectionApplication();
+    return this.applications = this.applications
+      .concat(
+        await application.fetchList(this.id as string, offset, limit)
       );
-    }
-    return response.data;
   }
 
-  toObject(){
+  toObject() {
     return {
       id: this.id as string,
       art: this.art as string,
@@ -163,16 +160,25 @@ export class Selection extends APISpaceArtClient{
   }
 }
 
-class SelectionApplication extends APISpaceArtClient{
-   
+class SelectionApplication extends APISpaceArtClient {
+  private artist: string | undefined;
+  private selection: string | undefined;
+
   private path = '/selection/application';
+
+
+  constructor(artist = '', selection = '') {
+    super();
+    this.artist = artist;
+    this.selection = selection;
+  }
 
   /**
    * Submete um artista à seleção
    * @param Artist artist
    */
-   async create(artist: string, selection: string) {
-    let response = await this.request.post(`${this.path}`, {artist, selection});
+  async create(artist: string, selection: string) {
+    let response = await this.request.post(`${this.path}`, { artist, selection });
 
     if (response.status !== this.httpStatusCode.OK) {
       error.HTTPRequestError.throw(`Não foi possível submeter uma aplicação à seleção ${selection}`);
@@ -186,12 +192,20 @@ class SelectionApplication extends APISpaceArtClient{
    * @returns object
    */
   async fetchList(selection: string, offset = 0, limit = 15) {
-    let response = await this.request.get(
-      `${this.path}/list?offset=${offset}&limit=${limit}&selection=${selection}`
-    );
+    let response = await this.request
+      .get(`${this.path}/list?offset=${offset}&limit=${limit}&selection=${selection}`);
 
     if (response.status !== this.httpStatusCode.OK) {
       error.HTTPRequestError.throw(`Não foi encontrar aplicações para a seleção ${selection}`);
+    }
+
+    return response.data.map((application: any) => new SelectionApplication(application.artist, application.selection))
+  }
+
+  toObject() {
+    return {
+      artist: this.artist as string,
+      selection: this.selection as string
     }
   }
 }
