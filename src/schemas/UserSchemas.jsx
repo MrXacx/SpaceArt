@@ -19,7 +19,7 @@ const passwordSchema = Joi.string() // string de 8 a 35 caracteres com letras mi
 	.pattern(new RegExp('.*[0-9].*'));
 
 const phoneSchema = Joi.string() // (XX)9XXXX-XXXX
-	.pattern(new RegExp(/^(\d{2})9\d{4}-\d{4}$/));
+	.pattern(new RegExp(/^\(\d{2}\)9\d{4}-\d{4}$/));
 
 const postalCodeSchema = Joi.string()// XXXXX-XXX
 	.pattern(new RegExp(/^\d{5}-\d{3}$/));
@@ -37,15 +37,29 @@ const signUpSchema = {
 
 export const artistSignUpSchema = Joi.object({
 	...signUpSchema,
-	wage: Joi.number().precision(2),
-	cpf: Joi.string().pattern(new RegExp(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)),
-	art: Joi.string().required(),
-	birthday: Joi.date().format('DD/MM/YYYY')
+	wage: Joi.number()
+		.precision(2),
+
+	cpf: Joi.string()
+		.pattern(new RegExp(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)),
+
+	art: Joi.string()
+		.required(),
+
+	birthday: Joi.date()
+		.format('DD/MM/YYYY')
 });
 
 export const enterpriseSignUpSchema = Joi.object({
 	...signUpSchema,
-	cnpj: Joi.string().pattern(new RegExp(/^\d{3}\.\d{3}\.\d{3}-\d{2}\/\d{3}$/)),
+	cnpj: Joi.string()
+		.pattern(new RegExp(/^\d{3}\.\d{3}\.\d{3}-\d{2}\/\d{3}$/)),
+	
+		section: Joi.string()
+			.min(1)
+			.max(30)
+			.required(),
+
 	address: addressSchema.required(),
 	neighborhood: neighborhoodSchema.required(),
 });
