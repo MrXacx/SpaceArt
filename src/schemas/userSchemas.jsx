@@ -62,4 +62,4 @@ export const enterpriseSignUpSchema = Joi.object({
 export const signInSchema = Joi.object({
 	email: emailSchema.required(),
 	passowrd: passwordSchema.required(),
-})
+});
