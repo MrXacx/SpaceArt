@@ -6,16 +6,19 @@ export class Post extends IndexedAPIClient {
   private author: User | undefined;
   private content: string | undefined;
   private media: string | undefined;
+  private postTime: string | undefined;
 
   private path = "/post";
 
   factory(post: {
-    id: string | undefined,
+    id?: string,
+    post_time?: string,
     author: User,
     content: string,
     media: string,
   }): this {
     this.id = post.id;
+    this.postTime = post.post_time;
     this.author = post.author;
     this.content = post.content;
     this.media = post.media;

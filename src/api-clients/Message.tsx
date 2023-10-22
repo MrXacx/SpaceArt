@@ -1,8 +1,8 @@
 import { Chat } from "./Chat";
 import { User } from "./User";
-import { IndexedAPIClient } from "./abstracts/APIClient";
+import { SpaceArtAPIClient } from "./abstracts/APIClient";
 
-export class Message extends IndexedAPIClient {
+export class Message extends SpaceArtAPIClient {
   private content: string | undefined;
   private sender: User | undefined;
   private timestamp: string | undefined;

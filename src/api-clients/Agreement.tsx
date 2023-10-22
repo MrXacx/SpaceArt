@@ -8,8 +8,8 @@ export class Agreement extends IndexedAPIClient {
   private art: string | undefined;
   private price: number | undefined;
   private status: string | undefined;
-
-  private date: string[] | undefined;
+  private description: string | undefined;
+  private date: string | undefined;
   private time: string[] | undefined;
   public rates: Rate[] = [];
 
@@ -21,21 +21,23 @@ export class Agreement extends IndexedAPIClient {
    * @returns Agreement
    */
   public factory(agreement: {
-    id: string | undefined,
-    hirer: Enterprise | undefined,
-    hired: Artist | undefined,
-    art: string | undefined,
-    price: number | undefined,
-    date: string[] | undefined,
-    time: string[] | undefined,
-    status: string | undefined,
+    id?: string,
+    hirer: Enterprise,
+    hired: Artist,
+    description: string,
+    art: string,
+    price: number,
+    date: string,
+    time: string[],
+    status?: string,
   }): Agreement {
     this.id = agreement.id;
     this.hirer = agreement.hirer;
     this.hired = agreement.hired;
+    this.description = agreement.description;
     this.art = agreement.art;
     this.price = agreement.price;
-    this.date = agreement.date ?? [];
+    this.date = agreement.date;
     this.time = agreement.time ?? [];
     this.status = agreement.status;
 
@@ -50,8 +52,9 @@ export class Agreement extends IndexedAPIClient {
       hirer: this.hirer?.getID(),
       hired: this.hired?.getID(),
       art: this.art,
+      description: this.description,
       price: this.price,
-      date: this.date?.join(";"),
+      date: this.date,
       time: this.time?.join(";"),
     });
 
@@ -81,9 +84,10 @@ export class Agreement extends IndexedAPIClient {
       hired: new Artist(agreementData.hired),
       art: agreementData.art,
       price: agreementData.price,
-      date: Object.entries(agreementData.date).map(item => item[1] as string),
+      date: agreementData.date,
       time: Object.entries(agreementData.time).map(item => item[1] as string),
       status: agreementData.status,
+      description: agreementData.description,
     });
 
     agreement.rates = agreement.rates.concat(await new Rate(agreement).fetchList()); // Obtém avaliações do contrato

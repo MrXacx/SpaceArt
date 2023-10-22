@@ -5,6 +5,8 @@ export class Report extends IndexedAPIClient {
   private reporter: User;
   private reported: User | undefined;
   private reason: string | undefined;
+  private accepted: boolean | undefined;
+
   private path = "/user/report";
 
   constructor(reporter: User) {
@@ -17,13 +19,15 @@ export class Report extends IndexedAPIClient {
    * @param object
    */
   factory(report: {
-    id: string | undefined,
+    id?: string,
+    accepted?: boolean,
     reported: User,
     reason: string,
   }) {
     this.id = report.id;
     this.reported = report.reported;
     this.reason = report.reason;
+    this.accepted = report.accepted;
   }
 
   /**

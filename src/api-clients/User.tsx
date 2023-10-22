@@ -13,8 +13,12 @@ export class User extends IndexedAPIClient {
   protected phone: string | undefined;
   protected name: string | undefined;
   protected image: string | undefined;
+  protected website: string | undefined;
+  protected description: string | undefined;
+  protected rate: number | undefined;
+  protected verified: boolean | undefined;
 
-  protected location: any = {}; // Objeto para dados de localização
+  protected location: any; // Objeto para dados de localização
 
   path = "/user"; // Rote de consulta
 
@@ -22,18 +26,27 @@ export class User extends IndexedAPIClient {
    * Preenche todos os atributos da classe
    */
   factory(user: {
-    id: string | undefined,
-    token: string | undefined,
-    type: string | undefined,
-    index: number | undefined,
-    name: string | undefined,
+    id?: string,
+    token?: string,
+    type?: string,
+    index?: number,
+    name?: string,
     email: string,
     password: string,
-    phone: string | undefined,
-    cep: string | undefined,
-    state: string | undefined,
-    city: string | undefined,
-    image: string | undefined,
+    phone?: string,
+    location?: {
+      cep: string,
+      state: string,
+      city: string,
+      neighborhood?: string,
+      address?: string,
+    },
+    
+    image?: string,
+    website?: string,
+    description?: string,
+    rate?: number,
+    verified?: boolean,
   }) {
 
     this.id = user.id;
@@ -42,13 +55,12 @@ export class User extends IndexedAPIClient {
     this.email = user.email;
     this.password = user.password;
     this.phone = user.phone;
-    this.location = {
-      cep: user.cep,
-      state: user.state,
-      city: user.city,
-    };
-
+    this.location = user.location;
     this.image = user.image;
+    this.website = user.website;
+    this.description = user.description;
+    this.rate = user.rate;
+    this.verified = user.verified;
     return this;
   }
 
@@ -237,6 +249,7 @@ export class Artist extends User {
 export class Enterprise extends User {
   private cnpj: string | undefined;
   private companyName: string | undefined;
+  private section: string | undefined;
 
   constructor(id: string | null = null) {
     super(id);
@@ -247,8 +260,7 @@ export class Enterprise extends User {
     super.factory(enterprise);
     this.cnpj = enterprise.cnpj;
     this.companyName = enterprise.companyName;
-    this.location.neighborhood = enterprise.neighborhood;
-    this.location.address = enterprise.address;
+    this.section = enterprise.section;
 
     return this;
   }
@@ -261,6 +273,7 @@ export class Enterprise extends User {
       name: this.name,
       companyName: this.companyName,
       image: this.image,
+      section: this.section,
       phone: this.phone,
       type: this.type,
       email: this.email,

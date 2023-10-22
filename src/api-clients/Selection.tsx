@@ -17,7 +17,7 @@ export class Selection extends IndexedAPIClient {
    * Preenche todos os atributos
    */
   factory(selection: {
-    id: string,
+    id?: string,
     art: string,
     owner: Enterprise,
     price: number,

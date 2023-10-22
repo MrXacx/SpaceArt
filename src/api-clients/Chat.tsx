@@ -6,17 +6,20 @@ export class Chat extends IndexedAPIClient {
 
   private artist: Artist | undefined;
   private enterprise: Enterprise | undefined;
+  private lastMessage: string | undefined;
 
   messages: Message[] = [];
 
   private path = "/chat";
 
   factory(chat: {
-    id: string | undefined;
-    artist: Artist;
-    enterprise: Enterprise;
+    id?: string,
+    last_message?: string,
+    artist: Artist,
+    enterprise: Enterprise,
   }) {
     this.id = chat.id;
+    this.lastMessage = chat.last_message;
     this.artist = chat.artist;
     this.enterprise = chat.enterprise;
 
