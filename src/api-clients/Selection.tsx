@@ -39,7 +39,6 @@ export class Selection extends IndexedAPIClient {
    */
   async create() {
     let response = await this.request.post(this.path, {
-      id: this.id,
       owner: this.owner?.getID(),
       art: this.art,
       price: this.price,

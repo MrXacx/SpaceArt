@@ -28,7 +28,6 @@ export class Post extends IndexedAPIClient {
    */
   async create() {
     let response = await this.request.post(this.path, {
-      id: this.id as string,
       author: this.author?.getID(),
       content: this.content as string,
       media: this.media as string,
