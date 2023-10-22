@@ -12,11 +12,7 @@ export const agreementSchema = Joi.object({
         .precision(2)
         .required(),
 
-    initialDate: Joi.date()
-        .format('DD/MM/YYYY')
-        .required(),
-
-    finalDate: Joi.date()
+    date: Joi.date()
         .format('DD/MM/YYYY')
         .required(),
 
