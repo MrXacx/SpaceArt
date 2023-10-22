@@ -2,6 +2,7 @@ import * as Joi from "joi"
 
 export const agreementSchema = Joi.object({
     hired: Joi.string()
+        .uuid()
         .length(36)
         .required(),
 
