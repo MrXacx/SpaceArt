@@ -5,7 +5,7 @@
 
 ## Utilidades
 
-1. [Protótipo (Figma)](https://www.figma.com/file/ooJe6DhkjUK768Z4EKt4r3/Project-Original?type=design&node-id=0-1&mode=design&t=4SSfuSz1UoQbE7PE-0)
+1. [Protótipo (Figma)](https://www.figma.com/file/ooJe6DhkjUK768Z4EKt4r3/Project-Original?type=design&node-id=0-1&mode=design&t=0OsNcKq20uVtkK7c-0)
 
 ## Documentações
 
