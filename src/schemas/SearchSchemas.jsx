@@ -8,9 +8,13 @@ export const searchSchema = Joi.create({
         .required(),
 
     filter: Joi.string()
-        .min(1)
+        .pattern(/(name)|(location)/)
         .required(),
 
+    name: Joi.string()
+        .min(1)
+        .max(30),
+        
     state: stateSchema,
     city: citySchema
 })
