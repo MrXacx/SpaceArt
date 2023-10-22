@@ -8,6 +8,11 @@ export const agreementSchema = Joi.object({
     art: Joi.string()
         .required(),
 
+    description: Joi.string()
+        .min(1)
+        .max(256)
+        .required(),
+
     price: Joi.number()
         .precision(2)
         .required(),
@@ -19,7 +24,7 @@ export const agreementSchema = Joi.object({
     initialTime: Joi.date()
         .format('HH:mm')
         .required(),
-        
+
     finalTime: Joi.date()
         .format('HH:mm')
         .required()
