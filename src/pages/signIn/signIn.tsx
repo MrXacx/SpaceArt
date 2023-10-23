@@ -7,9 +7,7 @@ import {
   SignContainer,
   FormInputErrorMessage,
 } from "./signInStyles";
-import SpaceartLogo from "../../assets/spaceart.svg";
-import HeaderAlt from "../../components/headerAltWhite/headerAltWhite";
-import { useState, useRef, useContext } from "react";
+import { useState, useContext } from "react";
 import { signInSchema } from "../../schemas/user/SignInSchemas";
 import { UserContext } from "../../contexts/UserContext";
 import HeaderAltBlack from "../../components/headerAltBlack/headerAltBlack";
@@ -23,9 +21,6 @@ function SignIn() {
   const [isValidPassword, setValidPassword] = useState(true);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
 
   const userSignIn = () => {
     const { error } = signInSchema.validate({ email, password }); // Valida email e senha
@@ -69,28 +64,16 @@ function SignIn() {
               isWrong={!isValidPassword}
               type="email"
               placeholder="Email"
-              ref={emailRef}
               value={email}
               onChange={(e: any) => setEmail(e.target.value)}
-              onKeyDown={(e: any) => {
-                if (e.key.toLocaleLowerCase() === "enter" && passwordRef.current)
-                  passwordRef.current.focus();
-                }
-              }}
             />
             <FormInputErrorMessage visibility={isValidPassword}>{passwordErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
               isWrong={!isValidPassword}
               type="password"
               placeholder="Senha"
-              ref={passwordRef}
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}
-              onKeyDown={(e: any) => {
-                if (e.key.toLocaleLowerCase() === "enter") {
-                  userSignIn();
-                }
-              }}
             />
               <FormInputButton onClick={userSignIn}>Entrar</FormInputButton>
           </SignContainer>
