@@ -5,6 +5,7 @@ import {
   InnerContainer,
   MainSignInContainer,
   SignContainer,
+  FormInputErrorMessage,
 } from "./signInStyles";
 import SpaceartLogo from "../../assets/spaceart.svg";
 import HeaderAlt from "../../components/headerAlt/headerAlt";
@@ -65,29 +66,29 @@ function SignIn() {
             <h1>Login</h1>
           </HeaderLogo>
           <SignContainer>
-            <span style={{ display: isValidEmail ? "none" : "inline" }}>{emailErrorMessage}</span>
+            <FormInputErrorMessage visibility={isValidEmail}>{emailErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
-              style={isValidEmail ? {} : { border: "1px red solid" }}
+              isWrong={!isValidPassword}
               type="email"
               placeholder="Email"
               ref={emailRef}
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              onKeyDown={e => {
+              onChange={(e: any) => setEmail(e.target.value)}
+              onKeyDown={(e: any) => {
                 if (e.key.toLocaleLowerCase() === "enter" && passwordRef.current) {
                   passwordRef.current.focus();
                 }
               }}
             />
-            <span style={{ display: isValidPassword ? "none" : "inline" }}>{passwordErrorMessage}</span>
+            <FormInputErrorMessage visibility={isValidPassword}>{passwordErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
-              style={isValidPassword ? {} : { border: "1px red solid" }}
+              isWrong={!isValidPassword}
               type="password"
               placeholder="Senha"
               ref={passwordRef}
               value={password}
-              onChange={e => setPassword(e.target.value)}
-              onKeyDown={e => {
+              onChange={(e: any) => setPassword(e.target.value)}
+              onKeyDown={(e: any) => {
                 if (e.key.toLocaleLowerCase() === "enter") {
                   userSignIn();
                 }

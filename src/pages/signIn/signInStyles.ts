@@ -1,3 +1,4 @@
+import { boolean } from "joi";
 import styled from "styled-components";
 
 export const MainSignInContainer = styled.div`
@@ -36,13 +37,18 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
-export const FormInputFullField = styled.input`
+export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
+  display: ${visibility => visibility ? 'inline' : 'none'};
+  color: "red";
+`
+
+export const FormInputFullField = styled.input<{isWrong?: boolean}>`
   width: 75%;
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
-  border: 1px solid #545454;
+  border: 1px solid ${({ isWrong }) => isWrong ? "red" : "#545454"};
   transition: 300ms;
 
   &:focus {
@@ -62,6 +68,7 @@ export const FormInputFullField = styled.input`
   &:disabled {
     background-color: rgb(182, 182, 182);
   }
+
 `;
 
 export const FormInputButton = styled.button`
