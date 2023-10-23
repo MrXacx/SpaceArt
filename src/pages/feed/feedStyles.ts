@@ -15,7 +15,7 @@ export const PostContainer = styled.div`
   border-radius: 20px;
   padding: 20px;
   width: 500px;
-  height: 500px;
+  height: 600px;
   margin: 0 auto;
   background-color: #fff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2)
@@ -52,5 +52,6 @@ export const TextContentContainer = styled.div`
 `;
 
 export const ProfilePostImage = styled.img`
-
+  width: 100%;
+  align-self: end;
 `;

@@ -8,9 +8,9 @@ import {
   SpaceartContainer,
   SpaceartLogo,
   SpaceartTitle,
-} from "./headerAltStyles";
+} from "./headerAltBlackStyles";
 
-function HeaderAlt() {
+function HeaderAltBlack() {
   return (
     <HeaderContainer>
       <SpaceartContainer>
@@ -37,4 +37,4 @@ function HeaderAlt() {
   );
 }
 
-export default HeaderAlt;
+export default HeaderAltBlack;

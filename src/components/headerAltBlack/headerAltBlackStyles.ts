@@ -3,14 +3,12 @@ import styled from "styled-components";
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 100px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: transparent;
   padding: 0 32px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  backdrop-filter: blur(8px) saturate(1.2);
-  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
 
@@ -23,7 +21,7 @@ export const HeaderContainer = styled.header`
 
   span {
     font-size: 50px;
-    color: #000;
+    color: #fff;
     white-space: nowrap;
   }
 `;
@@ -50,18 +48,19 @@ export const NavContainer = styled.nav`
   flex-direction: row;
 `;
 
-export const NavItems = styled.li`
+export const NavItems = styled.li<{ visibility?: string }>`
   list-style: none;
-  color: #000;
+  color: #fff;
   cursor: pointer;
   font-size: 19px;
   font-weight: 500;
   text-decoration: none;
   padding-right: 30px;
   white-space: nowrap;
+  visibility: ${({ visibility }) => visibility ? visibility : "visible"};
 `;
 
-export const SignUpButton = styled.button`
+export const SignUpButton = styled.button<{ visibility?: string }>`
   width: 150px;
   height: 40px;
   background-color: #ff6600;
@@ -77,6 +76,7 @@ export const SignUpButton = styled.button`
   font-weight: bold;
   border: none;
   transition: 0.3s;
+  visibility: ${({ visibility }) => visibility ? visibility : "visible"};
 
   :hover {
     background-color: #f47c2e;

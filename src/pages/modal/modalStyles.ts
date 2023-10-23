@@ -1,12 +1,8 @@
 import styled from "styled-components";
-import EclipseImage from "../../assets/eclipse.jpg";
 
-export const MainSignInContainer = styled.div`
+export const MainSignUpContainer = styled.div`
   display: grid;
   min-height: 100vh;
-  background-image: url(${EclipseImage});
-  background-position: 50% 45%;
-  background-size: 98%;
 `;
 
 export const InnerContainer = styled.div`
@@ -18,16 +14,14 @@ export const HeaderLogo = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1.5rem;
 
   img {
-    max-width: 80px;
+    max-width: 50px;
     margin-bottom: 0.8rem;
   }
 
   h1 {
     font-size: 1.7em;
-    color: #fff;
   }
 `;
 
@@ -37,18 +31,17 @@ export const SignContainer = styled.form`
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-  width: 20vw;
+  width: 50vw;
   margin: 0 auto;
 `;
 
-export const FormInputFullField = styled.input`
-  width: 100%;
-  height: 25px;
+export const FormInputTextbox = styled.input`
+  width: 75%;
+  height: 100px;
   padding: 0.5rem;
   border-radius: 3px;
-  background-color: transparent;
   margin: 0.5rem 0;
-  border: 2px solid #fff;
+  border: 1px solid #545454;
   transition: 300ms;
 
   &:focus {
@@ -62,9 +55,63 @@ export const FormInputFullField = styled.input`
   }
 
   &::placeholder {
-    color: #fff;
-    font-weight: 600;
-    font-size: 18px;
+    color: #000;
+  }
+
+  &:disabled {
+    background-color: rgb(182, 182, 182);
+  }
+`;
+
+export const FormInputFullField = styled.input`
+  width: 75%;
+  height: 25px;
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 0.5rem 0;
+  border: 1px solid #545454;
+  transition: 300ms;
+
+  &:focus {
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin: 0.5rem 0;
+    border: 1px solid #545454;
+    transition: 300ms;
+    outline: none;
+    transform: scale(1.03);
+  }
+
+  &::placeholder {
+    color: #000;
+  }
+
+  &:disabled {
+    background-color: rgb(182, 182, 182);
+  }
+`;
+
+export const FormInputHalfField = styled.input`
+  width: 35.7%;
+  height: 25px;
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 0.5rem 0.5rem;
+  border: 1px solid #545454;
+  transition: 300ms;
+
+  &:focus {
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin: 0.5rem 0;
+    border: 1px solid #545454;
+    transition: 300ms;
+    outline: none;
+    transform: scale(1.03);
+  }
+
+  &::placeholder {
+    color: #000;
   }
 
   &:disabled {
@@ -73,12 +120,12 @@ export const FormInputFullField = styled.input`
 `;
 
 export const FormInputButton = styled.button`
-  width: 100%;
+  width: 77%;
   background-color: #ff8311;
   padding: 0.5rem;
   border-radius: 3px;
   border: none;
-
+  box-shadow: 0 1px 4px #000;
   color: #fff;
   font-weight: 700;
   text-transform: uppercase;

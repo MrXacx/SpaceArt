@@ -8,7 +8,7 @@ export const FooterContainer = styled.footer`
   width: 100%;
   background-color: #fff;
   padding: 1rem 0;
-  box-shadow: 0 -3px 30px #f0f0f0;
+  box-shadow: 0 -3px 30px rgba(0, 0, 0, 0.5);;
 
   hr {
     width: 65%;

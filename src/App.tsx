@@ -7,6 +7,8 @@ import LandingPage from "./pages/landingPage/landingPage";
 import Feed from "./pages/feed/feed";
 import Profile from "./pages/profile/profile";
 import Search from "./pages/search/search";
+import Modal from "./pages/modal/modal";
+import ModalTest from "./pages/modalTest/modalTest";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/feed" element={<Feed />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/modal" element={<Modal />} />
+        <Route path="/modal-test" element={<ModalTest />} />
       </Routes>
     </BrowserRouter>
   );

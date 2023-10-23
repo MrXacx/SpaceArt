@@ -1,6 +1,6 @@
 import SpaceartLogo from "../../assets/spaceart.svg";
 import Footer from "../../components/footer/footer";
-import HeaderAlt from "../../components/headerAlt/headerAlt";
+import HeaderAlt from "../../components/headerAltWhite/headerAltWhite";
 import { FormInputFullField } from "../signIn/signInStyles";
 import {
   FormInputButton,

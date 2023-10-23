@@ -10,7 +10,7 @@ export const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   backdrop-filter: blur(8px) saturate(1.2);
-  box-shadow: 0 1px 30px #f0f0f0;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
 
