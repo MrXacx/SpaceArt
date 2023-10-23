@@ -14,7 +14,7 @@ import { signInSchema } from "../../schemas/user/SignInSchemas";
 import { UserContext } from "../../contexts/UserContext";
 
 function SignIn() {
-  const {signIn} = useContext(UserContext);
+  const { signIn } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +29,7 @@ function SignIn() {
 
   const userSignIn = () => {
     const { error } = signInSchema.validate({ email, password }); // Valida email e senha
-    
+
     if (error) { // Executa se error contiver conteúdo
 
       if (error.message.includes("email")) { // Executa caso o erro mencione o campo email
@@ -52,7 +52,7 @@ function SignIn() {
 
       signIn(email, password);
     }
-    
+
   }
 
   return (
@@ -65,6 +65,7 @@ function SignIn() {
             <h1>Login</h1>
           </HeaderLogo>
           <SignContainer>
+            <span style={{ display: isValidEmail ? "none" : "inline" }}>{emailErrorMessage}</span>
             <FormInputFullField
               style={isValidEmail ? {} : { border: "1px red solid" }}
               type="email"
@@ -78,6 +79,7 @@ function SignIn() {
                 }
               }}
             />
+            <span style={{ display: isValidPassword ? "none" : "inline" }}>{passwordErrorMessage}</span>
             <FormInputFullField
               style={isValidPassword ? {} : { border: "1px red solid" }}
               type="password"
