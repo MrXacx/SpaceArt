@@ -48,7 +48,7 @@ export const FormInputFullField = styled.input<{isWrong?: boolean}>`
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
-  border: 1px solid ${({ isWrong }) => isWrong ? "red" : "#545454"};
+  border: 1px solid ${({ isWrong }) => isWrong === true ? "red" : "#545454"};
   transition: 300ms;
 
   &:focus {
