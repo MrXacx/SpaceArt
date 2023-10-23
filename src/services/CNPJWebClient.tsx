@@ -9,7 +9,7 @@ export class CNPJWebClient extends APIClient {
     /**
      *  Confere se a string possui o formato correto
      */
-    static matches = (code: string) => code.match(/^\d{3}\.\d{3}\.\d{3}-\d{2}\/\d{3}$/);
+    static matches = (code: string) => code.match(/^\d{14}$/);
 
     /**
      *  Consulta dados associados ao CNPJ

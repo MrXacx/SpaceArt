@@ -17,11 +17,11 @@ export const UserSchemas = {
 		.pattern(new RegExp('.*[a-z].*[A-Z].*[0-9].*')),
 
 	phoneSchema: Joi.string() // (XX)9XXXX-XXXX
-		.pattern(new RegExp(/^\(\d{2}\)9\d{4}-\d{4}$/)),
+		.pattern(new RegExp(/^\\d{2}9\d{8}$/)),
 
 	cpfSchema: Joi.string()
-		.pattern(new RegExp(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)),
+		.pattern(new RegExp(/^\d{11}$/)),
 
 	cnpjSchema: Joi.string()
-		.pattern(new RegExp(/^\d{3}\.\d{3}\.\d{3}-\d{2}\/\d{3}$/)),
+		.pattern(new RegExp(/^\d{14}$/)),
 };
