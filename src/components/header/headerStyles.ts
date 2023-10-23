@@ -31,6 +31,7 @@ export const HeaderContainer = styled.header`
 export const SpaceartContainer = styled.div`
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 `;
 
 export const SpaceartTitle = styled.div``;
