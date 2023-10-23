@@ -38,3 +38,7 @@ export abstract class IndexedAPIClient extends SpaceArtAPIClient {
     setID = (id: string) => this.id = id;
     getID = () => this.id as string;
 }
+
+export interface APIClientFactory {
+    factory(): SpaceArtAPIClient
+}

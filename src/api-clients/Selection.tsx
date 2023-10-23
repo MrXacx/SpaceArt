@@ -1,7 +1,7 @@
 import { Artist, Enterprise } from "./User";
-import { IndexedAPIClient, SpaceArtAPIClient } from "./abstracts/APIClient";
+import { IndexedAPIClient, SpaceArtAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
-export class Selection extends IndexedAPIClient {
+export class Selection extends IndexedAPIClient implements APIClientFactory {
 
   private art: string | undefined;
   private price: number | undefined;
@@ -13,10 +13,12 @@ export class Selection extends IndexedAPIClient {
 
   path = "/selection";
 
+  factory = () => new Selection();
+
   /**
    * Preenche todos os atributos
    */
-  factory(selection: {
+  build(selection: {
     id?: string,
     art: string,
     owner: Enterprise,
@@ -81,7 +83,7 @@ export class Selection extends IndexedAPIClient {
     }
 
     return response.data.map((selection: any) =>
-      new Selection().factory({
+      new Selection().build({
         id: selection.id,
         art: selection.art,
         owner: new Enterprise(selection.enterprise),
@@ -106,7 +108,7 @@ export class Selection extends IndexedAPIClient {
 
     const selection = response.data;
 
-    return this.factory({
+    return this.factory().build({
       id: selection.id as string,
       art: selection.art as string,
       owner: new Enterprise(selection.owner),
@@ -152,12 +154,13 @@ export class Selection extends IndexedAPIClient {
 
   toObject() {
     return {
-      id: this.id as string,
-      art: this.art as string,
+      id: this.id,
+      art: this.art,
       owner: this.owner,
-      price: this.price as number,
+      price: this.price,
       date: this.date,
-      time: this.time
+      time: this.time,
+      applications: this.applications,
     }
   }
 }

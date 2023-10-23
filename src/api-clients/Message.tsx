@@ -1,8 +1,8 @@
 import { Chat } from "./Chat";
 import { User } from "./User";
-import { SpaceArtAPIClient } from "./abstracts/APIClient";
+import { SpaceArtAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
-export class Message extends SpaceArtAPIClient {
+export class Message extends SpaceArtAPIClient implements APIClientFactory {
   private content: string | undefined;
   private sender: User | undefined;
   private timestamp: string | undefined;
@@ -11,7 +11,9 @@ export class Message extends SpaceArtAPIClient {
 
   constructor(private readonly chat: Chat) { super() }
 
-  factory(data: { sender: User; content: string; timestamp: string | undefined }) {
+  factory = () => new Message(this.chat);
+
+  build(data: { sender: User; content: string; timestamp?: string }) {
     this.content = data.content;
     this.sender = data.sender;
     this.timestamp = data.timestamp;
@@ -51,7 +53,7 @@ export class Message extends SpaceArtAPIClient {
 
     return response.data.map((message: any) => {
       message.sender = new User(message.sender);
-      return new Message(this.chat).factory(message);
+      return this.factory().build(message);
     });
 
   }

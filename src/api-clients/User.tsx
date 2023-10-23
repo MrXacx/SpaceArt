@@ -1,9 +1,9 @@
-import { IndexedAPIClient } from "./abstracts/APIClient";
+import { IndexedAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
 /**
  * Classe de consulta de dados de usuários
  */
-export class User extends IndexedAPIClient {
+export class User extends IndexedAPIClient implements APIClientFactory {
 
   protected index: number | undefined;
   protected token: string | undefined;
@@ -17,15 +17,22 @@ export class User extends IndexedAPIClient {
   protected description: string | undefined;
   protected rate: number | undefined;
   protected verified: boolean | undefined;
-
-  protected location: any; // Objeto para dados de localização
+  protected location: {
+    cep: string,
+    state: string,
+    city: string,
+    neighborhood?: string,
+    address?: string,
+  } | undefined; // Objeto para dados de localização
 
   path = "/user"; // Rote de consulta
+
+  factory = () => new User();
 
   /**
    * Preenche todos os atributos da classe
    */
-  factory(user: {
+  build(user: {
     id?: string,
     token?: string,
     type?: string,
@@ -41,7 +48,7 @@ export class User extends IndexedAPIClient {
       neighborhood?: string,
       address?: string,
     },
-    
+
     image?: string,
     website?: string,
     description?: string,
@@ -75,13 +82,7 @@ export class User extends IndexedAPIClient {
         .HTTPRequestError.throw(response.statusText); // Emite exceção
     }
 
-    const userData = response.data;
-
-
-    this.id = userData.id as string
-    this.token = userData.token as string
-    this.index = userData.index as number
-    this.type = userData.type as string
+    return this.factory().build(response.data);
 
   }
 
@@ -90,7 +91,7 @@ export class User extends IndexedAPIClient {
    * @param boolean true para obter dados sigilosos
    * @returns object
    */
-  protected async fetch(isToken = false) {
+  async fetch(isToken = false) {
     let response = await this.request.get(
       `${this.path}?id=${isToken ? this.token : this.id}&token=${isToken}&type=${this.type}`
     );
@@ -100,27 +101,27 @@ export class User extends IndexedAPIClient {
         .HTTPRequestError.throw(response.statusText);
     }
 
-    return response.data;
+    return this.factory().build(response.data); // Intancia o retorno
   }
 
   /**
    * Busca lista de usuários sem utilizar filtro
    */
-  protected fetchListNoFilter(offset = 0, limit = 25) {
+  fetchListNoFilter(offset = 0, limit = 25) {
     return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}`);
   }
 
   /**
    * Busca lista de usuários filtrando pelo nome completo ou parcial
    */
-  protected fetchListFilteringName(name: string, offset = 0, limit = 25) {
+  fetchListFilteringName(name: string, offset = 0, limit = 25) {
     return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}&name=${name}`);
   }
 
   /**
    * Busca lista de usuários filtrando o município do usuário
    */
-  protected fetchListFilteringLocation(state: string, city: string, offset = 0, limit = 25) {
+  fetchListFilteringLocation(state: string, city: string, offset = 0, limit = 25) {
     return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}&state=${state}&city=${city}`);
   }
 
@@ -132,7 +133,7 @@ export class User extends IndexedAPIClient {
         .HTTPRequestError.throw(response.statusText);
     }
 
-    return response.data;
+    return response.data.map(this.factory().build);
   }
 
   /**
@@ -160,10 +161,8 @@ export class User extends IndexedAPIClient {
           ));
   }
 
-
   /**
    * Deleta usuário
-   * @param string token
    */
   async delete() {
     let response = await this.request.post(`${this.path}/delete`, { id: this.token as string });
@@ -171,6 +170,25 @@ export class User extends IndexedAPIClient {
     if (response.status !== User.httpStatusCode.NO_CONTENT) {
       User.errorTypes
         .HTTPRequestError.throw(`Não foi possível deletar o usuário ${this.token}`);
+    }
+  }
+
+  toObject() {
+    return {
+      id: this.id,
+      index: this.index,
+      token: this.token,
+      type: this.type,
+      email: this.email,
+      password: this.password,
+      phone: this.phone,
+      name: this.name,
+      image: this.image,
+      website: this.website,
+      description: this.description,
+      rate: this.rate,
+      verified: this.verified,
+      location: this.location,
     }
   }
 }
@@ -186,8 +204,10 @@ export class Artist extends User {
     this.type = "artist";
   }
 
-  factory(artist: any) {
-    super.factory(artist);
+  factory = () => new Artist();
+
+  build(artist: any) {
+    super.build(artist);
     this.wage = artist.wage;
     this.cpf = artist.cpf;
     this.art = artist.art;
@@ -208,9 +228,9 @@ export class Artist extends User {
       password: this.password,
       birthday: this.birthday,
       cpf: this.cpf,
-      cep: this.location.cep,
-      state: this.location.state,
-      city: this.location.city,
+      cep: this.location?.cep,
+      state: this.location?.state,
+      city: this.location?.city,
       art: this.art,
       wage: this.wage,
     });
@@ -221,29 +241,15 @@ export class Artist extends User {
     }
   }
 
-  async fetch(token = false): Promise<Artist> {
-    return new Artist().factory(super.fetch(token)); // Intancia o retorno
+  toObject() {
+    return {
+      ...super.toObject(),
+      cpf: this.cpf,
+      art: this.art,
+      wage: this.wage,
+      birthday: this.birthday,
+    }
   }
-
-  async fetchListNoFilter(offset = 0, limit = 25): Promise<Artist[]> {
-    return super.fetchListNoFilter(offset, limit).then(
-      list => list.map(new Artist().factory)
-    );
-  }
-
-  async fetchListFilteringName(name: string, offset = 0, limit = 25): Promise<Artist[]> {
-    return super.fetchListFilteringName(name, offset, limit).then(
-      list => list.map(new Artist().factory)
-    )
-  }
-
-  async fetchListFilteringLocation(state: string, city: string, offset = 0, limit = 25): Promise<Artist[]> {
-    return super.fetchListFilteringLocation(state, city, offset, limit).then(
-      list => list.map(new Artist().factory)
-    );
-  }
-
-
 }
 
 export class Enterprise extends User {
@@ -256,8 +262,10 @@ export class Enterprise extends User {
     this.type = "enterprise";
   }
 
-  factory(enterprise: any) {
-    super.factory(enterprise);
+  factory = () => new Enterprise();
+
+  build(enterprise: any) {
+    super.build(enterprise);
     this.cnpj = enterprise.cnpj;
     this.companyName = enterprise.companyName;
     this.section = enterprise.section;
@@ -279,11 +287,11 @@ export class Enterprise extends User {
       email: this.email,
       password: this.password,
       cnpj: this.cnpj,
-      cep: this.location.cep,
-      state: this.location.state,
-      city: this.location.city,
-      neighborhood: this.location.neighborhood,
-      address: this.location.address,
+      cep: this.location?.cep,
+      state: this.location?.state,
+      city: this.location?.city,
+      neighborhood: this.location?.neighborhood,
+      address: this.location?.address,
     });
 
     if (response.status !== Enterprise.httpStatusCode.CREATED) {
@@ -292,26 +300,13 @@ export class Enterprise extends User {
     }
   }
 
-  async fetch(token = false) {
-    return new Enterprise().factory(super.fetch(token)); // Intancia o retorno
+  toObject() {
+    return {
+      ...super.toObject(),
+      cnpj: this.cnpj,
+      companyName: this.companyName,
+      section: this.section,
+    }
   }
 
-  async fetchListNoFilter(offset = 0, limit = 25): Promise<Enterprise[]> {
-    return super.fetchListNoFilter(offset, limit).then(
-      list => list.map(new Enterprise().factory)
-    );
-  }
-
-  async fetchListFilteringName(name: string, offset = 0, limit = 25): Promise<Enterprise[]> {
-    return super.fetchListFilteringName(name, offset, limit).then(
-      list => list.map(new Enterprise().factory)
-    )
-  }
-
-  async fetchListFilteringLocation(state: string, city: string, offset = 0, limit = 25): Promise<Enterprise[]> {
-    return super.fetchListFilteringLocation(state, city, offset, limit).then(
-      list => list.map(new Enterprise().factory)
-    );
-  }
 }
-

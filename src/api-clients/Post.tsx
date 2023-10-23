@@ -1,8 +1,8 @@
 import { User } from "./User";
-import { IndexedAPIClient } from "./abstracts/APIClient";
+import { IndexedAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
 
-export class Post extends IndexedAPIClient {
+export class Post extends IndexedAPIClient implements APIClientFactory {
   private author: User | undefined;
   private content: string | undefined;
   private media: string | undefined;
@@ -10,7 +10,9 @@ export class Post extends IndexedAPIClient {
 
   private path = "/post";
 
-  factory(post: {
+  factory = () => new Post();
+
+  build(post: {
     id?: string,
     post_time?: string,
     author: User,
@@ -55,7 +57,7 @@ export class Post extends IndexedAPIClient {
 
     return response.data.map((post: any) => {
       post.author = new User(post.author);
-      return new Post().factory(post);
+      return this.factory().build(post);
     });
 
   }
@@ -75,7 +77,7 @@ export class Post extends IndexedAPIClient {
 
     return response.data.map((post: any) => {
       post.author = new User(post.author);
-      return new Post().factory(post);
+      return this.factory().build(post);
     });
   }
 
@@ -93,10 +95,11 @@ export class Post extends IndexedAPIClient {
 
   toObject() {
     return {
-      id: this.id as string,
+      id: this.id,
       author: this.author,
-      content: this.content as string,
-      media: this.media as string,
+      content: this.content,
+      media: this.media,
+      postTime: this.postTime,
     }
   }
 }

@@ -1,8 +1,8 @@
-import { IndexedAPIClient } from "./abstracts/APIClient";
+import { IndexedAPIClient, APIClientFactory } from "./abstracts/APIClient";
 import { Message } from "./Message";
 import { Artist, Enterprise, User } from "./User";
 
-export class Chat extends IndexedAPIClient {
+export class Chat extends IndexedAPIClient implements APIClientFactory {
 
   private artist: Artist | undefined;
   private enterprise: Enterprise | undefined;
@@ -10,9 +10,11 @@ export class Chat extends IndexedAPIClient {
 
   messages: Message[] = [];
 
+  factory = () => new Chat();
+
   private path = "/chat";
 
-  factory(chat: {
+  build(chat: {
     id?: string,
     last_message?: string,
     artist: Artist,
@@ -57,7 +59,7 @@ export class Chat extends IndexedAPIClient {
     chatData.artist = new Artist(chatData.artist)
     chatData.enterprise = new Enterprise(chatData.enterprise);
 
-    return new Chat().factory(chatData);
+    return this.factory().build(chatData);
   }
 
   /**
@@ -76,7 +78,9 @@ export class Chat extends IndexedAPIClient {
     }
 
     return response.data.map((chat: any) => {
-      const chatModel = new Chat().factory(chat); // Instancia chat com base no objeto literal
+      chat.artist = new Artist(chat.artist);
+      chat.enterprise = new Enterprise(chat.enterprise);
+      const chatModel = this.factory().build(chat); // Instancia chat com base no objeto literal
 
       chatModel
         .fetchMessages() // Obtém as mensagens iniciais da conversa
@@ -87,7 +91,7 @@ export class Chat extends IndexedAPIClient {
   }
 
   sendMessage = async (sender: User, content: string) =>
-    new Message(this).factory({ content, sender, timestamp: '' }).create();
+    new Message(this).build({ content, sender }).create();
 
   /**
    * Busca uma lista de mensagens de uma conversa
@@ -100,5 +104,15 @@ export class Chat extends IndexedAPIClient {
     const list = await new Message(this).fetchList(offset, limit);
     list.forEach(this.messages.push);
     return list;
+  }
+
+  toObject(){
+    return {
+      id: this.id,
+      artist: this.artist,
+      enterprise: this.enterprise,
+      lastMessage: this.lastMessage,
+      messages: this.messages,
+    }
   }
 }

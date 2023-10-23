@@ -1,8 +1,8 @@
 import { Rate } from "./Rate";
 import { Artist, Enterprise, User } from "./User";
-import { IndexedAPIClient } from "./abstracts/APIClient";
+import { IndexedAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
-export class Agreement extends IndexedAPIClient {
+export class Agreement extends IndexedAPIClient implements APIClientFactory {
   private hirer: Enterprise | undefined;
   private hired: Artist | undefined;
   private art: string | undefined;
@@ -15,12 +15,14 @@ export class Agreement extends IndexedAPIClient {
 
   private path = '/agreement';
 
+  factory = () => new Agreement();
+
   /**
    * Preenche todos os atributos
    * @param object agreement
    * @returns Agreement
    */
-  public factory(agreement: {
+  public build(agreement: {
     id?: string,
     hirer: Enterprise,
     hired: Artist,
@@ -78,7 +80,7 @@ export class Agreement extends IndexedAPIClient {
 
     const agreementData = response.data;
 
-    const agreement = new Agreement().factory({
+    const agreement = this.factory().build({
       id: agreementData.id,
       hirer: new Enterprise(agreementData.hirer),
       hired: new Artist(agreementData.hired),
@@ -110,8 +112,8 @@ export class Agreement extends IndexedAPIClient {
       );
     }
 
-    return response.data.map((data: any): Agreement => { // Itera lista de contratos
-      const agreement = new Agreement().factory(data); // Instancia o contrato
+    return response.data.map((data: any) => { // Itera lista de contratos
+      const agreement = this.factory().build(data); // Instancia o contrato
 
       if (data.status === "accepted") { // Executa apenas se o contrato já foi aceito
         const rate = new Rate(data.id); // Instancia avaliação
@@ -146,7 +148,9 @@ export class Agreement extends IndexedAPIClient {
       art: this.art,
       status: this.status,
       date: this.date,
-      time: this.time
+      time: this.time,
+      description: this.description,
+      rates: this.rates,
     }
   }
 }

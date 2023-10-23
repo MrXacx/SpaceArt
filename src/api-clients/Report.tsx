@@ -1,7 +1,7 @@
 import { User } from "./User";
-import { IndexedAPIClient } from "./abstracts/APIClient";
+import { IndexedAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
-export class Report extends IndexedAPIClient {
+export class Report extends IndexedAPIClient implements APIClientFactory {
   private reporter: User;
   private reported: User | undefined;
   private reason: string | undefined;
@@ -14,11 +14,13 @@ export class Report extends IndexedAPIClient {
     this.reporter = reporter;
   }
 
+  factory = () => new Report(this.reporter);
+
   /**
    * Preenche todos os atributos
    * @param object
    */
-  factory(report: {
+  build(report: {
     id?: string,
     accepted?: boolean,
     reported: User,
@@ -63,16 +65,17 @@ export class Report extends IndexedAPIClient {
 
     return response.data.map((report: any) => {
       report.reported = new User(report.reported);
-      return new Report(this.reporter).factory(report)
+      return this.factory().build(report)
     }); // Instancia todos as denúncias obtidas
   }
 
   toObject() {
     return {
-      id: this.id as string,
+      id: this.id,
       reporter: this.reporter,
       reported: this.reported,
-      reason: this.reason as string
+      reason: this.reason,
+      accepted: this.accepted,
     }
   }
 }

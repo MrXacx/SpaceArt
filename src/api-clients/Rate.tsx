@@ -1,8 +1,8 @@
 import { Agreement } from "./Agreement";
 import { User } from "./User";
-import { SpaceArtAPIClient } from "./abstracts/APIClient";
+import { SpaceArtAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
-export class Rate extends SpaceArtAPIClient {
+export class Rate extends SpaceArtAPIClient implements APIClientFactory {
 
   private agreement: Agreement;
   private author: User | undefined;
@@ -16,10 +16,12 @@ export class Rate extends SpaceArtAPIClient {
     this.agreement = agreement;
   }
 
+  factory = () => new Rate(this.agreement);
+
   /** 
    * Preenche todos dos atributos
    */
-  public factory(rate: { author: User, description: string, rate: number }) {
+  public build(rate: { author: User, description: string, rate: number }) {
     this.author = rate.author;
     this.description = rate.description;
     this.rate = rate.rate;
@@ -57,7 +59,7 @@ export class Rate extends SpaceArtAPIClient {
 
     return response.data.map((rate: any) => {
       rate.author = new User(rate.author);
-      return new Rate(rate.agreement).factory(rate);
+      return this.factory().build(rate);
     });
   }
 
