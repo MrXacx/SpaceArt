@@ -10,7 +10,7 @@ export class PostalCodeWebClient extends APIClient {
   /**
      *  Confere se a string possui o formato correto
      */
-  static matches = (code: string) => code.match(/^\d{5}-\d{3}$/);
+  static matches = (code: string) => code.match(/^\d{8}$/);
 
   /**
      *  Consulta dados associados ao CEP
