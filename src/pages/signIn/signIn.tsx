@@ -19,34 +19,21 @@ function SignIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isValidEmail, setValidEmail] = useState(true);
-  const [isValidPassword, setValidPassword] = useState(true);
-  const [emailErrorMessage, setEmailErrorMessage] = useState("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [isValidInput, setValidInput] = useState(true);
+  const [inputErrorMessage, setInputErrorMessage] = useState("");
 
   const userSignIn = () => {
     const { error } = signInSchema.validate({ email, password }); // Valida email e senha
 
     if (error) {
       // Executa se error contiver conteúdo
+      setValidInput(false); // Invalida estado do entrada
+      setInputErrorMessage(error.message); // Atualiza mensagem de erro
 
-      if (error.message.includes("email")) {
-        // Executa caso o erro mencione o campo email
-        setValidEmail(false); // Invalida estado do email
-        setEmailErrorMessage(error.message); // Atualiza mensagem de erro
-      }
-      if (error.message.includes("password")) {
-        // Executa cado o erro mencione o campo password
-        setValidPassword(false); // Invalida estado da senha
-        setPasswordErrorMessage(error.message); // Atualiza mensagem de erro
-      }
     } else {
       // Remove qualquer configuração de estado inválido
-      setValidPassword(true);
-      setEmailErrorMessage("");
-      setValidPassword(false);
-      setPasswordErrorMessage("");
-
+      setValidInput(true);
+      setInputErrorMessage("");
       signIn(email, password);
     }
   };
@@ -59,28 +46,29 @@ function SignIn() {
           <HeaderLogo>
             <h1>Login</h1>
           </HeaderLogo>
-          <SignContainer onSubmit={(e: any) => {
-            e.preventDefault();
-            userSignIn()
-          }}>
-
-            <FormInputErrorMessage visibility={isValidEmail}>{emailErrorMessage}</FormInputErrorMessage>
+          <SignContainer
+            onSubmit={(e: any) => {
+              e.preventDefault();
+              userSignIn();
+            }}
+          >
+            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
-              isWrong={!isValidPassword}
+              isWrong={!isValidInput}
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e: any) => setEmail(e.target.value)}
             />
-            <FormInputErrorMessage visibility={isValidPassword}>{passwordErrorMessage}</FormInputErrorMessage>
+
             <FormInputFullField
-              isWrong={!isValidPassword}
+              isWrong={!isValidInput}
               type="password"
               placeholder="Senha"
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}
             />
-              <FormInputButton>Entrar</FormInputButton>
+            <FormInputButton>Entrar</FormInputButton>
           </SignContainer>
         </InnerContainer>
       </MainSignInContainer>
