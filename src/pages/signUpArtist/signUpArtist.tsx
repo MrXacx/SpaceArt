@@ -38,7 +38,7 @@ function SignUpArtist() {
   const [isValidEmail, setEmailValidate] = useState(true);
   const [isValidName, setNameValidate] = useState(true);
   const [isValidPhone, setPhoneValidate] = useState(true);
-  const [isValidCPF, setCPGValidate] = useState(true);
+  const [isValidCPF, setCPFValidate] = useState(true);
   const [isValidCEP, setCEPValidate] = useState(true);
   const [isValidBirthday, setBirthdayValidate] = useState(true);
   const [isValidPassword, setPasswordValidate] = useState(true);
@@ -81,10 +81,7 @@ function SignUpArtist() {
         setCEPErrorMessage("CEP deve conter 8 dígitos");
 
       } else if (message.includes("cpf")) {
-
-        setCEPValidate(false);
-        setCEPErrorMessage("CPF deve conter 11 dígitos");
-
+        setCPFValidate(false);
       } else if (message.includes("state") || message.includes("city")) {
 
         setCEPValidate(false);
@@ -144,7 +141,7 @@ function SignUpArtist() {
               value={phone}
               onChange={(e: any) => setPhone(e.target.value)}
             />
-            <FormInputErrorMessage visibility={isValidCPF}>O número de celular apresentado é inválido</FormInputErrorMessage>
+            <FormInputErrorMessage visibility={isValidCPF}>O CPF deve contem 11 dígitos</FormInputErrorMessage>
             <FormInputFullField
               type="text"
               placeholder="CPF"
