@@ -30,6 +30,14 @@ function SignUpArtist() {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
+  const [cepErrorMessage, setCEPErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [birthdayErrorMessage, setBirthdayErrorMessage] = useState("");
+
+  const [isValidCEP, setCEPValidate] = useState(true);
+  const [isValidBirthday, setBirthdayValidate] = useState(true);
+  const [isValidPassword, setPasswordValidate] = useState(true);
+
   const searchLocation = (code: string) => {
 
     new PostalCodeWebClient()
@@ -42,15 +50,47 @@ function SignUpArtist() {
   }
 
   const userSignUp = () => {
-    const userData:any = {
+    const userData: any = {
       name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
     }
 
     let { error } = artistSignUpSchema.validate(userData);
     if (error) {
-      // code here
+      const message = error.message;
+      if (message.includes("name")) {
+
+        setPasswordValidate(false);
+
+      } else if (message.includes("phone")) {
+
+        setPasswordValidate(false);
+
+      } else if (message.includes("bithday")) {
+
+        setBirthdayErrorMessage("A data deve estar no formato DD/MM/AAAA");
+        setBirthdayValidate(false);
+
+      } else if (message.includes("cep")) {
+
+        setCEPValidate(false);
+        setCEPErrorMessage("CEP deve conter 8 dígitos");
+
+      } else if (message.includes("state") || message.includes("city")) {
+
+        setCEPValidate(false);
+        setCEPErrorMessage("CEP não localizado");
+
+      } else if (message.includes("password")) {
+
+        setPasswordValidate(false);
+        setPasswordErrorMessage("");
+
+      } else if (message.includes("repeatPassword")) {
+        setPasswordValidate(false);
+      }
+
     } else {
-      userData.location = {cep, state, city};
+      userData.location = { cep, state, city };
       delete userData.cep;
       delete userData.state;
       delete userData.city;
@@ -68,7 +108,7 @@ function SignUpArtist() {
             <img alt="Space art logo" src={SpaceartLogo} />
             <h1>Cadastro de artista</h1>
           </HeaderLogo>
-          <SignContainer onSubmit={(e:any) => {
+          <SignContainer onSubmit={(e: any) => {
             e.preventDefault();
             userSignUp();
           }}>
