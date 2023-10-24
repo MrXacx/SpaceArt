@@ -9,11 +9,13 @@ import {
   SpaceartLogo,
   SpaceartTitle,
 } from "./headerStyles";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+const navigate = useNavigate()
   return (
     <HeaderContainer>
-      <SpaceartContainer>
+      <SpaceartContainer onClick={() => navigate("/")}>
         <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
         <SpaceartTitle>
           <span>S</span>
@@ -29,8 +31,8 @@ function Header() {
       </NavContainer>
       <NavContainer>
         <NavItemContainer>
-          <NavItems>ENTRAR</NavItems>
-          <SignUpButton>CADASTRAR</SignUpButton>
+          <NavItems onClick={() => navigate("/sign-in")}>ENTRAR</NavItems>
+          <SignUpButton onClick={() => navigate("/sign-up-artist")}>CADASTRAR</SignUpButton>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>

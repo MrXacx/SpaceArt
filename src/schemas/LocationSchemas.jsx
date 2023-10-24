@@ -2,7 +2,7 @@ import * as Joi from "joi";
 
 export const LocationSchemas = {
     postalCodeSchema: Joi.string()// XXXXX-XXX
-        .pattern(new RegExp(/^\d{5}-\d{3}$/)),
+        .pattern(new RegExp(/^\d{8}$/)),
 
     citySchema: Joi.string() // string entre 4 e 100 caracteres
         .trim()

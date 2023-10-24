@@ -4,7 +4,10 @@ import { HTTPRequestError } from '../../errors/HTTPRequestError'; // Importa cla
 import { RegExError } from '../../errors/RegExError'; // Importa classes de erro
 
 export abstract class APIClient {
-    protected request = new Axios();
+    protected request = new Axios({
+        method: 'GET',
+        responseType: 'json',
+    });
     protected static httpStatusCode = {
         OK: 200,
         CREATED: 201,
@@ -23,7 +26,8 @@ export abstract class APIClient {
 
 export abstract class SpaceArtAPIClient extends APIClient {
     protected request = new Axios({
-        baseURL: 'https://service-spaceart.000webhostapp.com'
+        baseURL: 'https://service-spaceart.000webhostapp.com',
+        responseType: 'json',
     });
 }
 

@@ -52,6 +52,7 @@ export class Message extends SpaceArtAPIClient implements APIClientFactory {
     }
 
     return response.data.map((message: any) => {
+      message = JSON.parse(message);
       message.sender = new User(message.sender);
       return this.factory().build(message);
     });

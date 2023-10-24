@@ -55,10 +55,9 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
         .HTTPRequestError.throw(`Não foi possível buscar a postagem ${this.id}`);
     }
 
-    return response.data.map((post: any) => {
-      post.author = new User(post.author);
-      return this.factory().build(post);
-    });
+    const data = JSON.parse(response.data);
+    data.author = new User(data.author);
+    return this.factory().build(data);
 
   }
 
@@ -76,6 +75,7 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
     }
 
     return response.data.map((post: any) => {
+      post = JSON.parse(post)
       post.author = new User(post.author);
       return this.factory().build(post);
     });

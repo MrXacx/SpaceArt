@@ -9,12 +9,13 @@ export class CNPJWebClient extends APIClient {
     /**
      *  Confere se a string possui o formato correto
      */
-    static matches = (code: string) => code.match(/^\d{3}\.\d{3}\.\d{3}-\d{2}\/\d{3}$/);
+    static matches = (code: string) => code.match(/^\d{14}$/);
 
     /**
      *  Consulta dados associados ao CNPJ
      */
     fetch = async (code: string) => {
+        code = CNPJWebClient.sanitize(code); // Remove caracteres especiais
         
         if (!CNPJWebClient.matches(code)) { // Executa se o código não foir válido
             CNPJWebClient.errorTypes
@@ -22,7 +23,6 @@ export class CNPJWebClient extends APIClient {
                 .throw(`Formato do CNPJ está incorreto: ${code}.`);
         }
 
-        code = CNPJWebClient.sanitize(code); // Remove caracteres especiais
         let response = await this.request.get(`https://brasilapi.com.br/api/cnpj/v1/${code}`);
 
         if (response.status !== 200) { // Executa  se o status não for de sucesso
