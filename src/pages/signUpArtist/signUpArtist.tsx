@@ -9,6 +9,7 @@ import {
   InnerContainer,
   MainSignInContainer,
   SignContainer,
+  FormInputErrorMessage,
 } from "./signUpStyles";
 
 import { useState, useContext } from "react";
@@ -34,10 +35,14 @@ function SignUpArtist() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [birthdayErrorMessage, setBirthdayErrorMessage] = useState("");
 
+  const [isValidEmail, setEmailValidate] = useState(true);
+  const [isValidName, setNameValidate] = useState(true);
+  const [isValidPhone, setPhoneValidate] = useState(true);
+  const [isValidCPF, setCPGValidate] = useState(true);
   const [isValidCEP, setCEPValidate] = useState(true);
   const [isValidBirthday, setBirthdayValidate] = useState(true);
   const [isValidPassword, setPasswordValidate] = useState(true);
-
+  
   const searchLocation = (code: string) => {
 
     new PostalCodeWebClient()
@@ -59,21 +64,26 @@ function SignUpArtist() {
       const message = error.message;
       if (message.includes("name")) {
 
-        setPasswordValidate(false);
+        setNameValidate(false);
 
       } else if (message.includes("phone")) {
 
-        setPasswordValidate(false);
+        setPhoneValidate(false);
 
       } else if (message.includes("bithday")) {
 
-        setBirthdayErrorMessage("A data deve estar no formato DD/MM/AAAA");
         setBirthdayValidate(false);
+        setBirthdayErrorMessage("A data deve estar no formato DD/MM/AAAA");
 
       } else if (message.includes("cep")) {
 
         setCEPValidate(false);
         setCEPErrorMessage("CEP deve conter 8 dígitos");
+
+      } else if (message.includes("cpf")) {
+
+        setCEPValidate(false);
+        setCEPErrorMessage("CPF deve conter 11 dígitos");
 
       } else if (message.includes("state") || message.includes("city")) {
 
@@ -83,10 +93,11 @@ function SignUpArtist() {
       } else if (message.includes("password")) {
 
         setPasswordValidate(false);
-        setPasswordErrorMessage("");
-
+        setPasswordErrorMessage(message);
+        
       } else if (message.includes("repeatPassword")) {
         setPasswordValidate(false);
+        setPasswordErrorMessage("As senhas devem ser idênticas");
       }
 
     } else {
@@ -112,43 +123,49 @@ function SignUpArtist() {
             e.preventDefault();
             userSignUp();
           }}>
+            <FormInputErrorMessage visibility={isValidName}>O nome deve ter entre 1 e 30 caracteres</FormInputErrorMessage>
             <FormInputFullField
               type="text"
               placeholder="Nome completo"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e: any) => setName(e.target.value)}
             />
+            <FormInputErrorMessage visibility={isValidEmail}>O email apresentado é inválido</FormInputErrorMessage>
             <FormInputHalfField
               type="email"
               placeholder="Email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e: any) => setEmail(e.target.value)}
             />
+            <FormInputErrorMessage visibility={isValidPhone}>O número de celular apresentado é inválido</FormInputErrorMessage>
             <FormInputHalfField
               type="tel"
               placeholder="Telefone"
               value={phone}
-              onChange={e => setPhone(e.target.value)}
+              onChange={(e: any) => setPhone(e.target.value)}
             />
+            <FormInputErrorMessage visibility={isValidCPF}>O número de celular apresentado é inválido</FormInputErrorMessage>
             <FormInputFullField
               type="text"
               placeholder="CPF"
               inputMode="numeric"
               value={cpf}
-              onChange={e => setCPF(e.target.value)}
+              onChange={(e: any) => setCPF(e.target.value)}
             />
+            <FormInputErrorMessage visibility={isValidBirthday}>{passwordErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
               type="date"
               placeholder="Data de nascimento"
               value={birthday}
-              onChange={e => setBirthday(e.target.value)}
+              onChange={(e: any) => setBirthday(e.target.value)}
             />
+            <FormInputErrorMessage visibility={isValidCEP}>{cepErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
               type="text"
               placeholder="CEP"
               inputMode="numeric"
               value={cep}
-              onChange={e => {
+              onChange={(e: any) => {
                 setCEP(e.target.value)
                 if (e.target.value.length === 8) {
                   searchLocation(e.target.value);
@@ -159,27 +176,28 @@ function SignUpArtist() {
               type="text"
               placeholder="Cidade"
               value={city}
-              onChange={e => setCity(e.target.value)}
+              onChange={(e: any) => setCity(e.target.value)}
               disabled
             />
             <FormInputHalfField
               type="text"
               placeholder="UF"
               value={state}
-              onChange={e => setState(e.target.value)}
+              onChange={(e: any) => setState(e.target.value)}
               disabled
             />
+                <FormInputErrorMessage visibility={isValidPassword}>{passwordErrorMessage}</FormInputErrorMessage>
             <FormInputHalfField
               type="password"
               placeholder="Senha"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e: any) => setPassword(e.target.value)}
             />
             <FormInputHalfField
               type="password"
               placeholder="Repita sua senha"
               value={repeatPassword}
-              onChange={e => setRepeatPassword(e.target.value)}
+              onChange={(e: any) => setRepeatPassword(e.target.value)}
             />
             <FormInputButton>CRIAR CONTA</FormInputButton>
           </SignContainer>
