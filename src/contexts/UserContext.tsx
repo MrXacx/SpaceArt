@@ -1,4 +1,4 @@
-import { User } from "../api-clients/User";
+import { Artist, User } from "../api-clients/User";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,6 +40,26 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .catch(console.error);
   };
 
+  const signUpArtist = (artistData: {
+    name: string,
+    email: string,
+    password: string,
+    phone: string,
+    cep: string,
+    state: string,
+    city: string,
+    website: string,
+    wage: number,
+    art: string,
+  }) => {
+    const artist = new Artist();
+    artist
+    .build(artistData)
+    .signUp() // Cadastra artista
+    .then( () => signIn(artistData.email, artistData.password)) // Realiza login 
+    .catch(console.error) // imprime erro
+  };
+
   const logOut = () => {
     sessionStorage.removeItem("user_token");
     setLoginStatus(false);
@@ -54,6 +74,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         token,
         type,
         signIn,
+        signUpArtist,
         logOut,
       }}
     >
