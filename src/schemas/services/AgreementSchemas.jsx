@@ -1,4 +1,4 @@
-import * as Joi from "joi"
+import Joi from "@hapi/joi";
 
 export const agreementSchema = Joi.object({
 	hired: Joi.string()
@@ -21,7 +21,7 @@ export const agreementSchema = Joi.object({
 		.required(),
 
 	date: Joi.date()
-		.format('DD/MM/YYYY')
+		.format('L')
 		.required(),
 
 	initialTime: Joi.date()

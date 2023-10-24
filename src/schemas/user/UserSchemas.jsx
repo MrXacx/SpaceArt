@@ -1,4 +1,4 @@
-import * as Joi from "joi";
+import Joi from "@hapi/joi";
 
 export const UserSchemas = {
 	nameSchema: Joi.string() // string de 1 a 30 caracteres

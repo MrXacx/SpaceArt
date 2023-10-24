@@ -1,4 +1,4 @@
-import * as Joi from "joi";
+import Joi from "@hapi/joi";
 
 export const rateSchema = Joi.object({
 	rate: Joi.number()

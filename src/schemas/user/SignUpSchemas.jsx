@@ -1,6 +1,9 @@
-import * as Joi from "joi";
+import JoiBase from "@hapi/joi";
+import JoiDate  from "@hapi/joi-date";
 import { UserSchemas } from "./UserSchemas";
 import { LocationSchemas } from "../LocationSchemas";
+
+const Joi = JoiBase.extend(JoiDate);
 
 const { stateSchema, citySchema, addressSchema, neighborhoodSchema, postalCodeSchema } = LocationSchemas;
 const { nameSchema, emailSchema, phoneSchema, passwordSchema, cpfSchema, cnpjSchema } = UserSchemas;
@@ -29,7 +32,7 @@ export const artistSignUpSchema = Joi.object({
 		.required(),
 
 	birthday: Joi.date()
-		.format('DD/MM/YYYY')
+		.format('L')
 		.required(),
 });
 

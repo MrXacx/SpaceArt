@@ -1,4 +1,4 @@
-import * as Joi from "joi";
+import Joi from "@hapi/joi";
 
 export const selectionSchema = Joi.object({
 	price: Joi.number()
@@ -9,11 +9,11 @@ export const selectionSchema = Joi.object({
 		.required(),
 
 	initialDate: Joi.date()
-		.format('DD/MM/YYYY')
+		.format('L')
 		.required(),
 
 	finallDate: Joi.date()
-		.format('DD/MM/YYYY')
+		.format('L')
 		.required(),
 
 	initialTime: Joi.date()

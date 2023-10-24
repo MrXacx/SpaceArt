@@ -141,7 +141,7 @@ function SignUpArtist() {
               value={phone}
               onChange={(e: any) => setPhone(e.target.value)}
             />
-            <FormInputErrorMessage visibility={isValidCPF}>O CPF deve contem 11 dígitos</FormInputErrorMessage>
+            <FormInputErrorMessage visibility={isValidCPF}>O CPF deve conter 11 dígitos</FormInputErrorMessage>
             <FormInputFullField
               type="text"
               placeholder="CPF"

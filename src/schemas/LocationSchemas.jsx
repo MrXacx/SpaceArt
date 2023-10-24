@@ -1,4 +1,4 @@
-import * as Joi from "joi";
+import Joi from "@hapi/joi";
 
 export const LocationSchemas = {
     postalCodeSchema: Joi.string()// XXXXX-XXX
