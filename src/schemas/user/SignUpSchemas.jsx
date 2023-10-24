@@ -1,5 +1,5 @@
-import JoiBase from "@hapi/joi";
-import JoiDate  from "@hapi/joi-date";
+import JoiBase from "joi";
+import JoiDate  from "@joi/date";
 import { UserSchemas } from "./UserSchemas";
 import { LocationSchemas } from "../LocationSchemas";
 
@@ -23,6 +23,7 @@ export const artistSignUpSchema = Joi.object({
 	...signUpSchema,
 	wage: Joi.number()
 		.precision(2)
+		.error(error => new Error("A pretensão salarial deve conter duas casas decimais"))
 		.required(),
 
 	cpf: cpfSchema
@@ -33,6 +34,7 @@ export const artistSignUpSchema = Joi.object({
 
 	birthday: Joi.date()
 		.format('L')
+		.error(error => new Error("A data deve seguir o formato dd/mm/aaaa"))
 		.required(),
 });
 
@@ -45,6 +47,7 @@ export const enterpriseSignUpSchema = Joi.object({
 		.trim()
 		.min(1)
 		.max(30)
+		.error(error => new Error("A seção deve conter entre 1 e 30 caracteres"))
 		.required(),
 
 	address: addressSchema.required(),

@@ -1,4 +1,4 @@
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import { stateSchema, citySchema } from "../LocationSchemas";
 
 export const searchSchema = Joi.create({

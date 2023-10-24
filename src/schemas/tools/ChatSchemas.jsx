@@ -1,4 +1,4 @@
-import JoiBase from "@hapi/joi";
+import JoiBase from "joi";
 const Joi = JoiBase.extend();
 export const messageSchemma = Joi.string()
 	.min(1)

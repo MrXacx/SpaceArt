@@ -1,4 +1,4 @@
-import Joi from "@hapi/joi";
+import Joi from "joi";
 
 import { UserSchemas } from "./UserSchemas";
 
@@ -6,7 +6,7 @@ const { phoneSchema, passwordSchema, cpfSchema, cnpjSchema } = UserSchemas;
 const privateDataUpdatingSchema = {
     phone: phoneSchema,
     password: passwordSchema,
-    repeatPassword: Joi.ref('password'),
+    repeatPassword: Joi.error(error => new Error("As senhas deve ser idênticas")).ref('password'),
 }
 
 export const enterprisePrivateDataUpdatingSchema = Joi.object({
