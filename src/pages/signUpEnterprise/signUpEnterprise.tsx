@@ -128,7 +128,13 @@ return (
             placeholder="CNPJ"
             inputMode="numeric"
             value={cnpj}
-            onChange={(e: any) => setCNPJ(e.target.value)}
+            onChange={(e: any) => {
+              const cnpj = e.target.value;
+              setCNPJ(cnpj)
+              if (cnpj.length === 14){
+                searchCNPJ(cnpj);
+              }
+            }}
           />
           
           <FormInputFullField
@@ -169,15 +175,14 @@ return (
             type="text"
             placeholder="Bairro"
             value={city}
-            onChange={(e: any) => setCity(e.target.value)}
+            onChange={(e: any) => setNeighborhood(e.target.value)}
             disabled
           />
           <FormInputHalfField
             type="text"
             placeholder="Endereço"
             value={state}
-            onChange={(e: any) => setState(e.target.value)}
-            disabled
+            onChange={(e: any) => setAddress(e.target.value)}
           />
               
           <FormInputHalfField
