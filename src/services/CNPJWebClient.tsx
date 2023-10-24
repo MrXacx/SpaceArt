@@ -34,8 +34,8 @@ export class CNPJWebClient extends APIClient {
         let data = response.data;
         return {
             code: data.cnpj,
-            razaoSocial: data.razao_social,
-            nomeFantasia: data.nome_fantasia
+            companyName: data.razao_social,
+            nameFantasy: data.nome_fantasia
         };
     }
 };
