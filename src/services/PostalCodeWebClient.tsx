@@ -16,7 +16,9 @@ export class PostalCodeWebClient extends APIClient {
      *  Consulta dados associados ao CEP
      */
   fetch = async (code: string) => {
-    
+  
+    code = PostalCodeWebClient.sanitize(code); // Remove caracteres especiais
+        
     if (!PostalCodeWebClient.matches(code)) { // Executa se o CEP tiver um formato inválido
       PostalCodeWebClient
       .errorTypes
@@ -24,7 +26,6 @@ export class PostalCodeWebClient extends APIClient {
       .throw(`Formato do CEP está inválido: ${code}.`);
     }
     
-    code = PostalCodeWebClient.sanitize(code); // Remove caracteres especiais
     const response = await this.request.get(`https://brasilapi.com.br/api/cep/v1/${code}`);
 
     if (response.status !== 200) { // Executa caso a resposta não seja de sucesso
@@ -34,7 +35,7 @@ export class PostalCodeWebClient extends APIClient {
       .throw();
     }
 
-    const data = response.data;
+    const data = JSON.parse(response.data);
     return {
       code: data.cep,
       city: data.city,
