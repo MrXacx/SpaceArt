@@ -11,10 +11,14 @@ import {
   SignContainer,
 } from "./signUpStyles";
 
-import { useState, useRef, useContext } from "react";
+import { useState, useContext } from "react";
 import { PostalCodeWebClient } from "../../services/PostalCodeWebClient";
+import { artistSignUpSchema } from "../../schemas/user/SignUpSchemas";
+import { UserContext } from "../../contexts/UserContext";
 
 function SignUpArtist() {
+  const { signUpArtist } = useContext(UserContext);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -26,14 +30,33 @@ function SignUpArtist() {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
-  const searchLocation = () => {
+  const searchLocation = (code: string) => {
+
     new PostalCodeWebClient()
-      .fetch(cep)
+      .fetch(code)
       .then(location => {
         setState(location.state)
         setCity(location.city);
       })
-      .catch(console.error);
+      .catch(console.log);
+  }
+
+  const userSignUp = () => {
+    const userData:any = {
+      name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
+    }
+
+    let { error } = artistSignUpSchema.validate(userData);
+    if (error) {
+      // code here
+    } else {
+      userData.location = {cep, state, city};
+      delete userData.cep;
+      delete userData.state;
+      delete userData.city;
+      delete userData.repeatPassword;
+      signUpArtist(userData);
+    }
   }
 
   return (
@@ -45,7 +68,10 @@ function SignUpArtist() {
             <img alt="Space art logo" src={SpaceartLogo} />
             <h1>Cadastro de artista</h1>
           </HeaderLogo>
-          <SignContainer>
+          <SignContainer onSubmit={(e:any) => {
+            e.preventDefault();
+            userSignUp();
+          }}>
             <FormInputFullField
               type="text"
               placeholder="Nome completo"
@@ -84,8 +110,8 @@ function SignUpArtist() {
               value={cep}
               onChange={e => {
                 setCEP(e.target.value)
-                if (cep.length === 8) {
-                  searchLocation();
+                if (e.target.value.length === 8) {
+                  searchLocation(e.target.value);
                 }
               }}
             />
