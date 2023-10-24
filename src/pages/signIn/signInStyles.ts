@@ -37,17 +37,20 @@ export const SignContainer = styled.form`
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-  width: 20vw;
+  width: 18vw;
   margin: 0 auto;
 `;
 
 export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
   display: ${visibility => visibility ? 'inline' : 'none'};
-  color: "red";
+  color: white;
+  font-size: .75rem;
+  text-align: center;
+  margin: .75rem 0;
 `
 
 export const FormInputFullField = styled.input<{isWrong?: boolean}>`
-  width: 75%;
+  width: 100%;
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
@@ -68,7 +71,7 @@ export const FormInputFullField = styled.input<{isWrong?: boolean}>`
 
   &::placeholder {
     color: #fff;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 18px;
   }
 
