@@ -57,7 +57,10 @@ function SignIn() {
           <HeaderLogo>
             <h1>Login</h1>
           </HeaderLogo>
-          <SignContainer>
+          <SignContainer onSubmit={(e: any) => {
+            e.preventDefault();
+            userSignIn()
+          }}>
 
             <FormInputErrorMessage visibility={isValidEmail}>{emailErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
@@ -75,7 +78,7 @@ function SignIn() {
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}
             />
-              <FormInputButton onClick={userSignIn}>Entrar</FormInputButton>
+              <FormInputButton>Entrar</FormInputButton>
           </SignContainer>
         </InnerContainer>
       </MainSignInContainer>
