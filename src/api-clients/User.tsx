@@ -82,7 +82,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
         .HTTPRequestError.throw(response.statusText); // Emite exceção
     }
 
-    return this.factory().build(response.data);
+    return this.factory().build(JSON.parse(response.data));
 
   }
 
@@ -101,7 +101,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
         .HTTPRequestError.throw(response.statusText);
     }
 
-    return this.factory().build(response.data); // Intancia o retorno
+    return this.factory().build(JSON.parse(response.data)); // Intancia o retorno
   }
 
   /**
@@ -133,7 +133,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
         .HTTPRequestError.throw(response.statusText);
     }
 
-    return response.data.map(this.factory().build);
+    return response.data.map((data: any) => this.factory().build(JSON.parse(response.data)));
   }
 
   /**

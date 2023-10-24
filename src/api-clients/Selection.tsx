@@ -82,8 +82,9 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
         .throw(`Não foi possível buscar uma lista de seleções utilizando o filtro ${filter}`);
     }
 
-    return response.data.map((selection: any) =>
-      new Selection().build({
+    return response.data.map((selection: any) => {
+      selection = JSON.parse(selection);
+      return new Selection().build({
         id: selection.id,
         art: selection.art,
         owner: new Enterprise(selection.enterprise),
@@ -91,7 +92,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
         date: Object.entries(selection.date).map(item => item[1] as string),
         time: Object.entries(selection.time).map(item => item[1] as string)
       })
-    );
+    });
   }
 
   /**
@@ -106,7 +107,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
         .throw(`Não foi possível encontrar a seleção ${this.id}`);
     }
 
-    const selection = response.data;
+    const selection = JSON.parse(response.data);
 
     return this.factory().build({
       id: selection.id as string,
@@ -206,9 +207,10 @@ class SelectionApplication extends SpaceArtAPIClient {
         .throw(`Não foi encontrar aplicações para a seleção ${this.selection.getID()}`);
     }
 
-    return response.data.map((data: any) =>
-      new SelectionApplication(this.selection, new Artist(data.artist))
-    )
+    return response.data.map((data: any) => {
+      data = JSON.parse(data);
+      return new SelectionApplication(this.selection, new Artist(data.artist))
+    })
   }
 
   toObject() {

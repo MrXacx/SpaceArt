@@ -58,6 +58,7 @@ export class Rate extends SpaceArtAPIClient implements APIClientFactory {
     }
 
     return response.data.map((rate: any) => {
+      rate = JSON.parse(rate)
       rate.author = new User(rate.author);
       return this.factory().build(rate);
     });

@@ -113,6 +113,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
     }
 
     return response.data.map((data: any) => { // Itera lista de contratos
+      data = JSON.parse(data);
       const agreement = this.factory().build(data); // Instancia o contrato
 
       if (data.status === "accepted") { // Executa apenas se o contrato já foi aceito

@@ -64,6 +64,7 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
     }
 
     return response.data.map((report: any) => {
+      report = JSON.parse(report)
       report.reported = new User(report.reported);
       return this.factory().build(report)
     }); // Instancia todos as denúncias obtidas
