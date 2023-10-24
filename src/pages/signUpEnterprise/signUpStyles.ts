@@ -35,6 +35,11 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
+export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
+  display: ${visibility => visibility ? 'inline' : 'none'};
+  color: "red";
+`
+
 export const FormInputFullField = styled.input`
   width: 75%;
   height: 25px;
