@@ -1,20 +1,5 @@
 import styled from "styled-components";
 
-export const Icon = styled.img`
-  
-`;
-
-export const ModalButton = styled.button`
-  padding: 0.6rem 1.2rem;
-  color: #fff;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  opacity: 0.9;
-  font-size: 1rem;
-  background-color: #007bff;
-`;
-
 export const Modal = styled.div<{ hideModal?: boolean }>`
   visibility: ${({ hideModal }) => (hideModal ? "hidden" : "visible")};
   width: 100vw;
@@ -53,18 +38,25 @@ export const InnerContainer = styled.div`
 `;
 
 export const HeaderLogo = styled.header`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   img {
-    max-width: 50px;
-    margin-bottom: 0.8rem;
+    align-items: flex-end;
+    max-width: 10px;
+    padding-right: 50px;
+    margin: 0 0 0 auto;
   }
 
   h1 {
     font-size: 1.7em;
   }
+`;
+
+export const Icon = styled.img`
+  cursor: pointer;
 `;
 
 export const SignContainer = styled.form`

@@ -6,8 +6,6 @@ import {
   MainSignInContainer,
   SignContainer,
 } from "./signInStyles";
-import SpaceartLogo from "../../assets/spaceart.svg";
-import HeaderAlt from "../../components/headerAltWhite/headerAltWhite";
 import { useState, useRef, useContext } from "react";
 import { signInSchema } from "../../schemas/user/SignInSchemas";
 import { UserContext } from "../../contexts/UserContext";
