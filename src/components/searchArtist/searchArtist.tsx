@@ -16,11 +16,11 @@ function SearchArtist() {
   const [name, setName] = useState("");
   const [cards, setCards] = useState <JSX.Element[]>([]);
   const { type } = useContext(UserContext);
-
+/*
   useEffect(() => {
     const fetchCards = async (name: string) => {
       let client: Artist;
-/*
+
       switch (AccountTypesUtil.parse(type)) {
         case AccountType.artist:
           client = new Enterprise();
@@ -29,11 +29,11 @@ function SearchArtist() {
           client = new Artist();
           break;
         default: NoLoggedAcessError.throw("Tentativa de utilizar a ferramenta de busca sem login prévio");
-      }*/
+      }
 
       client = new Artist();
 
-      const list =  (name.trim().length == 0 ? await client.fetchListNoFilter(0,25) : await client.fetchListFilteringName(name, 0,25));
+      const list =  await client.fetchListNoFilter(0,25);
         
         return list.map((item: Artist|Enterprise|User) => {
           let wage:any, art:any;
@@ -65,7 +65,7 @@ function SearchArtist() {
 
     fetchCards(name).then( cards => {setCards(cards)});
   }, [name, type])
-
+*/
   return (
     <SearchArtistContainer>
       <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
@@ -87,7 +87,7 @@ function SearchArtist() {
         </CategoryInput>
         <CategoryButton>PESQUISAR</CategoryButton>
       </CategoryContainer>
-      <CardProfileContainer>{cards}</CardProfileContainer>
+      <CardProfileContainer></CardProfileContainer>
     </SearchArtistContainer>
   );
 }
