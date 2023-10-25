@@ -55,7 +55,7 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
         .throw(`Não foi possível buscar a conversa ${this.id}`);
     }
 
-    const chatData = response.data;
+    const chatData = JSON.parse(response.data);
     chatData.artist = new Artist(chatData.artist)
     chatData.enterprise = new Enterprise(chatData.enterprise);
 
@@ -77,8 +77,7 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
         );
     }
 
-    return response.data.map((chat: any) => {
-      chat = JSON.parse(chat);
+    return JSON.parse(response.data).map((chat: any) => {
       chat.artist = new Artist(chat.artist);
       chat.enterprise = new Enterprise(chat.enterprise);
       const chatModel = this.factory().build(chat); // Instancia chat com base no objeto literal

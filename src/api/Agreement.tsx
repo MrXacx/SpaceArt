@@ -78,7 +78,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
         .throw(`Não foi possível encontrar o contrato ${this.id}`);
     }
 
-    const agreementData = response.data;
+    const agreementData = JSON.parse(response.data)
 
     const agreement = this.factory().build({
       id: agreementData.id,
@@ -112,8 +112,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       );
     }
 
-    return response.data.map((data: any) => { // Itera lista de contratos
-      data = JSON.parse(data);
+    return JSON.parse(response.data).map((data: any) => { // Itera lista de contratos
       const agreement = this.factory().build(data); // Instancia o contrato
 
       if (data.status === "accepted") { // Executa apenas se o contrato já foi aceito

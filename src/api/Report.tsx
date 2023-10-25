@@ -36,7 +36,7 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
    * Cria nova denúncia na API
    */
   async create() {
-    let response = await this.request.post(this.path, {
+    const response = await this.request.post(this.path, {
       reporter: this.reporter.getID(),
       reported: this.reported?.getID(),
       reason: this.reason as string
@@ -63,8 +63,7 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
         .throw(response.statusText);
     }
 
-    return response.data.map((report: any) => {
-      report = JSON.parse(report)
+    return JSON.parse(response.data).map((report: any) => {
       report.reported = new User(report.reported);
       return this.factory().build(report)
     }); // Instancia todos as denúncias obtidas

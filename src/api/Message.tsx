@@ -51,8 +51,7 @@ export class Message extends SpaceArtAPIClient implements APIClientFactory {
         .throw(`Não foi possível buscar as mensagens do chat ${this.chat.getID()}`);
     }
 
-    return response.data.map((message: any) => {
-      message = JSON.parse(message);
+    return JSON.parse(response.data).map((message: any) => {
       message.sender = new User(message.sender);
       return this.factory().build(message);
     });
