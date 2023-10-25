@@ -1,4 +1,4 @@
-import { APIClient } from "../api-clients/abstracts/APIClient";
+import { APIClient } from "../api/abstracts/APIClient";
 
 export class PostalCodeWebClient extends APIClient {
 

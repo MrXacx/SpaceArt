@@ -1,4 +1,4 @@
-import { Artist, Enterprise, User } from "../api-clients/User";
+import { Artist, Enterprise, User } from "../api/User";
 import { AccountType } from "../enums/AccountType";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";

@@ -8,7 +8,7 @@ import {
 import CardProfile from "../cardProfileTest/cardProfile";
 import { UserContext } from "../../contexts/UserContext";
 import { AccountTypesUtil, AccountType } from "../../enums/AccountType";
-import { Artist, Enterprise, User } from "../../api-clients/User";
+import { Artist, Enterprise, User } from "../../api/User";
 import { NoLoggedAcessError } from "../../errors/NoLoggedAcessError";
 import { useContext, useEffect, useState } from "react";
 
@@ -18,9 +18,9 @@ function SearchArtist() {
   const { type } = useContext(UserContext);
 
   useEffect(() => {
-    const fetchCards = (name: string) => {
-      let client: User;
-
+    const fetchCards = async (name: string) => {
+      let client: Artist;
+/*
       switch (AccountTypesUtil.parse(type)) {
         case AccountType.artist:
           client = new Enterprise();
@@ -29,15 +29,26 @@ function SearchArtist() {
           client = new Artist();
           break;
         default: NoLoggedAcessError.throw("Tentativa de utilizar a ferramenta de busca sem login prévio");
-      }
+      }*/
 
-      return client
-        .fetchListFilteringName(name, 0, 25)
-        .then((list: Artist[]) => list.map(item => {
+      client = new Artist();
+
+      const list =  (name.trim().length == 0 ? await client.fetchListNoFilter(0,25) : await client.fetchListFilteringName(name, 0,25));
+        
+        return list.map((item: Artist|Enterprise|User) => {
+          let wage:any, art:any;
+
           const data = item.toObject();
           const { id, image, index, type, name, location } = data;
-          const { wage, art } = client instanceof Artist ? data : { wage: undefined, art: undefined };
 
+          if(item instanceof Artist){
+            [ wage, art ] = [
+              item.toObject().wage,
+              item.toObject().art
+            ];
+          } else{
+            [ wage, art ] =  [ undefined, undefined ];
+          }
           return CardProfile(
             id as string,
             index as number,
@@ -49,7 +60,7 @@ function SearchArtist() {
             art,
             wage
           );
-        }))
+        });
     }
 
     fetchCards(name).then( cards => {setCards(cards)});
