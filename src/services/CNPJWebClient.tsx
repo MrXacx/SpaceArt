@@ -16,10 +16,10 @@ export class CNPJWebClient extends APIClient {
      */
     fetch = async (code: string) => {
         code = CNPJWebClient.sanitize(code); // Remove caracteres especiais
-        
+
         if (!CNPJWebClient.matches(code)) { // Executa se o código não foir válido
             CNPJWebClient.errorTypes
-                .RegExError
+                .RegExpError
                 .throw(`Formato do CNPJ está incorreto: ${code}.`);
         }
 

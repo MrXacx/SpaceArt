@@ -16,6 +16,7 @@ import { useState, useContext } from "react";
 import { PostalCodeWebClient } from "../../services/PostalCodeWebClient";
 import { artistSignUpSchema } from "../../schemas/user/SignUpSchemas";
 import { UserContext } from "../../contexts/UserContext";
+import dayjs from "dayjs";
 
 function SignUpArtist() {
   const { signUpArtist } = useContext(UserContext);
@@ -38,7 +39,7 @@ function SignUpArtist() {
 
     new PostalCodeWebClient()
       .fetch(code)
-      .then(location => {
+      .then((location: any) => {
         setState(location.state)
         setCity(location.city);
       })
@@ -49,6 +50,8 @@ function SignUpArtist() {
     const userData: any = {
       name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
     }
+
+    //dayjs.
 
     let { error } = artistSignUpSchema.validate(userData);
     if (error) {
