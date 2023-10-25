@@ -1,6 +1,6 @@
 import { Artist, Enterprise, User } from "../api/User";
 import { AccountType } from "../enums/AccountType";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 
@@ -15,19 +15,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
   const [isLogged, setLoginStatus] = useState(false);
   const [user, setUser] = useState({});
-  const [userCards, setUserCards] = useState<
-    {
-      id: string;
-      index: number;
-      image: string;
-      name: string;
-      type: string;
-      city: string;
-      state: string;
-      art?: string;
-      wage?: number;
-    }[]
-  >([]);
+  const [cardsData, setCardsData] = useState<any[]>([]);
   const [type, setType] = useState("");
   const [id, setID] = useState("");
   const [token, setToken] = useState(
@@ -39,8 +27,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       type === AccountType.artist
         ? new Artist(id)
         : type === AccountType.enterprise
-        ? new Enterprise(id)
-        : NoLoggedAcessError.throw(
+          ? new Enterprise(id)
+          : NoLoggedAcessError.throw(
             "Não é possível consultar dados do usuário sem estar logado"
           );
 
@@ -52,13 +40,13 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .catch(console.error);
   };
 
-  const fetchUserList = async (filter: string) => {
+  const fetchUserCardList = async (filter: string) => {
     let client: Artist;
     client = new Artist();
 
     const list = await client.fetchListNoFilter(0, 25);
 
-    setUserCards(
+    setCardsData(
       list.map((item: Artist | Enterprise | User) => {
         let wage: any, art: any;
 
@@ -82,8 +70,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           art: art,
           wage: wage,
         };
-      })
-    );
+      }));
   };
 
   const signIn = (email: string, password: string) => {
@@ -145,8 +132,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         token,
         type,
         signIn,
-        fetchUserList,
-        userCards,
+        fetchUserCardList,
+        cardsData,
         signUpArtist,
         logOut,
       }}

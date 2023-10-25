@@ -24,24 +24,27 @@ interface ArtistProps {
 function SearchArtist() {
   const [name, setName] = useState("");
   const [cards, setCards] = useState<JSX.Element[]>([]);
-  const { userCards, fetchUserList } = useContext(UserContext);
-  useEffect(() => {
-    fetchUserList(name);
-
-    setCards(userCards.map(
-      (data:any) =>      
-        CardProfile(
-          data.id,
-          data.index,
-          data.image,
-          data.name,
-          data.type,
-          data.city,
-          data.state,
-          data.art,
-          data.wage
-    )))
-  }, [name]);
+  let { cardsData, fetchUserCardList } = useContext(UserContext);
+    
+  useEffect(() => { // Executa consulta após a renderização
+    fetchUserCardList(name) 
+    .then(() => { 
+        setCards(cardsData.map( // converte o estado do contexto em component
+          (data:any) =>      
+            CardProfile(
+              data.id,
+              data.index,
+              data.image,
+              data.name,
+              data.type,
+              data.city,
+              data.state,
+              data.art,
+              data.wage
+        )));
+    })
+   ;
+  });
 
   return (
     <SearchArtistContainer>
@@ -64,7 +67,9 @@ function SearchArtist() {
         </CategoryInput>
         <CategoryButton>PESQUISAR</CategoryButton>
       </CategoryContainer>
-      <CardProfileContainer>{cards}</CardProfileContainer>
+      <CardProfileContainer>
+        {cards}
+      </CardProfileContainer>
     </SearchArtistContainer>
   );
 }
