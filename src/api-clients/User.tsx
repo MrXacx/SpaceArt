@@ -1,4 +1,5 @@
 import { IndexedAPIClient, APIClientFactory } from "./abstracts/APIClient";
+import { AccountType } from "../enums/AccountType";
 
 /**
  * Classe de consulta de dados de usuários
@@ -7,7 +8,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 
   protected index: number | undefined;
   protected token: string | undefined;
-  protected type: string | undefined;
+  protected type: AccountType | string | undefined;
   protected email: string | undefined;
   protected password: string | undefined;
   protected phone: string | undefined;
@@ -35,7 +36,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
   build(user: {
     id?: string,
     token?: string,
-    type?: string,
+    type?: AccountType | string,
     index?: number,
     name?: string,
     email: string,
@@ -178,7 +179,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       id: this.id,
       index: this.index,
       token: this.token,
-      type: this.type,
+      type: this.type as string,
       email: this.email,
       password: this.password,
       phone: this.phone,
@@ -201,7 +202,7 @@ export class Artist extends User {
 
   constructor(id: string | null = null) {
     super(id);
-    this.type = "artist";
+    this.type = AccountType.artist;
   }
 
   factory = () => new Artist();
@@ -259,7 +260,7 @@ export class Enterprise extends User {
 
   constructor(id: string | null = null) {
     super(id);
-    this.type = "enterprise";
+    this.type = AccountType.enterprise;
   }
 
   factory = () => new Enterprise();

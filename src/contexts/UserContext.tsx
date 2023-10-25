@@ -1,4 +1,5 @@
 import { Artist, Enterprise, User } from "../api-clients/User";
+import { AccountType } from "../enums/AccountType";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
@@ -20,8 +21,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
   const fetchUser = () => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
-      type === 'artist' ? new Artist(id) :
-        type === 'enterprise' ? new Enterprise(id) :
+    
+    
+      type === AccountType.artist ? new Artist(id) :
+        type === AccountType.enterprise ? new Enterprise(id) :
           NoLoggedAcessError.throw("Não é possível consultar dados do usuário sem estar logado");
 
     user
@@ -46,7 +49,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         ) {
           setUser(dataUser);
           setID(dataUser.id as string);
-          setType(dataUser.type as string);
+          setType(dataUser.type);
           setToken(dataUser.token as string);
           sessionStorage.setItem("user_token", dataUser.token as string);
           setLoginStatus(true);
