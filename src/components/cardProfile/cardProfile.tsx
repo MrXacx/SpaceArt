@@ -3,35 +3,26 @@ import {
   CardProfileDetail,
   UserCardDetailContainer,
 } from "./cardProfileStyles";
-
+import Image from "../../assets/marco_image.png"
 import LocalIcon from "../../assets/local.svg";
 import WageIcon from "../../assets/wage.svg";
 
-function CardProfile(cardDate:{
-  id: string,
-  index: number,
-  image: string,
-  name: string,
-  art: string,
-  city: string,
-  state: string,
-  wage: number,
-}) {
+function CardProfile() {
   return (
     <CardProfileContent>
-      <img alt="profile" src={cardDate.image} />
+      <img alt="profile" src={Image} />
       <CardProfileDetail>
         <div>
-          <span>{cardDate.name}</span>
-          <span>{cardDate.art}</span>
+          <span>Evaldo</span>
+          <span>Música</span>
         </div>
         <UserCardDetailContainer>
           <img alt="local icon" src={LocalIcon} />
-          <span>{cardDate.city}, {cardDate.state}</span>
+          <span>Salvador, BA</span>
         </UserCardDetailContainer>
         <UserCardDetailContainer>
           <img alt="wage icon" src={WageIcon} />
-          <span>R${cardDate.wage.toFixed(2).replace('.',',')}</span>
+          <span>R$250,00</span>
         </UserCardDetailContainer>
       </CardProfileDetail>
     </CardProfileContent>
