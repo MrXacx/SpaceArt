@@ -197,7 +197,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 export class Artist extends User {
   private cpf: string | undefined;
   private art: string | undefined;
-  private wage: string | undefined;
+  private wage: number | undefined;
   private birthday: string | undefined;
 
   constructor(id: string | null = null) {
