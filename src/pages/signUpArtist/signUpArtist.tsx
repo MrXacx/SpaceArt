@@ -16,6 +16,7 @@ import { useState, useContext } from "react";
 import { PostalCodeWebClient } from "../../services/PostalCodeWebClient";
 import { artistSignUpSchema } from "../../schemas/user/SignUpSchemas";
 import { UserContext } from "../../contexts/UserContext";
+import dayjs from "dayjs";
 
 function SignUpArtist() {
   const { signUpArtist } = useContext(UserContext);
@@ -32,13 +33,13 @@ function SignUpArtist() {
   const [repeatPassword, setRepeatPassword] = useState("");
   
   const [inputErrorMessage, setInputErrorMessage] = useState("");
-  const [isInvalidInput, setInputValidate] = useState(true);
+  const [isValidInput, setInputValidate] = useState(true);
   
   const searchLocation = (code: string) => {
 
     new PostalCodeWebClient()
       .fetch(code)
-      .then(location => {
+      .then((location: any) => {
         setState(location.state)
         setCity(location.city);
       })
@@ -50,13 +51,17 @@ function SignUpArtist() {
       name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
     }
 
+    //dayjs.
+
     let { error } = artistSignUpSchema.validate(userData);
     if (error) {
-      
+     
       setInputValidate(false)
       setInputErrorMessage(error.message);
-     
     } else {
+      setInputErrorMessage("");
+      setInputValidate(true);
+
       userData.location = { cep, state, city };
       delete userData.cep;
       delete userData.state;
@@ -80,25 +85,28 @@ function SignUpArtist() {
             userSignUp();
           }}>
 
-            <FormInputErrorMessage visibility={isInvalidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
               type="text"
               placeholder="Nome completo"
               value={name}
               onChange={(e: any) => setName(e.target.value)}
             />
+
             <FormInputHalfField
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e: any) => setEmail(e.target.value)}
             />
+
             <FormInputHalfField
               type="tel"
               placeholder="Telefone"
               value={phone}
               onChange={(e: any) => setPhone(e.target.value)}
             />
+
             <FormInputFullField
               type="text"
               placeholder="CPF"
@@ -112,6 +120,7 @@ function SignUpArtist() {
               value={birthday}
               onChange={(e: any) => setBirthday(e.target.value)}
             />
+
             <FormInputFullField
               type="text"
               placeholder="CEP"
@@ -138,6 +147,7 @@ function SignUpArtist() {
               onChange={(e: any) => setState(e.target.value)}
               disabled
             />
+
             <FormInputHalfField
               type="password"
               placeholder="Senha"

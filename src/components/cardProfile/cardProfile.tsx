@@ -3,17 +3,17 @@ import {
   CardProfileDetail,
   UserCardDetailContainer,
 } from "./cardProfileStyles";
-import MarcoImage from "../../assets/marco_image.png";
+import Image from "../../assets/marco_image.png"
 import LocalIcon from "../../assets/local.svg";
 import WageIcon from "../../assets/wage.svg";
 
 function CardProfile() {
   return (
     <CardProfileContent>
-      <img alt="profile" src={MarcoImage} />
+      <img alt="profile" src={Image} />
       <CardProfileDetail>
         <div>
-          <span>Marco Antônio</span>
+          <span>Evaldo</span>
           <span>Música</span>
         </div>
         <UserCardDetailContainer>
@@ -22,7 +22,7 @@ function CardProfile() {
         </UserCardDetailContainer>
         <UserCardDetailContainer>
           <img alt="wage icon" src={WageIcon} />
-          <span>R$256,00</span>
+          <span>R$250,00</span>
         </UserCardDetailContainer>
       </CardProfileDetail>
     </CardProfileContent>

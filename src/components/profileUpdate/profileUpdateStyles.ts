@@ -1,8 +1,35 @@
 import styled from "styled-components";
 
-export const MainSignInContainer = styled.div`
+export const Modal = styled.div<{ hideModal?: boolean }>`
+  visibility: ${({ hideModal }) => (hideModal ? "hidden" : "visible")};
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.55);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ModalContainer = styled.div`
+  width: 50vw;
+  height: 85vh;
+  background-color: white;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+`;
+
+export const MainSignUpContainer = styled.div`
   display: grid;
-  min-height: 100vh;
+  min-height: 80vh;
 `;
 
 export const InnerContainer = styled.div`
@@ -11,18 +38,29 @@ export const InnerContainer = styled.div`
 `;
 
 export const HeaderLogo = styled.header`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   img {
-    max-width: 50px;
-    margin-bottom: 0.8rem;
+    align-items: flex-end;
+    max-width: 10px;
+    padding-right: 50px;
+    margin: 0 0 0 auto;
   }
 
   h1 {
     font-size: 1.7em;
   }
+
+  span {
+    padding: 0 6.25rem;
+  }
+`;
+
+export const Icon = styled.img`
+  cursor: pointer;
 `;
 
 export const SignContainer = styled.form`
@@ -35,13 +73,32 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
-export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
-  width: 100%;
-  display: ${visibility => visibility ? 'inline' : 'none'};
-  color: white;
-  font-size: 1rem;
-  text-align: center;
-  margin: .5rem 0;
+export const FormInputTextbox = styled.input`
+  width: 75%;
+  height: 100px;
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 0.5rem 0;
+  border: 1px solid #545454;
+  transition: 300ms;
+
+  &:focus {
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin: 0.5rem 0;
+    border: 1px solid #545454;
+    transition: 300ms;
+    outline: none;
+    transform: scale(1.03);
+  }
+
+  &::placeholder {
+    color: #000;
+  }
+
+  &:disabled {
+    background-color: rgb(182, 182, 182);
+  }
 `;
 
 export const FormInputFullField = styled.input`
@@ -73,7 +130,7 @@ export const FormInputFullField = styled.input`
 `;
 
 export const FormInputHalfField = styled.input`
-  width: 35.3%;
+  width: 35.7%;
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;

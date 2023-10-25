@@ -42,12 +42,14 @@ export const SignContainer = styled.form`
 `;
 
 export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
+  width: 100%;
   display: ${visibility => visibility ? 'inline' : 'none'};
   color: white;
   font-size: .75rem;
   text-align: center;
   margin: .75rem 0;
 `
+
 
 export const FormInputFullField = styled.input<{isWrong?: boolean}>`
   width: 100%;

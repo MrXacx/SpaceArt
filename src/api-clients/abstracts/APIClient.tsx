@@ -1,7 +1,7 @@
 // Importa a biblioteca Axios
 import { Axios } from "axios";
 import { HTTPRequestError } from '../../errors/HTTPRequestError'; // Importa classes de erro
-import { RegExError } from '../../errors/RegExError'; // Importa classes de erro
+import { RegExpError } from '../../errors/RegExpError'; // Importa classes de erro
 
 export abstract class APIClient {
     protected request = new Axios({
@@ -19,7 +19,7 @@ export abstract class APIClient {
     }
     protected static errorTypes = {
         HTTPRequestError: HTTPRequestError,
-        RegExError: RegExError
+        RegExpError: RegExpError
     }
 
 }

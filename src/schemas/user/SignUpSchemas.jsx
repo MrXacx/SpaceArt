@@ -1,10 +1,10 @@
 import JoiBase from "joi";
 import JoiDate  from "@joi/date";
+
 import { UserSchemas } from "./UserSchemas";
 import { LocationSchemas } from "../LocationSchemas";
 
 const Joi = JoiBase.extend(JoiDate);
-
 const { stateSchema, citySchema, addressSchema, neighborhoodSchema, postalCodeSchema } = LocationSchemas;
 const { nameSchema, emailSchema, phoneSchema, passwordSchema, cpfSchema, cnpjSchema } = UserSchemas;
 
