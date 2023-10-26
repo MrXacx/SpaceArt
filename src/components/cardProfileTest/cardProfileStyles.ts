@@ -4,22 +4,32 @@ export const CardProfileContent = styled.div`
   width: 300px;
   border-radius: 20% 20px 20px 20px;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
 
-  img {
-    width: inherit !important;
+  > img {
+    width: inherit;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 5px 5px 0 0;
   }
 `;
 
 export const CardProfileDetail = styled.div`
   width: 100%;
-
+  flex: 1;
+  border-radius: 5px;
+  margin-top: -20px;
+  padding-top: 20px;
+  background-color: white;
+  color: #000;;
+  box-shadow: 0px -25px 10px 0px rgba(0, 0, 0, 0.25);
+  
   div {
     &:first-of-type {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      color: #000;
-      padding: 5px 0;
 
       span {
         font-size: 1.3em;
