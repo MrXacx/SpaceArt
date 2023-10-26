@@ -59,6 +59,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 
     this.id = user.id;
     this.index = user.index;
+    this.token = user.token;
     this.name = user.name;
     this.email = user.email;
     this.password = user.password;
@@ -69,6 +70,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     this.description = user.description;
     this.rate = user.rate;
     this.verified = user.verified;
+    this.type = this.type ?? user.type
     return this;
   }
 

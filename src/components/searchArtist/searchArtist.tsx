@@ -42,8 +42,7 @@ function SearchArtist() {
               data.art,
               data.wage
         )));
-    })
-   ;
+    });
   });
 
   return (
