@@ -1,6 +1,6 @@
 import { Artist, Enterprise, User } from "../api/User";
 import { AccountType } from "../enums/AccountType";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 
@@ -24,11 +24,11 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
   const fetchUser = () => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
-      type === AccountType.artist
+      type == AccountType.artist
         ? new Artist(id)
-        : type === AccountType.enterprise
-          ? new Enterprise(id)
-          : NoLoggedAcessError.throw(
+        : type == AccountType.enterprise
+        ? new Enterprise(id)
+        : NoLoggedAcessError.throw(
             "Não é possível consultar dados do usuário sem estar logado"
           );
 
@@ -70,7 +70,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           art: art,
           wage: wage,
         };
-      }));
+      })
+    );
   };
 
   const signIn = (email: string, password: string) => {
@@ -82,7 +83,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           ![dataUser.id, dataUser.index, dataUser.type, dataUser.token].some(
             (item) => item === undefined
           )
-        ) {
+        ){    
           setUser(dataUser);
           setID(dataUser.id as string);
           setType(dataUser.type);
@@ -90,7 +91,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           sessionStorage.setItem("user_token", dataUser.token as string);
           setLoginStatus(true);
           fetchUser();
-          navigate("/home");
+          navigate("/feed");
         }
       })
       .catch(console.error);
