@@ -33,7 +33,7 @@ function SignUpArtist() {
   const [repeatPassword, setRepeatPassword] = useState("");
   
   const [inputErrorMessage, setInputErrorMessage] = useState("");
-  const [isValidInput, setInputValidate] = useState(true);
+  const [isValidInput, setInputValidate] = useState('true');
   
   const searchLocation = (code: string) => {
 
@@ -56,11 +56,11 @@ function SignUpArtist() {
     let { error } = artistSignUpSchema.validate(userData);
     if (error) {
      
-      setInputValidate(false)
+      setInputValidate('false')
       setInputErrorMessage(error.message);
     } else {
       setInputErrorMessage("");
-      setInputValidate(true);
+      setInputValidate('true');
 
       userData.location = { cep, state, city };
       delete userData.cep;

@@ -37,7 +37,7 @@ function SignUpEnterprise() {
 
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
-  const [isValidInput, setInputValidate] = useState(true);
+  const [isValidInput, setInputValidate] = useState('true');
 
 const searchCNPJ = (code: string) => {
 
@@ -72,7 +72,7 @@ const userSignUp = () => {
   if (error) {
     
     setInputErrorMessage(error.message);
-    setInputValidate(false);
+    setInputValidate('false');
 
   } else {
 

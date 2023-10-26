@@ -18,22 +18,23 @@ function SignIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isValidInput, setValidInput] = useState(true);
+  const [isValidInput, setValidInput] = useState('true');
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
   const userSignIn = () => {
     const { error } = signInSchema.validate({ email, password }); // Valida email e senha
-
     if (error) {
+      console.log('error ', error.message);
       // Executa se error contiver conteúdo
-      setValidInput(false); // Invalida estado do entrada
+      setValidInput('false'); // Invalida estado do entrada
       setInputErrorMessage(error.message); // Atualiza mensagem de erro
 
     } else {
       // Remove qualquer configuração de estado inválido
-      setValidInput(true);
+      setValidInput('true');
       setInputErrorMessage("");
       signIn(email, password);
+      console.log('chamou');
     }
   };
 
@@ -53,16 +54,15 @@ function SignIn() {
           >
             <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
-              isWrong={!isValidInput}
               type="email"
               placeholder="Email"
+              autoComplete="true"
               value={email}
               onChange={(e: any) => setEmail(e.target.value)}
             />
 
             <FormInputFullField
-              isWrong={!isValidInput}
-              type="password"
+              type="text"
               placeholder="Senha"
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}

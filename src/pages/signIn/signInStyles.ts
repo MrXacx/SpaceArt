@@ -41,9 +41,9 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
-export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
+export const FormInputErrorMessage = styled.span<{visibility: string}>`
   width: 100%;
-  display: ${visibility => visibility ? 'inline' : 'none'};
+  display: ${(visibility) => new Boolean(visibility) ? 'inline' : 'none'};
   color: white;
   font-size: .75rem;
   text-align: center;
@@ -51,14 +51,14 @@ export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
 `
 
 
-export const FormInputFullField = styled.input<{isWrong?: boolean}>`
+export const FormInputFullField = styled.input`
   width: 100%;
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
   background-color: transparent;
   margin: 0.5rem 0;
-  border: 1px solid ${({ isWrong }) => isWrong === true ? "red" : "#545454"};
+  border: 1px solid #545454;
   transition: 300ms;
   color: #fff;
 
