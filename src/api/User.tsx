@@ -133,11 +133,12 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       User.errorTypes
         .HTTPRequestError.throw(response.statusText);
     }
+    
 
-    return Object.entries(JSON.parse(response.data))
-    .map(
-      (value) => this.factory().build(JSON.parse(value[0]))
-    );
+    return JSON.parse(response.data)
+    .map((item:any) => {
+        return this.factory().build(item)
+       });
   }
 
   /**

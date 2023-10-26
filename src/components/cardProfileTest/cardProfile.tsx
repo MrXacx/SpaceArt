@@ -20,10 +20,8 @@ function CardProfile(
   wage?: number,
 ) {
 
-  const navigate = useNavigate()
-
   return (
-    <CardProfileContent onClick={e => navigate(`/profile/?u=${id}`)}>
+    <CardProfileContent>
       <img alt="profile" src={image} />
       <CardProfileDetail>
         <div>

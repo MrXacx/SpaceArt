@@ -18,7 +18,7 @@ export const UserSchemas = {
 		.min(8)
 		.max(35)
 		.error(error => new Error("A senha deve conter entre 8 e 35 caractes"))
-		.pattern(new RegExp('.*[a-z].*[A-Z].*[0-9].*'))
+		.pattern(new RegExp('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/'))
 		.error(error => new Error("A senha deve conter letras minúsculas, maiúsculas e dígitos numéricos")),
 
 	phoneSchema: Joi.string() // (XX)9XXXX-XXXX

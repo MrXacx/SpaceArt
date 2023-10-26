@@ -31,7 +31,7 @@ export class CNPJWebClient extends APIClient {
                 .throw(`Não foi possível encontrar o CEP ${code}`);
         }
 
-        let data = response.data;
+        let data = JSON.parse(response.data);
         return {
             code: data.cnpj,
             companyName: data.razao_social,

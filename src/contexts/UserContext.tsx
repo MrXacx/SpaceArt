@@ -1,6 +1,6 @@
 import { Artist, Enterprise, User } from "../api/User";
 import { AccountType } from "../enums/AccountType";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 
@@ -11,8 +11,11 @@ interface UserStoreProps {
 export const UserContext = createContext({} as any);
 
 export const UserStorage = ({ children }: UserStoreProps) => {
+  const navigate = useNavigate();
+
   const [isLogged, setLoginStatus] = useState(false);
   const [user, setUser] = useState({});
+  const [cardsData, setCardsData] = useState<any[]>([]);
   const [type, setType] = useState("");
   const [id, setID] = useState("");
   const [token, setToken] = useState(
@@ -21,21 +24,54 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
   const fetchUser = () => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
-    
-    
-      type === AccountType.artist ? new Artist(id) :
-        type === AccountType.enterprise ? new Enterprise(id) :
-          NoLoggedAcessError.throw("Não é possível consultar dados do usuário sem estar logado");
+      type === AccountType.artist
+        ? new Artist(id)
+        : type === AccountType.enterprise
+          ? new Enterprise(id)
+          : NoLoggedAcessError.throw(
+            "Não é possível consultar dados do usuário sem estar logado"
+          );
 
     user
-      .build({ id, token }) // Informa dados de identificação 
+      .build({ id, token }) // Informa dados de identificação
       .fetch(true) // Busca dados do usuário
-      .then(response => response.toObject()) // Obtém o objeto dos dados
+      .then((response) => response.toObject()) // Obtém o objeto dos dados
       .then(setUser) // Atualiza estado
       .catch(console.error);
-  }
+  };
 
-  const navigate = useNavigate();
+  const fetchUserCardList = async (filter: string) => {
+    let client: Artist;
+    client = new Artist();
+
+    const list = await client.fetchListNoFilter(0, 25);
+
+    setCardsData(
+      list.map((item: Artist | Enterprise | User) => {
+        let wage: any, art: any;
+
+        const data = item.toObject();
+        const { id, image, index, type, name, location } = data;
+
+        if (item instanceof Artist) {
+          [wage, art] = [item.toObject().wage, item.toObject().art];
+        } else {
+          [wage, art] = [undefined, undefined];
+        }
+
+        return {
+          id: id as string,
+          index: index as number,
+          image: image as string,
+          name: name as string,
+          type: type as string,
+          city: location?.city as string,
+          state: location?.state as string,
+          art: art,
+          wage: wage,
+        };
+      }));
+  };
 
   const signIn = (email: string, password: string) => {
     return new User()
@@ -53,7 +89,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           setToken(dataUser.token as string);
           sessionStorage.setItem("user_token", dataUser.token as string);
           setLoginStatus(true);
-          fetchUser()
+          fetchUser();
           navigate("/home");
         }
       })
@@ -61,32 +97,31 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   };
 
   const signUpArtist = (artistData: {
-    name: string,
-    email: string,
-    password: string,
-    phone: string,
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
     location: {
-      cep: string,
-      state: string,
-      city: string,
-    },
-    website: string,
-    wage: number,
-    art: string,
+      cep: string;
+      state: string;
+      city: string;
+    };
+    website: string;
+    wage: number;
+    art: string;
   }) => {
     const artist = new Artist();
     artist
       .build(artistData)
       .signUp() // Cadastra artista
-      .then(() => signIn(artistData.email, artistData.password)) // Realiza login 
-      .catch(console.error) // imprime erro
+      .then(() => signIn(artistData.email, artistData.password)) // Realiza login
+      .catch(console.error); // imprime erro
   };
 
   const logOut = () => {
     sessionStorage.removeItem("user_token");
     setLoginStatus(false);
   };
-
 
   return (
     <UserContext.Provider
@@ -97,6 +132,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         token,
         type,
         signIn,
+        fetchUserCardList,
+        cardsData,
         signUpArtist,
         logOut,
       }}

@@ -74,8 +74,7 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
         .HTTPRequestError.throw("Não foi possível buscar uma lista de postagens");
     }
 
-    return response.data.map((post: any) => {
-      post = JSON.parse(post)
+    return JSON.parse(response.data).map((post: any) => {
       post.author = new User(post.author);
       return this.factory().build(post);
     });
