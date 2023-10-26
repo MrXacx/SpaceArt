@@ -1,6 +1,6 @@
 import { Artist, Enterprise, User } from "../api/User";
 import { AccountType } from "../enums/AccountType";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 
@@ -14,7 +14,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const navigate = useNavigate();
 
   const [isLogged, setLoginStatus] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<any>({});
   const [cardsData, setCardsData] = useState<any[]>([]);
   const [type, setType] = useState("");
   const [id, setID] = useState("");
@@ -22,7 +22,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     sessionStorage.getItem("user_token") as string
   );
 
-  const fetchUser = () => {
+  const fetchUser = async (type: string) => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
       type == AccountType.artist
         ? new Artist(id)
@@ -31,13 +31,16 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         : NoLoggedAcessError.throw(
             "Não é possível consultar dados do usuário sem estar logado"
           );
-
-    user
+       
+    return user
       .build({ id, token }) // Informa dados de identificação
       .fetch(true) // Busca dados do usuário
-      .then((response) => response.toObject()) // Obtém o objeto dos dados
-      .then(setUser) // Atualiza estado
-      .catch(console.error);
+      .then((response) => {
+        console.log(response.toObject());
+        setUser(response.toObject())
+      }) // Obtém o objeto dos dados
+      //.then(setUser) // Atualiza estado
+      .catch(err => console.error(err));
   };
 
   const fetchUserCardList = async (filter: string) => {
@@ -83,15 +86,15 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           ![dataUser.id, dataUser.index, dataUser.type, dataUser.token].some(
             (item) => item === undefined
           )
-        ){    
+        ){
           setUser(dataUser);
           setID(dataUser.id as string);
           setType(dataUser.type);
           setToken(dataUser.token as string);
           sessionStorage.setItem("user_token", dataUser.token as string);
           setLoginStatus(true);
-          fetchUser();
-          navigate("/feed");
+          fetchUser(dataUser.type)
+          .then(() => navigate("/feed"));
         }
       })
       .catch(console.error);
