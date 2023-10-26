@@ -1,9 +1,15 @@
 import styled from "styled-components";
 
 export const Icon = styled.img`
-  max-width: 23px;
-  max-height: 23px;
-  padding-right: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 20px;
+  max-height: 20px;
+  padding: .7rem;
+  border-radius: 5px;
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 export const HeaderContainer = styled.header`
@@ -37,6 +43,7 @@ export const HeaderContainer = styled.header`
 export const SpaceartContainer = styled.div`
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 `;
 
 export const SpaceartTitle = styled.div``;

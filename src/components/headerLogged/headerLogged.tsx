@@ -13,24 +13,30 @@ import SearchIcon from "../../assets/search.svg";
 import HomeIcon from "../../assets/house.svg";
 import PlusIcon from "../../assets/plus.svg";
 import ThreePointsIcon from "../../assets/three_points.svg";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 function HeaderLogged() {
+  const navigate = useNavigate()
+  const { user } = useContext(UserContext);
+  
   return (
     <HeaderContainer>
       <SpaceartContainer>
         <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
-        <SpaceartTitle>
+        <SpaceartTitle onClick={() => navigate('/')}>
           <span>S</span>
           <span>PACE ART</span>
         </SpaceartTitle>
       </SpaceartContainer>
       <NavContainer>
         <NavItemContainer>
-          <Icon src={SearchIcon} />
-          <Icon src={HomeIcon} />
+          <Icon src={SearchIcon} onClick={() => navigate('/search')} />
+          <Icon src={HomeIcon} onClick={() => navigate('/feed')} />
           <Icon src={PlusIcon} />
           <Icon src={ThreePointsIcon} />
-          <ProfilePicture src="https://thispersondoesnotexist.com/" alt="profile" />
+          <ProfilePicture src={user.image} alt="profile" />
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>
