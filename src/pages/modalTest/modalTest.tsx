@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { Modal, ModalButton } from "./modalTestStyles";
 import { ModalContext } from "../../contexts/ModalContext";
-import ProfileUpdate from "../../components/profileUpdate/profileUpdate";
+import NewContract from "../../components/newContract/newContract";
+
 
 function ModalTest() {
   const { hideModal, setHideModal } = useContext(ModalContext);
@@ -10,7 +11,7 @@ function ModalTest() {
     <>
       <ModalButton onClick={() => setHideModal(!hideModal)} />
       <Modal hideModal={hideModal}>
-        <ProfileUpdate />
+        <NewContract />
       </Modal>
     </>
   );

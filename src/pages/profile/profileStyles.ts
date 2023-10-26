@@ -11,12 +11,23 @@ import styled, { createGlobalStyle } from "styled-components";
   }
 */
 
+
+
 export const Spacing = styled.div`
   height: 100px;
   background-color: #fff;
 `;
 
 export const ProfileGlobalStyle = createGlobalStyle`
+
+  *::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  body {
+    background-color: #202020;
+  }
+
   ul, ol {
     list-style-type: none;
     padding: 0;
