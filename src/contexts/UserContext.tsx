@@ -3,6 +3,8 @@ import { AccountType, AccountTypesUtil } from "../enums/AccountType";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
+import DefaultImage from "../assets/marco_image.png"
+
 
 interface UserStoreProps {
   children: React.ReactNode;
@@ -98,7 +100,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   };
 
   const signUpArtist = async (artistData: {
-    image: string;
+    image?: string;
     name: string;
     email: string;
     cpf: string
@@ -114,6 +116,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     art: string;
     birthday: string;
   }) => {
+    artistData.image = DefaultImage;
     const artist = new Artist().build(artistData);
 
     try {
@@ -126,7 +129,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   };
 
   const signUpEnterprise = async (enterpriseData: {
-    image: string;
+    image?: string;
     name: string;
     companyName: string;
     section: string;
@@ -143,6 +146,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     };
     website: string;
   }) => {
+    enterpriseData.image = DefaultImage;
     const artist = new Enterprise().build(enterpriseData);
 
     try {
