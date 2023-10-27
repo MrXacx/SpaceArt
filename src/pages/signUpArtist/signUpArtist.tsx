@@ -50,25 +50,32 @@ function SignUpArtist() {
     const userData: any = {
       name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
     }
+    let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
+    
+    if (!error) {
+      const dateDiff = dayjs(birthday).diff(Date.now(), 'years', true); // Obtém a diferença de anos entre hoje e a data de nascimento informada
+      
+      if(dateDiff >= 18){
+        setInputErrorMessage("");
+        setInputValidate('true');
+  
+        userData.location = { cep, state, city };
 
-    //dayjs.
+        // Apaga itens não utilizados
+        delete userData.cep;
+        delete userData.state;
+        delete userData.city;
+        delete userData.repeatPassword;
 
-    let { error } = artistSignUpSchema.validate(userData);
-    if (error) {
-     
-      setInputValidate('false')
-      setInputErrorMessage(error.message);
-    } else {
-      setInputErrorMessage("");
-      setInputValidate('true');
-
-      userData.location = { cep, state, city };
-      delete userData.cep;
-      delete userData.state;
-      delete userData.city;
-      delete userData.repeatPassword;
-      signUpArtist(userData);
+        signUpArtist(userData);
+        return;
+      }
+      
+      error.message = new Error('O usuário deve ter 18 anos ou mais.')
     }
+
+    setInputValidate('false')
+    setInputErrorMessage(error.message);
   }
 
   return (
