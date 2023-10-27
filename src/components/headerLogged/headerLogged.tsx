@@ -20,7 +20,7 @@ import { UserContext } from "../../contexts/UserContext";
 function HeaderLogged() {
   const navigate = useNavigate()
   const { user } = useContext(UserContext);
-  
+
   return (
     <HeaderContainer>
       <SpaceartContainer>
@@ -36,7 +36,11 @@ function HeaderLogged() {
           <Icon src={HomeIcon} onClick={() => navigate('/feed')} />
           <Icon src={PlusIcon} />
           <Icon src={ThreePointsIcon} />
-          <ProfilePicture src={user.image} alt="profile" />
+          <ProfilePicture
+            src={user.image}
+            alt={`Foto de perfil de ${user.name}`}
+            onClick={() => navigate('/profile')}
+          />
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>
