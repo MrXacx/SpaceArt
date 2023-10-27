@@ -10,7 +10,7 @@ export const LocationSchemas = {
         .max(100),
 
     stateSchema: Joi.string() // Deve ter 2 caracteres maiúsculos
-        .pattern(/^[AZ]{2}$/),
+        .pattern(/^[A-Z]{2}$/),
 
     addressSchema: Joi.string()
         .trim()
