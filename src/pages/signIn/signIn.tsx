@@ -24,7 +24,6 @@ function SignIn() {
   const userSignIn = () => {
     const { error } = signInSchema.validate({ email, password }); // Valida email e senha
     if (error) {
-      console.log('error ', error.message);
       // Executa se error contiver conteúdo
       setValidInput('false'); // Invalida estado do entrada
       setInputErrorMessage(error.message); // Atualiza mensagem de erro
@@ -34,7 +33,6 @@ function SignIn() {
       setValidInput('true');
       setInputErrorMessage("");
       signIn(email, password);
-      console.log('chamou');
     }
   };
 
