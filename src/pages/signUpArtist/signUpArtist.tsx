@@ -5,6 +5,7 @@ import {
   FormInputButton,
   FormInputFullField,
   FormInputHalfField,
+  FormSelectField,
   HeaderLogo,
   InnerContainer,
   MainSignInContainer,
@@ -26,11 +27,14 @@ function SignUpArtist() {
   const [phone, setPhone] = useState("");
   const [cpf, setCPF] = useState("");
   const [birthday, setBirthday] = useState("");
+  const [wage, setWage] = useState(0);
+  const [art, setArt] = useState("");
   const [cep, setCEP] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [artTypes, setArtTypes] = useState( ['música', 'dança', 'escultura', 'atuação', 'pintura']);
   
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [isValidInput, setInputValidate] = useState('true');
@@ -48,9 +52,11 @@ function SignUpArtist() {
 
   const userSignUp = () => {
     const userData: any = {
-      name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
+      name, email, phone, cpf, birthday, art, wage, cep, state, city, password, repeatPassword
     }
     let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
+    
+    console.log(error);
     
     if (!error) {
       const dateDiff = dayjs(birthday).diff(Date.now(), 'years', true); // Obtém a diferença de anos entre hoje e a data de nascimento informada
@@ -71,7 +77,7 @@ function SignUpArtist() {
         return;
       }
       
-      error.message = new Error('O usuário deve ter 18 anos ou mais.')
+      error = new Error('O usuário deve ter 18 anos ou mais.')
     }
 
     setInputValidate('false')
@@ -127,7 +133,20 @@ function SignUpArtist() {
               value={birthday}
               onChange={(e: any) => setBirthday(e.target.value)}
             />
-
+            <FormSelectField onChange={(e: any) => setArt(e.target.value)}>
+                <option value=""  disabled>Escolha uma modalidade artística</option>
+                {artTypes.map((type:any) =>
+                    <option value = {type}>{type}</option>
+                 )}
+            </FormSelectField>
+            
+              <FormInputFullField
+              type="number"
+              placeholder="Pretensão salarial"
+              value={wage}
+              onChange={(e: any) => setWage(e.target.value)}
+            />
+            
             <FormInputFullField
               type="text"
               placeholder="CEP"
