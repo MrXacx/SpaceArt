@@ -1,6 +1,6 @@
 import { Artist, Enterprise, User } from "../api/User";
-import { AccountType } from "../enums/AccountType";
-import { createContext, useEffect, useState } from "react";
+import { AccountType, AccountTypesUtil } from "../enums/AccountType";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 
@@ -16,32 +16,31 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const [isLogged, setLoginStatus] = useState(false);
   const [user, setUser] = useState<any>({});
   const [cardsData, setCardsData] = useState<any[]>([]);
-  const [type, setType] = useState("");
+  const [type, setType] = useState<AccountType | null>(null);
   const [id, setID] = useState("");
   const [token, setToken] = useState(
     sessionStorage.getItem("user_token") as string
   );
+  const [isLoaded, setLoadStatus] = useState(false);
 
-  const fetchUser = async (type: string) => {
+  const fetchLoggedUser = useCallback(async () => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
-      type == AccountType.artist
-        ? new Artist(id)
-        : type == AccountType.enterprise
-        ? new Enterprise(id)
-        : NoLoggedAcessError.throw(
-            "Não é possível consultar dados do usuário sem estar logado"
-          );
-       
-    return user
-      .build({ id, token }) // Informa dados de identificação
-      .fetch(true) // Busca dados do usuário
-      .then((response) => {
-        console.log(response.toObject());
-        setUser(response.toObject())
-      }) // Obtém o objeto dos dados
-      //.then(setUser) // Atualiza estado
-      .catch(err => console.error(err));
-  };
+      // eslint-disable-next-line eqeqeq
+      type == AccountType.artist ? new Artist(id) : new Enterprise(id)
+
+    setUser(
+      (await user.build({ id, token, type }) // Informa dados de identificação
+        .fetch(true)) // Busca dados do usuário
+        .toObject());
+  }, [id, token, type]);
+
+  useEffect(() => {
+    if (isLogged && !isLoaded) {
+      fetchLoggedUser();
+      setLoadStatus(true);
+
+    }
+  }, [isLogged, isLoaded, fetchLoggedUser])
 
   const fetchUserCardList = async (filter: string) => {
     let client: Artist;
@@ -82,21 +81,20 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .signIn(email, password)
       .then((dataUser) => dataUser.toObject())
       .then((dataUser) => {
-        if (
-          ![dataUser.id, dataUser.index, dataUser.type, dataUser.token].some(
-            (item) => item === undefined
-          )
-        ){
+        if ([dataUser.id, dataUser.index, dataUser.type, dataUser.token]
+          .every((item) => item !== undefined)
+        ) { // Executa somenta casob os itens possuam valores válidos
           setUser(dataUser);
           setID(dataUser.id as string);
-          setType(dataUser.type);
+          setType(AccountTypesUtil.parse(dataUser.type));
           setToken(dataUser.token as string);
           sessionStorage.setItem("user_token", dataUser.token as string);
           setLoginStatus(true);
-          fetchUser(dataUser.type)
-          .then(() => navigate("/feed"));
+        } else {
+          NoLoggedAcessError.throw("Tentativa de login falhou");
         }
       })
+      .then(() => navigate("/feed"))
       .catch(console.error);
   };
 
@@ -125,6 +123,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const logOut = () => {
     sessionStorage.removeItem("user_token");
     setLoginStatus(false);
+    setType(null);
+    setID("");
   };
 
   return (
