@@ -38,7 +38,6 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     if (isLogged && !isLoaded) {
       fetchLoggedUser();
       setLoadStatus(true);
-
     }
   }, [isLogged, isLoaded, fetchLoggedUser])
 
@@ -99,8 +98,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   };
 
   const signUpArtist = async (artistData: {
+    image: string;
     name: string;
     email: string;
+    cpf: string
     password: string;
     phone: string;
     location: {
@@ -111,6 +112,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     website: string;
     wage: number;
     art: string;
+    birthday: string;
   }) => {
     const artist = new Artist().build(artistData);
 
@@ -123,11 +125,41 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
   };
 
+  const signUpEnterprise = async (enterpriseData: {
+    image: string;
+    name: string;
+    companyName: string;
+    section: string;
+    email: string;
+    cnpj: string;
+    password: string;
+    phone: string;
+    location: {
+      cep: string;
+      state: string;
+      city: string;
+      neighborhood: string;
+      address: string;
+    };
+    website: string;
+  }) => {
+    const artist = new Enterprise().build(enterpriseData);
+
+    try {
+      await artist.signUp() // Cadastra artista
+      await signIn(enterpriseData.email, enterpriseData.password) // Realiza login
+    } catch (e: any) {
+      console.error(e);
+    }
+
+  };
+
   const logOut = () => {
     sessionStorage.removeItem("user_token");
     setLoginStatus(false);
     setType(null);
     setID("");
+    navigate('/');
   };
 
   return (
@@ -138,10 +170,11 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         id,
         token,
         type,
-        signIn,
-        fetchUserCardList,
         cardsData,
+        fetchUserCardList,
+        signIn,
         signUpArtist,
+        signUpEnterprise,
         logOut,
       }}
     >
