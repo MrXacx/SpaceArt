@@ -22,7 +22,7 @@ export const UserSchemas = {
 		.error(error => new Error("A senha deve conter letras maiúsculas, minúsculas, números e símbolos")),
 
 	phoneSchema: Joi.string() // (XX)9XXXX-XXXX
-		.pattern(new RegExp(/^\\d{2}9\d{8}$/))
+		.pattern(new RegExp(/^\d{2}9\d{8}$/))
 		.error(error => new Error("O telefone deve conter o DDD e outros 9 dígitos")),
 
 	cpfSchema: Joi.string()
