@@ -98,7 +98,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .catch(console.error);
   };
 
-  const signUpArtist = (artistData: {
+  const signUpArtist = async (artistData: {
     name: string;
     email: string;
     password: string;
@@ -112,12 +112,15 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     wage: number;
     art: string;
   }) => {
-    const artist = new Artist();
-    artist
-      .build(artistData)
-      .signUp() // Cadastra artista
-      .then(() => signIn(artistData.email, artistData.password)) // Realiza login
-      .catch(console.error); // imprime erro
+    const artist = new Artist().build(artistData);
+
+    try {
+      await artist.signUp() // Cadastra artista
+      await signIn(artistData.email, artistData.password) // Realiza login
+    } catch (e: any) {
+      console.error(e);
+    }
+
   };
 
   const logOut = () => {
