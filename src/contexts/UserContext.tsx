@@ -4,7 +4,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 import DefaultImage from "../assets/marco_image.png"
-import { Image } from "../services/Image";
+import { ImageCompressor } from "../services/ImageCompressor";
 
 
 interface UserStoreProps {
@@ -116,20 +116,14 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     art: string;
     birthday: string;
   }) => {
-
-    const artist = new Artist().build(
-      {
-        ...artistData,
-        image: new Image(DefaultImage).compress()
-      });
-
-    try {
-      await artist.signUp() // Cadastra artista
-      await signIn(artistData.email, artistData.password) // Realiza login
-    } catch (e: any) {
-      console.error(e.message);
-    }
-
+    ImageCompressor.fromURL(DefaultImage)
+      .then(image => ImageCompressor.toBase64(image, (result: string) => // Converte imagem em string
+        new Artist()
+          .build({ ...artistData, image: result })
+          .signUp() // realiza cadastro
+          .then(() => signIn(artistData.email, artistData.password)) // realiza login
+          .catch(console.error)
+      ))
   };
 
   const signUpEnterprise = async (enterpriseData: {
@@ -149,18 +143,13 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     };
     website: string;
   }) => {
-    
-    const enterprise = new Enterprise().build({
-      ...enterpriseData,
-      image: new Image(DefaultImage).compress()
-    });
-
-    try {
-      await enterprise.signUp() // Cadastra artista
-      await signIn(enterpriseData.email, enterpriseData.password) // Realiza login
-    } catch (e: any) {
-      console.error(e);
-    }
+    ImageCompressor.fromURL(DefaultImage)
+      .then(image => ImageCompressor.toBase64(image, (result: string) =>// Converte imagem em string
+        new Enterprise()
+          .build({ ...enterpriseData, image: result })
+          .signUp() // Cadastra artista
+          .then(() => signIn(enterpriseData.email, enterpriseData.password)) // Realiza login
+          .catch(console.error)))
 
   };
 
