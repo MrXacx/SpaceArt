@@ -37,7 +37,7 @@ export const SignContainer = styled.form`
 
 export const FormInputErrorMessage = styled.span<{visibility: string}>`
   width: 100%;
-  display: ${visibility => new Boolean(visibility) ? 'inline' : 'none'};
+  display: ${visibility => Boolean(visibility) ? 'inline' : 'none'};
   color: white;
   font-size: 1rem;
   text-align: center;
@@ -51,16 +51,9 @@ export const FormInputFullField = styled.input`
   border-radius: 3px;
   margin: 0.5rem 0;
   border: 1px solid #545454;
-  transition: 300ms;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -68,27 +61,20 @@ export const FormInputFullField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
 export const FormInputHalfField = styled.input`
-  width: 35.3%;
+  width: 36%;
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0.5rem;
   border: 1px solid #545454;
-  transition: 300ms;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -96,12 +82,29 @@ export const FormInputHalfField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
+`;
+
+export const FormSelectField = styled.select`
+  width: 77%;
+  height: 45px;
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 0.5rem 0;
+  border: 1px solid #545454;
+  transition: 300ms;
+  background-color: #fff;
+
+  option {
+    text-transform: capitalize;
+  }
+
 `;
 
 export const FormInputButton = styled.button`
   width: 77%;
+  height: 5vh;
   background-color: #ff8311;
   padding: 0.5rem;
   border-radius: 3px;

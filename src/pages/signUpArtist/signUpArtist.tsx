@@ -34,11 +34,11 @@ function SignUpArtist() {
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-  const [artTypes, setArtTypes] = useState( ['música', 'dança', 'escultura', 'atuação', 'pintura']);
-  
+  const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
+
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [isValidInput, setInputValidate] = useState('true');
-  
+
   const searchLocation = (code: string) => {
 
     new PostalCodeWebClient()
@@ -55,16 +55,16 @@ function SignUpArtist() {
       name, email, phone, cpf, birthday, art, wage, cep, state, city, password, repeatPassword
     }
     let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
-    
+
     console.log(error);
-    
+
     if (!error) {
       const dateDiff = dayjs(birthday).diff(Date.now(), 'years', true); // Obtém a diferença de anos entre hoje e a data de nascimento informada
-      
-      if(dateDiff >= 18){
+
+      if (dateDiff >= 18) {
         setInputErrorMessage("");
         setInputValidate('true');
-  
+
         userData.location = { cep, state, city };
 
         // Apaga itens não utilizados
@@ -76,7 +76,7 @@ function SignUpArtist() {
         signUpArtist(userData);
         return;
       }
-      
+
       error = new Error('O usuário deve ter 18 anos ou mais.')
     }
 
@@ -134,19 +134,19 @@ function SignUpArtist() {
               onChange={(e: any) => setBirthday(e.target.value)}
             />
             <FormSelectField onChange={(e: any) => setArt(e.target.value)}>
-                <option value=""  disabled>Escolha uma modalidade artística</option>
-                {artTypes.map((type:any) =>
-                    <option value = {type}>{type}</option>
-                 )}
+              <option value="" disabled>Escolha uma modalidade artística</option>
+              {artTypes.map((type: any) =>
+                <option value={type}>{type}</option>
+              )}
             </FormSelectField>
-            
-              <FormInputFullField
+
+            <FormInputFullField
               type="number"
               placeholder="Pretensão salarial"
               value={wage}
               onChange={(e: any) => setWage(e.target.value)}
             />
-            
+
             <FormInputFullField
               type="text"
               placeholder="CEP"

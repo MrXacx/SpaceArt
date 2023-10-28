@@ -9,7 +9,8 @@ import {
   InnerContainer,
   MainSignUpContainer,
   SignContainer,
-  FormInputErrorMessage
+  FormInputErrorMessage,
+  FormSelectField,
 } from "./signUpStyles";
 
 import { useState, useContext } from "react";
@@ -34,6 +35,7 @@ function SignUpEnterprise() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"];
 
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
@@ -140,12 +142,15 @@ function SignUpEnterprise() {
               }}
             />
 
-            <FormInputFullField
-              type="text"
-              placeholder="Setor de atuação"
+            <FormSelectField
               value={section}
               onChange={(e: any) => setSection(e.target.value)}
-            />
+            >
+              <option value=""  disabled>Escolha um setor de atuação</option>
+              {businessSections.map((section) =>
+                  <option value={section}>{section}</option>
+                )}
+            </FormSelectField>
 
             <FormInputFullField
               type="text"
