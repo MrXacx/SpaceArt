@@ -67,7 +67,7 @@ function LandingPage() {
           {artItems.map((artItem) => (
             <ArtCardContainer>
               <img alt={artItem.name} src={artItem.image} />
-                <span>{artItem.name}</span>
+              <span>{artItem.name}</span>
             </ArtCardContainer>
           ))}
         </ChooseArtistCardContainer>
