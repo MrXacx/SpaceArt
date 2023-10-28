@@ -5,24 +5,12 @@ import {
   CategoryInput,
   SearchArtistContainer,
 } from "./searchArtistStyles";
-import CardProfile from "../cardProfileTest/cardProfile";
+import CardProfile from "../cardProfile/cardProfile";
 import { UserContext } from "../../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 
-interface ArtistProps {
-  id: string;
-  index: number;
-  image: string;
-  name: string;
-  type: string;
-  city: string;
-  state: string;
-  art?: string;
-  wage?: number;
-}
-
 function SearchArtist() {
-  const [name, setName] = useState("");
+  const [name] = useState("");
   const [cards, setCards] = useState<JSX.Element[]>([]);
   let { cardsData, fetchUserCardList } = useContext(UserContext);
     
