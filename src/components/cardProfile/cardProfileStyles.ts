@@ -11,7 +11,8 @@ export const CardProfileContent = styled.div`
     width: inherit;
     max-height: 200px;
     object-fit: cover;
-    border-radius: 5px 5px 0 0;
+    border-radius: 20px 20px 0 0;
+    filter: brightness(.8)
   }
 `;
 
@@ -20,10 +21,10 @@ export const CardProfileDetail = styled.div`
   flex: 1;
   border-radius: 5px;
   margin-top: -20px;
-  padding-top: 20px;
+  padding: 10px;
   background-color: white;
   color: #000;;
-  box-shadow: 0px -25px 10px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px -25px 10px 0px rgba(0, 0, 0, 0.5);
   
   div {
     &:first-of-type {
