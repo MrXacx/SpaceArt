@@ -24,7 +24,7 @@ export const OpeningBannerContent = styled.div`
     padding: 37vh 0 0 0;
     text-align: right;
 
-    a {
+    b {
       color: #fa8b08;
     }
   }
@@ -72,7 +72,7 @@ export const AboutUsBanner = styled.img`
   width: 600px;
   background-size: cover;
 `;
-//#0E0E0E
+
 export const ChooseArtistContainer = styled.div`
   width: 100%;
   display: flex;
