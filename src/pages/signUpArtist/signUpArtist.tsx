@@ -18,6 +18,7 @@ import { PostalCodeWebClient } from "../../services/PostalCodeWebClient";
 import { artistSignUpSchema } from "../../schemas/user/SignUpSchemas";
 import { UserContext } from "../../contexts/UserContext";
 import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 function SignUpArtist() {
   const { signUpArtist } = useContext(UserContext);
@@ -52,14 +53,26 @@ function SignUpArtist() {
 
   const userSignUp = () => {
     const userData: any = {
-      name, email, phone, cpf, birthday, art, wage, cep, state, city, password, repeatPassword
+      name,
+      email,
+      phone,
+      cpf,
+      birthday: dayjs(birthday).format('DD/MM/YYYY'),
+      art,
+      wage,
+      cep,
+      state,
+      city,
+      password,
+      repeatPassword
     }
     let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
-
-    console.log(error);
+    
+    
 
     if (!error) {
-      const dateDiff = dayjs(birthday).diff(Date.now(), 'years', true); // Obtém a diferença de anos entre hoje e a data de nascimento informada
+        dayjs.extend(relativeTime)
+      const dateDiff = parseInt(dayjs(birthday).toNow(true).substring(0,2)); // Obtém idade do usuário
 
       if (dateDiff >= 18) {
         setInputErrorMessage("");
