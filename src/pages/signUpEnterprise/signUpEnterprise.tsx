@@ -35,11 +35,11 @@ function SignUpEnterprise() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-  const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"];
-
-  const [inputErrorMessage, setInputErrorMessage] = useState("");
-
+    
+  const [inputErrorMessage, setInputErrorMessage] = useState(""); 
   const [isValidInput, setInputValidate] = useState('true');
+  
+  const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"];
 
   const searchCNPJ = (code: string) => {
 
@@ -63,7 +63,6 @@ function SignUpEnterprise() {
       })
       .catch(console.log);
   }
-
 
   const userSignUp = () => {
     const userData: any = {
@@ -146,10 +145,10 @@ function SignUpEnterprise() {
               value={section}
               onChange={(e: any) => setSection(e.target.value)}
             >
-              <option value=""  disabled>Escolha um setor de atuação</option>
+              <option value="" disabled>Escolha um setor de atuação</option>
               {businessSections.map((section) =>
-                  <option value={section}>{section}</option>
-                )}
+                <option value={section}>{section}</option>
+              )}
             </FormSelectField>
 
             <FormInputFullField

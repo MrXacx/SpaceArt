@@ -35,6 +35,7 @@ function SignUpArtist() {
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  
   const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
 
   const [inputErrorMessage, setInputErrorMessage] = useState("");
@@ -67,12 +68,10 @@ function SignUpArtist() {
       repeatPassword
     }
     let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
-    
-    
 
     if (!error) {
-        dayjs.extend(relativeTime)
-      const dateDiff = parseInt(dayjs(birthday).toNow(true).substring(0,2)); // Obtém idade do usuário
+      dayjs.extend(relativeTime)
+      const dateDiff = parseInt(dayjs(birthday).toNow(true).substring(0, 2)); // Obtém idade do usuário
 
       if (dateDiff >= 18) {
         setInputErrorMessage("");
