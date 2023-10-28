@@ -4,6 +4,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 import DefaultImage from "../assets/marco_image.png"
+import { Image } from "../services/Image";
 
 
 interface UserStoreProps {
@@ -100,7 +101,6 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   };
 
   const signUpArtist = async (artistData: {
-    image?: string;
     name: string;
     email: string;
     cpf: string
@@ -116,20 +116,23 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     art: string;
     birthday: string;
   }) => {
-    artistData.image = DefaultImage;
-    const artist = new Artist().build(artistData);
+
+    const artist = new Artist().build(
+      {
+        ...artistData,
+        image: new Image(DefaultImage).compress()
+      });
 
     try {
       await artist.signUp() // Cadastra artista
       await signIn(artistData.email, artistData.password) // Realiza login
     } catch (e: any) {
-      console.error(e);
+      console.error(e.message);
     }
 
   };
 
   const signUpEnterprise = async (enterpriseData: {
-    image?: string;
     name: string;
     companyName: string;
     section: string;
@@ -146,11 +149,14 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     };
     website: string;
   }) => {
-    enterpriseData.image = DefaultImage;
-    const artist = new Enterprise().build(enterpriseData);
+    
+    const enterprise = new Enterprise().build({
+      ...enterpriseData,
+      image: new Image(DefaultImage).compress()
+    });
 
     try {
-      await artist.signUp() // Cadastra artista
+      await enterprise.signUp() // Cadastra artista
       await signIn(enterpriseData.email, enterpriseData.password) // Realiza login
     } catch (e: any) {
       console.error(e);
@@ -161,6 +167,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const logOut = () => {
     sessionStorage.removeItem("user_token");
     setLoginStatus(false);
+    setLoadStatus(false);
     setType(null);
     setID("");
     navigate('/');
