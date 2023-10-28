@@ -13,7 +13,7 @@ const signUpSchema = {
 	email: emailSchema.required(),
 	phone: phoneSchema.required(),
 	password: passwordSchema.required(),
-	repeatPasswprd: Joi.ref('password'), // deve ser idêntica ao password
+	repeatPassword: Joi.ref('password'), // deve ser idêntica ao password
 	cep: postalCodeSchema.required(),
 	city: citySchema.required(),
 	state: stateSchema.required()
@@ -33,9 +33,10 @@ export const artistSignUpSchema = Joi.object({
 		.required(),
 
 	birthday: Joi.date()
-		.format('L')
+		.format('DD/MM/YYYY')
 		.error(error => new Error("A data deve seguir o formato dd/mm/aaaa"))
-		.required(),
+		.required()
+		.error(error => new Error("A data de aniversário é obrigatória")),
 });
 
 export const enterpriseSignUpSchema = Joi.object({
