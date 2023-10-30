@@ -30,11 +30,11 @@ export class Rate extends SpaceArtAPIClient implements APIClientFactory {
   }
 
   public async create(): Promise<void> {
-    let response = await this.request.post(this.path, {
+    let response = await this.request.post(this.path, JSON.stringify({
       agreement: this.agreement.getID(),
       author: this.author?.getID(),
       rate: this.rate,
-    });
+    }));
 
     if (response.status !== Rate.httpStatusCode.CREATED) {
       Rate.errorTypes
@@ -84,7 +84,7 @@ export class Rate extends SpaceArtAPIClient implements APIClientFactory {
     ];
 
     let [rateResponse, descriptionResponse] = await Promise.all( // Executa as duas requisições simultaneamente
-      requestBodies.map(body => this.request.post(`${this.path}/update`, body))
+      requestBodies.map(body => this.request.post(`${this.path}/update`, JSON.stringify(body)))
     )
 
 
@@ -102,10 +102,10 @@ export class Rate extends SpaceArtAPIClient implements APIClientFactory {
   }
 
   public async delete() {
-    let response = await this.request.post(`${this.path}/delete`, {
+    let response = await this.request.post(`${this.path}/delete`, JSON.stringify({
       agreement: this.agreement.getID(),
       author: this.author?.getID(),
-    });
+    }));
 
     if (response.status !== Rate.httpStatusCode.NO_CONTENT) {
       Rate.errorTypes

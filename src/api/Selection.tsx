@@ -40,13 +40,13 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
    * Cria seleção
    */
   async create() {
-    let response = await this.request.post(this.path, {
+    let response = await this.request.post(this.path, JSON.stringify({
       owner: this.owner?.getID(),
       art: this.art,
       price: this.price,
       date: this.date.join(";"),
       time: this.time.join(";"),
-    });
+    }));
 
     if (response.status !== Selection.httpStatusCode.CREATED) {
       Selection.errorTypes
@@ -121,7 +121,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
    * Deleta uma seleção
    */
   async delete() {
-    let response = await this.request.post(`${this.path}/delete`, { id: this.id });
+    let response = await this.request.post(`${this.path}/delete`, JSON.stringify({ id: this.id }));
 
     if (response.status !== Selection.httpStatusCode.NO_CONTENT) {
       Selection.errorTypes
@@ -183,7 +183,7 @@ class SelectionApplication extends SpaceArtAPIClient {
    * @param Artist artist
    */
   async create() {
-    let response = await this.request.post(`${this.path}`, { artist: this.artist?.getID(), selection: this.selection.getID() });
+    let response = await this.request.post(`${this.path}`, JSON.stringify({ artist: this.artist?.getID(), selection: this.selection.getID() }));
 
     if (response.status !== Selection.httpStatusCode.OK) {
       SelectionApplication.errorTypes

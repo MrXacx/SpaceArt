@@ -50,7 +50,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
    * Cria um contrato
    */
   public async create() {
-    let response = await this.request.post(this.path, {
+    let response = await this.request.post(this.path, JSON.stringify({
       hirer: this.hirer?.getID(),
       hired: this.hired?.getID(),
       art: this.art,
@@ -58,7 +58,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       price: this.price,
       date: this.date,
       time: this.time?.join(";"),
-    });
+    }));
 
     if (response.status !== Agreement.httpStatusCode.OK) {
       Agreement.errorTypes.HTTPRequestError.throw("Não foi possível criar um contrato");
@@ -130,7 +130,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
    * Deleta um contrato
    */
   public async delete() {
-    let response = await this.request.post(`${this.path}/delete`, { id: this.id });
+    let response = await this.request.post(`${this.path}/delete`, JSON.stringify({ id: this.id }));
 
     if (response.status !== Agreement.httpStatusCode.NO_CONTENT) {
       Agreement.errorTypes.HTTPRequestError.throw(

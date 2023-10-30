@@ -36,11 +36,11 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
    * Cria nova denúncia na API
    */
   async create() {
-    const response = await this.request.post(this.path, {
+    const response = await this.request.post(this.path, JSON.stringify({
       reporter: this.reporter.getID(),
       reported: this.reported?.getID(),
       reason: this.reason as string
-    });
+    }));
 
     if (response.status !== Report.httpStatusCode.OK) {
       Report.errorTypes

@@ -32,10 +32,10 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
    * Cria uma conversa
    */
   async create() {
-    let response = await this.request.post(`${this.path}`, {
+    let response = await this.request.post(`${this.path}`, JSON.stringify({
       artist: this.artist?.getID(),
       enterprise: this.enterprise?.getID(),
-    });
+    }));
 
     if (response.status !== Chat.httpStatusCode.CREATED) {
       Chat.errorTypes

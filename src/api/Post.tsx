@@ -32,11 +32,11 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
    * Cria a postagem
    */
   async create() {
-    let response = await this.request.post(this.path, {
+    let response = await this.request.post(this.path, JSON.stringify({
       author: this.author?.getID(),
       content: this.content as string,
       media: this.media as string,
-    });
+    }));
 
     if (response.status !== Post.httpStatusCode.CREATED) {
       Post.errorTypes
@@ -63,8 +63,6 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
 
   /**
    * Busca uma lista de postagens
-   * @param int offset
-   * @param int limite
    */
   async fetchList(offset = 0, limit = 25) {
     let response = await this.request.get(`${this.path}/list?offset=${offset}&limit=${limit}`);
@@ -84,7 +82,7 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
    * Deleta a postagem
    */
   async delete() {
-    let response = await this.request.post(`${this.path}/delete`, { id: this.id });
+    let response = await this.request.post(`${this.path}/delete`, JSON.stringify({ id: this.id }));
 
     if (response.status !== Post.httpStatusCode.NO_CONTENT) {
       Post.errorTypes

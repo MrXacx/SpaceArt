@@ -22,11 +22,11 @@ export class Message extends SpaceArtAPIClient implements APIClientFactory {
   }
 
   async create() {
-    let response = await this.request.post(this.path, {
+    let response = await this.request.post(this.path, JSON.stringify({
       chat: this.chat.getID(),
       sender: this.sender?.getID(),
       content: this.content,
-    });
+    }));
 
     if (response.status !== Message.httpStatusCode.CREATED) {
       Message
