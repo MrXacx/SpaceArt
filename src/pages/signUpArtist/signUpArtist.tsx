@@ -67,6 +67,7 @@ function SignUpArtist() {
       password,
       repeatPassword
     }
+    
     let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
 
     if (!error) {
@@ -109,8 +110,8 @@ function SignUpArtist() {
             e.preventDefault();
             userSignUp();
           }}>
-
-            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            
+            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>         
             <FormInputFullField
               type="text"
               placeholder="Nome completo"
@@ -145,7 +146,11 @@ function SignUpArtist() {
               value={birthday}
               onChange={(e: any) => setBirthday(e.target.value)}
             />
-            <FormSelectField onChange={(e: any) => setArt(e.target.value)}>
+            
+            <FormSelectField
+                value={art}
+                onChange={(e: any) => setArt(e.target.value)}
+            >
               <option value="" disabled>Escolha uma modalidade artística</option>
               {artTypes.map((type: any) =>
                 <option value={type}>{type}</option>
@@ -155,7 +160,7 @@ function SignUpArtist() {
             <FormInputFullField
               type="number"
               placeholder="Pretensão salarial"
-              value={wage}
+              value={wage > 0 ? wage : ''}
               onChange={(e: any) => setWage(e.target.value)}
             />
 
