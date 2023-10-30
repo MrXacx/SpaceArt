@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Spaceart from "../../assets/spaceart.svg";
 import {
   HeaderContainer,
@@ -11,9 +12,12 @@ import {
 } from "./headerAltWhiteStyles";
 
 function HeaderAltWhite() {
+
+  const navigate = useNavigate();
+
   return (
     <HeaderContainer>
-      <SpaceartContainer>
+      <SpaceartContainer onClick={() => navigate('/')}>
         <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
         <SpaceartTitle>
           <span>S</span>
