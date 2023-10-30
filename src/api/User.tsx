@@ -136,7 +136,6 @@ export class User extends IndexedAPIClient implements APIClientFactory {
         .HTTPRequestError.throw(response.statusText);
     }
     
-
     return JSON.parse(response.data)
     .map((item:any) => {
         return this.factory().build(item)
@@ -150,12 +149,12 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 
     let responses = await Promise.all(
       attributes.map((column) =>
-        this.request.post(`${this.path}/update`, {
+        this.request.post(`${this.path}/update`, JSON.stringify({
           id: this.token,
           type: this.type,
           column: column.name,
           info: column.value,
-        })// atualiza dados da api
+        }))// atualiza dados da api
       )
     );
 
@@ -172,7 +171,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
    * Deleta usuário
    */
   async delete() {
-    let response = await this.request.post(`${this.path}/delete`, { id: this.token as string });
+    let response = await this.request.post(`${this.path}/delete`, JSON.stringify({ id: this.token as string }));
 
     if (response.status !== User.httpStatusCode.NO_CONTENT) {
       User.errorTypes
@@ -208,7 +207,7 @@ export class Artist extends User {
 
   constructor(id: string | null = null) {
     super(id);
-    this.type = AccountType.artist;
+    this.type = 'artist';
   }
 
   factory = () => new Artist();
@@ -218,7 +217,7 @@ export class Artist extends User {
     this.wage = artist.wage;
     this.cpf = artist.cpf;
     this.art = artist.art;
-
+    this.birthday = artist.birthday;
     return this;
   }
 
@@ -226,7 +225,8 @@ export class Artist extends User {
    * Cadastra um usuário
    */
   async signUp() {
-    let response = await this.request.post(this.path, {
+
+    let response = await this.request.post(this.path, JSON.stringify({
       name: this.name,
       image: this.image,
       type: this.type,
@@ -234,17 +234,17 @@ export class Artist extends User {
       email: this.email,
       password: this.password,
       birthday: this.birthday,
-      cpf: this.cpf,
+      cpf: this.cpf ,
       cep: this.location?.cep,
       state: this.location?.state,
       city: this.location?.city,
       art: this.art,
       wage: this.wage,
-    });
+    }));
 
     if (response.status !== User.httpStatusCode.CREATED) {
       User.errorTypes
-        .HTTPRequestError.throw((await response).statusText);
+        .HTTPRequestError.throw(response.data);
     }
   }
 
@@ -284,7 +284,7 @@ export class Enterprise extends User {
    * Cadastra um usuário
    */
   async signUp() {
-    let response = await this.request.post(this.path, {
+    let response = await this.request.post(this.path, JSON.stringify({
       name: this.name,
       companyName: this.companyName,
       image: this.image,
@@ -299,7 +299,7 @@ export class Enterprise extends User {
       city: this.location?.city,
       neighborhood: this.location?.neighborhood,
       address: this.location?.address,
-    });
+    }));
 
     if (response.status !== Enterprise.httpStatusCode.CREATED) {
       Enterprise.errorTypes
