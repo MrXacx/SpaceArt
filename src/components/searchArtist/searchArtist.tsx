@@ -6,6 +6,7 @@ import {
   SearchArtistContainer,
 } from "./searchArtistStyles";
 import CardProfile from "../cardProfile/cardProfile";
+<<<<<<< HEAD
 import { UserContext } from "../../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 
@@ -33,6 +34,10 @@ function SearchArtist() {
     });
   });
 
+=======
+
+function SearchArtist() {
+>>>>>>> 33f828e (feed typescript)
   return (
     <SearchArtistContainer>
       <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
@@ -55,7 +60,23 @@ function SearchArtist() {
         <CategoryButton>PESQUISAR</CategoryButton>
       </CategoryContainer>
       <CardProfileContainer>
+<<<<<<< HEAD
         {cards}
+=======
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        <CardProfile />
+        
+>>>>>>> 33f828e (feed typescript)
       </CardProfileContainer>
     </SearchArtistContainer>
   );

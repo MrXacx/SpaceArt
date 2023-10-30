@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Artist, Enterprise, User } from "../api/User";
 import { AccountType, AccountTypesUtil } from "../enums/AccountType";
 import { createContext, useCallback, useEffect, useState } from "react";
@@ -6,6 +7,12 @@ import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 import DefaultImage from "../assets/marco_image.png"
 import { ImageCompressor } from "../services/ImageCompressor";
 
+=======
+import { Artist, Enterprise, User } from "../api-clients/User";
+import { createContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
+>>>>>>> 33f828e (feed typescript)
 
 interface UserStoreProps {
   children: React.ReactNode;
@@ -14,16 +21,23 @@ interface UserStoreProps {
 export const UserContext = createContext({} as any);
 
 export const UserStorage = ({ children }: UserStoreProps) => {
+<<<<<<< HEAD
   const navigate = useNavigate();
 
   const [isLogged, setLoginStatus] = useState(false);
   const [user, setUser] = useState<any>({});
   const [cardsData, setCardsData] = useState<any[]>([]);
   const [type, setType] = useState<AccountType | null>(null);
+=======
+  const [isLogged, setLoginStatus] = useState(false);
+  const [user, setUser] = useState({});
+  const [type, setType] = useState("");
+>>>>>>> 33f828e (feed typescript)
   const [id, setID] = useState("");
   const [token, setToken] = useState(
     sessionStorage.getItem("user_token") as string
   );
+<<<<<<< HEAD
   const [isLoaded, setLoadStatus] = useState(false);
 
   const fetchLoggedUser = useCallback(async () => {
@@ -77,12 +91,31 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       })
     );
   };
+=======
+
+  const fetchUser = () => {
+    const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
+      type === 'artist' ? new Artist(id) :
+        type === 'enterprise' ? new Enterprise(id) :
+          NoLoggedAcessError.throw("Não é possível consultar dados do usuário sem estar logado");
+
+    user
+      .build({ id, token }) // Informa dados de identificação 
+      .fetch(true) // Busca dados do usuário
+      .then(response => response.toObject()) // Obtém o objeto dos dados
+      .then(setUser) // Atualiza estado
+      .catch(console.error);
+  }
+
+  const navigate = useNavigate();
+>>>>>>> 33f828e (feed typescript)
 
   const signIn = (email: string, password: string) => {
     return new User()
       .signIn(email, password)
       .then((dataUser) => dataUser.toObject())
       .then((dataUser) => {
+<<<<<<< HEAD
         if ([dataUser.id, dataUser.index, dataUser.type, dataUser.token]
           .every((item) => item !== undefined)
         ) { // Executa somenta casob os itens possuam valores válidos
@@ -151,17 +184,63 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           .then(() => signIn(enterpriseData.email, enterpriseData.password)) // Realiza login
           .catch(console.error)))
 
+=======
+        if (
+          ![dataUser.id, dataUser.index, dataUser.type, dataUser.token].some(
+            (item) => item === undefined
+          )
+        ) {
+          setUser(dataUser);
+          setID(dataUser.id as string);
+          setType(dataUser.type as string);
+          setToken(dataUser.token as string);
+          sessionStorage.setItem("user_token", dataUser.token as string);
+          setLoginStatus(true);
+          fetchUser()
+          navigate("/home");
+        }
+      })
+      .catch(console.error);
+  };
+
+  const signUpArtist = (artistData: {
+    name: string,
+    email: string,
+    password: string,
+    phone: string,
+    location: {
+      cep: string,
+      state: string,
+      city: string,
+    },
+    website: string,
+    wage: number,
+    art: string,
+  }) => {
+    const artist = new Artist();
+    artist
+      .build(artistData)
+      .signUp() // Cadastra artista
+      .then(() => signIn(artistData.email, artistData.password)) // Realiza login 
+      .catch(console.error) // imprime erro
+>>>>>>> 33f828e (feed typescript)
   };
 
   const logOut = () => {
     sessionStorage.removeItem("user_token");
     setLoginStatus(false);
+<<<<<<< HEAD
     setLoadStatus(false);
     setType(null);
     setID("");
     navigate('/');
   };
 
+=======
+  };
+
+
+>>>>>>> 33f828e (feed typescript)
   return (
     <UserContext.Provider
       value={{
@@ -170,11 +249,16 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         id,
         token,
         type,
+<<<<<<< HEAD
         cardsData,
         fetchUserCardList,
         signIn,
         signUpArtist,
         signUpEnterprise,
+=======
+        signIn,
+        signUpArtist,
+>>>>>>> 33f828e (feed typescript)
         logOut,
       }}
     >

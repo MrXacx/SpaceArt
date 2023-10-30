@@ -4,6 +4,7 @@ export const CardProfileContent = styled.div`
   width: 300px;
   border-radius: 20% 20px 20px 20px;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+<<<<<<< HEAD
   display: flex;
   flex-direction: column;
 
@@ -13,11 +14,17 @@ export const CardProfileContent = styled.div`
     height: 200px;
   object-fit: cover;
   border-radius: 20px 20px 0 0;
+=======
+
+  img {
+    width: inherit !important;
+>>>>>>> 33f828e (feed typescript)
   }
 `;
 
 export const CardProfileDetail = styled.div`
   width: 100%;
+<<<<<<< HEAD
   flex: 1;
   border-radius: 5px;
   margin-top: -20px;
@@ -26,11 +33,19 @@ export const CardProfileDetail = styled.div`
   color: #000;;
   box-shadow: 0px -25px 10px 0px rgba(0, 0, 0, 0.5);
   
+=======
+
+>>>>>>> 33f828e (feed typescript)
   div {
     &:first-of-type {
       display: flex;
       justify-content: space-around;
       align-items: center;
+<<<<<<< HEAD
+=======
+      color: #000;
+      padding: 5px 0;
+>>>>>>> 33f828e (feed typescript)
 
       span {
         font-size: 1.3em;

@@ -28,7 +28,11 @@ code {
 }
 
 *::-webkit-scrollbar-track {
+<<<<<<< HEAD
   background-color: #fff;
+=======
+  background-color: #000;
+>>>>>>> 33f828e (feed typescript)
 }
 
 

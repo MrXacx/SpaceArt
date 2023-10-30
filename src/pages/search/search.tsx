@@ -2,6 +2,7 @@ import HeaderLogged from "../../components/headerLogged/headerLogged";
 import SearchArtist from "../../components/searchArtist/searchArtist";
 import { Spacing } from "./searchStyles";
 
+<<<<<<< HEAD
 function Search() {
   
 
@@ -11,6 +12,15 @@ function Search() {
       <Spacing />
       <SearchArtist />
 
+=======
+
+function Search() {
+  return (
+    <>
+    <HeaderLogged />
+    <Spacing />
+    <SearchArtist />
+>>>>>>> 33f828e (feed typescript)
     </>
   );
 }

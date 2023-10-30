@@ -5,7 +5,10 @@ import {
   FormInputButton,
   FormInputFullField,
   FormInputHalfField,
+<<<<<<< HEAD
   FormSelectField,
+=======
+>>>>>>> 33f828e (feed typescript)
   HeaderLogo,
   InnerContainer,
   MainSignInContainer,
@@ -17,8 +20,11 @@ import { useState, useContext } from "react";
 import { PostalCodeWebClient } from "../../services/PostalCodeWebClient";
 import { artistSignUpSchema } from "../../schemas/user/SignUpSchemas";
 import { UserContext } from "../../contexts/UserContext";
+<<<<<<< HEAD
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+=======
+>>>>>>> 33f828e (feed typescript)
 
 function SignUpArtist() {
   const { signUpArtist } = useContext(UserContext);
@@ -28,24 +34,47 @@ function SignUpArtist() {
   const [phone, setPhone] = useState("");
   const [cpf, setCPF] = useState("");
   const [birthday, setBirthday] = useState("");
+<<<<<<< HEAD
   const [wage, setWage] = useState(0);
   const [art, setArt] = useState("");
+=======
+>>>>>>> 33f828e (feed typescript)
   const [cep, setCEP] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+<<<<<<< HEAD
   
   const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
 
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [isValidInput, setInputValidate] = useState('true');
 
+=======
+
+  const [cepErrorMessage, setCEPErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [birthdayErrorMessage, setBirthdayErrorMessage] = useState("");
+
+  const [isValidEmail, setEmailValidate] = useState(true);
+  const [isValidName, setNameValidate] = useState(true);
+  const [isValidPhone, setPhoneValidate] = useState(true);
+  const [isValidCPF, setCPGValidate] = useState(true);
+  const [isValidCEP, setCEPValidate] = useState(true);
+  const [isValidBirthday, setBirthdayValidate] = useState(true);
+  const [isValidPassword, setPasswordValidate] = useState(true);
+  
+>>>>>>> 33f828e (feed typescript)
   const searchLocation = (code: string) => {
 
     new PostalCodeWebClient()
       .fetch(code)
+<<<<<<< HEAD
       .then((location: any) => {
+=======
+      .then(location => {
+>>>>>>> 33f828e (feed typescript)
         setState(location.state)
         setCity(location.city);
       })
@@ -54,6 +83,7 @@ function SignUpArtist() {
 
   const userSignUp = () => {
     const userData: any = {
+<<<<<<< HEAD
       name,
       email,
       phone,
@@ -95,6 +125,60 @@ function SignUpArtist() {
 
     setInputValidate('false')
     setInputErrorMessage(error.message);
+=======
+      name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
+    }
+
+    let { error } = artistSignUpSchema.validate(userData);
+    if (error) {
+      const message = error.message;
+      if (message.includes("name")) {
+
+        setNameValidate(false);
+
+      } else if (message.includes("phone")) {
+
+        setPhoneValidate(false);
+
+      } else if (message.includes("bithday")) {
+
+        setBirthdayValidate(false);
+        setBirthdayErrorMessage("A data deve estar no formato DD/MM/AAAA");
+
+      } else if (message.includes("cep")) {
+
+        setCEPValidate(false);
+        setCEPErrorMessage("CEP deve conter 8 dígitos");
+
+      } else if (message.includes("cpf")) {
+
+        setCEPValidate(false);
+        setCEPErrorMessage("CPF deve conter 11 dígitos");
+
+      } else if (message.includes("state") || message.includes("city")) {
+
+        setCEPValidate(false);
+        setCEPErrorMessage("CEP não localizado");
+
+      } else if (message.includes("password")) {
+
+        setPasswordValidate(false);
+        setPasswordErrorMessage(message);
+        
+      } else if (message.includes("repeatPassword")) {
+        setPasswordValidate(false);
+        setPasswordErrorMessage("As senhas devem ser idênticas");
+      }
+
+    } else {
+      userData.location = { cep, state, city };
+      delete userData.cep;
+      delete userData.state;
+      delete userData.city;
+      delete userData.repeatPassword;
+      signUpArtist(userData);
+    }
+>>>>>>> 33f828e (feed typescript)
   }
 
   return (
@@ -110,29 +194,45 @@ function SignUpArtist() {
             e.preventDefault();
             userSignUp();
           }}>
+<<<<<<< HEAD
             
             <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>         
+=======
+            <FormInputErrorMessage visibility={isValidName}>O nome deve ter entre 1 e 30 caracteres</FormInputErrorMessage>
+>>>>>>> 33f828e (feed typescript)
             <FormInputFullField
               type="text"
               placeholder="Nome completo"
               value={name}
               onChange={(e: any) => setName(e.target.value)}
             />
+<<<<<<< HEAD
 
+=======
+            <FormInputErrorMessage visibility={isValidEmail}>O email apresentado é inválido</FormInputErrorMessage>
+>>>>>>> 33f828e (feed typescript)
             <FormInputHalfField
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e: any) => setEmail(e.target.value)}
             />
+<<<<<<< HEAD
 
+=======
+            <FormInputErrorMessage visibility={isValidPhone}>O número de celular apresentado é inválido</FormInputErrorMessage>
+>>>>>>> 33f828e (feed typescript)
             <FormInputHalfField
               type="tel"
               placeholder="Telefone"
               value={phone}
               onChange={(e: any) => setPhone(e.target.value)}
             />
+<<<<<<< HEAD
 
+=======
+            <FormInputErrorMessage visibility={isValidCPF}>O número de celular apresentado é inválido</FormInputErrorMessage>
+>>>>>>> 33f828e (feed typescript)
             <FormInputFullField
               type="text"
               placeholder="CPF"
@@ -140,12 +240,17 @@ function SignUpArtist() {
               value={cpf}
               onChange={(e: any) => setCPF(e.target.value)}
             />
+<<<<<<< HEAD
+=======
+            <FormInputErrorMessage visibility={isValidBirthday}>{passwordErrorMessage}</FormInputErrorMessage>
+>>>>>>> 33f828e (feed typescript)
             <FormInputFullField
               type="date"
               placeholder="Data de nascimento"
               value={birthday}
               onChange={(e: any) => setBirthday(e.target.value)}
             />
+<<<<<<< HEAD
             
             <FormSelectField
                 value={art}
@@ -164,6 +269,9 @@ function SignUpArtist() {
               onChange={(e: any) => setWage(e.target.value)}
             />
 
+=======
+            <FormInputErrorMessage visibility={isValidCEP}>{cepErrorMessage}</FormInputErrorMessage>
+>>>>>>> 33f828e (feed typescript)
             <FormInputFullField
               type="text"
               placeholder="CEP"
@@ -190,7 +298,11 @@ function SignUpArtist() {
               onChange={(e: any) => setState(e.target.value)}
               disabled
             />
+<<<<<<< HEAD
 
+=======
+                <FormInputErrorMessage visibility={isValidPassword}>{passwordErrorMessage}</FormInputErrorMessage>
+>>>>>>> 33f828e (feed typescript)
             <FormInputHalfField
               type="password"
               placeholder="Senha"

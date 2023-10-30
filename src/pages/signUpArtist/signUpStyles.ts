@@ -35,6 +35,7 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
+<<<<<<< HEAD
 export const FormInputErrorMessage = styled.span<{visibility: string}>`
   width: 100%;
   display: ${visibility => Boolean(visibility) ? 'inline' : 'none'};
@@ -43,6 +44,12 @@ export const FormInputErrorMessage = styled.span<{visibility: string}>`
   text-align: center;
   margin: .5rem 0;
 `;
+=======
+export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
+  display: ${visibility => visibility ? 'inline' : 'none'};
+  color: "red";
+`
+>>>>>>> 33f828e (feed typescript)
 
 export const FormInputFullField = styled.input`
   width: 75%;
@@ -51,9 +58,22 @@ export const FormInputFullField = styled.input`
   border-radius: 3px;
   margin: 0.5rem 0;
   border: 1px solid #545454;
+<<<<<<< HEAD
 
   &:focus {
     outline: none;
+=======
+  transition: 300ms;
+
+  &:focus {
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin: 0.5rem 0;
+    border: 1px solid #545454;
+    transition: 300ms;
+    outline: none;
+    transform: scale(1.03);
+>>>>>>> 33f828e (feed typescript)
   }
 
   &::placeholder {
@@ -61,20 +81,41 @@ export const FormInputFullField = styled.input`
   }
 
   &:disabled {
+<<<<<<< HEAD
     background-color: rgb(210, 210, 210);
+=======
+    background-color: rgb(182, 182, 182);
+>>>>>>> 33f828e (feed typescript)
   }
 `;
 
 export const FormInputHalfField = styled.input`
+<<<<<<< HEAD
   width: 36%;
+=======
+  width: 35.3%;
+>>>>>>> 33f828e (feed typescript)
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0.5rem;
   border: 1px solid #545454;
+<<<<<<< HEAD
 
   &:focus {
     outline: none;
+=======
+  transition: 300ms;
+
+  &:focus {
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin: 0.5rem 0;
+    border: 1px solid #545454;
+    transition: 300ms;
+    outline: none;
+    transform: scale(1.03);
+>>>>>>> 33f828e (feed typescript)
   }
 
   &::placeholder {
@@ -82,6 +123,7 @@ export const FormInputHalfField = styled.input`
   }
 
   &:disabled {
+<<<<<<< HEAD
     background-color: rgb(210, 210, 210);
   }
 `;
@@ -105,6 +147,14 @@ export const FormSelectField = styled.select`
 export const FormInputButton = styled.button`
   width: 77%;
   height: 5vh;
+=======
+    background-color: rgb(182, 182, 182);
+  }
+`;
+
+export const FormInputButton = styled.button`
+  width: 77%;
+>>>>>>> 33f828e (feed typescript)
   background-color: #ff8311;
   padding: 0.5rem;
   border-radius: 3px;

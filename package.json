@@ -26,8 +26,12 @@
     "sass": "^1.68.0",
     "styled-components": "^6.0.8",
     "typescript": "^4.9.5",
+<<<<<<< HEAD
     "web-vitals": "^2.1.4",
     "webp-converter-browser": "^1.0.4"
+=======
+    "web-vitals": "^2.1.4"
+>>>>>>> 33f828e (feed typescript)
   },
   "scripts": {
     "start": "react-scripts start",

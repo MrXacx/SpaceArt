@@ -24,7 +24,11 @@ export const OpeningBannerContent = styled.div`
     padding: 37vh 0 0 0;
     text-align: right;
 
+<<<<<<< HEAD
     b {
+=======
+    a {
+>>>>>>> 33f828e (feed typescript)
       color: #fa8b08;
     }
   }
@@ -72,7 +76,11 @@ export const AboutUsBanner = styled.img`
   width: 600px;
   background-size: cover;
 `;
+<<<<<<< HEAD
 
+=======
+//#0E0E0E
+>>>>>>> 33f828e (feed typescript)
 export const ChooseArtistContainer = styled.div`
   width: 100%;
   display: flex;

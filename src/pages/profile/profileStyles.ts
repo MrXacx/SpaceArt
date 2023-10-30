@@ -11,14 +11,18 @@ import styled, { createGlobalStyle } from "styled-components";
   }
 */
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 33f828e (feed typescript)
 export const Spacing = styled.div`
   height: 100px;
   background-color: #fff;
 `;
 
 export const ProfileGlobalStyle = createGlobalStyle`
+<<<<<<< HEAD
 
   *::-webkit-scrollbar-thumb {
     background-color: transparent;
@@ -28,6 +32,8 @@ export const ProfileGlobalStyle = createGlobalStyle`
     background-color: #202020;
   }
 
+=======
+>>>>>>> 33f828e (feed typescript)
   ul, ol {
     list-style-type: none;
     padding: 0;

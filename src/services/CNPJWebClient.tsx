@@ -1,4 +1,7 @@
+
 import { APIClient } from "../api/abstracts/APIClient";
+
+
 
 export class CNPJWebClient extends APIClient {
     /**
@@ -31,11 +34,13 @@ export class CNPJWebClient extends APIClient {
                 .throw(`Não foi possível encontrar o CEP ${code}`);
         }
 
+
         let data = JSON.parse(response.data);
         return {
             code: data.cnpj,
             companyName: data.razao_social,
             nameFantasy: data.nome_fantasia
+
         };
     }
 };

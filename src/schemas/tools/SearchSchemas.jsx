@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import Joi from "joi";
+=======
+import * as Joi from "joi";
+>>>>>>> 33f828e (feed typescript)
 import { stateSchema, citySchema } from "../LocationSchemas";
 
 export const searchSchema = Joi.create({
