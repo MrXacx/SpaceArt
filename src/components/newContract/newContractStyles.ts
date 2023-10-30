@@ -18,12 +18,13 @@ export const Modal = styled.div<{ hideModal?: boolean }>`
 
 export const ModalContainer = styled.div`
   width: 50vw;
-  height: 80vh;
+  min-height: 70vh;
   background-color: white;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  padding: 50px;
+
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 `;
 
@@ -75,12 +76,31 @@ export const ArtistSelected = styled.div`
   width: 800px;
   height: 100px;
   border-radius: 10px;
+  border: 1px solid #000;
 `;
 
 export const ProfileImage = styled.img`
   object-fit: cover;
   max-width: 100px;
   max-height: 100px;
+  border-radius: 10px;
+`;
+
+export const ProfileInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+`;
+
+export const LocalContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  ${Icon} {
+    cursor: default;
+    padding-left: -5px;
+  }
 `;
 
 export const ArtistInfo = styled.div`
