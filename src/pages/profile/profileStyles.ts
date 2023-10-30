@@ -1,32 +1,11 @@
 import styled, { createGlobalStyle } from "styled-components";
 
-/*
-:root {
-    --pure-black: #000;
-    --black: #202020;
-    --orange: #ff8311;
-    --light-black: #00000080;
-    --pure-white: #fff;
-    --white: #f5f5f5;
-  }
-*/
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 33f828e (feed typescript)
-=======
->>>>>>> react
 export const Spacing = styled.div`
   height: 100px;
   background-color: #fff;
 `;
 
 export const ProfileGlobalStyle = createGlobalStyle`
-<<<<<<< HEAD
-<<<<<<< HEAD
 
   *::-webkit-scrollbar-thumb {
     background-color: transparent;
@@ -36,10 +15,6 @@ export const ProfileGlobalStyle = createGlobalStyle`
     background-color: #202020;
   }
 
-=======
->>>>>>> 33f828e (feed typescript)
-=======
->>>>>>> react
   ul, ol {
     list-style-type: none;
     padding: 0;

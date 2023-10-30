@@ -1,9 +1,4 @@
-
-
 import { APIClient } from "../api/abstracts/APIClient";
-
-
-
 
 export class CNPJWebClient extends APIClient {
     /**
@@ -22,11 +17,9 @@ export class CNPJWebClient extends APIClient {
     fetch = async (code: string) => {
         code = CNPJWebClient.sanitize(code); // Remove caracteres especiais
 
-
         if (!CNPJWebClient.matches(code)) { // Executa se o código não foir válido
             CNPJWebClient.errorTypes
                 .RegExpError
-
                 .throw(`Formato do CNPJ está incorreto: ${code}.`);
         }
 
@@ -38,15 +31,11 @@ export class CNPJWebClient extends APIClient {
                 .throw(`Não foi possível encontrar o CEP ${code}`);
         }
 
-
-
         let data = JSON.parse(response.data);
         return {
             code: data.cnpj,
             companyName: data.razao_social,
             nameFantasy: data.nome_fantasia
-
-
         };
     }
 };

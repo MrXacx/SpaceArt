@@ -35,11 +35,9 @@ export class PostalCodeWebClient extends APIClient {
 
     if (response.status !== 200) { // Executa caso a resposta não seja de sucesso
       PostalCodeWebClient
-
         .errorTypes
         .HTTPRequestError
         .throw();
-
     }
 
     const data = JSON.parse(response.data);

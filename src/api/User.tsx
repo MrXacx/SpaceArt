@@ -49,7 +49,6 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       neighborhood?: string,
       address?: string,
     },
-
     image?: string,
     website?: string,
     description?: string,
@@ -128,18 +127,18 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}&state=${state}&city=${city}`);
   }
 
-  private async fetchList(parameters: string): Promise<User[]|Artist[]> {
+  private async fetchList(parameters: string): Promise<User[] | Artist[]> {
     let response = await this.request.get(`${this.path}/list?${parameters}`);
 
     if (response.status !== User.httpStatusCode.OK) {
       User.errorTypes
         .HTTPRequestError.throw(response.statusText);
     }
-    
+
     return JSON.parse(response.data)
-    .map((item:any) => {
+      .map((item: any) => {
         return this.factory().build(item)
-       });
+      });
   }
 
   /**
@@ -234,7 +233,7 @@ export class Artist extends User {
       email: this.email,
       password: this.password,
       birthday: this.birthday,
-      cpf: this.cpf ,
+      cpf: this.cpf,
       cep: this.location?.cep,
       state: this.location?.state,
       city: this.location?.city,

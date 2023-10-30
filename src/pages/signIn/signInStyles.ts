@@ -37,90 +37,23 @@ export const SignContainer = styled.form`
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-<<<<<<< HEAD
-<<<<<<< HEAD
   width: 18vw;
   margin: 0 auto;
 `;
 
 export const FormInputErrorMessage = styled.span<{visibility: string}>`
   width: 100%;
-  display: ${(visibility) => new Boolean(visibility) ? 'inline' : 'none'};
+  display: ${(visibility) => Boolean(visibility) ? 'inline' : 'none'};
   color: white;
   font-size: .75rem;
   text-align: center;
   margin: .75rem 0;
-`
-
+`;
 
 export const FormInputFullField = styled.input`
   width: 100%;
-=======
-=======
->>>>>>> react
   width: 20vw;
   margin: 0 auto;
-`;
-
-export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
-  display: ${visibility => visibility ? 'inline' : 'none'};
-  color: "red";
-`
-
-export const FormInputFullField = styled.input<{isWrong?: boolean}>`
-  width: 75%;
-<<<<<<< HEAD
->>>>>>> 33f828e (feed typescript)
-=======
->>>>>>> react
-  height: 25px;
-  padding: 0.5rem;
-  border-radius: 3px;
-  background-color: transparent;
-  margin: 0.5rem 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
-  border: 1px solid #545454;
-  transition: 300ms;
-  color: #fff;
-
-=======
-  border: 1px solid ${({ isWrong }) => isWrong === true ? "red" : "#545454"};
-  transition: 300ms;
->>>>>>> 33f828e (feed typescript)
-=======
-  border: 1px solid ${({ isWrong }) => isWrong === true ? "red" : "#545454"};
-  transition: 300ms;
->>>>>>> react
-
-  &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
-    outline: none;
-    transform: scale(1.03);
-  }
-
-  &::placeholder {
-    color: #fff;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    font-weight: 500;
-=======
-    font-weight: 600;
->>>>>>> 33f828e (feed typescript)
-=======
-    font-weight: 600;
->>>>>>> react
-    font-size: 18px;
-  }
-
-  &:disabled {
-    background-color: rgb(182, 182, 182);
-  }
-
 `;
 
 export const FormInputButton = styled.button`
@@ -129,7 +62,6 @@ export const FormInputButton = styled.button`
   padding: 0.5rem;
   border-radius: 3px;
   border: none;
-
   color: #fff;
   font-weight: 700;
   text-transform: uppercase;

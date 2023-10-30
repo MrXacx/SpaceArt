@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import Joi from "joi";
-=======
-import * as Joi from "joi";
->>>>>>> 33f828e (feed typescript)
-=======
-import * as Joi from "joi";
->>>>>>> react
 
 import { UserSchemas } from "./UserSchemas";
 
@@ -14,15 +6,7 @@ const { phoneSchema, passwordSchema, cpfSchema, cnpjSchema } = UserSchemas;
 const privateDataUpdatingSchema = {
     phone: phoneSchema,
     password: passwordSchema,
-<<<<<<< HEAD
-<<<<<<< HEAD
     repeatPassword: Joi.error(error => new Error("As senhas deve ser idênticas")).ref('password'),
-=======
-    repeatPassword: Joi.ref('password'),
->>>>>>> 33f828e (feed typescript)
-=======
-    repeatPassword: Joi.ref('password'),
->>>>>>> react
 }
 
 export const enterprisePrivateDataUpdatingSchema = Joi.object({

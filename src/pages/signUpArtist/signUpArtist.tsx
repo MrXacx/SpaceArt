@@ -32,35 +32,17 @@ function SignUpArtist() {
   const [phone, setPhone] = useState("");
   const [cpf, setCPF] = useState("");
   const [birthday, setBirthday] = useState("");
-
   const [wage, setWage] = useState(0);
   const [art, setArt] = useState("");
-
   const [cep, setCEP] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-
-  
-  const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
-
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [isValidInput, setInputValidate] = useState('true');
-
-
-  const [cepErrorMessage, setCEPErrorMessage] = useState("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-  const [birthdayErrorMessage, setBirthdayErrorMessage] = useState("");
-
-  const [isValidEmail, setEmailValidate] = useState(true);
-  const [isValidName, setNameValidate] = useState(true);
-  const [isValidPhone, setPhoneValidate] = useState(true);
-  const [isValidCPF, setCPGValidate] = useState(true);
-  const [isValidCEP, setCEPValidate] = useState(true);
-  const [isValidBirthday, setBirthdayValidate] = useState(true);
-  const [isValidPassword, setPasswordValidate] = useState(true);
   
+  const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
 
   const searchLocation = (code: string) => {
 
@@ -68,11 +50,6 @@ function SignUpArtist() {
       .fetch(code)
 
       .then((location: any) => {
-
-      .then(location => {
-
-      .then(location => {
-
         setState(location.state)
         setCity(location.city);
       })
@@ -124,59 +101,6 @@ function SignUpArtist() {
     setInputValidate('false')
     setInputErrorMessage(error.message);
 
-      name, email, phone, cpf, birthday, cep, state, city, password, repeatPassword
-    }
-
-    let { error } = artistSignUpSchema.validate(userData);
-    if (error) {
-      const message = error.message;
-      if (message.includes("name")) {
-
-        setNameValidate(false);
-
-      } else if (message.includes("phone")) {
-
-        setPhoneValidate(false);
-
-      } else if (message.includes("bithday")) {
-
-        setBirthdayValidate(false);
-        setBirthdayErrorMessage("A data deve estar no formato DD/MM/AAAA");
-
-      } else if (message.includes("cep")) {
-
-        setCEPValidate(false);
-        setCEPErrorMessage("CEP deve conter 8 dígitos");
-
-      } else if (message.includes("cpf")) {
-
-        setCEPValidate(false);
-        setCEPErrorMessage("CPF deve conter 11 dígitos");
-
-      } else if (message.includes("state") || message.includes("city")) {
-
-        setCEPValidate(false);
-        setCEPErrorMessage("CEP não localizado");
-
-      } else if (message.includes("password")) {
-
-        setPasswordValidate(false);
-        setPasswordErrorMessage(message);
-        
-      } else if (message.includes("repeatPassword")) {
-        setPasswordValidate(false);
-        setPasswordErrorMessage("As senhas devem ser idênticas");
-      }
-
-    } else {
-      userData.location = { cep, state, city };
-      delete userData.cep;
-      delete userData.state;
-      delete userData.city;
-      delete userData.repeatPassword;
-      signUpArtist(userData);
-    }
-
   }
 
   return (
@@ -192,13 +116,7 @@ function SignUpArtist() {
             e.preventDefault();
             userSignUp();
           }}>
-
-            
-            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>         
-
-            <FormInputErrorMessage visibility={isValidName}>O nome deve ter entre 1 e 30 caracteres</FormInputErrorMessage>
-
-            <FormInputErrorMessage visibility={isValidName}>O nome deve ter entre 1 e 30 caracteres</FormInputErrorMessage>
+            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
 
             <FormInputFullField
               type="text"
@@ -207,11 +125,6 @@ function SignUpArtist() {
               onChange={(e: any) => setName(e.target.value)}
             />
 
-
-            <FormInputErrorMessage visibility={isValidEmail}>O email apresentado é inválido</FormInputErrorMessage>
-
-            <FormInputErrorMessage visibility={isValidEmail}>O email apresentado é inválido</FormInputErrorMessage>
-
             <FormInputHalfField
               type="email"
               placeholder="Email"
@@ -219,22 +132,12 @@ function SignUpArtist() {
               onChange={(e: any) => setEmail(e.target.value)}
             />
 
-
-
-            <FormInputErrorMessage visibility={isValidPhone}>O número de celular apresentado é inválido</FormInputErrorMessage>
-
-            <FormInputErrorMessage visibility={isValidPhone}>O número de celular apresentado é inválido</FormInputErrorMessage>
-
             <FormInputHalfField
               type="tel"
               placeholder="Telefone"
               value={phone}
               onChange={(e: any) => setPhone(e.target.value)}
             />
-
-            <FormInputErrorMessage visibility={isValidCPF}>O número de celular apresentado é inválido</FormInputErrorMessage>
-
-            <FormInputErrorMessage visibility={isValidCPF}>O número de celular apresentado é inválido</FormInputErrorMessage>
 
             <FormInputFullField
               type="text"
@@ -244,18 +147,12 @@ function SignUpArtist() {
               onChange={(e: any) => setCPF(e.target.value)}
             />
 
-            <FormInputErrorMessage visibility={isValidBirthday}>{passwordErrorMessage}</FormInputErrorMessage>
-
-            <FormInputErrorMessage visibility={isValidBirthday}>{passwordErrorMessage}</FormInputErrorMessage>
-
             <FormInputFullField
               type="date"
               placeholder="Data de nascimento"
               value={birthday}
               onChange={(e: any) => setBirthday(e.target.value)}
-            />
-
-            
+            />       
             <FormSelectField
                 value={art}
                 onChange={(e: any) => setArt(e.target.value)}
@@ -272,10 +169,6 @@ function SignUpArtist() {
               value={wage > 0 ? wage : ''}
               onChange={(e: any) => setWage(e.target.value)}
             />
-
-            <FormInputErrorMessage visibility={isValidCEP}>{cepErrorMessage}</FormInputErrorMessage>
-
-            <FormInputErrorMessage visibility={isValidCEP}>{cepErrorMessage}</FormInputErrorMessage>
 
             <FormInputFullField
               type="text"
@@ -303,12 +196,7 @@ function SignUpArtist() {
               onChange={(e: any) => setState(e.target.value)}
               disabled
             />
-
-                <FormInputErrorMessage visibility={isValidPassword}>{passwordErrorMessage}</FormInputErrorMessage>
-
-
-                <FormInputErrorMessage visibility={isValidPassword}>{passwordErrorMessage}</FormInputErrorMessage>
-
+            
             <FormInputHalfField
               type="password"
               placeholder="Senha"

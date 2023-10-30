@@ -35,9 +35,7 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-export const FormInputErrorMessage = styled.span<{visibility: string}>`
+export const FormInputErrorMessage = styled.span<{ visibility: string }>`
   width: 100%;
   display: ${visibility => Boolean(visibility) ? 'inline' : 'none'};
   color: black;
@@ -45,17 +43,6 @@ export const FormInputErrorMessage = styled.span<{visibility: string}>`
   text-align: center;
   margin: .5rem 0;
 `;
-=======
-=======
->>>>>>> react
-export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
-  display: ${visibility => visibility ? 'inline' : 'none'};
-  color: "red";
-`
-<<<<<<< HEAD
->>>>>>> 33f828e (feed typescript)
-=======
->>>>>>> react
 
 export const FormInputFullField = styled.input`
   width: 75%;
@@ -64,15 +51,6 @@ export const FormInputFullField = styled.input`
   border-radius: 3px;
   margin: 0.5rem 0;
   border: 1px solid #545454;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-  &:focus {
-    outline: none;
-=======
-=======
->>>>>>> react
-  transition: 300ms;
 
   &:focus {
     padding: 0.5rem;
@@ -82,10 +60,6 @@ export const FormInputFullField = styled.input`
     transition: 300ms;
     outline: none;
     transform: scale(1.03);
-<<<<<<< HEAD
->>>>>>> 33f828e (feed typescript)
-=======
->>>>>>> react
   }
 
   &::placeholder {
@@ -93,42 +67,19 @@ export const FormInputFullField = styled.input`
   }
 
   &:disabled {
-<<<<<<< HEAD
-<<<<<<< HEAD
     background-color: rgb(210, 210, 210);
-=======
-    background-color: rgb(182, 182, 182);
->>>>>>> 33f828e (feed typescript)
-=======
-    background-color: rgb(182, 182, 182);
->>>>>>> react
   }
 `;
 
 export const FormInputHalfField = styled.input`
-<<<<<<< HEAD
-<<<<<<< HEAD
   width: 36%;
-=======
   width: 35.3%;
->>>>>>> 33f828e (feed typescript)
-=======
   width: 35.3%;
->>>>>>> react
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0.5rem;
   border: 1px solid #545454;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-  &:focus {
-    outline: none;
-=======
-=======
->>>>>>> react
-  transition: 300ms;
 
   &:focus {
     padding: 0.5rem;
@@ -138,10 +89,6 @@ export const FormInputHalfField = styled.input`
     transition: 300ms;
     outline: none;
     transform: scale(1.03);
-<<<<<<< HEAD
->>>>>>> 33f828e (feed typescript)
-=======
->>>>>>> react
   }
 
   &::placeholder {
@@ -149,8 +96,6 @@ export const FormInputHalfField = styled.input`
   }
 
   &:disabled {
-<<<<<<< HEAD
-<<<<<<< HEAD
     background-color: rgb(210, 210, 210);
   }
 `;
@@ -174,19 +119,6 @@ export const FormSelectField = styled.select`
 export const FormInputButton = styled.button`
   width: 77%;
   height: 5vh;
-=======
-=======
->>>>>>> react
-    background-color: rgb(182, 182, 182);
-  }
-`;
-
-export const FormInputButton = styled.button`
-  width: 77%;
-<<<<<<< HEAD
->>>>>>> 33f828e (feed typescript)
-=======
->>>>>>> react
   background-color: #ff8311;
   padding: 0.5rem;
   border-radius: 3px;
@@ -196,12 +128,4 @@ export const FormInputButton = styled.button`
   font-weight: 700;
   text-transform: uppercase;
   margin-top: 1.5rem;
-
-  &::placeholder {
-    color: #000;
-  }
-
-  &:disabled {
-    background-color: rgb(182, 182, 182);
-  }
 `;

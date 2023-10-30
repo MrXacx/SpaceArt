@@ -1,11 +1,6 @@
 
 import Joi from "joi";
 
-import * as Joi from "joi";
-
-import * as Joi from "joi";
-
-
 export const rateSchema = Joi.object({
 	rate: Joi.number()
 		.trim()
@@ -17,5 +12,4 @@ export const rateSchema = Joi.object({
 		.min(1)
 		.max(256)
 		.required()
-
 });
