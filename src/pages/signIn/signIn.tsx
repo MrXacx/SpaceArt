@@ -7,10 +7,7 @@ import {
   SignContainer,
   FormInputErrorMessage,
 } from "./signInStyles";
-<<<<<<< HEAD
 
-=======
->>>>>>> 33f828e (feed typescript)
 import { useState, useContext } from "react";
 import { signInSchema } from "../../schemas/user/SignInSchemas";
 import { UserContext } from "../../contexts/UserContext";
@@ -21,7 +18,8 @@ function SignIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-<<<<<<< HEAD
+
+
   const [isValidInput, setValidInput] = useState('true');
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
@@ -36,7 +34,8 @@ function SignIn() {
       // Remove qualquer configuração de estado inválido
       setValidInput('true');
       setInputErrorMessage("");
-=======
+
+
   const [isValidEmail, setValidEmail] = useState(true);
   const [isValidPassword, setValidPassword] = useState(true);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
@@ -65,7 +64,8 @@ function SignIn() {
       setValidPassword(false);
       setPasswordErrorMessage("");
 
->>>>>>> 33f828e (feed typescript)
+
+
       signIn(email, password);
     }
   };
@@ -78,7 +78,7 @@ function SignIn() {
           <HeaderLogo>
             <h1>Login</h1>
           </HeaderLogo>
-<<<<<<< HEAD
+
           <SignContainer
             onSubmit={(e: any) => {
               e.preventDefault();
@@ -96,7 +96,7 @@ function SignIn() {
 
             <FormInputFullField
               type="text"
-=======
+
           <SignContainer onSubmit={(e: any) => {
             e.preventDefault();
             userSignIn()
@@ -114,16 +114,18 @@ function SignIn() {
             <FormInputFullField
               isWrong={!isValidPassword}
               type="password"
->>>>>>> 33f828e (feed typescript)
+
               placeholder="Senha"
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}
             />
-<<<<<<< HEAD
+
             <FormInputButton>Entrar</FormInputButton>
-=======
+
               <FormInputButton>Entrar</FormInputButton>
->>>>>>> 33f828e (feed typescript)
+
+              <FormInputButton>Entrar</FormInputButton>
+
           </SignContainer>
         </InnerContainer>
       </MainSignInContainer>

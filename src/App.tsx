@@ -9,15 +9,14 @@ import Profile from "./pages/profile/profile";
 import Search from "./pages/search/search";
 import Modal from "./pages/modal/modal";
 import ModalTest from "./pages/modalTest/modalTest";
-<<<<<<< HEAD
+
 import { UserStorage } from "./contexts/UserContext";
-=======
->>>>>>> 33f828e (feed typescript)
+
 
 function App() {
   return (
     <BrowserRouter>
-<<<<<<< HEAD
+
       <UserStorage>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -32,7 +31,7 @@ function App() {
           <Route path="/modal-test" element={<ModalTest />} />
         </Routes>
       </UserStorage>
-=======
+
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/sign-in" element={<SignIn />} />
@@ -45,7 +44,7 @@ function App() {
         <Route path="/modal" element={<Modal />} />
         <Route path="/modal-test" element={<ModalTest />} />
       </Routes>
->>>>>>> 33f828e (feed typescript)
+
     </BrowserRouter>
   );
 }

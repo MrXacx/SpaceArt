@@ -1,8 +1,10 @@
-<<<<<<< HEAD
+
 import Joi from "joi";
-=======
+
 import * as Joi from "joi";
->>>>>>> 33f828e (feed typescript)
+
+import * as Joi from "joi";
+
 
 export const postSchema = Joi.object({
 	content: Joi.string()

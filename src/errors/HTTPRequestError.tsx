@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 export class HTTPRequestError extends Error {
   constructor(message:string) {
     super();
@@ -10,6 +11,8 @@ export class HTTPRequestError extends Error {
   }
 }
 =======
+=======
+>>>>>>> react
 export class HTTPRequestError extends Error {
   constructor(message:string) {
     super();
@@ -20,4 +23,7 @@ export class HTTPRequestError extends Error {
     throw new HTTPRequestError(message);
   }
 }
+<<<<<<< HEAD
 >>>>>>> 33f828e (feed typescript)
+=======
+>>>>>>> react

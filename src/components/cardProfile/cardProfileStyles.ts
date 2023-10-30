@@ -5,6 +5,7 @@ export const CardProfileContent = styled.div`
   border-radius: 20% 20px 20px 20px;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
 <<<<<<< HEAD
+<<<<<<< HEAD
   display: flex;
   flex-direction: column;
 
@@ -19,11 +20,17 @@ export const CardProfileContent = styled.div`
   img {
     width: inherit !important;
 >>>>>>> 33f828e (feed typescript)
+=======
+
+  img {
+    width: inherit !important;
+>>>>>>> react
   }
 `;
 
 export const CardProfileDetail = styled.div`
   width: 100%;
+<<<<<<< HEAD
 <<<<<<< HEAD
   flex: 1;
   border-radius: 5px;
@@ -36,16 +43,24 @@ export const CardProfileDetail = styled.div`
 =======
 
 >>>>>>> 33f828e (feed typescript)
+=======
+
+>>>>>>> react
   div {
     &:first-of-type {
       display: flex;
       justify-content: space-around;
       align-items: center;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       color: #000;
       padding: 5px 0;
 >>>>>>> 33f828e (feed typescript)
+=======
+      color: #000;
+      padding: 5px 0;
+>>>>>>> react
 
       span {
         font-size: 1.3em;

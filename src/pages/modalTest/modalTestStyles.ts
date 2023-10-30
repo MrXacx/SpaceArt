@@ -1,12 +1,15 @@
 import styled from "styled-components";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const Icon = styled.img`
   
 `;
 
 =======
 >>>>>>> 33f828e (feed typescript)
+=======
+>>>>>>> react
 export const ModalButton = styled.button`
   padding: 0.6rem 1.2rem;
   color: #fff;
@@ -17,6 +20,7 @@ export const ModalButton = styled.button`
   font-size: 1rem;
   background-color: #007bff;
 `;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 export const Modal = styled.div<{ hideModal?: boolean }>`
@@ -187,3 +191,5 @@ export const FormInputButton = styled.button`
 `;
 =======
 >>>>>>> 33f828e (feed typescript)
+=======
+>>>>>>> react

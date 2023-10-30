@@ -4,6 +4,7 @@ import {
   UserCardDetailContainer,
 } from "./cardProfileStyles";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import LocalIcon from "../../assets/local.svg";
 import WageIcon from "../../assets/wage.svg";
@@ -44,6 +45,8 @@ function CardProfile(
         }
 
 =======
+=======
+>>>>>>> react
 import MarcoImage from "../../assets/marco_image.png";
 import LocalIcon from "../../assets/local.svg";
 import WageIcon from "../../assets/wage.svg";
@@ -65,7 +68,10 @@ function CardProfile() {
           <img alt="wage icon" src={WageIcon} />
           <span>R$256,00</span>
         </UserCardDetailContainer>
+<<<<<<< HEAD
 >>>>>>> 33f828e (feed typescript)
+=======
+>>>>>>> react
       </CardProfileDetail>
     </CardProfileContent>
   );

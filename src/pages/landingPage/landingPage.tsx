@@ -33,11 +33,13 @@ function LandingPage() {
       <OpeningBannerContainer>
         <OpeningBannerContent>
           <span>
-<<<<<<< HEAD
+
             ONDE <b>TALENTOS</b>
-=======
+
             ONDE <a>TALENTOS</a>
->>>>>>> 33f828e (feed typescript)
+
+            ONDE <a>TALENTOS</a>
+
             <br></br>TÊM VEZ
           </span>
           <div>
@@ -70,11 +72,13 @@ function LandingPage() {
         <ChooseArtistCardContainer>
           {artItems.map((artItem) => (
             <ArtCardContainer>
-<<<<<<< HEAD
+
               <img alt={artItem.name} src={artItem.image} />
-=======
+
               <img alt="" src={artItem.image} />
->>>>>>> 33f828e (feed typescript)
+
+              <img alt="" src={artItem.image} />
+
               <span>{artItem.name}</span>
             </ArtCardContainer>
           ))}

@@ -38,6 +38,7 @@ export const SignContainer = styled.form`
   display: flex;
   flex-wrap: wrap;
 <<<<<<< HEAD
+<<<<<<< HEAD
   width: 18vw;
   margin: 0 auto;
 `;
@@ -55,6 +56,8 @@ export const FormInputErrorMessage = styled.span<{visibility: string}>`
 export const FormInputFullField = styled.input`
   width: 100%;
 =======
+=======
+>>>>>>> react
   width: 20vw;
   margin: 0 auto;
 `;
@@ -66,12 +69,16 @@ export const FormInputErrorMessage = styled.span<{visibility?: boolean}>`
 
 export const FormInputFullField = styled.input<{isWrong?: boolean}>`
   width: 75%;
+<<<<<<< HEAD
 >>>>>>> 33f828e (feed typescript)
+=======
+>>>>>>> react
   height: 25px;
   padding: 0.5rem;
   border-radius: 3px;
   background-color: transparent;
   margin: 0.5rem 0;
+<<<<<<< HEAD
 <<<<<<< HEAD
   border: 1px solid #545454;
   transition: 300ms;
@@ -81,6 +88,10 @@ export const FormInputFullField = styled.input<{isWrong?: boolean}>`
   border: 1px solid ${({ isWrong }) => isWrong === true ? "red" : "#545454"};
   transition: 300ms;
 >>>>>>> 33f828e (feed typescript)
+=======
+  border: 1px solid ${({ isWrong }) => isWrong === true ? "red" : "#545454"};
+  transition: 300ms;
+>>>>>>> react
 
   &:focus {
     padding: 0.5rem;
@@ -95,10 +106,14 @@ export const FormInputFullField = styled.input<{isWrong?: boolean}>`
   &::placeholder {
     color: #fff;
 <<<<<<< HEAD
+<<<<<<< HEAD
     font-weight: 500;
 =======
     font-weight: 600;
 >>>>>>> 33f828e (feed typescript)
+=======
+    font-weight: 600;
+>>>>>>> react
     font-size: 18px;
   }
 

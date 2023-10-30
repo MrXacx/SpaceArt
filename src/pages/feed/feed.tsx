@@ -9,6 +9,8 @@ import ProfilePicture from "../../assets/profile_user.png";
 import PlaceholderImage from "../../assets/placeholder_image.png";
 import HeaderLogged from "../../components/headerLogged/headerLogged";
 
+
+
 import { Post } from "/Users/021.885203/Desktop/spaceart-react/spaceart-react/src/api-clients/Post";
 import { User } from "/Users/021.885203/Desktop/spaceart-react/spaceart-react/src/api-clients/User";
 

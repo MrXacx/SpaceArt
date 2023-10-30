@@ -25,10 +25,14 @@ export const OpeningBannerContent = styled.div`
     text-align: right;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     b {
 =======
     a {
 >>>>>>> 33f828e (feed typescript)
+=======
+    a {
+>>>>>>> react
       color: #fa8b08;
     }
   }
@@ -77,10 +81,14 @@ export const AboutUsBanner = styled.img`
   background-size: cover;
 `;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 //#0E0E0E
 >>>>>>> 33f828e (feed typescript)
+=======
+//#0E0E0E
+>>>>>>> react
 export const ChooseArtistContainer = styled.div`
   width: 100%;
   display: flex;

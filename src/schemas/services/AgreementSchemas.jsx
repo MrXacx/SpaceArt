@@ -1,8 +1,10 @@
-<<<<<<< HEAD
+
 import Joi from "joi";
-=======
+
 import * as Joi from "joi"
->>>>>>> 33f828e (feed typescript)
+
+import * as Joi from "joi"
+
 
 export const agreementSchema = Joi.object({
 	hired: Joi.string()
@@ -25,11 +27,13 @@ export const agreementSchema = Joi.object({
 		.required(),
 
 	date: Joi.date()
-<<<<<<< HEAD
+
 		.format('L')
-=======
+
 		.format('DD/MM/YYYY')
->>>>>>> 33f828e (feed typescript)
+
+		.format('DD/MM/YYYY')
+
 		.required(),
 
 	initialTime: Joi.date()
