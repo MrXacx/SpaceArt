@@ -4,7 +4,7 @@ export const HeaderContainer = styled.header`
   width: 100%;
   height: 100px;
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 0 32px;
+  padding: 0 2rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -14,17 +14,9 @@ export const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
 
-  span:first-of-type {
-    font-size: 50px;
-    color: #fa8b08;
-    padding-left: 20px;
-    white-space: nowrap;
-  }
-
-  span {
-    font-size: 50px;
-    color: #000;
-    white-space: nowrap;
+  @media (max-width: 393px) {
+    padding: 1rem;
+    justify-content: center;
   }
 `;
 
@@ -34,21 +26,42 @@ export const SpaceartContainer = styled.div`
   cursor: pointer;
 `;
 
-export const SpaceartTitle = styled.div``;
+export const SpaceartTitle = styled.div`
+  display: flex;
+  align-items: center;
+  span:first-of-type {
+    color: #fa8b08;
+  }
+  span {
+    font-size: 4rem;
+    color: #000;
+    white-space: nowrap;
+    @media (max-width: 393px) {
+      font-size: 2rem;
+    }
+  }
+`;
 
 export const SpaceartLogo = styled.img`
-  width: 50px;
+  width: 2.5rem;
+  margin-right: 0.5rem;
 `;
 
 export const NavItemContainer = styled.ul`
   width: 100%;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 2rem;
+  margin: 0 0.5rem;
 `;
 
 export const NavContainer = styled.nav`
   display: flex;
   flex-direction: row;
+
+  @media (max-width: 393px) {
+    display: none;
+  }
 `;
 
 export const NavItems = styled.li`
@@ -58,8 +71,13 @@ export const NavItems = styled.li`
   font-size: 19px;
   font-weight: 500;
   text-decoration: none;
-  padding-right: 30px;
   white-space: nowrap;
+  justify-self: center;
+  align-self: center;
+
+  @media (max-width: 393px) {
+    font-size: 1rem;
+  }
 `;
 
 export const SignUpButton = styled.button`
@@ -81,5 +99,9 @@ export const SignUpButton = styled.button`
 
   :hover {
     background-color: #f47c2e;
+  }
+
+  @media (max-width: 393px) {
+    display: none;
   }
 `;
