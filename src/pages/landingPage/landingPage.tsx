@@ -33,7 +33,13 @@ function LandingPage() {
       <OpeningBannerContainer>
         <OpeningBannerContent>
           <span>
+
             ONDE <b>TALENTOS</b>
+
+            ONDE <a>TALENTOS</a>
+
+            ONDE <a>TALENTOS</a>
+
             <br></br>TÊM VEZ
           </span>
           <div>
@@ -66,7 +72,13 @@ function LandingPage() {
         <ChooseArtistCardContainer>
           {artItems.map((artItem) => (
             <ArtCardContainer>
+
               <img alt={artItem.name} src={artItem.image} />
+
+              <img alt="" src={artItem.image} />
+
+              <img alt="" src={artItem.image} />
+
               <span>{artItem.name}</span>
             </ArtCardContainer>
           ))}

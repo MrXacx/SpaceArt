@@ -1,4 +1,10 @@
+
 import Joi from "joi";
+
+import * as Joi from "joi";
+
+import * as Joi from "joi";
+
 import { stateSchema, citySchema } from "../LocationSchemas";
 
 export const searchSchema = Joi.create({

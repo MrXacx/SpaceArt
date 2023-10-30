@@ -1,4 +1,10 @@
+
 import Joi from "joi";
+
+import * as Joi from "joi";
+
+import * as Joi from "joi";
+
 
 export const postSchema = Joi.object({
 	content: Joi.string()

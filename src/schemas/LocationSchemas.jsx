@@ -1,4 +1,11 @@
+
 import Joi from "joi";
+
+import * as Joi from "joi";
+
+
+import * as Joi from "joi";
+
 
 export const LocationSchemas = {
     postalCodeSchema: Joi.string()// XXXXX-XXX
@@ -10,7 +17,13 @@ export const LocationSchemas = {
         .max(100),
 
     stateSchema: Joi.string() // Deve ter 2 caracteres maiúsculos
+
         .pattern(/^[A-Z]{2}$/),
+
+        .pattern(/^[AZ]{2}$/),
+
+        .pattern(/^[AZ]{2}$/),
+
 
     addressSchema: Joi.string()
         .trim()
@@ -19,4 +32,11 @@ export const LocationSchemas = {
     neighborhoodSchema: Joi.string()
         .trim()
         .min(3),
+
 }
+
+}
+>>>>>>> 33f828e (feed typescript)
+
+}
+

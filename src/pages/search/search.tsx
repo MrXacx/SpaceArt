@@ -2,6 +2,7 @@ import HeaderLogged from "../../components/headerLogged/headerLogged";
 import SearchArtist from "../../components/searchArtist/searchArtist";
 import { Spacing } from "./searchStyles";
 
+
 function Search() {
   
 
@@ -10,6 +11,14 @@ function Search() {
       <HeaderLogged />
       <Spacing />
       <SearchArtist />
+
+
+function Search() {
+  return (
+    <>
+    <HeaderLogged />
+    <Spacing />
+    <SearchArtist />
 
     </>
   );

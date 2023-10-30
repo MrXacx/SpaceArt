@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const Icon = styled.img`
+<<<<<<< HEAD
+<<<<<<< HEAD
   min-width: 20px;
   min-height: 20px;
   max-width: 20px;
@@ -10,6 +12,16 @@ export const Icon = styled.img`
   &:hover {
     background-color: #f0f0f0;
   }
+=======
+  max-width: 23px;
+  max-height: 23px;
+  padding-right: 20px;
+>>>>>>> 33f828e (feed typescript)
+=======
+  max-width: 23px;
+  max-height: 23px;
+  padding-right: 20px;
+>>>>>>> react
 `;
 
 export const HeaderContainer = styled.header`
@@ -43,7 +55,13 @@ export const HeaderContainer = styled.header`
 export const SpaceartContainer = styled.div`
   display: flex;
   flex-direction: row;
+<<<<<<< HEAD
+<<<<<<< HEAD
   cursor: pointer;
+=======
+>>>>>>> 33f828e (feed typescript)
+=======
+>>>>>>> react
 `;
 
 export const SpaceartTitle = styled.div``;

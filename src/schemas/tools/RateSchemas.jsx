@@ -1,4 +1,10 @@
+
 import Joi from "joi";
+
+import * as Joi from "joi";
+
+import * as Joi from "joi";
+
 
 export const rateSchema = Joi.object({
 	rate: Joi.number()

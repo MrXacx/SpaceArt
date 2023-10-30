@@ -1,4 +1,10 @@
+
 import Joi from "joi";
+
+import * as Joi from "joi"
+
+import * as Joi from "joi"
+
 
 export const agreementSchema = Joi.object({
 	hired: Joi.string()
@@ -21,7 +27,13 @@ export const agreementSchema = Joi.object({
 		.required(),
 
 	date: Joi.date()
+
 		.format('L')
+
+		.format('DD/MM/YYYY')
+
+		.format('DD/MM/YYYY')
+
 		.required(),
 
 	initialTime: Joi.date()

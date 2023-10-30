@@ -12,6 +12,13 @@ export const SearchArtistContainer = styled.div`
   h2 {
     text-align: center;
   }
+
+  @media (max-width: 393px) {
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+  
 `;
 
 export const CategoryContainer = styled.div`
@@ -24,6 +31,11 @@ export const CategoryContainer = styled.div`
   padding: 30px;
   column-gap: 60px;
   border-radius: 15px;
+
+  @media (max-width: 393px) {
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+  }
 `;
 
 export const CategoryInput = styled.select`
@@ -50,6 +62,10 @@ export const CardProfileContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 4rem;
   padding: 50px 0;
+
+  @media (max-width: 393px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const CardProfileContent = styled.div`
