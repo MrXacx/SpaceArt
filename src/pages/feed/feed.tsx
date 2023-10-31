@@ -5,47 +5,91 @@ import {
   ProfilePostImage,
   TextContentContainer,
 } from "./feedStyles";
-import ProfilePicture from "../../assets/profile_user.png";
-import PlaceholderImage from "../../assets/placeholder_image.png";
+
 import HeaderLogged from "../../components/headerLogged/headerLogged";
-
-
-
-import { Post } from "/Users/021.885203/Desktop/spaceart-react/spaceart-react/src/api-clients/Post";
-import { User } from "/Users/021.885203/Desktop/spaceart-react/spaceart-react/src/api-clients/User";
-
-
+import { useEffect, useContext, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { Post } from "../../api/Post";
+import { User } from "../../api/User";
+import { UserContext } from "../../contexts/UserContext";
+import dayjs from "dayjs"
 
 function Feed() {
-  new Post().fetchList()
-.then(posts => posts.map( post => {
-const {author, content, id, media, postTime } = post.toObject();
- const {name, image} = author.fetch(false).toObject();
-return( 
+
+  const { isLogged } = useContext(UserContext);
+
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState<JSX.Element[]>();
+  const fetchPosts = useCallback(() => {
+
+    new Post()
+      .fetchList()
+      .then(posts =>
+        Promise.all(posts.map(post => {
+
+          let { author, content, media, postTime } = post.toObject();
+          postTime = dayjs().from(postTime, true);
+
+          if (author) {
+            return author
+              .fetch(false)
+              .then((user: User) => {
+
+                const { name, image } = user.toObject();
+                return {
+                  content: content as string,
+                  postTime: postTime as string,
+                  media: media as string,
+                  user: {
+                    name: name as string,
+                    image: image as string
+                  }
+                }
+
+              });
+          } else {
+            return undefined;
+          }
+
+        })
+        ))
+      .then(list => list.filter(p => p !== undefined))
+      .then(list => list.map(data =>
+        (<PostContainer>
+          <ProfileContainer>
+            <img
+              src={data?.user.image}
+              alt={`Perfil de ${data?.user.name}`}
+            onClick={() => navigate('/profile')}
+            />
+            <div>
+              <span>{data?.user.name}</span>
+              <span>{data?.postTime}</span>
+            </div>
+          </ProfileContainer>
+          <TextContentContainer>
+            {data?.content}
+          </TextContentContainer>
+          <ProfilePostImage src={data?.media} alt="imagem" />
+        </PostContainer>)
+      ))
+      .then(setPosts);
+
+  }, [setPosts, navigate]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+
+  return (
     <>
-  <HeaderLogged />
-  <FeedContainer>
-    <PostContainer>
-      <ProfileContainer>
-        <img src={media} alt="foto de perfil" />
-        <div>
-          <span>{author}</span>
-          <span>{postTime}</span>
-        </div>
-      </ProfileContainer>
-      <TextContentContainer>
-        <p>
-          {content}
-        </p>
-      </TextContentContainer>
-      <ProfilePostImage alt="imagem" src={PlaceholderImage} />
-    </PostContainer>
-  </FeedContainer>
-</>)
+      <HeaderLogged />
+      <FeedContainer>
+        {posts}
+      </FeedContainer>
+    </>)
 
-}));
- 
-
-}
+};
 
 export default Feed;
