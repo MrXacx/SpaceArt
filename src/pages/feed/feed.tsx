@@ -27,7 +27,7 @@ function Feed() {
       .then((posts: Post[]) =>
         Promise.all(posts.map(post => {
 
-          let { author, content, media, postTime } = post.toObject();
+          let { author, message, media, postTime } = post.toObject();
           //postTime = dayjs().from(postTime, true);
 
           if (author) {
@@ -38,7 +38,7 @@ function Feed() {
 
                 const { name, image } = user.toObject();
                 return {
-                  content: content as string,
+                  message: message as string,
                   postTime: postTime as string,
                   media: media as string,
                   user: {
@@ -69,7 +69,7 @@ function Feed() {
             </div>
           </ProfileContainer>
           <TextContentContainer>
-            {data?.content}
+            {data?.message}
           </TextContentContainer>
           <ProfilePostImage src={data?.media} alt="imagem" />
         </PostContainer>)

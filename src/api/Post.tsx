@@ -4,7 +4,7 @@ import { IndexedAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
 export class Post extends IndexedAPIClient implements APIClientFactory {
   private author: User | undefined;
-  private content: string | undefined;
+  private message: string | undefined;
   private media: string | undefined;
   private postTime: string | undefined;
 
@@ -16,13 +16,13 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
     id?: string,
     post_time?: string,
     author: User,
-    content: string,
+    message: string,
     media: string,
   }): this {
     this.id = post.id;
     this.postTime = post.post_time;
     this.author = post.author;
-    this.content = post.content;
+    this.message = post.message;
     this.media = post.media;
 
     return this;
@@ -34,7 +34,7 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
   async create() {
     let response = await this.request.post(this.path, JSON.stringify({
       author: this.author?.getID(),
-      content: this.content as string,
+      message: this.message as string,
       media: this.media as string,
     }));
 
@@ -71,7 +71,7 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
       Post.errorTypes
         .HTTPRequestError.throw("Não foi possível buscar uma lista de postagens");
     }
-
+    
     return JSON.parse(response.data).map((post: any) => {
       post.author = new User(post.author);
       return this.factory().build(post);
@@ -94,7 +94,7 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
     return {
       id: this.id,
       author: this.author,
-      content: this.content,
+      message: this.message,
       media: this.media,
       postTime: this.postTime,
     }
