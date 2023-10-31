@@ -23,8 +23,8 @@ export const CardProfileDetail = styled.div`
   margin-top: -20px;
   padding: 10px 0;
   background-color: white;
-  color: #000;;
-  box-shadow: 0px -25px 10px 0px rgba(0, 0, 0, 0.5);
+  color: #000;
+
 
   div {
     &:first-of-type {

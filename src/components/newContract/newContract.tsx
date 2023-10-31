@@ -8,6 +8,7 @@ import {
   Icon,
   LocalContainer,
   ModalContainer,
+  ProfileDetail,
   ProfileImage,
   ProfileInnerContainer,
   SignContainer,
@@ -33,7 +34,10 @@ function NewContract() {
             src="https://thispersondoesnotexist.com/"
           />
           <ProfileInnerContainer>
-            <h3>Maria Betânia</h3>
+            <ProfileDetail>
+              <h3>Maria Betânia</h3>
+              <span>Música</span>
+            </ProfileDetail>
             <LocalContainer>
               <Icon alt="local" src={LocalIcon} />
               <span>Salvador - BA</span>

@@ -6,7 +6,6 @@ import {
 
 import LocalIcon from "../../assets/local.svg";
 import WageIcon from "../../assets/wage.svg";
-import { useNavigate } from "react-router-dom"
 
 function CardProfile(
   id: string,

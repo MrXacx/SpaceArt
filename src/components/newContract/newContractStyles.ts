@@ -73,7 +73,7 @@ export const SignContainer = styled.form`
 export const ArtistSelected = styled.div`
   display: flex;
   flex-direction: row;
-  width: 800px;
+  width: 77%;
   height: 100px;
   border-radius: 10px;
   border: 1px solid #000;
@@ -92,6 +92,24 @@ export const ProfileInnerContainer = styled.div`
   padding-left: 15px;
 `;
 
+export const ProfileDetail = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  span {
+    padding: 5px 20px;
+    background-color: #fa8b08;
+    font-size: 0.8em;
+    color: #fff;
+    border-radius: 50px;
+  }
+
+  h3 {
+    padding-right: 10px;
+  }
+`;
+
 export const LocalContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -99,7 +117,17 @@ export const LocalContainer = styled.div`
 
   ${Icon} {
     cursor: default;
-    padding-left: -5px;
+    margin-left: -5px;
+  }
+
+  span {
+    :last-of-type {
+      padding: 5px 20px;
+      background-color: #fa8b08;
+      font-size: 0.8em;
+      color: #fff;
+      border-radius: 50px;
+    }
   }
 `;
 
