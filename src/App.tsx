@@ -31,20 +31,6 @@ function App() {
           <Route path="/modal-test" element={<ModalTest />} />
         </Routes>
       </UserStorage>
-
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up-enterprise" element={<SignUpEnterprise />} />
-        <Route path="/sign-up-artist" element={<SignUpArtist />} />
-        <Route path="/config" element={<Config />} />
-        <Route path="/feed" element={<Feed />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/modal" element={<Modal />} />
-        <Route path="/modal-test" element={<ModalTest />} />
-      </Routes>
-
     </BrowserRouter>
   );
 }

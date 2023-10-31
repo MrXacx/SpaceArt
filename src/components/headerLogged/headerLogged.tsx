@@ -19,7 +19,8 @@ import { UserContext } from "../../contexts/UserContext";
 
 function HeaderLogged() {
   const navigate = useNavigate()
-  const { user } = useContext(UserContext);
+  const { id, user } = useContext(UserContext);
+  
   return (
     <HeaderContainer>
       <SpaceartContainer>

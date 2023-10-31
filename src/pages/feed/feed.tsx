@@ -16,7 +16,7 @@ import dayjs from "dayjs"
 
 function Feed() {
 
-  const { isLogged } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
   const [posts, setPosts] = useState<JSX.Element[]>();
@@ -24,14 +24,15 @@ function Feed() {
 
     new Post()
       .fetchList()
-      .then(posts =>
+      .then((posts: Post[]) =>
         Promise.all(posts.map(post => {
 
           let { author, content, media, postTime } = post.toObject();
-          postTime = dayjs().from(postTime, true);
+          //postTime = dayjs().from(postTime, true);
 
           if (author) {
             return author
+              
               .fetch(false)
               .then((user: User) => {
 
