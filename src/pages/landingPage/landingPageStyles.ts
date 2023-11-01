@@ -81,7 +81,7 @@ export const OpeningBannerContent = styled.div`
     }
 
     button{
-        width: 17vw;
+      width: 17vw;
     }
   }
 `;
@@ -94,6 +94,7 @@ export const AboutUsContainer = styled.div`
 
   @media (min-width: 960px){
     margin: 100px auto;
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 
@@ -106,7 +107,7 @@ export const AboutUsText = styled.div`
   text-align: justify;
 
   @media (min-width: 960px) {
-    width: 50%;
+    width: 70%;
   }
 `;
 

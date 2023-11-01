@@ -4,19 +4,18 @@ export const HeaderContainer = styled.header`
   width: 100%;
   height: 100px;
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 0 2rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   backdrop-filter: blur(8px) saturate(1.2);
   box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
-
-  @media (max-width: 393px) {
-    padding: 1rem;
-    justify-content: center;
+  padding: 1rem;
+  justify-content: center;
+  @media (min-width: 960px) {
+    padding: 0 2rem;
+    justify-content: space-between;
   }
 `;
 
@@ -29,15 +28,17 @@ export const SpaceartContainer = styled.div`
 export const SpaceartTitle = styled.div`
   display: flex;
   align-items: center;
+
   span:first-of-type {
     color: #fa8b08;
   }
+
   span {
-    font-size: 4rem;
     color: #000;
     white-space: nowrap;
-    @media (max-width: 393px) {
-      font-size: 2rem;
+    font-size: 2rem;
+    @media (min-width: 960px) {
+      font-size: 4rem;
     }
   }
 `;
@@ -56,11 +57,10 @@ export const NavItemContainer = styled.ul`
 `;
 
 export const NavContainer = styled.nav`
-  display: flex;
-  flex-direction: row;
-
-  @media (max-width: 393px) {
-    display: none;
+  display: none;
+  @media (min-width: 960px) {
+    display: flex;
+    flex-direction: row; 
   }
 `;
 
@@ -68,15 +68,14 @@ export const NavItems = styled.li`
   list-style: none;
   color: #000;
   cursor: pointer;
-  font-size: 19px;
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
   justify-self: center;
   align-self: center;
-
-  @media (max-width: 393px) {
-    font-size: 1rem;
+  font-size: 1rem;
+  @media (min-width: 960px) {
+    font-size: 19px;
   }
 `;
 
@@ -96,12 +95,9 @@ export const SignUpButton = styled.button`
   font-weight: bold;
   border: none;
   transition: 0.3s;
-
-  :hover {
-    background-color: #f47c2e;
-  }
-
-  @media (max-width: 393px) {
-    display: none;
+  @media (min-width: 960px) {
+    &:hover {
+      background-color: #f47c2e;
+    }
   }
 `;

@@ -11,11 +11,12 @@ export const SearchArtistContainer = styled.div`
 
   h2 {
     text-align: center;
+    font-size: 1.25rem;
   }
 
-  @media (max-width: 393px) {
+  @media (min-width: 768px) {
     h2 {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
     }
   }
   
@@ -24,12 +25,18 @@ export const SearchArtistContainer = styled.div`
 export const CardProfileContainer = styled.div`
   display: grid;
   margin: 0 auto;
-  width: 73%;
+
   grid-template-columns: 1fr;
   gap: 4rem;
   padding: 50px 0;
-
+    
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
   @media (min-width: 960px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1920px) {
     grid-template-columns: repeat(4, 1fr);
   }
 `;

@@ -9,35 +9,30 @@ import {
   SpaceartContainer,
   SpaceartLogo,
   SpaceartTitle,
-} from "./headerAltBlackStyles";
+} from "./headerSignUpStyles";
 
+function HeaderSignUp() {
 
-function HeaderAltBlack() {
   const navigate = useNavigate();
+
   return (
     <HeaderContainer>
-      <SpaceartContainer onClick={() => navigate("/")}>
+      <SpaceartContainer onClick={() => navigate('/')}>
         <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
         <SpaceartTitle>
           <span>S</span>
           <span>PACE ART</span>
         </SpaceartTitle>
       </SpaceartContainer>
+
       <NavContainer>
         <NavItemContainer>
-          <NavItems>QUEM SOMOS</NavItems>
-          <NavItems>CATEGORIAS DE ARTE</NavItems>
-          <NavItems>BUSQUE ARTISTAS</NavItems>
-        </NavItemContainer>
-      </NavContainer>
-      <NavContainer>
-        <NavItemContainer>
-          <NavItems visibility="hidden">ENTRAR</NavItems>
-          <SignUpButton visibility="hidden">CADASTRAR</SignUpButton>
+          <NavItems onClick={() => navigate('/sign-in')}>JÁ TENHO UMA CONTA</NavItems>
+          <SignUpButton onClick={() => navigate('/sign-up-enterprise')}>SOU EMPREEDEDOR</SignUpButton>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>
   );
 }
 
-export default HeaderAltBlack;
+export default HeaderSignUp;

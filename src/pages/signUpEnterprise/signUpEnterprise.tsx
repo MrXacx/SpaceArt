@@ -1,6 +1,6 @@
 import SpaceartLogo from "../../assets/spaceart.svg";
 import Footer from "../../components/footer/footer";
-import HeaderAlt from "../../components/headerAltWhite/headerAltWhite";
+import HeaderAlt from "../../components/headerSignUp/headerSignUp";
 import { FormInputFullField } from "../signIn/signInStyles";
 import {
   FormInputButton,
@@ -35,10 +35,10 @@ function SignUpEnterprise() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-    
-  const [inputErrorMessage, setInputErrorMessage] = useState(""); 
+
+  const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [isValidInput, setInputValidate] = useState('true');
-  
+
   const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"];
 
   const searchCNPJ = (code: string) => {

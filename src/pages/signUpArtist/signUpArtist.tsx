@@ -1,6 +1,6 @@
 import SpaceartLogo from "../../assets/spaceart.svg";
 import Footer from "../../components/footer/footer";
-import HeaderAlt from "../../components/headerAltWhite/headerAltWhite";
+import HeaderAlt from "../../components/headerSignUp/headerSignUp";
 import {
   FormInputButton,
   FormInputFullField,
@@ -41,7 +41,7 @@ function SignUpArtist() {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [isValidInput, setInputValidate] = useState('true');
-  
+
   const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
 
   const searchLocation = (code: string) => {
@@ -72,7 +72,7 @@ function SignUpArtist() {
       password,
       repeatPassword
     }
-    
+
     let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
 
     if (!error) {
@@ -152,10 +152,10 @@ function SignUpArtist() {
               placeholder="Data de nascimento"
               value={birthday}
               onChange={(e: any) => setBirthday(e.target.value)}
-            />       
+            />
             <FormSelectField
-                value={art}
-                onChange={(e: any) => setArt(e.target.value)}
+              value={art}
+              onChange={(e: any) => setArt(e.target.value)}
             >
               <option value="" disabled>Escolha uma modalidade artística</option>
               {artTypes.map((type: any) =>
@@ -196,7 +196,7 @@ function SignUpArtist() {
               onChange={(e: any) => setState(e.target.value)}
               disabled
             />
-            
+
             <FormInputHalfField
               type="password"
               placeholder="Senha"

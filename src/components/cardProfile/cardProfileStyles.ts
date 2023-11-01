@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CardProfileContent = styled.div`
-  width: 300px;
+  width: 70vw;
   border-radius: 20% 20px 20px 20px;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -9,10 +9,20 @@ export const CardProfileContent = styled.div`
 
   > img {
     width: inherit;
-    max-height: 200px;
-    height: 200px;
+    height: 20vh;
     object-fit: cover;
     border-radius: 20px 20px 0 0;
+  }
+  
+  @media (min-width: 768px){
+        width: 32.25vw;
+  }
+  
+  @media (min-width: 960px){
+        width: 20vw;
+        > img {
+            height: 25vh;  
+          }
   }
 `;
 

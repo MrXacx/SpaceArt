@@ -11,7 +11,7 @@ import {
 import { useState, useContext } from "react";
 import { signInSchema } from "../../schemas/user/SignInSchemas";
 import { UserContext } from "../../contexts/UserContext";
-import HeaderAltBlack from "../../components/headerAltBlack/headerAltBlack";
+import HeaderSignIn from "../../components/headerSignIn/headerSignIn";
 
 function SignIn() {
   const { signIn } = useContext(UserContext);
@@ -40,7 +40,7 @@ function SignIn() {
 
   return (
     <>
-      <HeaderAltBlack />
+      <HeaderSignIn />
       <MainSignInContainer>
         <InnerContainer>
           <HeaderLogo>

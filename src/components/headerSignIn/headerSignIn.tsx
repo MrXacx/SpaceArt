@@ -9,15 +9,14 @@ import {
   SpaceartContainer,
   SpaceartLogo,
   SpaceartTitle,
-} from "./headerAltWhiteStyles";
+} from "./headerSignInStyles";
 
-function HeaderAltWhite() {
 
+function HeaderSignIn() {
   const navigate = useNavigate();
-
   return (
     <HeaderContainer>
-      <SpaceartContainer onClick={() => navigate('/')}>
+      <SpaceartContainer onClick={() => navigate("/")}>
         <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
         <SpaceartTitle>
           <span>S</span>
@@ -26,19 +25,11 @@ function HeaderAltWhite() {
       </SpaceartContainer>
       <NavContainer>
         <NavItemContainer>
-          <NavItems>QUEM SOMOS</NavItems>
-          <NavItems>CATEGORIAS DE ARTE</NavItems>
-          <NavItems>BUSQUE ARTISTAS</NavItems>
-        </NavItemContainer>
-      </NavContainer>
-      <NavContainer>
-        <NavItemContainer>
-          <NavItems visibility="hidden">ENTRAR</NavItems>
-          <SignUpButton visibility="hidden">CADASTRAR</SignUpButton>
+          <NavItems onClick={() => navigate("/sign-up-artist")}>CRIAR UMA CONTA</NavItems>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>
   );
 }
 
-export default HeaderAltWhite;
+export default HeaderSignIn;
