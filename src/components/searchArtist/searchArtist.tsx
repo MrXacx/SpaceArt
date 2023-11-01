@@ -1,10 +1,8 @@
 import {
   CardProfileContainer,
-  CategoryButton,
-  CategoryContainer,
-  CategoryInput,
   SearchArtistContainer,
 } from "./searchArtistStyles";
+import LocationFilterBar from "../locationFilterBar/locationFilterBar";
 import CardProfile from "../cardProfile/cardProfile";
 import { UserContext } from "../../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
@@ -36,24 +34,7 @@ function SearchArtist() {
   return (
     <SearchArtistContainer>
       <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
-      <CategoryContainer>
-        <CategoryInput>
-          <option disabled selected>
-            SELECIONE SEU ESTADO
-          </option>
-        </CategoryInput>
-        <CategoryInput>
-          <option disabled selected>
-            SELECIONE SUA CIDADE
-          </option>
-        </CategoryInput>
-        <CategoryInput>
-          <option disabled selected>
-            ESCOLHA TIPO DE ARTE
-          </option>
-        </CategoryInput>
-        <CategoryButton>PESQUISAR</CategoryButton>
-      </CategoryContainer>
+      <LocationFilterBar />
       <CardProfileContainer>{cards}</CardProfileContainer>
     </SearchArtistContainer>
   );
