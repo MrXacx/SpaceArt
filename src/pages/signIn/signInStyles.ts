@@ -52,8 +52,32 @@ export const FormInputErrorMessage = styled.span<{visibility: string}>`
 
 export const FormInputFullField = styled.input`
   width: 100%;
-  width: 20vw;
-  margin: 0 auto;
+  height: 25px;
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 0.5rem 0;
+  color: #fff;
+  background-color: transparent;
+  border: 1px solid #fff;
+
+  &:focus {
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin: 0.5rem 0;
+    border: 1px solid #545454;
+    transition: 300ms;
+    outline: none;
+    transform: scale(1.03);
+  }
+
+  &::placeholder {
+    color: #fff;
+  }
+
+  &:disabled {
+    background-color: rgb(210, 210, 210);
+  }
+  
 `;
 
 export const FormInputButton = styled.button`
