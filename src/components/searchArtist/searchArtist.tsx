@@ -34,7 +34,7 @@ function SearchArtist() {
   return (
     <SearchArtistContainer>
       <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
-      <LocationFilterBar />
+      <LocationFilterBar  withArtField="true"  />
       <CardProfileContainer>{cards}</CardProfileContainer>
     </SearchArtistContainer>
   );
