@@ -17,8 +17,12 @@ import SculptureImage from "../../assets/sculpture_banner.png";
 import TheaterImage from "../../assets/theater_banner.png";
 import Footer from "../../components/footer/footer";
 import SearchArtist from "../../components/searchArtist/searchArtist";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
+
+  const navigate = useNavigate();
+
   const artItems = [
     { image: MicImage, name: "MÚSICA" },
     { image: ArtImage, name: "PINTURA" },
@@ -37,7 +41,7 @@ function LandingPage() {
             <br></br>TÊM VEZ
           </span>
           <div>
-            <button>CRIE A CONTA</button>
+            <button onClick={() => navigate('/sign-up-artist')}>CRIE UMA CONTA</button>
           </div>
         </OpeningBannerContent>
       </OpeningBannerContainer>
