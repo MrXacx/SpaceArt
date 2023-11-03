@@ -11,7 +11,12 @@ import {
   SpaceartTitle,
 } from "./headerSignUpStyles";
 
-function HeaderSignUp() {
+interface HeaderProps {
+  altPageTitle: string;
+  altPageRoute: string;
+}
+
+function HeaderSignUp(props: HeaderProps) {
 
   const navigate = useNavigate();
 
@@ -28,7 +33,7 @@ function HeaderSignUp() {
       <NavContainer>
         <NavItemContainer>
           <NavItems onClick={() => navigate('/sign-in')}>JÁ TENHO UMA CONTA</NavItems>
-          <SignUpButton onClick={() => navigate('/sign-up-enterprise')}>SOU EMPREEDEDOR</SignUpButton>
+          <SignUpButton onClick={() => navigate(props.altPageRoute)}>props.altPageTitle</SignUpButton>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>

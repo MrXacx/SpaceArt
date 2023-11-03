@@ -105,7 +105,7 @@ function SignUpArtist() {
 
   return (
     <>
-      <HeaderAlt />
+      <HeaderAlt altPageRoute="/sign-up-enterprise" altPageTitle="SOU EMPREENDEDOR" />
       <MainSignInContainer>
         <InnerContainer>
           <HeaderLogo>

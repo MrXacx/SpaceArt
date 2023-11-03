@@ -93,7 +93,7 @@ function SignUpEnterprise() {
 
   return (
     <>
-      <HeaderAlt />
+      <HeaderAlt altPageRoute="/sign-up-artist" altPageTitle="SOU ARTISTA" />
       <MainSignUpContainer>
         <InnerContainer>
           <HeaderLogo>
