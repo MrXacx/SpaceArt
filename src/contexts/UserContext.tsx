@@ -47,7 +47,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     let client: Artist;
     client = new Artist();
 
-    const list = await client.fetchListNoFilter(0, 25);
+    const list = await client.fetchListWithoutFilter(0, 25);
 
     setCardsData(
       list.map((item: Artist | Enterprise | User) => {
