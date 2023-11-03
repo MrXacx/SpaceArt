@@ -109,7 +109,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
   /**
    * Busca lista de usuários sem utilizar filtro
    */
-  fetchListNoFilter(offset = 0, limit = 25) {
+  fetchListWithoutFilter(offset = 0, limit = 25) {
     return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}`);
   }
 
@@ -127,7 +127,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}&state=${state}&city=${city}`);
   }
 
-  private async fetchList(parameters: string): Promise<User[] | Artist[]> {
+  private async fetchList(parameters: string): Promise<this[]> {
     let response = await this.request.get(`${this.path}/list?${parameters}`);
 
     if (response.status !== User.httpStatusCode.OK) {
