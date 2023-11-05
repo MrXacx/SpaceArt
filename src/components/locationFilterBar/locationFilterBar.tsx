@@ -15,26 +15,40 @@ interface FilterBarProps { // Parâmetros que o componente deve receber
 
 function LocationFilterBar(props: FilterBarProps) {
 
-	const [state, setState] = useState("");
+	const [state, setState] = useState <BrazilianState>();
+	const [city, setCity] = useState("");
+	const [cities] = useState<string[]>([]);
 	const [type, setType] = useState<ArtType>();
 
 	const search = () => { };
 
 	return (
 		<CategoryContainer with_art_field={props.withArtField}>
-			<CategorySelect onChange={(e: any) => setState(e.target.value)}>
+			
+			<CategorySelect value={state} onChange={(e: any) => setState(e.target.value)}>
 				<option disabled selected>SELECIONE SEU ESTADO</option>
 				{BrazilianStatesUtil
 					.values()
 					.sort((a: BrazilianState, b: BrazilianState) => a.localeCompare(b))
 					.map(type => <option value={type}>{type}</option>)}
 			</CategorySelect>
-			<CategorySelect>
-				<option disabled selected> SELECIONE SUA CIDADE</option>
+
+			<CategorySelect
+				value={city}
+				onChange={(e: any) => setCity(e.target.value)}
+			>
+				<option value="" disabled selected> SELECIONE SUA CIDADE</option>
+				{cities
+                    .sort((a: string, b: string) => a.localeCompare(b))
+                    .map(city => <option value={city}>{city}</option>)
+				}
 			</CategorySelect>
+
 			<CategorySelect
 				is_visible={props.withArtField}
-				onChange={(e: any) => setType(e.target.value)}>
+				value={type}
+				onChange={(e: any) => setType(e.target.value)}
+			>
 				<option disabled selected>ESCOLHA TIPO DE ARTE</option>
 				{ArtTypesUtil
 					.values()
