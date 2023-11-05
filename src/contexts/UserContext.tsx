@@ -17,13 +17,12 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
   const navigate = useNavigate();
 
-  const [isLogged, setLoginStatus] = useState(false);
+  const [isLogged, setLoginStatus] = useState(JSON.parse(sessionStorage.getItem("is_user_logged") ?? 'false'));
   const [user, setUser] = useState<any>({});
-  const [cardsData, setCardsData] = useState<any[]>([]);
-  const [type, setType] = useState<AccountType | null>(null);
-  const [id, setID] = useState("");
-  const [token, setToken] = useState(sessionStorage.getItem("user_token") as string);
+  const [id, setID] = useState(sessionStorage.getItem("user_id") ?? undefined);
+  const [token, setToken] = useState(sessionStorage.getItem("user_token") ?? undefined);
   const [isLoaded, setLoadStatus] = useState(false);
+  const [type, setType] = useState<AccountType | string>(sessionStorage.getItem("user_type") as string);
 
   const fetchLoggedUser = useCallback(async () => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
@@ -31,51 +30,31 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       type == AccountType.artist ? new Artist(id) : new Enterprise(id)
 
     setUser(
-      (await user.build({ id, token, type }) // Informa dados de identificação
+      (await user.build({ token, type }) // Informa dados de identificação
         .fetch(true)) // Busca dados do usuário
         .toObject());
   }, [id, token, type]);
 
-  useEffect(() => {
-    if (isLogged && !isLoaded) {
-      fetchLoggedUser();
-      setLoadStatus(true);
+  const fetchAnotherUser = (index: number, type?: AccountType) => {
+    let user: User;
+    switch (type) {
+      case AccountType.artist:
+        user = new Artist();
+        break;
+      case AccountType.enterprise:
+        user = new Enterprise();
+        break;
+      default:
+        user = new User();
+        break;
     }
-  }, [isLogged, isLoaded, fetchLoggedUser])
 
-  const fetchUserCardList = async (filter: string) => {
-    let client: Artist;
-    client = new Artist();
-
-    const list = await client.fetchListWithoutFilter(0, 25);
-
-    setCardsData(
-      list.map((item: Artist | Enterprise | User) => {
-        let wage: any, art: any;
-
-        const data = item.toObject();
-        const { id, image, index, type, name, location } = data;
-
-        if (item instanceof Artist) {
-          [wage, art] = [item.toObject().wage, item.toObject().art];
-        } else {
-          [wage, art] = [undefined, undefined];
-        }
-
-        return {
-          id: id as string,
-          index: index as number,
-          image: image as string,
-          name: name as string,
-          type: type as string,
-          city: location?.city as string,
-          state: location?.state as string,
-          art: art,
-          wage: wage,
-        };
-      })
-    );
-  };
+    return user
+      .build({ index })
+      .fetchForIndex()
+      .then(response => response.toObject())
+      .catch(e => console.error(e.message));
+  }
 
   const signIn = (email: string, password: string) => {
     return new User()
@@ -83,21 +62,29 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .then((dataUser) => dataUser.toObject())
       .then((dataUser) => {
 
-        if ([dataUser.id, dataUser.index, dataUser.type, dataUser.token]
-          .every((item) => item !== undefined)
-        ) { // Executa somenta casob os itens possuam valores válidos
-          setUser(dataUser);
-          setID(dataUser.id as string);
-          setType(AccountTypesUtil.parse(dataUser.type));
-          setToken(dataUser.token as string);
+        if ([dataUser.id, dataUser.index, dataUser.type, dataUser.token].every((item) => item !== undefined)) {
+          sessionStorage.setItem("user_id", dataUser.id as string);
+          sessionStorage.setItem("user_type", dataUser.type as string);
           sessionStorage.setItem("user_token", dataUser.token as string);
+          sessionStorage.setItem("is_user_logged", "1");
+
+          setID(dataUser.id);
+          setType(AccountTypesUtil.parse(dataUser.type));
+          setToken(dataUser.token)
           setLoginStatus(true);
         } else {
-          NoLoggedAcessError.throw("Tentativa de login falhou");
+          throw new Error("Usuário não encontrado");
         }
       })
       .then(() => navigate("/feed"))
-      .catch(console.error);
+      .catch((e: Error) => {
+        if (e instanceof NoLoggedAcessError) {
+          NoLoggedAcessError.throw(e.message);
+        } else {
+          console.error(e.message);
+          NoLoggedAcessError.throw("Tentativa de login falhou");
+        }
+      });
   };
 
   const signUpArtist = async (artistData: {
@@ -153,14 +140,21 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   };
 
   const logOut = () => {
+    sessionStorage.removeItem("user_id");
+    sessionStorage.removeItem("user_type");
     sessionStorage.removeItem("user_token");
+    sessionStorage.setItem("is_user_logged", "0");
     setLoginStatus(false);
-
     setLoadStatus(false);
-    setType(null);
-    setID("");
     navigate('/');
   };
+
+  useEffect(() => {
+    if (isLogged && !isLoaded) {
+      fetchLoggedUser();
+      setLoadStatus(true);
+    }
+  }, [isLogged, isLoaded, fetchLoggedUser]);
 
   return (
     <UserContext.Provider
@@ -170,8 +164,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         id,
         token,
         type,
-        cardsData,
-        fetchUserCardList,
+        fetchAnotherUser,
         signIn,
         signUpArtist,
         signUpEnterprise,
@@ -181,4 +174,6 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       {children}
     </UserContext.Provider>
   );
-};
+}; new Error();
+
+
