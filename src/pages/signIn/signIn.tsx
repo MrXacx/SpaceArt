@@ -34,7 +34,13 @@ function SignIn() {
       // Remove qualquer configuração de estado inválido
       setValidInput('true');
       setInputErrorMessage("");
-      signIn(email, password);
+      
+      try {
+        signIn(email, password);
+      } catch (e: any) {
+        setValidInput('false');
+        setInputErrorMessage(e.message);
+      }
     }
   };
 
