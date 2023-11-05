@@ -39,8 +39,8 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     type?: AccountType | string,
     index?: number,
     name?: string,
-    email: string,
-    password: string,
+    email?: string,
+    password?: string,
     phone?: string,
     location?: {
       cep: string,
@@ -101,6 +101,20 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     if (response.status !== User.httpStatusCode.OK) {
       User.errorTypes
         .HTTPRequestError.throw(response.statusText);
+    }
+
+    return this.factory().build(JSON.parse(response.data)); // Intancia o retorno
+  }
+
+
+  async fetchForIndex() {
+    let response = await this.request.get(
+      `${this.path}?index=${this.index}&type=${this.type}`
+    );
+
+    if (response.status !== User.httpStatusCode.OK) {
+      User.errorTypes
+        .HTTPRequestError.throw(response.data);
     }
 
     return this.factory().build(JSON.parse(response.data)); // Intancia o retorno
