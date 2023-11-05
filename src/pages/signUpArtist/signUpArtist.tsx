@@ -10,7 +10,7 @@ import {
 
   HeaderLogo,
   InnerContainer,
-  MainSignInContainer,
+  MainSignUpContainer,
   SignContainer,
   FormInputErrorMessage,
 } from "./signUpStyles";
@@ -106,7 +106,7 @@ function SignUpArtist() {
   return (
     <>
       <HeaderAlt altPageRoute="/sign-up-enterprise" altPageTitle="SOU EMPREENDEDOR" />
-      <MainSignInContainer>
+      <MainSignUpContainer>
         <InnerContainer>
           <HeaderLogo>
             <img alt="Space art logo" src={SpaceartLogo} />
@@ -116,7 +116,7 @@ function SignUpArtist() {
             e.preventDefault();
             userSignUp();
           }}>
-            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
 
             <FormInputFullField
               type="text"
@@ -212,7 +212,7 @@ function SignUpArtist() {
             <FormInputButton>CRIAR CONTA</FormInputButton>
           </SignContainer>
         </InnerContainer>
-      </MainSignInContainer>
+      </MainSignUpContainer>
       <Footer />
     </>
   );

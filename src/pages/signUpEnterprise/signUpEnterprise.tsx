@@ -1,9 +1,9 @@
 import SpaceartLogo from "../../assets/spaceart.svg";
 import Footer from "../../components/footer/footer";
 import HeaderAlt from "../../components/headerSignUp/headerSignUp";
-import { FormInputFullField } from "../signIn/signInStyles";
 import {
   FormInputButton,
+  FormInputFullField,
   FormInputHalfField,
   HeaderLogo,
   InnerContainer,
@@ -39,7 +39,7 @@ function SignUpEnterprise() {
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [isValidInput, setInputValidate] = useState('true');
 
-  const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"];
+  const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"].sort((a: string, b: string) => a.localeCompare(b));
 
   const searchCNPJ = (code: string) => {
 
@@ -104,7 +104,8 @@ function SignUpEnterprise() {
             e.preventDefault();
             userSignUp();
           }}>
-            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            
             <FormInputFullField
               type="text"
               placeholder="Nome fantasia"
@@ -135,20 +136,18 @@ function SignUpEnterprise() {
               onChange={(e: any) => {
                 const cnpj = e.target.value;
                 setCNPJ(cnpj)
-                if (cnpj.length === 14) {
-                  searchCNPJ(cnpj);
-                }
-              }}
+                if (cnpj.length === 14)  searchCNPJ(cnpj);
+          }}
             />
 
             <FormSelectField
               value={section}
               onChange={(e: any) => setSection(e.target.value)}
             >
-              <option value="" disabled>Escolha um setor de atuação</option>
-              {businessSections.map((section) =>
-                <option value={section}>{section}</option>
-              )}
+                  <option value="" disabled>Escolha um setor de atuação</option>
+                  {businessSections.map((section) =>
+                    <option value={section}>{section}</option>
+                  )}
             </FormSelectField>
 
             <FormInputFullField
@@ -170,6 +169,7 @@ function SignUpEnterprise() {
               onChange={(e: any) => setCity(e.target.value)}
               disabled
             />
+            
             <FormInputHalfField
               type="text"
               placeholder="UF"
@@ -181,14 +181,14 @@ function SignUpEnterprise() {
             <FormInputHalfField
               type="text"
               placeholder="Bairro"
-              value={city}
+              value={neighborhood}
               onChange={(e: any) => setNeighborhood(e.target.value)}
               disabled
             />
             <FormInputHalfField
               type="text"
               placeholder="Endereço"
-              value={state}
+              value={address}
               onChange={(e: any) => setAddress(e.target.value)}
             />
 

@@ -29,24 +29,23 @@ export const SignContainer = styled.form`
   display: flex;
   align-items: center;
   justify-content: center;
-  display: flex;
   flex-wrap: wrap;
   width: 50vw;
   margin: 0 auto;
 `;
 
-export const FormInputErrorMessage = styled.span<{visibility: string}>`
-  width: 100%;
-  display: ${visibility => Boolean(visibility) ? 'inline' : 'none'};
-  color: white;
+export const FormInputErrorMessage = styled.span<{ hidden: string }>`
+  width: 90%;
+  display: ${c => JSON.parse(c.hidden) ?  'none' : 'inline'};
+  color: black;
   font-size: 1rem;
   text-align: center;
   margin: .5rem 0;
 `;
 
 export const FormInputFullField = styled.input`
-  width: 75%;
-  height: 25px;
+  width: 46vw;
+  height: 3vh;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
@@ -66,8 +65,8 @@ export const FormInputFullField = styled.input`
 `;
 
 export const FormInputHalfField = styled.input`
-  width: 36%;
-  height: 25px;
+  width: 22.2vw;
+  height: 3vh;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0.5rem;
@@ -87,8 +86,8 @@ export const FormInputHalfField = styled.input`
 `;
 
 export const FormSelectField = styled.select`
-  width: 77%;
-  height: 45px;
+  width: 47vw;
+  height: 5vh;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
@@ -103,7 +102,7 @@ export const FormSelectField = styled.select`
 `;
 
 export const FormInputButton = styled.button`
-  width: 77%;
+  width: 46vw;
   height: 5vh;
   background-color: #ff8311;
   padding: 0.5rem;
@@ -114,12 +113,4 @@ export const FormInputButton = styled.button`
   font-weight: 700;
   text-transform: uppercase;
   margin-top: 1.5rem;
-
-  &::placeholder {
-    color: #000;
-  }
-
-  &:disabled {
-    background-color: rgb(182, 182, 182);
-  }
 `;
