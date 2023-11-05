@@ -19,8 +19,8 @@ import { UserContext } from "../../contexts/UserContext";
 
 function HeaderLogged() {
   const navigate = useNavigate()
-  const { id, user } = useContext(UserContext);
-  
+  const { user } = useContext(UserContext);
+
   return (
     <HeaderContainer>
       <SpaceartContainer>
@@ -39,7 +39,7 @@ function HeaderLogged() {
           <ProfilePicture
             src={user.image}
             alt={`Perfil de ${user.name}`}
-            onClick={() => navigate('/profile')}
+            onClick={() => navigate(`/user/${user.index}`)}
           />
         </NavItemContainer>
       </NavContainer>
