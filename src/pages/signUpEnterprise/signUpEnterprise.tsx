@@ -93,7 +93,7 @@ function SignUpEnterprise() {
 
   return (
     <>
-      <HeaderAlt altPageRoute="/sign-up-artist" altPageTitle="SOU ARTISTA" />
+      <HeaderAlt altPageRoute="/signUp/artist" altPageTitle="SOU ARTISTA" />
       <MainSignUpContainer>
         <InnerContainer>
           <HeaderLogo>
@@ -105,7 +105,7 @@ function SignUpEnterprise() {
             userSignUp();
           }}>
             <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
-            
+
             <FormInputFullField
               type="text"
               placeholder="Nome fantasia"
@@ -136,18 +136,18 @@ function SignUpEnterprise() {
               onChange={(e: any) => {
                 const cnpj = e.target.value;
                 setCNPJ(cnpj)
-                if (cnpj.length === 14)  searchCNPJ(cnpj);
-          }}
+                if (cnpj.length === 14) searchCNPJ(cnpj);
+              }}
             />
 
             <FormSelectField
               value={section}
               onChange={(e: any) => setSection(e.target.value)}
             >
-                  <option value="" disabled>Escolha um setor de atuação</option>
-                  {businessSections.map((section) =>
-                    <option value={section}>{section}</option>
-                  )}
+              <option value="" disabled>Escolha um setor de atuação</option>
+              {businessSections.map((section) =>
+                <option value={section}>{section}</option>
+              )}
             </FormSelectField>
 
             <FormInputFullField
@@ -169,7 +169,7 @@ function SignUpEnterprise() {
               onChange={(e: any) => setCity(e.target.value)}
               disabled
             />
-            
+
             <FormInputHalfField
               type="text"
               placeholder="UF"

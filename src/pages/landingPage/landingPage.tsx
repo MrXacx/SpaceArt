@@ -50,7 +50,7 @@ function LandingPage() {
             <br></br>TÊM VEZ
           </span>
           <div>
-            <button onClick={() => navigate('/sign-up-artist')}>CRIE UMA CONTA</button>
+            <button onClick={() => navigate('/signUp/artist')}>CRIE UMA CONTA</button>
           </div>
         </OpeningBannerContent>
       </OpeningBannerContainer>

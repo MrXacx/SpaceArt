@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 function Header() {
-const navigate = useNavigate()
+  const navigate = useNavigate()
   return (
     <HeaderContainer>
       <SpaceartContainer onClick={() => navigate("/")}>
@@ -31,8 +31,8 @@ const navigate = useNavigate()
       </NavContainer>
       <NavContainer>
         <NavItemContainer>
-          <NavItems onClick={() => navigate("/sign-in")}>ENTRAR</NavItems>
-          <SignUpButton onClick={() => navigate("/sign-up-artist")}>CADASTRAR</SignUpButton>
+          <NavItems onClick={() => navigate("/signIn")}>ENTRAR</NavItems>
+          <SignUpButton onClick={() => navigate("/signUp/artist")}>CADASTRAR</SignUpButton>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>

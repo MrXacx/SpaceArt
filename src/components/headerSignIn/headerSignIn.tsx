@@ -25,7 +25,7 @@ function HeaderSignIn() {
       </SpaceartContainer>
       <NavContainer>
         <NavItemContainer>
-          <NavItems onClick={() => navigate("/sign-up-artist")}>CRIAR UMA CONTA</NavItems>
+          <NavItems onClick={() => navigate("/signUp/artist")}>CRIAR UMA CONTA</NavItems>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>

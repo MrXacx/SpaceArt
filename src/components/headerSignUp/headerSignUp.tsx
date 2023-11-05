@@ -32,7 +32,7 @@ function HeaderSignUp(props: HeaderProps) {
 
       <NavContainer>
         <NavItemContainer>
-          <NavItems onClick={() => navigate('/sign-in')}>JÁ TENHO UMA CONTA</NavItems>
+          <NavItems onClick={() => navigate('/signIn')}>JÁ TENHO UMA CONTA</NavItems>
           <SignUpButton onClick={() => navigate(props.altPageRoute)}>{props.altPageTitle}</SignUpButton>
         </NavItemContainer>
       </NavContainer>
