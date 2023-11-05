@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import HeaderLogged from "../../components/headerLogged/headerLogged";
 import {
   Spacing,
@@ -15,7 +15,6 @@ import NameFilterBar from "../../components/nameFilterBar/nameFilterBar";
 import { SearchContext } from "../../contexts/SearchContext";
 import CardProfile from "../../components/cardProfile/cardProfile";
 import { UserContext } from "../../contexts/UserContext";
-import { AccountType } from "../../enums/AccountType";
 
 function Search() {
   const [isNameFilterSelected, setNameFilterSelected] = useState("true");
@@ -23,13 +22,12 @@ function Search() {
   const [isArtistSearched, setArtistSearched] = useState("true");
   const [isEnterpriseSearched, setEnterpriseSearched] = useState("false");
 
-  const { cardsData, setTypeSearched } = useContext(SearchContext);
+  const { cardsData, fetchRandomUsers } = useContext(SearchContext);
 
   const { type } = useContext(UserContext);
 
   // eslint-disable-next-line eqeqeq
-  setTypeSearched(type == AccountType.artist ? AccountType.enterprise : AccountType.artist)
-
+  useEffect(() => fetchRandomUsers(type), [fetchRandomUsers, type]);
 
   return (
     <>
