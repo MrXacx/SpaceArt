@@ -41,8 +41,43 @@ import ShareIcon from "../../assets/share.svg";
 import MusicIcon from "../../assets/music.svg";
 import Footer from "../../components/footer/footer";
 import HeaderLogged from "../../components/headerLogged/headerLogged";
+import { UserContext } from "../../contexts/UserContext";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
 
 function Profile() {
+  const params = useParams();
+  const { index, user, fetchAnotherUser } = useContext(UserContext);
+  const [day] = useState(dayjs());
+  const [profileData, setProfileData] = useState<any>({
+
+    type: '',
+    index: params.index,
+    name: '',
+
+    location: {
+      state: '',
+      city: ''
+    },
+    image: '',
+    website: '',
+    description: '',
+    rate: 0,
+    verified: false,
+  });
+
+  //    console.log(profileData);
+
+  useEffect(() => {
+    if (params.index === index) { // Executa caso o index da url condizer com o do usuário logado
+      setProfileData(user);
+    } else { // Executa caso o perfil seja de outro usuário
+      fetchAnotherUser(params.index) // busca dados do usuário
+        .then(setProfileData);
+    }
+  }, [index, user, fetchAnotherUser, setProfileData, params]);
+
   function iterateSpan() {
     const t = [];
     for (let i = 1; i <= 35; i++) {
@@ -61,8 +96,8 @@ function Profile() {
         <ProfileContent>
           <UserImage>
             <Blob
-              src="https://thispersondoesnotexist.com/"
-              alt="imagem do usuário"
+              src={profileData.image}
+              alt={profileData.name}
             />
             <Icon src={ProfileImage} alt="Usuário com mais de 100 contratos" />
           </UserImage>
@@ -73,22 +108,22 @@ function Profile() {
             </UserStats>
             <UserDetails>
               <UserDetailsHeader>
-                <UserName>Maria Betânia</UserName>
-                <UserType>Música</UserType>
+                <UserName>{profileData.name}</UserName>
+                <UserType>{profileData.art ?? profileData.type}</UserType>
               </UserDetailsHeader>
               <ul>
                 <li>
                   <Icon src={LocationIcon} alt="localização" />
-                  <span>Salvador - BA</span>
+                  <span>{`${profileData.location?.city} - ${profileData.location?.state}`}</span>
                 </li>
                 <li>
                   <Icon src={StarIcon} alt="nota" />
-                  <span>4,5</span>
+                  <span>{profileData.rate}</span>
                 </li>
                 <li>
                   <Icon src={GlobalIcon} alt="site" />
-                  <a href="www.google.com" target="_blank">
-                    google.com
+                  <a href={profileData.website ?? `/user/${profileData.index}`} target="_blank" rel="noreferrer">
+                    {profileData.website}
                   </a>
                 </li>
               </ul>
@@ -102,12 +137,7 @@ function Profile() {
         </ProfileContent>
         <DescriptionContainer>
           <span>Descrição</span>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
-            vitae efficitur magna. Interdum et malesuada fames ac ante ipsum
-            primis in faucibus. Phasellus finibus est faucibus mauris blandit
-            molestie. Nulla vel velit vitae orci malesuada efficitur.
-          </p>
+          <p>{profileData.description ?? "Olá, mundo!"}</p>
         </DescriptionContainer>
       </ProfileHeader>
       <Wrapper>
@@ -132,7 +162,7 @@ function Profile() {
             <CalendarNumberContainer>{SpanCalender}</CalendarNumberContainer>
           </Calendar>
           <JobsDayContainer>
-            <DateHeader>Outubro, dia 5</DateHeader>
+            <DateHeader>{day.format('MMMM, [DIA] DD')}</DateHeader>
             <JobWrapper>
               <Jobs>
                 <JobInfo>
