@@ -15,9 +15,9 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
   build(post: {
     id?: string,
     post_time?: string,
-    author: User,
-    message: string,
-    media: string,
+    author?: User,
+    message?: string,
+    media?: string,
   }): this {
     this.id = post.id;
     this.postTime = post.post_time;
@@ -71,9 +71,26 @@ export class Post extends IndexedAPIClient implements APIClientFactory {
       Post.errorTypes
         .HTTPRequestError.throw("Não foi possível buscar uma lista de postagens");
     }
-    
+
     return JSON.parse(response.data).map((post: any) => {
       post.author = new User(post.author);
+      return this.factory().build(post);
+    });
+  }
+
+  /**
+  * Busca uma lista de postagens associadas a um usuário
+  */
+  async fetchListByAuthor(offset = 0, limit = 25) {
+    let response = await this.request.get(`${this.path}/list?references=author&author=${this.author?.getID()}offset=${offset}&limit=${limit}`);
+
+    if (response.status !== Post.httpStatusCode.OK) {
+      Post.errorTypes
+        .HTTPRequestError.throw("Não foi possível buscar uma lista de postagens");
+    }
+
+    return JSON.parse(response.data).map((post: any) => {
+      post.author = this.author;
       return this.factory().build(post);
     });
   }
