@@ -8,79 +8,47 @@ import {
 
 import HeaderLogged from "../../components/headerLogged/headerLogged";
 import { useEffect, useContext, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { Post } from "../../api/Post";
-import { User } from "../../api/User";
 import { UserContext } from "../../contexts/UserContext";
 import dayjs from "dayjs"
+import portuguesPlugin from "dayjs/locale/pt-br";
+import { useNavigate } from "react-router-dom";
 
 function Feed() {
 
-  const { user } = useContext(UserContext);
-
+  const { isLogged, fetchRandomPosts } = useContext(UserContext);
   const navigate = useNavigate();
   const [posts, setPosts] = useState<JSX.Element[]>();
-  const fetchPosts = useCallback(() => {
+  const fetchPosts = useCallback(() =>
 
-    new Post()
-      .fetchList()
-      .then((posts: Post[]) =>
-        Promise.all(posts.map(post => {
+    fetchRandomPosts()
+      .then((list: any[]) => list.map((data: any) =>
+      (<PostContainer>
+        <ProfileContainer>
+          <img
+            src={data?.user.image}
+            alt={`Perfil de ${data?.user.name}`}
+            onClick={() => navigate(`user/${data?.user.index}`)}
+          />
+          <div>
+            <span>{data?.user.name}</span>
+            <span>{dayjs(data?.postTime).locale(portuguesPlugin).fromNow(true)}</span>
+          </div>
+        </ProfileContainer>
+        <TextContentContainer>
+          {data?.message}
+        </TextContentContainer>
+        <ProfilePostImage src={data?.media} alt="imagem" />
+      </PostContainer>)
+      )), [fetchRandomPosts, navigate]);
+  
 
-          let { author, message, media, postTime } = post.toObject();
-          //postTime = dayjs().from(postTime, true);
-
-          if (author) {
-            return author
-              
-              .fetch(false)
-              .then((user: User) => {
-
-                const { name, image } = user.toObject();
-                return {
-                  message: message as string,
-                  postTime: postTime as string,
-                  media: media as string,
-                  user: {
-                    name: name as string,
-                    image: image as string
-                  }
-                }
-
-              });
-          } else {
-            return undefined;
-          }
-
-        })
-        ))
-      .then(list => list.filter(p => p !== undefined))
-      .then(list => list.map(data =>
-        (<PostContainer>
-          <ProfileContainer>
-            <img
-              src={data?.user.image}
-              alt={`Perfil de ${data?.user.name}`}
-            onClick={() => navigate('/profile')}
-            />
-            <div>
-              <span>{data?.user.name}</span>
-              <span>{data?.postTime}</span>
-            </div>
-          </ProfileContainer>
-          <TextContentContainer>
-            {data?.message}
-          </TextContentContainer>
-          <ProfilePostImage src={data?.media} alt="imagem" />
-        </PostContainer>)
-      ))
-      .then(setPosts);
-
-  }, [setPosts, navigate]);
-
+  if (!isLogged) {
+    //navigate('/');
+  }
   useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+    fetchPosts()
+      .then(setPosts);
+  }, [fetchPosts, setPosts]);
 
 
   return (
