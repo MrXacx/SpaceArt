@@ -30,13 +30,17 @@ export const SignContainer = styled.form`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 50vw;
+  width: 80vw;
   margin: 0 auto;
+
+  @media (min-width: 960px) {
+    width: 50vw; 
+  }
 `;
 
 export const FormInputErrorMessage = styled.span<{ hidden: string }>`
   width: 90%;
-  display: ${c => JSON.parse(c.hidden) ?  'none' : 'inline'};
+  display: ${(c) => (JSON.parse(c.hidden) ? "none" : "inline")};
   color: black;
   font-size: 1rem;
   text-align: center;
@@ -44,7 +48,7 @@ export const FormInputErrorMessage = styled.span<{ hidden: string }>`
 `;
 
 export const FormInputFullField = styled.input`
-  width: 46vw;
+  width: 100%;
   height: 3vh;
   padding: 0.5rem;
   border-radius: 3px;
@@ -62,14 +66,19 @@ export const FormInputFullField = styled.input`
   &:disabled {
     background-color: rgb(210, 210, 210);
   }
+
+  @media (min-width: 960px) {
+    width: 46vw; 
+  }
 `;
 
 export const FormInputHalfField = styled.input`
-  width: 22.2vw;
+ 
+  width: 100%;
   height: 3vh;
   padding: 0.5rem;
   border-radius: 3px;
-  margin: 0.5rem 0.5rem;
+  margin: 0.5rem 0;
   border: 1px solid #545454;
 
   &:focus {
@@ -83,10 +92,24 @@ export const FormInputHalfField = styled.input`
   &:disabled {
     background-color: rgb(210, 210, 210);
   }
+
+  @media (min-width: 768px) {
+    width: 36vw;
+    &:nth-child(odd) {
+      margin-right: 0.5rem;
+    }
+    &:nth-child(even) {
+      margin-left: 0.5rem;
+    }
+  }
+  @media (min-width: 960px) {
+    width: 22.2vw;
+    margin: 0.5rem;
+  }
 `;
 
 export const FormSelectField = styled.select`
-  width: 47vw;
+  width: 100%;
   height: 5vh;
   padding: 0.5rem;
   border-radius: 3px;
@@ -97,6 +120,11 @@ export const FormSelectField = styled.select`
 
   option {
     text-transform: capitalize;
+  }
+
+  @media (min-width: 960px) {
+    width: 47vw; 
+    margin: 0.5rem;
   }
 
 `;
