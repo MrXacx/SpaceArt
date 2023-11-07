@@ -75,7 +75,8 @@ export const Blob = styled.img`
   border-radius: 50%;
 `;
 
-export const Icon = styled.img`
+export const Icon = styled.img<{hidden?: string}>`
+  display: ${(c) => JSON.parse(c.hidden ?? 'false') ? 'none' : 'flex'};
   max-width: 23px;
 `;
 
@@ -170,14 +171,17 @@ export const CalendarContainer = styled.div`
 `;
 
 export const Calendar = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  height: 100%;
+  width: 75%;
   justify-self: center;
-  align-self: flex-start;
 `;
 
 export const CalendarHeader = styled.header`
   background-color: #000;
   border-radius: 5px 5px 0 0;
-  padding: 0.5rem;
+  padding: .75rem 1rem .25rem 1rem;
 
   span {
     color: #fff;
@@ -189,38 +193,58 @@ export const CalendarHeader = styled.header`
 export const MonthNavbar = styled.nav`
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   font-size: 20px;
+  margin-bottom: .75rem;
 
   button {
     width: 3rem;
-    font-size: 25px;
+    font-size: 2.25rem;
+    font-weight: bold;
     background-color: transparent;
     box-shadow: none;
     border: none;
     cursor: pointer;
     color: #ff8311;
+    border-radius: 3px;
+    &:hover {
+        background-color: #0f0f0f44;
+        ;
+    }
   }
 `;
 
 export const DaysOfWeek = styled.div`
   display: grid;
+  place-items: center;
+  
   grid-template-columns: repeat(7, 1fr);
+  gap: .5rem;
 `;
 
 export const CalendarNumberContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+   place-items: center;
+  gap: .5rem;
   background-color: #000;
   padding: 1rem 1rem;
   border-radius: 0 0 5px 5px;
   color: #fff;
 
   span {
+        width: 100%;
+        height: 75%;
     border-radius: 50%;
     padding: 0.6rem 0.15rem;
     transition: 300ms;
     cursor: pointer;
     text-align: center;
+    border-radius: 3px;
+    &:hover {
+        background-color: #ff831185;
+        font-weight: bold;
+    }
   }
 `;
 
