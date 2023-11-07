@@ -13,16 +13,16 @@ export const CardProfileContent = styled.div`
     object-fit: cover;
     border-radius: 20px 20px 0 0;
   }
-  
-  @media (min-width: 768px){
-        width: 32.25vw;
+
+  @media (min-width: 768px) {
+    width: 32.25vw;
   }
-  
-  @media (min-width: 960px){
-        width: 20vw;
-        > img {
-            height: 25vh;  
-          }
+
+  @media (min-width: 960px) {
+    width: 20vw;
+    > img {
+      height: 25vh;
+    }
   }
 `;
 
@@ -34,7 +34,6 @@ export const CardProfileDetail = styled.div`
   padding: 10px 0;
   background-color: white;
   color: #000;
-
 
   div {
     &:first-of-type {

@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const Icon = styled.img`
   min-width: 20px;
-  min-height: 20px;
   max-width: 20px;
+  min-height: 20px;
   max-height: 20px;
   padding: .7rem;
   border-radius: 5px;

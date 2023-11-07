@@ -16,9 +16,8 @@ function CardProfile(
   city: string,
   state: string,
   art?: string,
-  wage?: number,
+  wage?: number
 ) {
-
   return (
     <CardProfileContent>
       <img alt="profile" src={image} />
@@ -29,19 +28,19 @@ function CardProfile(
         </div>
         <UserCardDetailContainer>
           <img alt="local icon" src={LocalIcon} />
-          <span>{city}, {state}</span>
+          <span>
+            {city}, {state}
+          </span>
         </UserCardDetailContainer>
-        {(wage) ?
-          (
-            <UserCardDetailContainer>
-              <img alt="wage icon" src={WageIcon} />
-              <span>R${wage.toFixed(2).replace('.', ',')}</span>
-            </UserCardDetailContainer>
-          )
-          : null
-        }
+        {wage ? (
+          <UserCardDetailContainer>
+            <img alt="wage icon" src={WageIcon} />
+            <span>R${wage.toFixed(2).replace(".", ",")}</span>
+          </UserCardDetailContainer>
+        ) : null}
       </CardProfileDetail>
-    </CardProfileContent>)
+    </CardProfileContent>
+  );
 }
 
 export default CardProfile;

@@ -9,7 +9,7 @@ import {
   SpaceartTitle,
 } from "./headerLoggedStyles";
 import Spaceart from "../../assets/spaceart.svg";
-import SearchIcon from "../../assets/search.svg";
+import SearchBlackIcon from "../../assets/search_black.svg";
 import HomeIcon from "../../assets/house.svg";
 import PlusIcon from "../../assets/plus.svg";
 import ThreePointsIcon from "../../assets/three_points.svg";
@@ -32,7 +32,7 @@ function HeaderLogged() {
       </SpaceartContainer>
       <NavContainer>
         <NavItemContainer>
-          <Icon src={SearchIcon} onClick={() => navigate('/search')} />
+          <Icon src={SearchBlackIcon} onClick={() => navigate('/search')} />
           <Icon src={HomeIcon} onClick={() => navigate('/feed')} />
           <Icon src={PlusIcon} />
           <Icon src={ThreePointsIcon} />

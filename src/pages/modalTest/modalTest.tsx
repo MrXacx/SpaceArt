@@ -1,8 +1,7 @@
 import { useContext } from "react";
-
 import { Modal, ModalButton } from "./modalTestStyles";
 import { ModalContext } from "../../contexts/ModalContext";
-import NewContract from "../../components/newContract/newContract";
+import SelectArtist from "../../components/selectArtist/selectArtist";
 
 
 function ModalTest() {
@@ -12,7 +11,7 @@ function ModalTest() {
     <>
       <ModalButton onClick={() => setHideModal(!hideModal)} />
       <Modal hideModal={hideModal}>
-        <NewContract />
+        <SelectArtist />
       </Modal>
     </>
   );

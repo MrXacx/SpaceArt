@@ -1,23 +1,17 @@
 import {
-  ArtistSelected,
   FormInputButton,
   FormInputFullField,
   FormInputHalfField,
   FormInputTextbox,
   HeaderLogo,
   Icon,
-  LocalContainer,
   ModalContainer,
-  ProfileDetail,
-  ProfileImage,
-  ProfileInformationContainer,
-  ProfileInnerContainer,
   SignContainer,
 } from "./newContractStyles";
 import XIcon from "../../assets/x.svg";
 import { useContext } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
-import LocalIcon from "../../assets/local.svg";
+import ArtistBoxCheck from "../artistBoxCheck/artistBoxCheck";
 
 function NewContract() {
   const { hideModal, setHideModal } = useContext(ModalContext);
@@ -29,25 +23,7 @@ function NewContract() {
         <h1>Novo contrato</h1>
       </HeaderLogo>
       <SignContainer>
-        <ArtistSelected>
-          <ProfileImage
-            alt="profile"
-            src="https://thispersondoesnotexist.com/"
-          />
-          <ProfileInformationContainer>
-            <ProfileInnerContainer>
-              <ProfileDetail>
-                <h3>Maria Betânia</h3>
-                <span>Música</span>
-              </ProfileDetail>
-              <LocalContainer>
-                <Icon alt="local" src={LocalIcon} />
-                <span>Salvador - BA</span>
-              </LocalContainer>
-            </ProfileInnerContainer>
-            <Icon alt="X" src={XIcon} />
-          </ProfileInformationContainer>
-        </ArtistSelected>
+        <ArtistBoxCheck />
         <FormInputFullField type="text" placeholder="Arte" />
         <FormInputFullField type="text" placeholder="Valor" />
         <FormInputFullField type="text" placeholder="Data do evento" />

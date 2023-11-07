@@ -1,21 +1,5 @@
 import styled from "styled-components";
 
-export const Modal = styled.div<{ hideModal?: boolean }>`
-  visibility: ${({ hideModal }) => (hideModal ? "hidden" : "visible")};
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.55);
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const ModalContainer = styled.div`
   width: 50vw;
   min-height: 70vh;
@@ -24,8 +8,7 @@ export const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 50px;
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 `;
 
 export const MainSignUpContainer = styled.div`
@@ -77,7 +60,7 @@ export const ProfileInformationContainer = styled.div`
 
   ${Icon} {
     &:last-child {
-      padding-right: 50px;
+      padding-right: 25px;
     }
   }
 `;
@@ -109,6 +92,7 @@ export const ProfileDetail = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 10px;
 
   span {
     padding: 5px 20px;
@@ -120,6 +104,7 @@ export const ProfileDetail = styled.div`
 
   h3 {
     padding-right: 10px;
+    margin: 0;
   }
 `;
 
