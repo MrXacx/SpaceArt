@@ -4,6 +4,7 @@ import {
   CalendarContainer,
   CalendarHeader,
   CalendarNumberContainer,
+  CalendarNumberItem,
   DateHeader,
   DaysOfWeek,
   DescriptionContainer,
@@ -49,15 +50,19 @@ import portuguesPlugin from "dayjs/locale/pt-br";
 
 function Profile() {
   const params = useParams();
-  const { index, user, fetchAnotherUser, fetchPostsByUser } = useContext(UserContext);
-  const [day] = useState(dayjs());
-  const [profileData, setProfileData] = useState<any>();
+  const { index, user, type, fetchAnotherUser, fetchPostsByUser } = useContext(UserContext);
+  const [profileData, setProfileData] = useState<any>({});
   const [posts, setPosts] = useState<any[]>([]);
 
+  const [date, setDate] = useState(dayjs().set('date', 1));
+  const [selectedDate, selectDate] = useState(dayjs());
+
   useEffect(() => {
-    if (params.index === index) { // Executa caso o index da url condizer com o do usuário logado
+    if (params.index === index) {
+      // Executa caso o index da url condizer com o do usuário logado
       setProfileData(user);
-    } else { // Executa caso o perfil seja de outro usuário
+    } else {
+      // Executa caso o perfil seja de outro usuário
       fetchAnotherUser(params.index) // busca dados do usuário
         .then(setProfileData);
     }
@@ -65,20 +70,57 @@ function Profile() {
 
   useEffect(() => {
     if (profileData) {
-      fetchPostsByUser(profileData.id)
-        .then(setPosts);
+      fetchPostsByUser(profileData.id).then(setPosts);
     }
   }, [fetchPostsByUser, profileData]);
 
-  function iterateSpan() {
-    const t = [];
-    for (let i = 1; i <= 35; i++) {
-      t.push(<span>{i}</span>);
+  const iterateCalendar = () => {
+    let i = 0;
+    const days: any = [];
+    switch (date.format("dddd").toLowerCase()) {
+      case "sunday":
+        i = 0;
+        break;
+      case "monday":
+        i = -1;
+        break;
+      case "tuesday":
+        i = -2;
+        break;
+      case "wednesday":
+        i = -3;
+        break;
+      case "thursday":
+        i = -4;
+        break;
+      case "friday":
+        i = -5;
+        break;
+      case "saturday":
+        i = -6;
+        break;
     }
-    return t;
-  }
 
-  const SpanCalender = iterateSpan();
+    const limit = 35 + i;
+
+    while (i < limit) {
+      const currentDate = date.add(i++, "days");
+      days.push(
+        <CalendarNumberItem
+          // eslint-disable-next-line no-loop-func
+          selected={Boolean(currentDate.format('DD/MM/YYYY') === selectedDate.format('DD/MM/YYYY')).toString()}
+          onClick={() => {
+            selectDate(currentDate.clone());
+          }}
+        >
+          {currentDate.format("DD")}
+        </CalendarNumberItem>
+      );
+    }
+    return days;
+  };
+
+
   return (
     <>
       <HeaderLogged />
@@ -87,22 +129,21 @@ function Profile() {
       <ProfileHeader>
         <ProfileContent>
           <UserImage>
-            <Blob
-              src={profileData.image}
-              alt={profileData.name}
-            />
+            <Blob src={profileData.image ?? ""} alt={profileData.name ?? ""} />
             <Icon src={ProfileImage} alt="Usuário com mais de 100 contratos" />
           </UserImage>
           <UserInfo>
             <UserStats>
-              <li>0 Publicação</li>
+              <li>{`${posts.length} Publicações`}</li>
               <li>0 Contrato</li>
             </UserStats>
+
             <UserDetails>
               <UserDetailsHeader>
-                <UserName>{profileData.name}</UserName>
-                <UserType>{profileData.art ?? profileData.type}</UserType>
+                <UserName>{profileData.name ?? 'Usuário desconhecido'}</UserName>
+                <UserType>{profileData.art ?? profileData.type ?? 'Não encontrado'}</UserType>
               </UserDetailsHeader>
+
               <ul>
                 <li>
                   <Icon src={LocationIcon} alt="localização" />
@@ -110,37 +151,68 @@ function Profile() {
                 </li>
                 <li>
                   <Icon src={StarIcon} alt="nota" />
-                  <span>{profileData.rate}</span>
+                  <span>{profileData.rate?.toFixed(2)}</span>
                 </li>
                 <li>
                   <Icon src={GlobalIcon} alt="site" />
-                  <a href={profileData.website ?? `/user/${profileData.index}`} target="_blank" rel="noreferrer">
-                    {profileData.website}
+                  <a
+                    href={profileData.website ?? `/user/${profileData.index}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {profileData.website ?? ""}
                   </a>
                 </li>
               </ul>
             </UserDetails>
+
             <ProfileTools>
-              <Icon src={ChatIcon} alt="nova conversa" />
+              <Icon
+                hidden={Boolean(
+                  // eslint-disable-next-line eqeqeq
+                  type == profileData.type
+                ).toString()}
+                src={ChatIcon}
+                alt="nova conversa"
+              />
               <Icon src={ReportIcon} alt="denunciar" />
               <Icon src={ShareIcon} alt="compartilhar" />
             </ProfileTools>
+
           </UserInfo>
         </ProfileContent>
+
         <DescriptionContainer>
           <span>Descrição</span>
           <p>{profileData.description ?? "Olá, mundo!"}</p>
         </DescriptionContainer>
+
       </ProfileHeader>
+
       <Wrapper>
+
         <CalendarContainer>
           <Calendar>
             <CalendarHeader>
               <MonthNavbar>
-                <button>{"<"}</button>
-                <span>Outubro</span>
-                <button>{">"}</button>
+                <button
+                  onClick={() => {
+
+                    if (date.month() > 0) setDate(date.subtract(1, 'month'))
+                  }}>
+                  {"<"}
+                </button>
+
+                <span>{date.locale(portuguesPlugin).format('MMMM')}</span>
+
+                <button
+                  onClick={() => {
+                    if (date.month() < 11) setDate(date.add(1, 'month'))
+                  }}>
+                  {">"}
+                </button>
               </MonthNavbar>
+
               <DaysOfWeek>
                 <span>Dom</span>
                 <span>Seg</span>
@@ -150,11 +222,13 @@ function Profile() {
                 <span>Sex</span>
                 <span>Sab</span>
               </DaysOfWeek>
+
             </CalendarHeader>
-            <CalendarNumberContainer>{SpanCalender}</CalendarNumberContainer>
+            <CalendarNumberContainer>{iterateCalendar()}</CalendarNumberContainer>
           </Calendar>
           <JobsDayContainer>
-            <DateHeader>{day.locale(portuguesPlugin).format('MMMM, [DIA] DD')}</DateHeader>
+            <DateHeader>{selectedDate.locale(portuguesPlugin).format('MMMM, [DIA] DD')}</DateHeader>
+
             <JobWrapper>
               <Jobs>
                 <JobInfo>
@@ -168,12 +242,9 @@ function Profile() {
           </JobsDayContainer>
         </CalendarContainer>
         <PostWrapper>
-          {posts.map(
-            (post: any) =>
-              <Post>
-                <img src={post.media} alt={post.message} />
-              </Post>
-          )}
+          {posts.map((post: any) => (
+            <Post><img src={post.media} alt={post.message} /></Post>
+          ))}
         </PostWrapper>
       </Wrapper>
       <Footer />
