@@ -1,5 +1,6 @@
 
 import { Artist, Enterprise, User } from "../api/User";
+import { Post } from "../api/Post";
 import { AccountType, AccountTypesUtil } from "../enums/AccountType";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -149,6 +150,37 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     navigate('/');
   };
 
+  const handlePost = useCallback((postItem: Post) => {
+
+    const post = postItem.toObject();
+
+    return post
+      .author
+      ?.fetch(false)
+      .then((author: User) => {
+        post.author = author;
+        return post;
+      })
+      .then((post: any) => ({
+        id: post.id as string,
+        author: post.author?.toObject(),
+        message: post.message as string,
+        media: post.media as string,
+        postTime: post.postTime as string,
+      }));
+
+
+  }, [])
+
+  const fetchPostsByUser = (id: string, offset = 0, limit = 500) => new Post()
+    .build({ author: new User(id) })
+    .fetchListByAuthor(offset, limit)
+    .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
+
+  const fetchRandomPosts = (offset = 0, limit = 25) => new Post()
+    .fetchList(offset, limit)
+    .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
+
   useEffect(() => {
     if (isLogged && !isLoaded) {
       fetchLoggedUser();
@@ -169,11 +201,11 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         signUpArtist,
         signUpEnterprise,
         logOut,
+        fetchRandomPosts,
+        fetchPostsByUser,
       }}
     >
       {children}
     </UserContext.Provider>
   );
-}; new Error();
-
-
+};

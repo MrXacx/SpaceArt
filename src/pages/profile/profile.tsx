@@ -45,29 +45,14 @@ import { UserContext } from "../../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
+import portuguesPlugin from "dayjs/locale/pt-br";
 
 function Profile() {
   const params = useParams();
-  const { index, user, fetchAnotherUser } = useContext(UserContext);
+  const { index, user, fetchAnotherUser, fetchPostsByUser } = useContext(UserContext);
   const [day] = useState(dayjs());
-  const [profileData, setProfileData] = useState<any>({
-
-    type: '',
-    index: params.index,
-    name: '',
-
-    location: {
-      state: '',
-      city: ''
-    },
-    image: '',
-    website: '',
-    description: '',
-    rate: 0,
-    verified: false,
-  });
-
-  //    console.log(profileData);
+  const [profileData, setProfileData] = useState<any>();
+  const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     if (params.index === index) { // Executa caso o index da url condizer com o do usuário logado
@@ -77,6 +62,13 @@ function Profile() {
         .then(setProfileData);
     }
   }, [index, user, fetchAnotherUser, setProfileData, params]);
+
+  useEffect(() => {
+    if (profileData) {
+      fetchPostsByUser(profileData.id)
+        .then(setPosts);
+    }
+  }, [fetchPostsByUser, profileData]);
 
   function iterateSpan() {
     const t = [];
@@ -162,7 +154,7 @@ function Profile() {
             <CalendarNumberContainer>{SpanCalender}</CalendarNumberContainer>
           </Calendar>
           <JobsDayContainer>
-            <DateHeader>{day.format('MMMM, [DIA] DD')}</DateHeader>
+            <DateHeader>{day.locale(portuguesPlugin).format('MMMM, [DIA] DD')}</DateHeader>
             <JobWrapper>
               <Jobs>
                 <JobInfo>
@@ -176,9 +168,12 @@ function Profile() {
           </JobsDayContainer>
         </CalendarContainer>
         <PostWrapper>
-          <Post>
-            <img src="https://thispersondoesnotexist.com/" alt="postagem" />
-          </Post>
+          {posts.map(
+            (post: any) =>
+              <Post>
+                <img src={post.media} alt={post.message} />
+              </Post>
+          )}
         </PostWrapper>
       </Wrapper>
       <Footer />
