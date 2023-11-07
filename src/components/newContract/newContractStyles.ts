@@ -70,6 +70,18 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
+export const ProfileInformationContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  ${Icon} {
+    &:last-child {
+      padding-right: 50px;
+    }
+  }
+`;
+
 export const ArtistSelected = styled.div`
   display: flex;
   flex-direction: row;
@@ -77,6 +89,7 @@ export const ArtistSelected = styled.div`
   height: 100px;
   border-radius: 10px;
   border: 1px solid #000;
+  align-items: center;
 `;
 
 export const ProfileImage = styled.img`

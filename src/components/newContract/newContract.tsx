@@ -10,6 +10,7 @@ import {
   ModalContainer,
   ProfileDetail,
   ProfileImage,
+  ProfileInformationContainer,
   ProfileInnerContainer,
   SignContainer,
 } from "./newContractStyles";
@@ -33,16 +34,19 @@ function NewContract() {
             alt="profile"
             src="https://thispersondoesnotexist.com/"
           />
-          <ProfileInnerContainer>
-            <ProfileDetail>
-              <h3>Maria Betânia</h3>
-              <span>Música</span>
-            </ProfileDetail>
-            <LocalContainer>
-              <Icon alt="local" src={LocalIcon} />
-              <span>Salvador - BA</span>
-            </LocalContainer>
-          </ProfileInnerContainer>
+          <ProfileInformationContainer>
+            <ProfileInnerContainer>
+              <ProfileDetail>
+                <h3>Maria Betânia</h3>
+                <span>Música</span>
+              </ProfileDetail>
+              <LocalContainer>
+                <Icon alt="local" src={LocalIcon} />
+                <span>Salvador - BA</span>
+              </LocalContainer>
+            </ProfileInnerContainer>
+            <Icon alt="X" src={XIcon} />
+          </ProfileInformationContainer>
         </ArtistSelected>
         <FormInputFullField type="text" placeholder="Arte" />
         <FormInputFullField type="text" placeholder="Valor" />
