@@ -4,6 +4,7 @@ import {
   CalendarContainer,
   CalendarHeader,
   CalendarNumberContainer,
+  CalendarNumberItem,
   DateHeader,
   DaysOfWeek,
   DescriptionContainer,
@@ -57,9 +58,11 @@ function Profile() {
   const [selectedDate, selectDate] = useState(dayjs());
 
   useEffect(() => {
-    if (params.index === index) { // Executa caso o index da url condizer com o do usuário logado
+    if (params.index === index) {
+      // Executa caso o index da url condizer com o do usuário logado
       setProfileData(user);
-    } else { // Executa caso o perfil seja de outro usuário
+    } else {
+      // Executa caso o perfil seja de outro usuário
       fetchAnotherUser(params.index) // busca dados do usuário
         .then(setProfileData);
     }
@@ -67,58 +70,56 @@ function Profile() {
 
   useEffect(() => {
     if (profileData) {
-      fetchPostsByUser(profileData.id)
-        .then(setPosts);
+      fetchPostsByUser(profileData.id).then(setPosts);
     }
   }, [fetchPostsByUser, profileData]);
 
   const iterateCalendar = () => {
-    const days = [];
     let i = 0;
-
-    switch (date.format('dddd').toLowerCase()) {
-      case 'sunday':
+    const days: any = [];
+    switch (date.format("dddd").toLowerCase()) {
+      case "sunday":
         i = 0;
         break;
-      case 'monday':
+      case "monday":
         i = -1;
         break;
-      case 'tuesday':
+      case "tuesday":
         i = -2;
         break;
-      case 'wednesday':
+      case "wednesday":
         i = -3;
         break;
-      case 'thursday':
+      case "thursday":
         i = -4;
         break;
-      case 'friday':
+      case "friday":
         i = -5;
         break;
-        case 'saturday':
+      case "saturday":
         i = -6;
         break;
-         
     }
-    let currentDate = date.clone();
-    const a: any =[]
-     while( i <= 35) {
 
-      currentDate = date.add(i, 'days');
+    const limit = 35 + i;
+
+    while (i < limit) {
+      const currentDate = date.add(i++, "days");
       days.push(
-        <span
+        <CalendarNumberItem
           // eslint-disable-next-line no-loop-func
-          onClick={() => selectDate(currentDate.clone()) }> 
-          {currentDate.format('DD')}
-        </span>
+          selected={Boolean(currentDate.format('DD/MM/YYYY') === selectedDate.format('DD/MM/YYYY')).toString()}
+          onClick={() => {
+            selectDate(currentDate.clone());
+          }}
+        >
+          {currentDate.format("DD")}
+        </CalendarNumberItem>
       );
-      a.push(currentDate.format('DD/MM/YYYY')
-      
     }
-        
-        console.log(a)
     return days;
-  }
+  };
+
 
   return (
     <>
@@ -128,10 +129,7 @@ function Profile() {
       <ProfileHeader>
         <ProfileContent>
           <UserImage>
-            <Blob
-              src={profileData.image ?? ''}
-              alt={profileData.name ?? ''}
-            />
+            <Blob src={profileData.image ?? ""} alt={profileData.name ?? ""} />
             <Icon src={ProfileImage} alt="Usuário com mais de 100 contratos" />
           </UserImage>
           <UserInfo>
@@ -157,18 +155,26 @@ function Profile() {
                 </li>
                 <li>
                   <Icon src={GlobalIcon} alt="site" />
-                  <a href={profileData.website ?? `/user/${profileData.index}`} target="_blank" rel="noreferrer">
-                    {profileData.website ?? ''}
+                  <a
+                    href={profileData.website ?? `/user/${profileData.index}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {profileData.website ?? ""}
                   </a>
                 </li>
               </ul>
             </UserDetails>
 
             <ProfileTools>
-              <Icon hidden={Boolean(
-                // eslint-disable-next-line eqeqeq
-                type == profileData.type
-              ).toString()} src={ChatIcon} alt="nova conversa" />
+              <Icon
+                hidden={Boolean(
+                  // eslint-disable-next-line eqeqeq
+                  type == profileData.type
+                ).toString()}
+                src={ChatIcon}
+                alt="nova conversa"
+              />
               <Icon src={ReportIcon} alt="denunciar" />
               <Icon src={ShareIcon} alt="compartilhar" />
             </ProfileTools>
@@ -191,6 +197,7 @@ function Profile() {
               <MonthNavbar>
                 <button
                   onClick={() => {
+
                     if (date.month() > 0) setDate(date.subtract(1, 'month'))
                   }}>
                   {"<"}
@@ -217,12 +224,11 @@ function Profile() {
               </DaysOfWeek>
 
             </CalendarHeader>
-
             <CalendarNumberContainer>{iterateCalendar()}</CalendarNumberContainer>
-
           </Calendar>
           <JobsDayContainer>
             <DateHeader>{selectedDate.locale(portuguesPlugin).format('MMMM, [DIA] DD')}</DateHeader>
+
             <JobWrapper>
               <Jobs>
                 <JobInfo>
@@ -236,12 +242,9 @@ function Profile() {
           </JobsDayContainer>
         </CalendarContainer>
         <PostWrapper>
-          {posts.map(
-            (post: any) =>
-              <Post>
-                <img src={post.media} alt={post.message} />
-              </Post>
-          )}
+          {posts.map((post: any) => (
+            <Post><img src={post.media} alt={post.message} /></Post>
+          ))}
         </PostWrapper>
       </Wrapper>
       <Footer />
