@@ -28,7 +28,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 
   path = "/user"; // Rote de consulta
 
-  factory = () => new User();
+  factory = ()  => new User();
 
   /**
    * Preenche todos os atributos da classe
@@ -93,7 +93,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
    * @param boolean true para obter dados sigilosos
    * @returns object
    */
-  async fetch(isToken = false) {
+  public async fetch(isToken = false): Promise<any> {
     let response = await this.request.get(
       `${this.path}?id=${isToken ? this.token : this.id}&token=${isToken}&type=${this.type}`
     );
@@ -107,7 +107,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
   }
 
 
-  async fetchForIndex() {
+  async fetchForIndex(): Promise<any> {
     let response = await this.request.get(
       `${this.path}?index=${this.index}&type=${this.type}`
     );

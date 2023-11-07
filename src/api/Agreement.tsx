@@ -113,11 +113,15 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
     }
 
     return JSON.parse(response.data).map((data: any) => { // Itera lista de contratos
+      data.hirer = new Enterprise(data.hirer);
+      data.hired = new Artist(data.hired);
       const agreement = this.factory().build(data); // Instancia o contrato
 
       if (data.status === "accepted") { // Executa apenas se o contrato já foi aceito
-        const rate = new Rate(data.id); // Instancia avaliação
-        rate.fetchList() // Busca as avaliações associadas no banco
+        new Rate(
+          new Agreement(data.id)
+        ) // Instancia avaliação
+        .fetchList() // Busca as avaliações associadas no banco
           .then(rates => agreement.rates = rates); // Associa avaliações ao contrato
       }
 
