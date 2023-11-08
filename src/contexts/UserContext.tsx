@@ -1,6 +1,7 @@
 
 import { Artist, Enterprise, User } from "../api/User";
 import { Post } from "../api/Post";
+import { Agreement } from "../api/Agreement";
 import { AccountType, AccountTypesUtil } from "../enums/AccountType";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,12 +19,12 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
   const navigate = useNavigate();
 
-  const [isLogged, setLoginStatus] = useState(JSON.parse(sessionStorage.getItem("is_user_logged") ?? 'false'));
-  const [user, setUser] = useState<any>({});
   const [id, setID] = useState(sessionStorage.getItem("user_id") ?? undefined);
   const [token, setToken] = useState(sessionStorage.getItem("user_token") ?? undefined);
-  const [isLoaded, setLoadStatus] = useState(false);
   const [type, setType] = useState<AccountType | string>(sessionStorage.getItem("user_type") as string);
+  const [user, setUser] = useState<any>({});
+  const [isLogged, setLoginStatus] = useState(JSON.parse(sessionStorage.getItem("is_user_logged") ?? 'false'));
+  const [isLoaded, setLoadStatus] = useState(false);
 
   const fetchLoggedUser = useCallback(async () => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
@@ -171,7 +172,6 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
 
   }, [])
-
   const fetchPostsByUser = (id: string, offset = 0, limit = 500) => new Post()
     .build({ author: new User(id) })
     .fetchListByAuthor(offset, limit)
@@ -180,6 +180,28 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const fetchRandomPosts = (offset = 0, limit = 25) => new Post()
     .fetchList(offset, limit)
     .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
+
+  const fetchAgreementsByUser = (id: string, offset = 0, limit = 500) => new Agreement()
+      .fetchList(
+        new User(id),
+        offset,
+        limit
+      )
+      .then(list => Promise.all(
+        list.map(
+          item => {
+            const agreement = item.toObject();
+            return Promise.all([
+              agreement.hirer?.fetch(false),
+              agreement.hired?.fetch(false),
+            ])
+              .then(([hirer, hired]) => {
+                agreement.hirer = hirer;
+                agreement.hired = hired;
+                return agreement;
+              });
+          })
+      ))
 
   useEffect(() => {
     if (isLogged && !isLoaded) {
@@ -203,6 +225,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         logOut,
         fetchRandomPosts,
         fetchPostsByUser,
+        fetchAgreementsByUser,
       }}
     >
       {children}
