@@ -50,9 +50,11 @@ import portuguesPlugin from "dayjs/locale/pt-br";
 
 function Profile() {
   const params = useParams();
-  const { index, user, type, fetchAnotherUser, fetchPostsByUser } = useContext(UserContext);
+  const { index, user, type, fetchAnotherUser, fetchPostsByUser, fetchAgreementsByUser } = useContext(UserContext);
   const [profileData, setProfileData] = useState<any>({});
   const [posts, setPosts] = useState<any[]>([]);
+  const [agreements, setAgreements] = useState<any[]>([]);
+
 
   const [date, setDate] = useState(dayjs().set('date', 1));
   const [selectedDate, selectDate] = useState(dayjs());
@@ -71,8 +73,11 @@ function Profile() {
   useEffect(() => {
     if (profileData) {
       fetchPostsByUser(profileData.id).then(setPosts);
+      fetchAgreementsByUser(profileData.id)
+        .then(setAgreements);
+
     }
-  }, [fetchPostsByUser, profileData]);
+  }, [fetchAgreementsByUser, fetchPostsByUser, profileData]);
 
   const iterateCalendar = () => {
     let i = 0;
@@ -135,13 +140,13 @@ function Profile() {
           <UserInfo>
             <UserStats>
               <li>{`${posts.length} Publicações`}</li>
-              <li>0 Contrato</li>
+              <li>{`${agreements.length} Contratos`}</li>
             </UserStats>
 
             <UserDetails>
               <UserDetailsHeader>
                 <UserName>{profileData.name ?? 'Usuário desconhecido'}</UserName>
-                <UserType>{profileData.art ?? profileData.type ?? 'Não encontrado'}</UserType>
+                <UserType>{profileData.art ?? profileData.type ?? ''}</UserType>
               </UserDetailsHeader>
 
               <ul>
@@ -184,7 +189,7 @@ function Profile() {
 
         <DescriptionContainer>
           <span>Descrição</span>
-          <p>{profileData.description ?? "Olá, mundo!"}</p>
+          <p>{profileData.description ?? ''}</p>
         </DescriptionContainer>
 
       </ProfileHeader>
@@ -231,12 +236,16 @@ function Profile() {
 
             <JobWrapper>
               <Jobs>
-                <JobInfo>
-                  <JobHour>13:00 - 14:50</JobHour>
-                  <TypeJobIcon>
-                    <Icon alt="" src={MusicIcon} />
-                  </TypeJobIcon>
-                </JobInfo>
+                {agreements.map(
+                  (item: any) =>
+                    <JobInfo>
+                      <JobHour>{item.time.join(' - ')}</JobHour>
+                      <TypeJobIcon>
+                        <Icon alt={item.art} src={MusicIcon} />
+                      </TypeJobIcon>
+                    </JobInfo>
+                )}
+
               </Jobs>
             </JobWrapper>
           </JobsDayContainer>
