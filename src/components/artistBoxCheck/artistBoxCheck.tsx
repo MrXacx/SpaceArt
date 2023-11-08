@@ -7,9 +7,8 @@ import {
   ProfileInformationContainer,
   ProfileInnerContainer,
 } from "./artistBoxCheckStyles";
-
 import LocalIcon from "../../assets/local.svg";
-import XIcon from "../../assets/x.svg";
+
 
 function ArtistBoxCheck() {
   return (
