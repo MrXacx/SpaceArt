@@ -8,14 +8,33 @@ import {
   SearchArtistInputContainer,
   SignContainer,
 } from "./selectArtistStyles";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import XIcon from "../../assets/x.svg";
 import ArtistBoxCheck from "../artistBoxCheck/artistBoxCheck";
 import SearchWhiteIcon from "../../assets/search_white.svg"
+import { UserContext } from "../../contexts/UserContext";
+import { Artist } from "../../api/User";
+import { ArtTypesUtil } from "../../enums/ArtType";
 
 function SelectArtist() {
   const { hideModal, setHideModal } = useContext(ModalContext);
+  const { fetchChats } = useContext(UserContext);
+
+  const [artists, setArtists] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchChats(0, 10) // Obtém conversas recentes
+      .then((chats: any[]) => Promise.all( // Obtém os artistas dessas conversas
+        chats.map(
+          chat => new Artist(chat.artist).fetch(false)
+        )))
+      .then((artists: Artist[]) => artists.map( // Converte as instâncias em objetos literais
+        artist => artist.toObject()
+      ))
+      .then(setArtists) // Define artistas padrões
+  }, [fetchChats]);
+
 
   return (
     <ModalContainer>
@@ -27,14 +46,20 @@ function SelectArtist() {
         <SearchArtistInputContainer>
           <SearchArtistInput type="text" placeholder="Artista" />
           <SearchArtistButton>
-            <img src={SearchWhiteIcon} />
+            <img src={SearchWhiteIcon} alt="Pesquisar" />
           </SearchArtistButton>
         </SearchArtistInputContainer>
-        <ArtistBoxCheck />
-        <ArtistBoxCheck />
-        <ArtistBoxCheck />
-        <ArtistBoxCheck />
-        <ArtistBoxCheck />
+        {artists.map(
+          (artist) => (
+            <ArtistBoxCheck
+              name={artist.name}
+              image={artist.image}
+              art={ArtTypesUtil.parse(artist.type)}
+              city={artist.city}
+              state={artist.state}
+            />
+          )
+        )}
         <FormInputButton>AVANÇAR</FormInputButton>
       </SignContainer>
     </ModalContainer>
