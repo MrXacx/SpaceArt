@@ -16,12 +16,16 @@ import SearchWhiteIcon from "../../assets/search_white.svg"
 import { UserContext } from "../../contexts/UserContext";
 import { Artist } from "../../api/User";
 import { ArtTypesUtil } from "../../enums/ArtType";
+import { SearchContext } from "../../contexts/SearchContext";
+import { AccountType } from "../../enums/AccountType";
 
 function SelectArtist() {
   const { hideModal, setHideModal } = useContext(ModalContext);
   const { fetchChats } = useContext(UserContext);
+  const { fetchUsersByName, cardsData } = useContext(SearchContext);
 
-  const [artists, setArtists] = useState<any[]>([]);
+
+  const [artists, setArtists] = useState<any[]>(cardsData);
 
   useEffect(() => {
     fetchChats(0, 10) // Obtém conversas recentes
@@ -36,6 +40,8 @@ function SelectArtist() {
   }, [fetchChats]);
 
 
+
+
   return (
     <ModalContainer>
       <HeaderLogo>
@@ -44,7 +50,14 @@ function SelectArtist() {
       </HeaderLogo>
       <SignContainer>
         <SearchArtistInputContainer>
-          <SearchArtistInput type="text" placeholder="Artista" />
+          <SearchArtistInput
+            type="text"
+            placeholder="Artista"
+            onClick={(e: any) => fetchUsersByName(
+              AccountType.artist,
+              e.target.value
+            )}
+          />
           <SearchArtistButton>
             <img src={SearchWhiteIcon} alt="Pesquisar" />
           </SearchArtistButton>
