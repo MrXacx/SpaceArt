@@ -10,16 +10,22 @@ import {
 
 import LocalIcon from "../../assets/local.svg";
 import { ArtType } from "../../enums/ArtType";
+import { Artist } from "../../api/User";
+import { useContext } from "react";
+import { SelectArtistContext } from "../../contexts/SelectArtistContext";
 
-interface ArtistBoxProps{
+interface ArtistBoxProps {
   name: string;
   image: string;
   art: ArtType;
+  cep: string;
   city: string;
   state: string;
 }
 
 function ArtistBoxCheck(prop: ArtistBoxProps) {
+  const { setArtist } = useContext(SelectArtistContext);
+
   return (
     <ArtistSelected>
       <ProfileImage alt={prop.name} src={prop.image} />
@@ -34,7 +40,18 @@ function ArtistBoxCheck(prop: ArtistBoxProps) {
             <span>{`${prop.city} - ${prop.state}`}</span>
           </LocalContainer>
         </ProfileInnerContainer>
-        <input type="checkbox"></input>
+        <input type="checkbox" onClick={(e: any) => setArtist(
+          new Artist().build({
+            name: prop.name,
+            image: prop.image,
+            art: prop.art,
+            location: {
+              cep: prop.cep,
+              city: prop.city,
+              state: prop.state,
+            },
+          })
+        )} />
       </ProfileInformationContainer>
     </ArtistSelected>
   );
