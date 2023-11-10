@@ -24,7 +24,7 @@ function SelectArtist() {
   const { fetchChats } = useContext(UserContext);
   const { fetchUsersByName, cardsData } = useContext(SearchContext);
 
-
+  const [searchedName, setSearchedName] = useState('');
   const [artists, setArtists] = useState<any[]>(cardsData);
 
   useEffect(() => {
@@ -40,8 +40,6 @@ function SelectArtist() {
   }, [fetchChats]);
 
 
-
-
   return (
     <ModalContainer>
       <HeaderLogo>
@@ -53,12 +51,9 @@ function SelectArtist() {
           <SearchArtistInput
             type="text"
             placeholder="Artista"
-            onClick={(e: any) => fetchUsersByName(
-              AccountType.artist,
-              e.target.value
-            )}
+            onChange={(e: any) => setSearchedName(e.target.value)}
           />
-          <SearchArtistButton>
+          <SearchArtistButton onClick={() => fetchUsersByName(AccountType.artist, searchedName)}>
             <img src={SearchWhiteIcon} alt="Pesquisar" />
           </SearchArtistButton>
         </SearchArtistInputContainer>
@@ -68,12 +63,13 @@ function SelectArtist() {
               name={artist.name}
               image={artist.image}
               art={ArtTypesUtil.parse(artist.type)}
+              cep={artist.cep}
               city={artist.city}
               state={artist.state}
             />
           )
         )}
-        <FormInputButton>AVANÇAR</FormInputButton>
+        <FormInputButton onClick={() => {/* Muda para newAgreement */}}>AVANÇAR</FormInputButton>
       </SignContainer>
     </ModalContainer>
   );
