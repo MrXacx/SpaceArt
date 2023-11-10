@@ -10,23 +10,42 @@ import {
 
 import LocalIcon from "../../assets/local.svg";
 import XIcon from "../../assets/x.svg";
+import { useContext } from "react";
+import { ArtType } from "../../enums/ArtType";
+import { SelectArtistContext } from "../../contexts/SelectArtistContext";
 
-function ArtistBox() {
+interface ArtistBoxProps {
+  name: string;
+  image: string;
+  art: ArtType;
+  cep: string;
+  city: string;
+  state: string;
+}
+
+function ArtistBox(props: ArtistBoxProps) {
+  const {setArtist} = useContext(SelectArtistContext);
+
   return (
     <ArtistSelected>
-      <ProfileImage alt="profile" src="https://thispersondoesnotexist.com/" />
+      <ProfileImage alt={props.name} src={props.image} />
       <ProfileInformationContainer>
         <ProfileInnerContainer>
           <ProfileDetail>
-            <h3>Maria Betânia</h3>
-            <span>Música</span>
+            <h3>{props.name}</h3>
+            <span>{props.art}</span>
           </ProfileDetail>
           <LocalContainer>
             <Icon alt="local" src={LocalIcon} />
-            <span>Salvador - BA</span>
+            <span>{`${props.city} - ${props.state}`}</span>
           </LocalContainer>
         </ProfileInnerContainer>
-        <Icon alt="X" src={XIcon} />
+        <Icon alt="X" src={XIcon} onClick={
+          (e: any) => {
+            setArtist(undefined)
+            // Retorna para selectArtist
+          }
+        }/>
       </ProfileInformationContainer>
     </ArtistSelected>
   );
