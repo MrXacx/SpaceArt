@@ -7,7 +7,6 @@ import {
   ProfileInformationContainer,
   ProfileInnerContainer,
 } from "./artistBoxCheckStyles";
-
 import LocalIcon from "../../assets/local.svg";
 import { ArtType } from "../../enums/ArtType";
 import { Artist } from "../../api/User";
