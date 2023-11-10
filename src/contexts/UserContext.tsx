@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 import DefaultImage from "../assets/marco_image.png"
 import { ImageCompressor } from "../services/ImageCompressor";
+import { Chat } from "../api/Chat";
 
 interface UserStoreProps {
   children: React.ReactNode;
@@ -182,26 +183,43 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
 
   const fetchAgreementsByUser = (id: string, offset = 0, limit = 500) => new Agreement()
-      .fetchList(
-        new User(id),
-        offset,
-        limit
-      )
-      .then(list => Promise.all(
-        list.map(
-          item => {
-            const agreement = item.toObject();
-            return Promise.all([
-              agreement.hirer?.fetch(false),
-              agreement.hired?.fetch(false),
-            ])
-              .then(([hirer, hired]) => {
-                agreement.hirer = hirer;
-                agreement.hired = hired;
-                return agreement;
-              });
-          })
-      ))
+    .fetchList(
+      new User(id),
+      offset,
+      limit
+    )
+    .then(list => Promise.all(
+      list.map(
+        item => {
+          const agreement = item.toObject();
+          return Promise.all([
+            agreement.hirer?.fetch(false),
+            agreement.hired?.fetch(false),
+          ])
+            .then(([hirer, hired]) => {
+              agreement.hirer = hirer;
+              agreement.hired = hired;
+              return agreement;
+            });
+        })
+    ));
+
+  const fetchChats = (offset = 0, limit = 10) => new Chat()
+    .fetchList(
+      new User(id),
+      offset,
+      limit
+    )
+    .then(chats => chats.map(
+      chat => {
+        const item = chat.toObject()
+        return {
+          ...item,
+          artist: item.artist?.getID(),
+          enterprise: item.enterprise?.getID(),
+        }
+      }
+    ));
 
   useEffect(() => {
     if (isLogged && !isLoaded) {
@@ -226,6 +244,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchRandomPosts,
         fetchPostsByUser,
         fetchAgreementsByUser,
+        fetchChats,
       }}
     >
       {children}
