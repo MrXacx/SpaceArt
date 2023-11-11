@@ -219,7 +219,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           enterprise: item.enterprise?.getID(),
         }
       }
-    ));
+    ))
+    .catch((e: any) => console.error(e.message));
 
   useEffect(() => {
     if (isLogged && !isLoaded) {

@@ -16,18 +16,23 @@ import { SearchContext } from "../../contexts/SearchContext";
 import CardProfile from "../../components/cardProfile/cardProfile";
 import { UserContext } from "../../contexts/UserContext";
 
+import { AccountType } from "../../enums/AccountType"
+
 function Search() {
   const [isNameFilterSelected, setNameFilterSelected] = useState("true");
   const [isLocationFilterSelected, setLocationFilterSelected] = useState("false");
   const [isArtistSearched, setArtistSearched] = useState("true");
   const [isEnterpriseSearched, setEnterpriseSearched] = useState("false");
 
-  const { cardsData, fetchRandomUsers } = useContext(SearchContext);
-
-  const { type } = useContext(UserContext);
-
-  // eslint-disable-next-line eqeqeq
-  useEffect(() => fetchRandomUsers(type), [fetchRandomUsers, type]);
+  let { cardsData, fetchRandomUsers } = useContext(SearchContext);
+  
+  const [data] = useState(cardsData);
+  const [ type, setType ] = useState(AccountType.artist);
+  
+  useEffect(() => {
+//     if(!data) fetchRandomUsers(type);
+    
+ }, [fetchRandomUsers, type]);
 
   return (
     <>
@@ -38,20 +43,18 @@ function Search() {
           <span>BUSCAR POR</span>
           <FilterOptionsContainer>
             <FilterOption
-              selected={isArtistSearched}
-              onClick={() => {
-                setArtistSearched("true");
-                setEnterpriseSearched("false");
-              }}
+              selected={
+                 Boolean(type === AccountType.artist).toString()
+              }
+              onClick={() => setType(AccountType.artist)}
             >
               ARTISTA
             </FilterOption>
             <FilterOption
-              selected={isEnterpriseSearched}
-              onClick={() => {
-                setEnterpriseSearched("true");
-                setArtistSearched("false");
-              }}
+              selected={
+                 Boolean(type === AccountType.enterprise).toString()
+              }
+              onClick={() => setType(AccountType.enterprise)}
             >
               EMPRESA
             </FilterOption>
@@ -89,10 +92,23 @@ function Search() {
           <LocationFilterBar withArtField={isArtistSearched} />
         </FilterBarItem>
       </FilterBarContainer>
+      
       <SearchResultContainer>
         <CardProfileContainer>
-          {cardsData.map((card: any) => CardProfile)}
+          {cardsData.map((data: any) => 
+          CardProfile(
+                data.id,
+                data.index,
+                data.image,
+                data.name,
+                data.type,
+                data.city,
+                data.state,
+                data.art,
+                data.wage
+              ))}
         </CardProfileContainer>
+        
       </SearchResultContainer>
     </>
   );

@@ -131,14 +131,14 @@ export class User extends IndexedAPIClient implements APIClientFactory {
    * Busca lista de usuários filtrando pelo nome completo ou parcial
    */
   fetchListFilteringName(name: string, offset = 0, limit = 25) {
-    return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}&name=${name}`);
+    return this.fetchList(`filter=name&offset=${offset}&limit=${limit}&type=${this.type}&name=${name}`);
   }
 
   /**
    * Busca lista de usuários filtrando o município do usuário
    */
   fetchListFilteringLocation(state: string, city: string, offset = 0, limit = 25) {
-    return this.fetchList(`offset=${offset}&limit=${limit}&type=${this.type}&state=${state}&city=${city}`);
+    return this.fetchList(`filter=location&offset=${offset}&limit=${limit}&type=${this.type}&state=${state}&city=${city}`);
   }
 
   private async fetchList(parameters: string): Promise<this[]> {
@@ -150,9 +150,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     }
 
     return JSON.parse(response.data)
-      .map((item: any) => {
-        return this.factory().build(item)
-      });
+      .map((item: any) => this.factory().build(item));
   }
 
   /**
