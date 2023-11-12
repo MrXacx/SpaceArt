@@ -41,7 +41,7 @@ function SelectArtist() {
       .catch((e: any) => console.log(e.message))
       .finally((chats: any) => setSearchResult(chats ?? [])); // Define artistas padrões
 
-  }, [fetchChats]);
+  }, [fetchChats, setSearchResult]);
 
 
   return (
@@ -74,6 +74,7 @@ function SelectArtist() {
                 cep={artist.cep}
                 city={artist.city}
                 state={artist.state}
+                wage={artist.wage}
               />
             )
           )}
