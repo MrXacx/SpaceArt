@@ -182,6 +182,26 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     .fetchList(offset, limit)
     .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
 
+  const sendAgreement = (data: {
+    hirer: string,
+    hired: string,
+    date: string,
+    initialTime: string,
+    finalTime: string,
+    art: string,
+    wage: number,
+    description: string,
+  }) =>
+    new Agreement()
+      .build({
+        ...data,
+        hirer: new Enterprise(data.hirer),
+        hired: new Artist(data.hired),
+        time: [data.initialTime, data.finalTime],
+        price: data.wage,
+      })
+      .create();
+
   const fetchAgreementsByUser = (id: string, offset = 0, limit = 500) => new Agreement()
     .fetchList(
       new User(id),
@@ -244,6 +264,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         logOut,
         fetchRandomPosts,
         fetchPostsByUser,
+        sendAgreement,
         fetchAgreementsByUser,
         fetchChats,
       }}
