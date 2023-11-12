@@ -13,7 +13,6 @@ export const selectionSchema = Joi.object({
 		.required(),
 
 	finallDate: Joi.date()
-
 		.format('DD/MM/YYYY')
 		.required(),
 
