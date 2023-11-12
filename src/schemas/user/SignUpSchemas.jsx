@@ -45,6 +45,13 @@ export const enterpriseSignUpSchema = Joi.object({
 	cnpj: cnpjSchema
 		.required(),
 
+	companyName: Joi.string()
+		.trim()
+		.min(1)
+		.max(30)
+		.error(error => new Error("A razão social deve ter entre 1 e 30 caracteres"))
+		.required(),
+
 	section: Joi.string()
 		.trim()
 		.min(1)
