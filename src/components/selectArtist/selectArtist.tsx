@@ -7,6 +7,7 @@ import {
   SearchArtistInput,
   SearchArtistInputContainer,
   SignContainer,
+  SearchResults,
 } from "./selectArtistStyles";
 import { useContext, useState, useEffect } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
@@ -22,21 +23,24 @@ import { AccountType } from "../../enums/AccountType";
 function SelectArtist() {
   const { hideModal, setHideModal } = useContext(ModalContext);
   const { fetchChats } = useContext(UserContext);
-  const { fetchUsersByName, cardsData } = useContext(SearchContext);
+  const { fetchUsersByName, cardsData, setCardsData } = useContext(SearchContext);
 
   const [searchedName, setSearchedName] = useState('');
-  const [artists, setArtists] = useState<any[]>(cardsData);
 
-  useEffect(() => {
+   
+ useEffect(() => {
+
     fetchChats(0, 10) // Obtém conversas recentes
-      .then((chats: any[]) => Promise.all( // Obtém os artistas dessas conversas
-        chats.map(
-          chat => new Artist(chat.artist).fetch(false)
-        )))
-      .then((artists: Artist[]) => artists.map( // Converte as instâncias em objetos literais
-        artist => artist.toObject()
-      ))
-      .then(setArtists) // Define artistas padrões
+          .then((chats: any[]) => Promise.all( // Obtém os artistas dessas conversas
+            chats.map(
+              chat => new Artist(chat.artist).fetch(false)
+            )))
+          .then((artists: Artist[]) => artists.map( // Converte as instâncias em objetos literais
+            artist => artist.toObject()
+          ))
+        .catch((e: any) => console.log(e.message))
+          .finally((chats: any) => setCardsData(chats ?? [])); // Define artistas padrões
+
   }, [fetchChats]);
 
 
@@ -46,29 +50,34 @@ function SelectArtist() {
         <Icon alt="X" src={XIcon} onClick={() => setHideModal(!hideModal)} />
         <h1>Selecione um artista</h1>
       </HeaderLogo>
-      <SignContainer>
+      <SignContainer onSubmit={(e: any) => {
+        e.preventDefault();
+        fetchUsersByName(AccountType.artist, searchedName)
+      }}>
         <SearchArtistInputContainer>
           <SearchArtistInput
             type="text"
             placeholder="Artista"
             onChange={(e: any) => setSearchedName(e.target.value)}
           />
-          <SearchArtistButton onClick={() => fetchUsersByName(AccountType.artist, searchedName)}>
+          <SearchArtistButton >
             <img src={SearchWhiteIcon} alt="Pesquisar" />
           </SearchArtistButton>
         </SearchArtistInputContainer>
-        {artists.map(
-          (artist) => (
-            <ArtistBoxCheck
-              name={artist.name}
-              image={artist.image}
-              art={ArtTypesUtil.parse(artist.type)}
-              cep={artist.cep}
-              city={artist.city}
-              state={artist.state}
-            />
-          )
-        )}
+        <SearchResults>
+            {cardsData.map(
+              (artist: any) => (
+                <ArtistBoxCheck
+                  name={artist.name}
+                  image={artist.image}
+                  art={ArtTypesUtil.parse(artist.art)}
+                  cep={artist.cep}
+                  city={artist.city}
+                  state={artist.state}
+                />
+              )
+            )}
+        </SearchResults>
         <FormInputButton onClick={() => {/* Muda para newAgreement */}}>AVANÇAR</FormInputButton>
       </SignContainer>
     </ModalContainer>

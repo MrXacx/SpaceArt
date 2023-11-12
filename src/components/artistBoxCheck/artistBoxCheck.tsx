@@ -39,7 +39,7 @@ function ArtistBoxCheck(prop: ArtistBoxProps) {
             <span>{`${prop.city} - ${prop.state}`}</span>
           </LocalContainer>
         </ProfileInnerContainer>
-        <input type="checkbox" onClick={(e: any) => setArtist(
+        <input type="radio" name="artist" onClick={(e: any) => setArtist(
           new Artist().build({
             name: prop.name,
             image: prop.image,

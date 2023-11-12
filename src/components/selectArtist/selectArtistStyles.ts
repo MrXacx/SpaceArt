@@ -103,3 +103,10 @@ export const SignContainer = styled.form`
   width: 50vw;
   margin: 0 auto;
 `;
+
+export const SearchResults = styled.div`
+    width: 90%; 
+    height: 45vh;
+    max-height: 45vh;
+    overflow-y: scroll;
+`;

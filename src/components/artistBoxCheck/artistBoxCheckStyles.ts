@@ -7,19 +7,19 @@ export const Icon = styled.img`
 export const ArtistSelected = styled.div`
   display: flex;
   flex-direction: row;
-  width: 77%;
-  height: 100px;
+  width: 98%;
+  height: 10vh;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-left: none;
   align-items: center;
-  margin: 10px 0;
+  margin: 10px auto;
 `;
 
 export const ProfileImage = styled.img`
   object-fit: cover;
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 10vw;
+  max-height: 10vh;
   border-radius: 10px 0 0 10px;
 `;
 
