@@ -39,3 +39,19 @@ export const ArrowContainer = styled.div`
     font-weight: 600;
   }
 `;
+
+export const Modal = styled.div<{ hideModal?: boolean }>`
+  visibility: ${({ hideModal }) => (hideModal ? "hidden" : "visible")};
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.55);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

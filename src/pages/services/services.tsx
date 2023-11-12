@@ -3,12 +3,20 @@ import {
   BoxContainer,
   ServicesContainer,
   MainContainer,
+  Modal,
 } from "./servicesStyles";
 import ArrowIcon from "../../assets/arrow.png";
 import Footer from "../../components/footer/footer";
 import HeaderLogged from "../../components/headerLogged/headerLogged";
+import { ModalContext } from "../../contexts/ModalContext";
+import SelectArtist from "../../components/selectArtist/selectArtist";
+import NewContract from "../../components/newContract/newContract";
+import { useContext } from "react";
 
 function Config() {
+
+  // Criar alternativa para conter mais de um modal na mesma página
+  const { hideModal, setHideModal } = useContext(ModalContext);
 
   const agreementServices = [
     { title: 'Criar contrato', modal: '' },
@@ -27,6 +35,12 @@ function Config() {
   return (
     <>
       <HeaderLogged />
+
+      <Modal hideModal={hideModal}>
+        <SelectArtist />
+        <NewContract />
+      </Modal >
+
       <MainContainer>
         <BoxContainer>
 
@@ -39,7 +53,7 @@ function Config() {
                   <img
                     alt={service.title}
                     src={ArrowIcon}
-                    onClick={() => alert(service.modal)}
+                    onClick={() => setHideModal(!hideModal)}
                   />
                 </ArrowContainer>
             )}
@@ -54,7 +68,7 @@ function Config() {
                   <img
                     alt={service.title}
                     src={ArrowIcon}
-                    onClick={() => alert(service.modal)}
+                    onClick={() => setHideModal(!hideModal)}
                   />
                 </ArrowContainer>
             )}
