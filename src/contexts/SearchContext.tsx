@@ -71,6 +71,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
 		<SearchContext.Provider
 			value={{
 				cardsData,
+				setCardsData,
 				fetchRandomUsers,
 				fetchUsersByName,
 				fetchUsersByLocation,
