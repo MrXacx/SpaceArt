@@ -29,14 +29,16 @@ export const artistSignUpSchema = Joi.object({
 		.required(),
 
 	cpf: cpfSchema
+		.error(error => new Error("É obrigatório apresentar um CPF"))
 		.required(),
 
 	art: Joi.string()
+		.error(error => new Error("A pretensão salarial deve conter duas casas decimais"))
 		.required(),
 
 	birthday: Joi.date()
 		.format('DD/MM/YYYY')
-		.error(error => new Error("A data deve seguir o formato dd/mm/aaaa"))
+		.error(error => new Error("A data deve seguir o formato DD/MM/AAAA"))
 		.required(),
 });
 
