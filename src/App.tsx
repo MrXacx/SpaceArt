@@ -27,7 +27,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/modal" element={<Modal />} />
           <Route path="/modal-test" element={<ModalTest />} />
-          <Route path="/serivces" element={<Services />} />
+          <Route path="/services" element={<Services />} />
         </Routes>
       </UserStorage>
     </BrowserRouter>
