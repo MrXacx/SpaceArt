@@ -134,7 +134,7 @@ export const ArtistInfo = styled.div`
   flex-direction: column;
 `;
 
-export const FormInputTextbox = styled.input`
+export const FormInputTextbox = styled.textarea`
   width: 75%;
   height: 100px;
   padding: 0.5rem;
@@ -144,13 +144,7 @@ export const FormInputTextbox = styled.input`
   transition: 300ms;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -172,13 +166,7 @@ export const FormInputFullField = styled.input`
   transition: 300ms;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -200,13 +188,7 @@ export const FormInputHalfField = styled.input`
   transition: 300ms;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -237,4 +219,13 @@ export const FormInputButton = styled.button`
   &:disabled {
     background-color: rgb(182, 182, 182);
   }
+`;
+
+export const FormInputErrorMessage = styled.span<{ hidden: string }>`
+  width: 90%;
+  display: ${(c) => (JSON.parse(c.hidden) ? "none" : "inline")};
+  color: black;
+  font-size: 1rem;
+  text-align: center;
+  margin: .5rem 0;
 `;
