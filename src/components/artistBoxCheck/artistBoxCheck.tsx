@@ -20,34 +20,36 @@ interface ArtistBoxProps {
   cep: string;
   city: string;
   state: string;
+  wage: number;
 }
 
-function ArtistBoxCheck(prop: ArtistBoxProps) {
+function ArtistBoxCheck(props: ArtistBoxProps) {
   const { setArtist } = useContext(SelectArtistContext);
 
   return (
     <ArtistSelected>
-      <ProfileImage alt={prop.name} src={prop.image} />
+      <ProfileImage alt={props.name} src={props.image} />
       <ProfileInformationContainer>
         <ProfileInnerContainer>
           <ProfileDetail>
-            <h3>{prop.name}</h3>
-            <span>{prop.art}</span>
+            <h3>{props.name}</h3>
+            <span>{props.art}</span>
           </ProfileDetail>
           <LocalContainer>
             <Icon alt="local" src={LocalIcon} />
-            <span>{`${prop.city} - ${prop.state}`}</span>
+            <span>{`${props.city} - ${props.state}`}</span>
           </LocalContainer>
         </ProfileInnerContainer>
         <input type="radio" name="artist" onClick={(e: any) => setArtist(
           new Artist().build({
-            name: prop.name,
-            image: prop.image,
-            art: prop.art,
+            name: props.name,
+            image: props.image,
+            art: props.art,
+            wage: props.wage,
             location: {
-              cep: prop.cep,
-              city: prop.city,
-              state: prop.state,
+              cep: props.cep,
+              city: props.city,
+              state: props.state,
             },
           })
         )} />
