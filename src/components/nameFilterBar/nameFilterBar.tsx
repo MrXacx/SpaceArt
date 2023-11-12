@@ -7,8 +7,6 @@ import {
 } from "./filterBarStyles";
 import { ArtTypesUtil, ArtType } from "../../enums/ArtType";
 import { AccountType } from "../../enums/AccountType";
-import { BrazilianStatesUtil, BrazilianState } from "../../enums/BrazilianState";
-import { UserContext, } from "../../contexts/UserContext";
 import { SearchContext, } from "../../contexts/SearchContext";
 
 interface FilterBarProps {
@@ -17,13 +15,11 @@ interface FilterBarProps {
 
 function NameFilterBar(props: FilterBarProps) {
     
-    const { type } = useContext(UserContext);
-    
 	const [name, setName] = useState("");
 	const [art, setArt] = useState<ArtType>();
 	
 	
-	const { fetchUsersByName, cardsData } = useContext(SearchContext);
+	const { fetchUsersByName } = useContext(SearchContext);
     
 	return (
 		<CategoryContainer with_art_field={props.withArtField}>

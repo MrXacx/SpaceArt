@@ -24,15 +24,15 @@ function Search() {
   const [isArtistSearched, setArtistSearched] = useState("true");
   const [isEnterpriseSearched, setEnterpriseSearched] = useState("false");
 
-  let { cardsData, fetchRandomUsers } = useContext(SearchContext);
-  
-  const [data] = useState(cardsData);
-  const [ type, setType ] = useState(AccountType.artist);
-  
+  let { searchResult, fetchRandomUsers } = useContext(SearchContext);
+
+  const [data] = useState(searchResult);
+  const [type, setType] = useState(AccountType.artist);
+
   useEffect(() => {
-//     if(!data) fetchRandomUsers(type);
-    
- }, [fetchRandomUsers, type]);
+    //     if(!data) fetchRandomUsers(type);
+
+  }, [fetchRandomUsers, type]);
 
   return (
     <>
@@ -44,7 +44,7 @@ function Search() {
           <FilterOptionsContainer>
             <FilterOption
               selected={
-                 Boolean(type === AccountType.artist).toString()
+                Boolean(type === AccountType.artist).toString()
               }
               onClick={() => setType(AccountType.artist)}
             >
@@ -52,7 +52,7 @@ function Search() {
             </FilterOption>
             <FilterOption
               selected={
-                 Boolean(type === AccountType.enterprise).toString()
+                Boolean(type === AccountType.enterprise).toString()
               }
               onClick={() => setType(AccountType.enterprise)}
             >
@@ -92,23 +92,23 @@ function Search() {
           <LocationFilterBar withArtField={isArtistSearched} />
         </FilterBarItem>
       </FilterBarContainer>
-      
+
       <SearchResultContainer>
         <CardProfileContainer>
-          {cardsData.map((data: any) => 
-          CardProfile(
-                data.id,
-                data.index,
-                data.image,
-                data.name,
-                data.type,
-                data.city,
-                data.state,
-                data.art,
-                data.wage
-              ))}
+          {searchResult.map((data: any) =>
+            CardProfile(
+              data.id,
+              data.index,
+              data.image,
+              data.name,
+              data.type,
+              data.city,
+              data.state,
+              data.art,
+              data.wage
+            ))}
         </CardProfileContainer>
-        
+
       </SearchResultContainer>
     </>
   );

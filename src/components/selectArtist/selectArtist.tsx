@@ -23,23 +23,23 @@ import { AccountType } from "../../enums/AccountType";
 function SelectArtist() {
   const { hideModal, setHideModal } = useContext(ModalContext);
   const { fetchChats } = useContext(UserContext);
-  const { fetchUsersByName, cardsData, setCardsData } = useContext(SearchContext);
+  const { fetchUsersByName, searchResult, setSearchResult } = useContext(SearchContext);
 
   const [searchedName, setSearchedName] = useState('');
 
-   
- useEffect(() => {
+
+  useEffect(() => {
 
     fetchChats(0, 10) // Obtém conversas recentes
-          .then((chats: any[]) => Promise.all( // Obtém os artistas dessas conversas
-            chats.map(
-              chat => new Artist(chat.artist).fetch(false)
-            )))
-          .then((artists: Artist[]) => artists.map( // Converte as instâncias em objetos literais
-            artist => artist.toObject()
-          ))
-        .catch((e: any) => console.log(e.message))
-          .finally((chats: any) => setCardsData(chats ?? [])); // Define artistas padrões
+      .then((chats: any[]) => Promise.all( // Obtém os artistas dessas conversas
+        chats.map(
+          chat => new Artist(chat.artist).fetch(false)
+        )))
+      .then((artists: Artist[]) => artists.map( // Converte as instâncias em objetos literais
+        artist => artist.toObject()
+      ))
+      .catch((e: any) => console.log(e.message))
+      .finally((chats: any) => setSearchResult(chats ?? [])); // Define artistas padrões
 
   }, [fetchChats]);
 
@@ -65,20 +65,20 @@ function SelectArtist() {
           </SearchArtistButton>
         </SearchArtistInputContainer>
         <SearchResults>
-            {cardsData.map(
-              (artist: any) => (
-                <ArtistBoxCheck
-                  name={artist.name}
-                  image={artist.image}
-                  art={ArtTypesUtil.parse(artist.art)}
-                  cep={artist.cep}
-                  city={artist.city}
-                  state={artist.state}
-                />
-              )
-            )}
+          {searchResult.map(
+            (artist: any) => (
+              <ArtistBoxCheck
+                name={artist.name}
+                image={artist.image}
+                art={ArtTypesUtil.parse(artist.art)}
+                cep={artist.cep}
+                city={artist.city}
+                state={artist.state}
+              />
+            )
+          )}
         </SearchResults>
-        <FormInputButton onClick={() => {/* Muda para newAgreement */}}>AVANÇAR</FormInputButton>
+        <FormInputButton onClick={() => {/* Muda para newAgreement */ }}>AVANÇAR</FormInputButton>
       </SignContainer>
     </ModalContainer>
   );

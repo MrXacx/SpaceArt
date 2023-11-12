@@ -12,7 +12,7 @@ export const SearchContext = createContext({} as any);
 
 export const SearchProvider = ({ children }: SearchStoreProps) => {
 
-	const [cardsData, setCardsData] = useState<any[]>([]);
+	const [searchResult, setSearchResult] = useState<any[]>([]);
 
 	const turnListOnCardData = (users: User[]) => {
 
@@ -43,7 +43,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
 		userClient
 			.fetchListWithoutFilter(page, limit)
 			.then(turnListOnCardData)
-			.then(setCardsData)
+			.then(setSearchResult)
 			.catch(e => console.error(e));
 	}
 
@@ -53,7 +53,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
 		userClient
 			.fetchListFilteringName(name, page, limit)
 			.then(turnListOnCardData)
-			.then(setCardsData)
+			.then(setSearchResult)
 			.catch(e => console.error(e.message));
 	}
 
@@ -63,15 +63,15 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
 		userClient
 			.fetchListFilteringLocation(state, city, page, limit)
 			.then(turnListOnCardData)
-			.then(setCardsData)
+			.then(setSearchResult)
 			.catch(e => console.error(e.message));
 	}
 
 	return (
 		<SearchContext.Provider
 			value={{
-				cardsData,
-				setCardsData,
+				searchResult,
+				setSearchResult,
 				fetchRandomUsers,
 				fetchUsersByName,
 				fetchUsersByLocation,
