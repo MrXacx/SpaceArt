@@ -13,8 +13,7 @@ import dayjs from "dayjs"
 import portuguesPlugin from "dayjs/locale/pt-br";
 import { useNavigate } from "react-router-dom";
 
-function Feed() {
-
+function Feed() {    
   const { isLogged, fetchRandomPosts } = useContext(UserContext);
   const navigate = useNavigate();
   const [posts, setPosts] = useState<JSX.Element[]>();
@@ -25,13 +24,13 @@ function Feed() {
       (<PostContainer>
         <ProfileContainer>
           <img
-            src={data?.user.image}
-            alt={`Perfil de ${data?.user.name}`}
+            src={data?.author.image}
+            alt={`Perfil de ${data?.author.name}`}
             onClick={() => navigate(`user/${data?.user.index}`)}
           />
           <div>
-            <span>{data?.user.name}</span>
-            <span>{dayjs(data?.postTime).locale(portuguesPlugin).fromNow(true)}</span>
+            <span>{data?.author.name}</span>
+            <span>{dayjs(data?.postTime).format('DD/MM')}</span>
           </div>
         </ProfileContainer>
         <TextContentContainer>
