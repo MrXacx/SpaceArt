@@ -1,4 +1,7 @@
-import Joi from "joi";
+import JoiBase from "joi";
+import JoiDate from "@joi/date";
+
+const Joi = JoiBase.extend(JoiDate);
 
 export const selectionSchema = Joi.object({
 	price: Joi.number()
