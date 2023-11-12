@@ -13,7 +13,7 @@ import SelectArtist from "../../components/selectArtist/selectArtist";
 import NewContract from "../../components/newContract/newContract";
 import { useContext } from "react";
 
-function Config() {
+function Services() {
 
   // Criar alternativa para conter mais de um modal na mesma página
   const { hideModal, setHideModal } = useContext(ModalContext);
@@ -81,4 +81,4 @@ function Config() {
   );
 }
 
-export default Config;
+export default Services;
