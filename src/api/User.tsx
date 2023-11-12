@@ -102,7 +102,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       User.errorTypes
         .HTTPRequestError.throw(response.statusText);
     }
-
+    
     return this.factory().build(JSON.parse(response.data)); // Intancia o retorno
   }
 
