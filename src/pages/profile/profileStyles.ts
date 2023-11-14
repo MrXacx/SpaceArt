@@ -12,7 +12,7 @@ export const ProfileGlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: #202020;
+    background-color: #f5f5f5;
   }
 
   ul, ol {
@@ -25,38 +25,68 @@ export const ProfileHeader = styled.header`
   background-color: #000;
   color: #fff;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 2rem 1rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 960px) {
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem 1rem;
+  }
 `;
 
 export const ProfileContent = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-direction: column;
+
+  @media(min-width: 960px) {
+    flex-direction: row;
+  }
 `;
 
-export const DescriptionContainer = styled.div`
-  display: flex;
+export const DescriptionContainer = styled.div<{ is_visible: string }>`
+  width: 100%;
+  display: ${(c: any) => (JSON.parse(c.is_visible) ? "flex" : "none")};
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   justify-self: center;
   align-self: center;
+  color: #000;
+  background-color: #f5f5f5;
+  padding: 1rem 0;
 
   span {
-    font-size: 22px;
-    text-align: center;
+    font-size: 1.5rem;
+    text-align: jusify;
     margin: 0 auto;
     font-weight: 800;
   }
 
   p {
-    padding: 2rem;
-    border: 1px solid #fff;
+    width: 60vw;
+    max-width: 60vw;
     border-radius: 5px;
     margin: 1.5rem auto 0 auto;
     line-height: 1.5rem;
-    max-width: 80%;
     text-align: justify;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: justify;
+  }
+
+  @media (min-width: 960px) {
+    color: #fff;
+    background-color: transparent;
+
+    span {
+      text-align: center;
+    }
+
+    p {
+      padding: 2rem;
+      border: 1px solid #fff;
+      max-width: 80%;
+    }
   }
 `;
 
@@ -66,46 +96,75 @@ export const UserImage = styled.div`
   width: fit-content;
   align-items: center;
   justify-content: center;
+  width: 100%;
+
+  img:last-of-type {
+    display: none;
+  }
+
+@media(min-width: 960px) {
+  width: auto;
+  img:last-of-type {
+    display: flex;
+  }
+}
 `;
 
 export const Blob = styled.img`
   border: 3px solid #ff8311;
   margin: 0.5rem;
-  max-width: 10vw;
+  height: 15vh;
+  max-width: 30vw;
   border-radius: 50%;
+
+  @media (min-width: 960px) {
+    margin: 0.5rem;
+    height: 20vh;
+    max-width: 15vw;
+  }
 `;
 
 export const Icon = styled.img<{ hidden?: string }>`
-  display: ${(c) => (JSON.parse(c.hidden ?? "false") ? "none" : "flex")};
-  max-width: 23px;
+display: ${ (c) => (JSON.parse(c.hidden ?? "false") ? "none" : "flex") };
+max-width: 23px;
 `;
 
 export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   width: fit-content;
-  margin: 0 1rem;
-`;
+  margin: 0 auto;
 
-export const UserStats = styled.ul`
-  display: flex;
-  list-style-type: none;
-
-  li {
-    &:first-of-type {
-      margin-right: 0.5rem;
-    }
+  @media (min-width: 960px) {
+    justify-content: flex-start;
+    margin: 0 1rem;
   }
 `;
 
-export const UserDetails = styled.div`
-  margin: 1rem 0;
+export const UserStats = styled.ul`
+display: flex;
+justify-content: center;
+list-style-type: none;
+margin: 0.5rem 0;
 
   li {
+  &:first-of-type {
+    margin-right: 0.5rem;
+  }
+}
+
+@media(min-width: 960px) {
+  justify-content: flex-start;
+}
+`;
+
+export const UserDetails = styled.div`
+  margin: 0.5rem 0;
+
+  ul {
     display: flex;
-    align-items: center;
-    font-size: 12px;
-    margin: 0.75rem 0;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   a {
@@ -117,27 +176,82 @@ export const UserDetails = styled.div`
   ${Icon} {
     margin-right: 0.5rem;
   }
+
+  @media (min-width: 960px) {
+    ul {
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+  }
 `;
 
 export const ProfileTools = styled.div`
-  width: 55%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+width: 55%;
+display: flex;
+margin: 0 auto 1rem auto;
+align-items: center;
+justify-content: center;
 
-  ${Icon} {
-    min-height: 23px;
-    cursor: pointer;
+  ${ Icon } {
+  height: 1.5rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 5px;
+
+    &:hover {
+    background-color: #0f0f0f75;
   }
+}
+
+@media(min-width: 960px) {
+  justify-content: flex-start;
+  margin: 0;
+    ${ Icon } {
+    margin: 0 0.5rem 0 0;
+  }
+}
 `;
 
 export const UserDetailsHeader = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  @media (min-width: 960px) {
+    flex-direction: row;
+  }
+`;
+
+export const UserDetailsItem = styled.li<{ hidden: string }>`
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.75rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background-color: #0f0f0f75;
+  max-width: 50%;
+  border-radius: 5px;
+
+  &:last-of-type {
+    width: 75%;
+    padding: 0.5rem 0;
+  }
+
+  @media(min-width: 960px) {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0;
+    background-color: transparent;
+  }
 `;
 
 export const UserName = styled.span`
-  font-size: 25px;
+  font-size: 1.75rem;
   font-weight: 900;
   color: #ff8311;
 `;
@@ -146,9 +260,14 @@ export const UserType = styled.span`
   background-color: #ff8311;
   border-radius: 5px;
   padding: 0.25rem;
-  margin: 0 1rem;
-  font-size: 13px;
+  margin: 1rem;
+  font-size: 0.8rem;
+
+  @media (min-width: 960px) {
+    margin: 0 1rem;
+  }
 `;
+
 
 export const Wrapper = styled.div`
   margin: 1rem 2rem;
@@ -159,28 +278,38 @@ export const Wrapper = styled.div`
 
 export const CalendarContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  background-color: #202020;
+  width: 100%;
+  background-color: transparent;
   padding: 2rem 0;
-  width: 63%;
-  
-  height: 60vh;
-  border-radius: 5px;
   margin-bottom: 2rem;
-  box-shadow: 0 5px 10px #0005;
+  gap: 2rem;
+
+  @media(min-width: 960px) {
+    background-color: #fff;
+    grid-template-columns: repeat(2, 1fr);
+    width: 63%;
+    max-height: 55vh;
+    padding: 2rem 0;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px #0005;
+  }
 `;
 
 export const Calendar = styled.div`
   display: grid;
-  grid-template-rows: 1fr 3fr;
-  height: 100%;
-  width: 75%;
+  grid-template-rows: 1fr 5fr;
+  height: 50vh;
+  width: 100%;
   justify-self: center;
+  background-color: #000;
+  border-radius: 5px;
+
+  @media (min-width: 960px) {
+    width: 80%;
+  }
 `;
 
 export const CalendarHeader = styled.header`
-  background-color: #000;
-  border-radius: 5px 5px 0 0;
   padding: 0.75rem 1rem 0.25rem 1rem;
 
   span {
@@ -216,7 +345,6 @@ export const MonthNavbar = styled.nav`
 export const DaysOfWeek = styled.div`
   display: grid;
   place-items: center;
-
   grid-template-columns: repeat(7, 1fr);
   gap: 0.5rem;
 `;
@@ -224,16 +352,14 @@ export const DaysOfWeek = styled.div`
 export const CalendarNumberContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  place-items: center;
   gap: 0.5rem;
-  background-color: #000;
-  padding: 1rem 1rem;
-  border-radius: 0 0 5px 5px;
+  padding: 1rem;
   color: #fff;
 `;
 
-export const CalendarNumberItem = styled.span<{selected: string}>`
-  
+export const CalendarNumberItem = styled.span<{ selected: string }>`
+  align-self: center;
+  justify-self: center;
   width: 100%;
   height: 50%;
   border-radius: 50%;
@@ -242,15 +368,13 @@ export const CalendarNumberItem = styled.span<{selected: string}>`
   cursor: pointer;
   text-align: center;
   border-radius: 3px;
-  background-color: ${(c) => JSON.parse(c.selected) ? '#ff831185' : 'transparent'};
-  font-weight: ${(c) => JSON.parse(c.selected) ? 'bold' : '500'};
-
+  background-color: ${(c) => JSON.parse(c.selected) ? "#ff831185" : "transparent"};
+  font-weight: ${ (c) => (JSON.parse(c.selected) ? "bold" : "500") };
 
   &:hover {
-    background-color: #ff831185;
+    border: 1px solid #ff831185;
     font-weight: bold;
   }
-
 `;
 
 export const JobsDayContainer = styled.div`
@@ -258,6 +382,9 @@ export const JobsDayContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width: 960px) {
+    width: 80%;
+  }
 `;
 
 export const DateHeader = styled.span`
@@ -267,10 +394,14 @@ export const DateHeader = styled.span`
   text-transform: uppercase;
   box-shadow: 0 2px 5px #0005;
   color: #fff;
-  width: 60%;
+  width: 100%;
   background-color: #000;
   border-radius: 5px;
   padding: 1rem;
+
+  @media(min-width: 960px) {
+    width: 60%;
+  }
 `;
 
 export const JobWrapper = styled.div`
@@ -280,31 +411,46 @@ export const JobWrapper = styled.div`
 `;
 
 export const Jobs = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  overflow-y: hidden;
-  height: auto;
-  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+
+  @media(min-width: 960px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: hidden;
+    height: auto;
+    width: 100%;
+  }
 `;
 
 export const JobInfo = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   align-items: center;
   margin: 0.75rem 0;
   transition: 300ms;
-  width: 60%;
   background-color: #000;
   color: #fff;
   border-radius: 5px;
-  padding: 1rem;
+
+  @media (min-width: 960px) {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 60%;
+    padding: 1rem;
+  }
 `;
 
 export const JobHour = styled.span`
   color: #fff;
+  margin: 0 auto;
+  @media(min-width: 960px) {
+    margin: 0;
+  }
 `;
 
 export const TypeJobIcon = styled.div`
@@ -312,11 +458,16 @@ export const TypeJobIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  padding: 0.5rem;
+  border-radius: 5px 0 0 5px;
+  padding: 1rem 0.5rem;
 
   ${Icon} {
     width: 20px;
+  }
+
+  @media (min-width: 960px) {
+    border-radius: 50%;
+    padding: 0.5rem;
   }
 `;
 
