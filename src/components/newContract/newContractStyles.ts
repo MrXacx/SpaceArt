@@ -12,14 +12,25 @@ export const ModalContainer = styled.div<{ hidden: boolean }>`
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 `;
 
-export const MainSignUpContainer = styled.div`
-  display: grid;
-  min-height: 80vh;
-`;
+export const FormInputButton = styled.button`
+  width: 77%;
+  background-color: #ff8311;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 1px 4px #000;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
 
-export const InnerContainer = styled.div`
-  justify-self: center;
-  align-self: center;
+  &::placeholder {
+    color: #000;
+  }
+
+  &:disabled {
+    background-color: rgb(182, 182, 182);
+  }
 `;
 
 export const HeaderLogo = styled.header`
@@ -53,6 +64,65 @@ export const SignContainer = styled.form`
   width: 50vw;
   margin: 0 auto;
 `;
+
+export const SearchArtistInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+`;
+
+export const SearchArtistInput = styled.input`
+  width: 77%;
+  height: 56px;
+  border-radius: 5px 0 0 5px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-right: 0;
+  padding-left: 20px;
+
+  &::placeholder {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  &:focus {
+    border: 1px solid #fa8b08;
+    outline: none;
+  }
+`;
+
+export const SearchArtistButton = styled.button`
+  height: 60px;
+  width: 100px;
+  background-color: #fa8b08;
+  border-radius: 0 5px 5px 0;
+  border: none;
+  cursor: pointer;
+
+  img {
+    width: 20px;
+  }
+`;
+
+export const SearchResults = styled.div`
+    width: 90%; 
+    height: 45vh;
+    max-height: 45vh;
+    overflow-y: scroll;
+`;
+
+
+export const MainSignUpContainer = styled.div`
+  display: grid;
+  min-height: 80vh;
+`;
+
+export const InnerContainer = styled.div`
+  justify-self: center;
+  align-self: center;
+`;
+
 
 export const ProfileInformationContainer = styled.div`
   width: 100%;
@@ -191,27 +261,6 @@ export const FormInputHalfField = styled.input`
   &:focus {
     outline: none;
   }
-
-  &::placeholder {
-    color: #000;
-  }
-
-  &:disabled {
-    background-color: rgb(182, 182, 182);
-  }
-`;
-
-export const FormInputButton = styled.button`
-  width: 77%;
-  background-color: #ff8311;
-  padding: 0.5rem;
-  border-radius: 3px;
-  border: none;
-  box-shadow: 0 1px 4px #000;
-  color: #fff;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-top: 1.5rem;
 
   &::placeholder {
     color: #000;
