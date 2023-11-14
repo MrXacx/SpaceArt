@@ -20,7 +20,7 @@ import { agreementSchema } from "../../schemas/services/AgreementSchemas";
 import dayjs from "dayjs";
 
 function NewContract() {
-  const { hideModal, setHideModal } = useContext(ModalContext);
+  const { hideNewContract, toogleNewContractVisibility } = useContext(ModalContext);
   const { id, sendAgreement } = useContext(UserContext);
   const { artist } = useContext(SelectArtistContext);
 
@@ -73,9 +73,9 @@ function NewContract() {
   }
 
   return (
-    <ModalContainer>
+    <ModalContainer hidden={hideNewContract}>
       <HeaderLogo>
-        <Icon alt="X" src={XIcon} onClick={() => setHideModal(!hideModal)} />
+        <Icon alt="X" src={XIcon} onClick={() => toogleNewContractVisibility()} />
         <h1>Novo contrato</h1>
       </HeaderLogo>
       <SignContainer onSubmit={(e: any) => {

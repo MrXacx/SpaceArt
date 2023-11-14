@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-export const ModalContainer = styled.div`
+export const ModalContainer = styled.div<{ hidden: boolean }>`
+  display: ${(c: any) => c.hidden ? 'none' : 'flex'};
   width: 50vw;
   min-height: 70vh;
   background-color: white;

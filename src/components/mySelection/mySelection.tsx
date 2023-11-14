@@ -10,12 +10,12 @@ import { ModalContext } from "../../contexts/ModalContext";
 import MyBusinessBox from "../myBusinessBox/myBusinessBox";
 
 function MySelection() {
-  const { hideModal, setHideModal } = useContext(ModalContext);
+  const { hideMySelection, toogleMySelectionVisibility } = useContext(ModalContext);
 
   return (
-    <ModalContainer>
+    <ModalContainer hidden={hideMySelection}>
       <HeaderLogo>
-        <Icon alt="X" src={XIcon} onClick={() => setHideModal(!hideModal)} />
+        <Icon alt="X" src={XIcon} onClick={() => toogleMySelectionVisibility()} />
         <h1>Minhas seleções</h1>
       </HeaderLogo>
       <SignContainer>

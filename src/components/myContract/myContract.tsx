@@ -10,12 +10,12 @@ import { ModalContext } from "../../contexts/ModalContext";
 import MyBusinessBox from "../myBusinessBox/myBusinessBox";
 
 function MyContract() {
-  const { hideModal, setHideModal } = useContext(ModalContext);
+  const { hideMyContract, toogleMyContractVisibility} = useContext(ModalContext);
 
   return (
-    <ModalContainer>
+    <ModalContainer hidden={hideMyContract}>
       <HeaderLogo>
-        <Icon alt="X" src={XIcon} onClick={() => setHideModal(!hideModal)} />
+        <Icon alt="X" src={XIcon} onClick={() => toogleMyContractVisibility()} />
         <h1>Meus contratos</h1>
       </HeaderLogo>
       <SignContainer>

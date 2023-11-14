@@ -2,7 +2,6 @@ import {
   FormInputButton,
   FormInputFullField,
   FormInputHalfField,
-  FormInputTextbox,
   HeaderLogo,
   Icon,
   InnerContainer,
@@ -15,17 +14,17 @@ import { useContext } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 
 function ProfileUpdate() {
-  const { hideModal, setHideModal } = useContext(ModalContext);
+  const { hideProfileUpdate, toogleProfileUpdateVisibility } = useContext(ModalContext);
 
   return (
-    <ModalContainer>
+    <ModalContainer hidden={hideProfileUpdate}>
       <MainSignUpContainer>
         <InnerContainer>
           <HeaderLogo>
             <Icon
               alt="X"
               src={XIcon}
-              onClick={() => setHideModal(!hideModal)}
+              onClick={() => toogleProfileUpdateVisibility()}
             />
             <h1>Alterar perfil</h1>
             <span>
