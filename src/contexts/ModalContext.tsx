@@ -15,10 +15,25 @@ export const ModalContext = createContext<IModalContext>({
 });
 
 export const ModalProvider = ({ children }: ModalStoreProps) => {
-  const [hideModal, setHideModal] = useState(true);
+  const [hideNewContract, setHideNewContract] = useState(true);
+  const [hideNewSelection, setHideNewSelection] = useState(true);
+  const [hideMyContract, setHideMyContract] = useState(true);
+  const [hideMySelection, setHideMySelection] = useState(true);
+
+  const toogleNewContract = () => setHideNewContract(!hideNewContract);
+  const toogleNewSelection = () => setHideNewSelection(!hideNewSelection);
+  const toogleMyContract = () => setHideMyContract(!hideMyContract);
+  const toogleMySelections = () => setHideMySelection(!hideMySelection);
 
   return (
-    <ModalContext.Provider value={{ hideModal, setHideModal }}>
+    <ModalContext.Provider
+      value={{
+        toogleNewContract,
+        toogleNewSelection,
+        toogleMyContract,
+        toogleMySelections,
+      }}
+    >
       {children}
     </ModalContext.Provider>
   );
