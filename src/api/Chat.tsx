@@ -67,7 +67,7 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
    */
   async fetchList(user: User, offset = 0, limit = 10): Promise<Chat[]> {
     let response = await this.request.get(
-      `${this.path}?offset=${offset}&limit=${limit}user=${user.getID()}`
+      `${this.path}/list?offset=${offset}&limit=${limit}&user=${user.getID()}`
     );
 
     if (response.status !== Chat.httpStatusCode.OK) {
