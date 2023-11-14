@@ -1,37 +1,41 @@
 import { createContext, useState } from "react";
 
-interface IModalContext {
-  hideModal: boolean;
-  setHideModal: (value: boolean) => void;
-}
-
 interface ModalStoreProps {
   children: React.ReactNode;
 }
 
-export const ModalContext = createContext<IModalContext>({
-  hideModal: true,
-  setHideModal: () => {},
-});
+export const ModalContext = createContext({} as any);
 
 export const ModalProvider = ({ children }: ModalStoreProps) => {
   const [hideNewContract, setHideNewContract] = useState(true);
   const [hideNewSelection, setHideNewSelection] = useState(true);
   const [hideMyContract, setHideMyContract] = useState(true);
   const [hideMySelection, setHideMySelection] = useState(true);
+  const [hideProfileUpdate, setHideProfileUpdate] = useState(true);
+  const [hideNewPost, setHideNewPost] = useState(true);
 
-  const toogleNewContract = () => setHideNewContract(!hideNewContract);
-  const toogleNewSelection = () => setHideNewSelection(!hideNewSelection);
-  const toogleMyContract = () => setHideMyContract(!hideMyContract);
-  const toogleMySelections = () => setHideMySelection(!hideMySelection);
+  const toogleNewContractVisibilty = () => setHideNewContract(!hideNewContract);
+  const toogleNewSelectionVisibilty = () => setHideNewSelection(!hideNewSelection);
+  const toogleMyContractVisibilty = () => setHideMyContract(!hideMyContract);
+  const toogleMySelectionVisibilty = () => setHideMySelection(!hideMySelection);
+  const toogleProfileUpdateVisibilty = () => setHideProfileUpdate(!hideProfileUpdate);
+  const toogleNewPostVisibilty = () => setHideNewPost(!hideNewPost);
 
   return (
     <ModalContext.Provider
       value={{
-        toogleNewContract,
-        toogleNewSelection,
-        toogleMyContract,
-        toogleMySelections,
+        hideNewContract,
+        toogleNewContractVisibilty,
+        hideNewSelection,
+        toogleNewSelectionVisibilty,
+        hideMyContract,
+        toogleMyContractVisibilty,
+        hideMySelection,
+        toogleMySelectionVisibilty,
+        hideProfileUpdate,
+        toogleProfileUpdateVisibilty,
+        hideNewPost,
+        toogleNewPostVisibilty,
       }}
     >
       {children}
