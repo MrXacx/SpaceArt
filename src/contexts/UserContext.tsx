@@ -157,8 +157,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   // PUBLICAÇÕES VISUALIZADAS OU PERTENCENTES AO USUÁRIO
   const handlePost = useCallback((postItem: Post) => {
     const post = postItem.toObject();
-    return post
-      .author?
+    return post.author ? post.author
       .fetch(false)
         .then((author: User) => {
           post.author = author;
@@ -170,8 +169,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           message: post.message as string,
           media: post.media as string,
           postTime: post.postTime as string,
-        }));
-
+        }))
+        : [];
 
   }, []);
 
