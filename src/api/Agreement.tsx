@@ -43,6 +43,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
     this.time = agreement.time ?? [];
     this.status = agreement.status;
 
+    console.log(this);
     return this;
   }
 
@@ -121,7 +122,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
         new Rate(
           new Agreement(data.id)
         ) // Instancia avaliação
-        .fetchList() // Busca as avaliações associadas no banco
+          .fetchList() // Busca as avaliações associadas no banco
           .then(rates => agreement.rates = rates); // Associa avaliações ao contrato
       }
 

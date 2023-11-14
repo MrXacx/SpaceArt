@@ -24,7 +24,7 @@ function NewContract() {
   const { id, sendAgreement } = useContext(UserContext);
   const { artist } = useContext(SelectArtistContext);
 
-  const selectedArtist = artist?.toObject() ?? {};
+  const selectedArtist = artist?.toObject();
 
   const [art, setArt] = useState<ArtType>();
   const [price, setPrice] = useState(0);
@@ -37,8 +37,8 @@ function NewContract() {
 
   useEffect(() => {
     try { // Substitui dados pelos valores do artista selecionado
-      setArt(ArtTypesUtil.parse(selectedArtist.art));
-      setPrice(selectedArtist.wage);
+      setArt(ArtTypesUtil.parse(selectedArtist?.art));
+      setPrice(selectedArtist?.wage);
     } catch (e: any) {
       setPrice(0);
       setArt(undefined);
@@ -68,8 +68,7 @@ function NewContract() {
         initialTime,
         finalTime,
         description
-      })
-        .then(() => alert('criou'));
+      });
     }
   }
 
