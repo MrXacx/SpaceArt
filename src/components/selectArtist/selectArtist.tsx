@@ -9,7 +9,7 @@ import {
   SignContainer,
   SearchResults,
 } from "./selectArtistStyles";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import XIcon from "../../assets/x.svg";
 import ArtistBoxCheck from "../artistBoxCheck/artistBoxCheck";
@@ -27,21 +27,19 @@ function SelectArtist() {
 
   const [searchedName, setSearchedName] = useState('');
 
-
-  useEffect(() => {
-
+  const fetchRecentChats = useCallback(() =>
     fetchChats(0, 10) // Obtém conversas recentes
       .then((chats: any[]) => Promise.all( // Obtém os artistas dessas conversas
-        chats.map(
-          chat => new Artist(chat.artist).fetch(false)
-        )))
-      .then((artists: Artist[]) => artists.map( // Converte as instâncias em objetos literais
-        artist => artist.toObject()
+        chats.map(chat => new Artist(chat.artist).fetch(false))
       ))
+      // Converte as instâncias em objetos literais
+      .then((artists: Artist[]) => artists.map(artist => artist.toObject())), [fetchChats]);
+
+  useEffect(() => {
+    fetchRecentChats()
       .catch((e: any) => console.log(e.message))
       .finally((chats: any) => setSearchResult(chats ?? [])); // Define artistas padrões
-
-  }, [fetchChats, setSearchResult]);
+  }, [fetchChats, fetchRecentChats, setSearchResult]);
 
 
   return (
