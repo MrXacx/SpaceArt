@@ -42,8 +42,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
     this.date = agreement.date;
     this.time = agreement.time ?? [];
     this.status = agreement.status;
-
-    console.log(this);
+    
     return this;
   }
 
