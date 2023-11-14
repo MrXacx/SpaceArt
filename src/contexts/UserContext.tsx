@@ -27,6 +27,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const [isLogged, setLoginStatus] = useState(JSON.parse(sessionStorage.getItem("is_user_logged") ?? 'false'));
   const [isLoaded, setLoadStatus] = useState(false);
 
+  // ACESSO DO USUÁRIO AO SISTEMA
   const fetchLoggedUser = useCallback(async () => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
       // eslint-disable-next-line eqeqeq
@@ -152,27 +153,28 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     navigate('/');
   };
 
+
+  // PUBLICAÇÕES VISUALIZADAS OU PERTENCENTES AO USUÁRIO
   const handlePost = useCallback((postItem: Post) => {
-
     const post = postItem.toObject();
-
     return post
-      .author
-      ?.fetch(false)
-      .then((author: User) => {
-        post.author = author;
-        return post;
-      })
-      .then((post: any) => ({
-        id: post.id as string,
-        author: post.author?.toObject(),
-        message: post.message as string,
-        media: post.media as string,
-        postTime: post.postTime as string,
-      }));
+      .author?
+      .fetch(false)
+        .then((author: User) => {
+          post.author = author;
+          return post;
+        })
+        .then((post: any) => ({
+          id: post.id as string,
+          author: post.author?.toObject(),
+          message: post.message as string,
+          media: post.media as string,
+          postTime: post.postTime as string,
+        }));
 
 
-  }, [])
+  }, []);
+
   const fetchPostsByUser = (id: string, offset = 0, limit = 500) => new Post()
     .build({ author: new User(id) })
     .fetchListByAuthor(offset, limit)
@@ -182,6 +184,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     .fetchList(offset, limit)
     .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
 
+
+  // CONTRATOS
   const sendAgreement = (data: {
     hirer: string,
     hired: string,
@@ -193,7 +197,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     description: string,
   }) =>
     new Agreement()
-      .build({
+      .build({ // Passa os atributos usados para criar um contrato
         ...data,
         hirer: new Enterprise(data.hirer),
         hired: new Artist(data.hired),
@@ -203,33 +207,15 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .create();
 
   const fetchAgreementsByUser = (id: string, offset = 0, limit = 500) => new Agreement()
-    .fetchList(
-      new User(id),
-      offset,
-      limit
+    .fetchList( // Busca uma lista de contratos de um usuário qualquer
+      new User(id), offset, limit
     )
-    .then(list => Promise.all(
-      list.map(
-        item => {
-          const agreement = item.toObject();
-          return Promise.all([
-            agreement.hirer?.fetch(false),
-            agreement.hired?.fetch(false),
-          ])
-            .then(([hirer, hired]) => {
-              agreement.hirer = hirer;
-              agreement.hired = hired;
-              return agreement;
-            });
-        })
-    ));
+    .then((list: Agreement[]) => list.map(item => item.toObject()));
 
+
+  // CONVERSAS
   const fetchChats = (offset = 0, limit = 10) => new Chat()
-    .fetchList(
-      new User(id),
-      offset,
-      limit
-    )
+    .fetchList(new User(id), offset, limit)
     .then(chats => chats.map(
       chat => {
         const item = chat.toObject()
@@ -241,6 +227,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       }
     ))
     .catch((e: any) => console.error(e.message));
+
+
 
   useEffect(() => {
     if (isLogged && !isLoaded) {
