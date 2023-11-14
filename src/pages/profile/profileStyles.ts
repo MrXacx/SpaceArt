@@ -27,6 +27,9 @@ export const ProfileHeader = styled.header`
   display: grid;
   grid-template-columns: 1fr;
 
+  @media (min-width: 768px) {
+    padding-top: 2rem;
+  }
   @media (min-width: 960px) {
     grid-template-columns: 1fr 1fr;
     padding: 2rem 1rem;
@@ -38,8 +41,12 @@ export const ProfileContent = styled.div`
   justify-content: flex-start;
   flex-direction: column;
 
-  @media(min-width: 960px) {
+  @media (min-width: 768px) {
     flex-direction: row;
+    margin-bottom: 2rem;
+  }
+  @media (min-width: 960px) {
+    align-items: center;
   }
 `;
 
@@ -74,7 +81,15 @@ export const DescriptionContainer = styled.div<{ is_visible: string }>`
     text-align: justify;
   }
 
+  @media (min-width: 768px) {
+    p {
+      margin: 1rem 0 0 0;
+    }
+  }
   @media (min-width: 960px) {
+    width: 50%;
+    max-width: 50%;
+    margin: 0;
     color: #fff;
     background-color: transparent;
 
@@ -102,12 +117,12 @@ export const UserImage = styled.div`
     display: none;
   }
 
-@media(min-width: 960px) {
-  width: auto;
-  img:last-of-type {
-    display: flex;
+  @media (min-width: 768px) {
+    width: auto;
+    img:last-of-type {
+      display: flex;
+    }
   }
-}
 `;
 
 export const Blob = styled.img`
@@ -117,16 +132,21 @@ export const Blob = styled.img`
   max-width: 30vw;
   border-radius: 50%;
 
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     margin: 0.5rem;
+    height: 13vh;
+    max-width: 17vw;
+  }
+
+  @media (min-width: 960px) {
     height: 20vh;
-    max-width: 15vw;
+    max-width: 20vw;
   }
 `;
 
 export const Icon = styled.img<{ hidden?: string }>`
-display: ${ (c) => (JSON.parse(c.hidden ?? "false") ? "none" : "flex") };
-max-width: 23px;
+  display: ${(c) => (JSON.parse(c.hidden ?? "false") ? "none" : "flex")};
+  max-width: 23px;
 `;
 
 export const UserInfo = styled.div`
@@ -135,27 +155,28 @@ export const UserInfo = styled.div`
   width: fit-content;
   margin: 0 auto;
 
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     justify-content: flex-start;
     margin: 0 1rem;
   }
 `;
 
 export const UserStats = styled.ul`
-display: flex;
-justify-content: center;
-list-style-type: none;
-margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0.5rem 0;
 
   li {
-  &:first-of-type {
-    margin-right: 0.5rem;
+    &:first-of-type {
+      margin-right: 0.5rem;
+    }
   }
-}
 
-@media(min-width: 960px) {
-  justify-content: flex-start;
-}
+  @media (min-width: 768px) {
+    justify-content: flex-start;
+    font-size: 0.85rem;
+  }
 `;
 
 export const UserDetails = styled.div`
@@ -167,50 +188,17 @@ export const UserDetails = styled.div`
     flex-wrap: wrap;
   }
 
-  a {
-    text-decoration: none;
-    color: #fff;
-    transition: 300ms;
-  }
-
-  ${Icon} {
-    margin-right: 0.5rem;
-  }
-
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     ul {
-      flex-direction: column;
       justify-content: flex-start;
     }
   }
-`;
-
-export const ProfileTools = styled.div`
-width: 55%;
-display: flex;
-margin: 0 auto 1rem auto;
-align-items: center;
-justify-content: center;
-
-  ${ Icon } {
-  height: 1.5rem;
-  margin: 0 0.5rem;
-  cursor: pointer;
-  padding: 0.75rem;
-  border-radius: 5px;
-
-    &:hover {
-    background-color: #0f0f0f75;
+  @media (min-width: 960px) {
+    ul {
+      flex-direction: column;
+      margin-bottom: 0;
+    }
   }
-}
-
-@media(min-width: 960px) {
-  justify-content: flex-start;
-  margin: 0;
-    ${ Icon } {
-    margin: 0 0.5rem 0 0;
-  }
-}
 `;
 
 export const UserDetailsHeader = styled.div`
@@ -219,14 +207,17 @@ export const UserDetailsHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     flex-direction: row;
+    justify-content: flex-start;
+  }
+  @media (min-width: 960px) {
+    justify-content: space-between;
   }
 `;
 
 export const UserDetailsItem = styled.li<{ hidden: string }>`
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -242,11 +233,51 @@ export const UserDetailsItem = styled.li<{ hidden: string }>`
     padding: 0.5rem 0;
   }
 
-  @media(min-width: 960px) {
+  a {
+    text-decoration: none;
+    color: #fff;
+    transition: 300ms;
+  }
+
+  ${Icon} {
+    margin-right: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 0.65rem;
+    width: auto;
+    margin: 0 0.75rem 0 0;
+    &:last-of-type {
+      width: auto;
+      padding: 0.5rem;
+    }
+
+    ${Icon} {
+      margin-right: 0.25rem;
+      width: 1rem;
+    }
+  }
+
+  @media (min-width: 960px) {
     width: 100%;
+    font-size: 0.75rem;
     justify-content: flex-start;
     padding: 0;
     background-color: transparent;
+    margin: 0.5rem 0;
+
+    ${Icon} {
+      margin-right: 0.5rem;
+      width: 1.2rem;
+    }
+
+    &:last-of-type {
+      padding: 0;
+    }
+
+    span {
+      width: 20vw;
+    }
   }
 `;
 
@@ -254,6 +285,10 @@ export const UserName = styled.span`
   font-size: 1.75rem;
   font-weight: 900;
   color: #ff8311;
+
+  @media (min-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 export const UserType = styled.span`
@@ -263,11 +298,40 @@ export const UserType = styled.span`
   margin: 1rem;
   font-size: 0.8rem;
 
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     margin: 0 1rem;
   }
 `;
 
+export const ProfileTools = styled.div`
+  width: 55%;
+  display: flex;
+  margin: 0 auto 1rem auto;
+  align-items: center;
+  justify-content: center;
+
+  ${Icon} {
+    height: 1.5rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #0f0f0f75;
+    }
+  }
+
+  @media (min-width: 768px) {
+    justify-content: flex-start;
+    margin: 0;
+    ${Icon} {
+      margin: 0 0.5rem 0 0;
+      height: 1rem;
+      padding: 0.5rem;
+    }
+  }
+`;
 
 export const Wrapper = styled.div`
   margin: 1rem 2rem;
@@ -284,9 +348,12 @@ export const CalendarContainer = styled.div`
   margin-bottom: 2rem;
   gap: 2rem;
 
-  @media(min-width: 960px) {
-    background-color: #fff;
+  @media (min-width: 768px) {
+    width: 80%;
     grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 960px) {
+    background-color: #fff;
     width: 63%;
     max-height: 55vh;
     padding: 2rem 0;
@@ -304,8 +371,13 @@ export const Calendar = styled.div`
   background-color: #000;
   border-radius: 5px;
 
+  @media (min-width: 768px) {
+    width: 40vw;
+    height: 35vh;
+  }
   @media (min-width: 960px) {
     width: 80%;
+    height: 55vh;
   }
 `;
 
@@ -368,9 +440,10 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
   cursor: pointer;
   text-align: center;
   border-radius: 3px;
-  background-color: ${(c) => JSON.parse(c.selected) ? "#ff831185" : "transparent"};
-  font-weight: ${ (c) => (JSON.parse(c.selected) ? "bold" : "500") };
-
+  background-color: ${(c) =>
+    JSON.parse(c.selected) ? "#ff831185" : "transparent"};
+  font-weight: ${(c) => (JSON.parse(c.selected) ? "bold" : "500")};
+  border: 1px solid transparent;
   &:hover {
     border: 1px solid #ff831185;
     font-weight: bold;
@@ -399,7 +472,7 @@ export const DateHeader = styled.span`
   border-radius: 5px;
   padding: 1rem;
 
-  @media(min-width: 960px) {
+  @media (min-width: 960px) {
     width: 60%;
   }
 `;
@@ -415,7 +488,7 @@ export const Jobs = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem 1rem;
 
-  @media(min-width: 960px) {
+  @media (min-width: 960px) {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -437,7 +510,7 @@ export const JobInfo = styled.div`
   color: #fff;
   border-radius: 5px;
 
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     flex-direction: row;
     justify-content: space-between;
     width: 60%;
@@ -448,7 +521,7 @@ export const JobInfo = styled.div`
 export const JobHour = styled.span`
   color: #fff;
   margin: 0 auto;
-  @media(min-width: 960px) {
+  @media (min-width: 768px) {
     margin: 0;
   }
 `;
@@ -465,7 +538,7 @@ export const TypeJobIcon = styled.div`
     width: 20px;
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     border-radius: 50%;
     padding: 0.5rem;
   }
