@@ -12,6 +12,7 @@ import {
   SearchArtistInput,
   SearchArtistInputContainer,
   SearchResults,
+  Modal,
 } from "./newContractStyles";
 import XIcon from "../../assets/x.svg";
 import { useContext, useState, useEffect, useCallback } from "react";
@@ -43,7 +44,7 @@ function NewContract() {
   const [inputErrorMessage, setInputErrorMessage] = useState('');
   const [isValidInput, setInputValidate] = useState('true');
   const [searchedName, setSearchedName] = useState('');
-  const [selectedArtist] = useState(artist?.toObject() ?? {});
+  const [selectedArtist, setSelectedArtist] = useState(artist?.toObject());
 
   const fetchRecentChats = useCallback(() =>
     fetchChats(0, 10) // Obtém conversas recentes
@@ -97,96 +98,97 @@ function NewContract() {
       });
     }
   }
-
   return (
-    <ModalContainer hidden={hideNewContract}>
-      <HeaderLogo>
-        <Icon alt="X" src={XIcon} onClick={() => toogleNewContractVisibility()} />
-        <h1>{artist ? 'Novo contrato' : ''}</h1>
-      </HeaderLogo>
-      {!artist ?
-        // Antigo SelectArtist
-        <SignContainer onSubmit={(e: any) => {
-          e.preventDefault();
-          fetchUsersByName(AccountType.artist, searchedName)
-        }}>
-          <SearchArtistInputContainer>
-            <SearchArtistInput
-              type="text"
-              placeholder="Artista"
-              onChange={(e: any) => setSearchedName(e.target.value)}
+    < Modal hidden={hideNewContract}>
+      <ModalContainer>
+        <HeaderLogo>
+          <Icon alt="X" src={XIcon} onClick={() => toogleNewContractVisibility()} />
+          <h1>{!selectedArtist ? 'Selecione um artista' : 'Novo contrato'}</h1>
+        </HeaderLogo>
+        {!selectedArtist ?
+          // Antigo SelectArtist
+          <SignContainer onSubmit={(e: any) => {
+            e.preventDefault();
+            fetchUsersByName(AccountType.artist, searchedName)
+          }}>
+            <SearchArtistInputContainer>
+              <SearchArtistInput
+                type="text"
+                placeholder="Artista"
+                onChange={(e: any) => setSearchedName(e.target.value)}
+              />
+              <SearchArtistButton >
+                <img src={SearchWhiteIcon} alt="Pesquisar" />
+              </SearchArtistButton>
+            </SearchArtistInputContainer>
+            <SearchResults>
+              {searchResult.map(
+                (artist: any) => (
+                  <ArtistBoxCheck
+                    name={artist.name}
+                    image={artist.image}
+                    art={ArtTypesUtil.parse(artist.art)}
+                    cep={artist.cep}
+                    city={artist.city}
+                    state={artist.state}
+                    wage={artist.wage}
+                  />
+                )
+              )}
+            </SearchResults>
+            <FormInputButton onClick={() => setSelectedArtist(artist)}>AVANÇAR</FormInputButton>
+          </SignContainer>
+          :
+          // Formlário contendo o artista selecionado
+          <SignContainer onSubmit={(e: any) => {
+            e.preventDefault();
+            createAgreement();
+          }}>
+            <ArtistBox
+              name={selectedArtist.name}
+              image={selectedArtist.image}
+              art={selectedArtist.art}
+              cep={selectedArtist.location?.cep}
+              city={selectedArtist.location?.city}
+              state={selectedArtist.location?.state}
             />
-            <SearchArtistButton >
-              <img src={SearchWhiteIcon} alt="Pesquisar" />
-            </SearchArtistButton>
-          </SearchArtistInputContainer>
-          <SearchResults>
-            {searchResult.map(
-              (artist: any) => (
-                <ArtistBoxCheck
-                  name={artist.name}
-                  image={artist.image}
-                  art={ArtTypesUtil.parse(artist.art)}
-                  cep={artist.cep}
-                  city={artist.city}
-                  state={artist.state}
-                  wage={artist.wage}
-                />
-              )
-            )}
-          </SearchResults>
-          <FormInputButton onClick={() => {/* Muda para newAgreement */ }}>AVANÇAR</FormInputButton>
-        </SignContainer>
-        :
-        // Formlário contendo o artista selecionado
-        <SignContainer onSubmit={(e: any) => {
-          e.preventDefault();
-          createAgreement();
-        }}>
-          <ArtistBox
-            name={selectedArtist.name}
-            image={selectedArtist.image}
-            art={selectedArtist.art}
-            cep={selectedArtist.location?.cep}
-            city={selectedArtist.location?.city}
-            state={selectedArtist.location?.state}
-          />
-          <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
-          <FormInputFullField value={art} type="text" placeholder="Arte" disabled />
-          <FormInputFullField
-            type="number"
-            placeholder="Valor"
-            value={price.toFixed(2)}
-            onChange={(e: any) => setPrice(e.target.value)}
-          />
-          <FormInputFullField
-            type="date"
-            placeholder="Data do evento"
-            value={date}
-            onChange={(e: any) => setDate(e.target.value)}
-          />
-          <FormInputHalfField
-            type="time"
-            placeholder="Horário de início"
-            value={initialTime}
-            onChange={(e: any) => setInitialTime(e.target.value)}
-          />
-          <FormInputHalfField
-            type="time"
-            placeholder="Horário de encerramento"
-            value={finalTime}
-            onChange={(e: any) => setFinalTime(e.target.value)}
-          />
-          <FormInputTextbox
-            placeholder="Descrição"
-            value={description}
-            onChange={(e: any) => setDescription(e.target.value)}
-          />
-          <FormInputButton>CRIAR CONTRATO</FormInputButton>
-        </SignContainer>
-      
-      }
-    </ModalContainer>
+            <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputFullField value={art} type="text" placeholder="Arte" disabled />
+            <FormInputFullField
+              type="number"
+              placeholder="Valor"
+              value={price?.toFixed(2)}
+              onChange={(e: any) => setPrice(e.target.value)}
+            />
+            <FormInputFullField
+              type="date"
+              placeholder="Data do evento"
+              value={date}
+              onChange={(e: any) => setDate(e.target.value)}
+            />
+            <FormInputHalfField
+              type="time"
+              placeholder="Horário de início"
+              value={initialTime}
+              onChange={(e: any) => setInitialTime(e.target.value)}
+            />
+            <FormInputHalfField
+              type="time"
+              placeholder="Horário de encerramento"
+              value={finalTime}
+              onChange={(e: any) => setFinalTime(e.target.value)}
+            />
+            <FormInputTextbox
+              placeholder="Descrição"
+              value={description}
+              onChange={(e: any) => setDescription(e.target.value)}
+            />
+            <FormInputButton>CRIAR CONTRATO</FormInputButton>
+          </SignContainer>
+
+        }
+      </ModalContainer>
+    </Modal>
   );
 }
 

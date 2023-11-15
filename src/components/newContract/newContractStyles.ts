@@ -1,12 +1,27 @@
 import styled from "styled-components";
 
-export const ModalContainer = styled.div<{ hidden: boolean }>`
-  display: ${(c: any) => c.hidden ? 'none' : 'flex'};
+export const Modal = styled.div<{ hidden?: boolean }>`
+  visibility: ${({hidden}) => hidden ? 'hidden' : 'visible'};
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.55);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ModalContainer = styled.div`
+  display:  flex;
   width: 50vw;
   min-height: 70vh;
   background-color: white;
   border-radius: 6px;
-  display: flex;
   flex-direction: column;
   padding: 50px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);

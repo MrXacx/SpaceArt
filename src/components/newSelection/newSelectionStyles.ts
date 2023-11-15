@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const Modal = styled.div<{ hideModal?: boolean }>`
-  visibility: ${({ hideModal }) => (hideModal ? "hidden" : "visible")};
+export const Modal = styled.div<{ hidden?: boolean }>`
+  visibility: ${({hidden}) => hidden ? 'hidden' : 'visible'};
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.55);
@@ -17,11 +17,11 @@ export const Modal = styled.div<{ hideModal?: boolean }>`
 `;
 
 export const ModalContainer = styled.div`
+  display: flex;
   width: 50vw;
   height: 70vh;
   background-color: white;
   border-radius: 6px;
-  display: flex;
   flex-direction: column;
   box-sizing: border-box;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
