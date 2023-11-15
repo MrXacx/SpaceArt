@@ -2,6 +2,7 @@
 import { Artist, Enterprise, User } from "../api/User";
 import { Post } from "../api/Post";
 import { Agreement } from "../api/Agreement";
+import { Selection } from "../api/Selection";
 import { AccountType, AccountTypesUtil } from "../enums/AccountType";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
 import DefaultImage from "../assets/marco_image.png"
 import { ImageCompressor } from "../services/ImageCompressor";
 import { Chat } from "../api/Chat";
+import { ArtType } from "../enums/ArtType";
 
 interface UserStoreProps {
   children: React.ReactNode;
@@ -159,18 +161,18 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     const post = postItem.toObject();
     return post.author ? post.author
       .fetch(false)
-        .then((author: User) => {
-          post.author = author;
-          return post;
-        })
-        .then((post: any) => ({
-          id: post.id as string,
-          author: post.author?.toObject(),
-          message: post.message as string,
-          media: post.media as string,
-          postTime: post.postTime as string,
-        }))
-        : [];
+      .then((author: User) => {
+        post.author = author;
+        return post;
+      })
+      .then((post: any) => ({
+        id: post.id as string,
+        author: post.author?.toObject(),
+        message: post.message as string,
+        media: post.media as string,
+        postTime: post.postTime as string,
+      }))
+      : [];
 
   }, []);
 
@@ -211,6 +213,53 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     )
     .then((list: Agreement[]) => list.map(item => item.toObject()));
 
+
+  // SELEÇÕES
+  const sendSelection = (data:{
+    owner: string;
+    price: number;
+    art: ArtType;
+    initialDate: string;
+    finalDate: string;
+    initialTime: string;
+    finalTime: string;
+  }) => new Selection()
+  .build({
+    ...data,
+    owner: new Enterprise(data.owner),
+    date: [data.initialDate, data.finalDate],
+    time: [data.initialTime, data.finalTime],
+  })
+  .create()
+  .catch((e: any) => {
+    console.log(`Erro na criação de uma seleção: ${e.message}`);
+    throw new Error(`Erro na criação de uma seleção`);
+  })
+
+
+  const fetchSelectionsByArt = (art: ArtType, offset = 0, limit = 20) => new Selection()
+    .build({ art })
+    .fetchList(offset, limit, 'art')
+    .then((selections: Selection[]) => selections.map(
+      item => item.toObject()
+    ))
+    .catch((e: any) => console.log(`Erro ao buscar seleções de ${art}: ${e.message}`));
+
+  const fetchSelectionsByOwner = (offset = 0, limit = 20) => new Selection()
+    .build({ owner: new Enterprise(id) })
+    .fetchList(offset, limit, 'owner')
+    .then((selections: Selection[]) => selections.map(
+      item => item.toObject()
+    ))
+    .catch((e: any) => console.log('Erro ao buscar seleções do usuário: ', e.message));
+
+  const fetchArtistsInSelection = (id: string, offset = 0, limit = 20) => new Selection(id)
+    .fetchApplications(offset, limit)
+    .then((applications) => Promise.all(
+      applications.map(
+      (item) => item.toObject().artist?.fetch()
+    )))
+    .catch((e: any) => console.log(`Erro na busca por submissões: ${e.message}`));
 
   // CONVERSAS
   const fetchChats = (offset = 0, limit = 10) => new Chat()
@@ -253,6 +302,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchPostsByUser,
         sendAgreement,
         fetchAgreementsByUser,
+        sendSelection,
+        fetchSelectionsByArt,
+        fetchSelectionsByOwner,
+        fetchArtistsInSelection,
         fetchChats,
       }}
     >
