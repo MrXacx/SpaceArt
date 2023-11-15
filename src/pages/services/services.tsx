@@ -8,12 +8,11 @@ import ArrowIcon from "../../assets/arrow.png";
 import Footer from "../../components/footer/footer";
 import HeaderLogged from "../../components/headerLogged/headerLogged";
 import { ModalContext } from "../../contexts/ModalContext";
-import SelectArtist from "../../components/selectArtist/selectArtist";
 import NewContract from "../../components/newContract/newContract";
 import MyContract from "../../components/myContract/myContract";
 import NewSelection from "../../components/newSelection/newSelection";
 import MySelection from "../../components/mySelection/mySelection";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 function Services() {
 
