@@ -6,12 +6,13 @@ import {
   Modal,
 } from "./myContractStyles";
 import XIcon from "../../assets/x.svg";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
-import MyBusinessBox from "../myBusinessBox/myBusinessBox";
+import ContractBox from "../contractBox/contractBox";
 
 function MyContract() {
   const { hideMyContract, toogleMyContractVisibility } = useContext(ModalContext);
+  const [contracts, setContracts] = useState([]);
 
   return (
     <Modal hidden={hideMyContract}>
@@ -21,8 +22,18 @@ function MyContract() {
           <h1>Meus contratos</h1>
         </HeaderLogo>
         <SignContainer>
-          <MyBusinessBox />
-          <MyBusinessBox />
+          {contracts.map(
+            (item: any) =>
+              <ContractBox
+                id={item.id}
+                status={item.status}
+                art={item.art}
+                time={item.price}
+                price={item.price}
+                date={item.date}
+                description={item.description}
+              />
+          )}
         </SignContainer>
       </ModalContainer>
     </Modal>

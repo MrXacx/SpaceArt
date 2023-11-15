@@ -6,12 +6,14 @@ import {
   Modal,
 } from "./mySelectionStyles";
 import XIcon from "../../assets/x.svg";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
-import MyBusinessBox from "../myBusinessBox/myBusinessBox";
+import SelectionBox from "../selectionBox/selectionBox";
 
 function MySelection() {
   const { hideMySelection, toogleMySelectionVisibility } = useContext(ModalContext);
+  const [selections, setSelections] = useState([]);
+
 
   return (
     <Modal hidden={hideMySelection}>
@@ -21,8 +23,19 @@ function MySelection() {
           <h1>Minhas seleções</h1>
         </HeaderLogo>
         <SignContainer>
-          <MyBusinessBox />
-          <MyBusinessBox />
+          {selections.map(
+            (item: any) =>
+              <SelectionBox
+                id={item.id}
+                title={item.title}
+                locked={item.locked}
+                art={item.art}
+                time={item.price}
+                price={item.price}
+                date={item.date}
+                description={item.description}
+              />
+          )}
         </SignContainer>
       </ModalContainer>
     </Modal>
