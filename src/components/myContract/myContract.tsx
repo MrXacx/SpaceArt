@@ -6,13 +6,21 @@ import {
   Modal,
 } from "./myContractStyles";
 import XIcon from "../../assets/x.svg";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import ContractBox from "../contractBox/contractBox";
+import { UserContext } from "../../contexts/UserContext";
 
 function MyContract() {
   const { hideMyContract, toogleMyContractVisibility } = useContext(ModalContext);
+  const { fetchAgreementsByUser } = useContext(UserContext);
   const [contracts, setContracts] = useState([]);
+
+  useEffect(() =>
+    fetchAgreementsByUser()
+      .then(setContracts)
+      .catch(console.error)
+  ,[fetchAgreementsByUser]);
 
   return (
     <Modal hidden={hideMyContract}>

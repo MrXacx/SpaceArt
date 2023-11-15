@@ -6,13 +6,21 @@ import {
   Modal,
 } from "./mySelectionStyles";
 import XIcon from "../../assets/x.svg";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import SelectionBox from "../selectionBox/selectionBox";
+import { UserContext } from "../../contexts/UserContext";
 
 function MySelection() {
   const { hideMySelection, toogleMySelectionVisibility } = useContext(ModalContext);
+  const { fetchSelectionsByOwner } = useContext(UserContext);
   const [selections, setSelections] = useState([]);
+
+  useEffect(() =>
+    fetchSelectionsByOwner()
+      .then(setSelections)
+      .catch(console.error)
+    , [fetchSelectionsByOwner]);
 
 
   return (
