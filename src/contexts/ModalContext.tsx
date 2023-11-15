@@ -14,28 +14,28 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
   const [hideProfileUpdate, setHideProfileUpdate] = useState(true);
   const [hideNewPost, setHideNewPost] = useState(true);
 
-  const toogleNewContractVisibilty = () => setHideNewContract(!hideNewContract);
-  const toogleNewSelectionVisibilty = () => setHideNewSelection(!hideNewSelection);
-  const toogleMyContractVisibilty = () => setHideMyContract(!hideMyContract);
-  const toogleMySelectionVisibilty = () => setHideMySelection(!hideMySelection);
-  const toogleProfileUpdateVisibilty = () => setHideProfileUpdate(!hideProfileUpdate);
-  const toogleNewPostVisibilty = () => setHideNewPost(!hideNewPost);
+  const toogleNewContractVisibility = () => setHideNewContract(!hideNewContract);
+  const toogleNewSelectionVisibility = () => setHideNewSelection(!hideNewSelection);
+  const toogleMyContractVisibility = () => setHideMyContract(!hideMyContract);
+  const toogleMySelectionVisibility = () => setHideMySelection(!hideMySelection);
+  const toogleProfileUpdateVisibility = () => setHideProfileUpdate(!hideProfileUpdate);
+  const toogleNewPostVisibility = () => setHideNewPost(!hideNewPost);
 
   return (
     <ModalContext.Provider
       value={{
         hideNewContract,
-        toogleNewContractVisibilty,
+        toogleNewContractVisibility,
         hideNewSelection,
-        toogleNewSelectionVisibilty,
+        toogleNewSelectionVisibility,
         hideMyContract,
-        toogleMyContractVisibilty,
+        toogleMyContractVisibility,
         hideMySelection,
-        toogleMySelectionVisibilty,
+        toogleMySelectionVisibility,
         hideProfileUpdate,
-        toogleProfileUpdateVisibilty,
+        toogleProfileUpdateVisibility,
         hideNewPost,
-        toogleNewPostVisibilty,
+        toogleNewPostVisibility,
       }}
     >
       {children}
