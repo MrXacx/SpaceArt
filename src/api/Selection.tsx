@@ -1,3 +1,4 @@
+import { ArtType } from "../enums/ArtType";
 import { Artist, Enterprise } from "./User";
 import { IndexedAPIClient, SpaceArtAPIClient, APIClientFactory } from "./abstracts/APIClient";
 
@@ -6,10 +7,9 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
   private art: string | undefined;
   private price: number | undefined;
   private owner: Enterprise | undefined;
-
-  time: string[] = [];
-  date: string[] = [];
-  applications: SelectionApplication[] = [];
+  private locked: boolean | undefined;
+  private time: string[] | undefined;
+  private date: string[] | undefined;
 
   path = "/selection";
 
@@ -20,11 +20,12 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
    */
   build(selection: {
     id?: string,
-    art: string,
-    owner: Enterprise,
-    price: number,
-    date: string[],
-    time: string[]
+    art?: ArtType | string,
+    owner?: Enterprise,
+    price?: number,
+    date?: string[],
+    time?: string[],
+    locked?: boolean;
   }) {
     this.id = selection.id;
     this.art = selection.art;
@@ -32,6 +33,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
     this.price = selection.price;
     this.date = selection.date;
     this.time = selection.time;
+    this.locked = selection.locked;
 
     return this;
   }
@@ -44,8 +46,8 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
       owner: this.owner?.getID(),
       art: this.art,
       price: this.price,
-      date: this.date.join(";"),
-      time: this.time.join(";"),
+      date: this.date?.join(";"),
+      time: this.time?.join(";"),
     }));
 
     if (response.status !== Selection.httpStatusCode.CREATED) {
@@ -58,7 +60,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
   /**
    * Buca lista de seleções com base num filtro
    */
-  async fetchList(offset = 0, limit = 15, filter = "owner") {
+  async fetchList(offset = 0, limit = 15, filter = "owner"): Promise<Selection[]> {
     let path = `${this.path}/list?offset=${offset}&limit=${limit}`;
 
     switch (filter) {
@@ -96,7 +98,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
   /**
    * Busca uma seleção
    */
-  async fetch() {
+  async fetch(): Promise<Selection> {
     const response = await this.request.get(`${this.path}?id=${this.id}`);
 
     if (response.status !== Selection.httpStatusCode.OK) {
@@ -114,6 +116,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
       price: selection.price as number,
       date: (selection.date as string).split(";"),
       time: (selection.time as string).split(";"),
+      locked: this.locked,
     });
   }
 
@@ -138,17 +141,14 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
   async submitApplication(artist: Artist) {
     let application = new SelectionApplication(this, artist);
     application.create(); // Cria aplicação
-
-    this.applications.push(application); // Guarda a aplicação realizada no array
   }
 
   /**
    * Busca uma lista de artistas que se eubmeteram à seleção
    */
-  async fetchApplications(offset = 0, limit = 15) {
+  async fetchApplications(offset = 0, limit = 15): Promise<SelectionApplication[]> {
     let application = new SelectionApplication(this);
-    return this.applications = this.applications
-      .concat(await application.fetchList(offset, limit));
+    return application.fetchList(offset, limit);
   }
 
   toObject() {
@@ -158,8 +158,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
       owner: this.owner,
       price: this.price,
       date: this.date,
-      time: this.time,
-      applications: this.applications,
+      time: this.time
     }
   }
 }
