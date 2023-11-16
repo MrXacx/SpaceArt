@@ -236,7 +236,6 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       throw new Error(`Erro na criação de uma seleção`);
     })
 
-
   const fetchSelectionsByArt = (art: ArtType, offset = 0, limit = 20) => new Selection()
     .build({ art })
     .fetchList(offset, limit, 'art')
@@ -260,6 +259,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         (item) => item.toObject().artist?.fetch()
       )))
     .catch((e: any) => console.log(`Erro na busca por submissões: ${e.message}`));
+
+  const deleteSelection = (id: string) => new Selection(id)
+    .delete()
+    .catch((e: any) => console.log(`Erro na tentativa de deletar uma seleção: ${e.message}`));
 
   // CONVERSAS
   const fetchChats = (offset = 0, limit = 10) => new Chat()
@@ -306,6 +309,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchSelectionsByArt,
         fetchSelectionsByOwner,
         fetchArtistsInSelection,
+        deleteSelection,
         fetchChats,
       }}
     >
