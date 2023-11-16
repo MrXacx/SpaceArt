@@ -72,3 +72,23 @@ export const ArtistInfo = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+export const SearchResults = styled.div`
+    width: 90%; 
+    height: 45vh;
+    max-height: 45vh;
+    overflow-y: scroll;
+`;
+
+export const FormInputButton = styled.button`
+  width: 77%;
+  background-color: #ff8311;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 1px 4px #000;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+`;
