@@ -12,25 +12,58 @@ import NewContract from "../../components/newContract/newContract";
 import MyContract from "../../components/myContract/myContract";
 import NewSelection from "../../components/newSelection/newSelection";
 import MySelection from "../../components/mySelection/mySelection";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { AgreementStatus, SelectionStatus } from "../../enums/ServiceStatus";
 
 function Services() {
 
   // Criar alternativa para conter mais de um modal na mesma página
   const { toogleNewContractVisibility, toogleNewSelectionVisibility, toogleMyContractVisibility, toogleMySelectionVisibility } = useContext(ModalContext);
+  const [contractFilter, setContractFilter] = useState(AgreementStatus.accepted);
+  const [selectionFilter, setSelectionFilter] = useState(SelectionStatus.active);
 
   const agreementServices = [
-    { title: 'Criar contrato', toogle: toogleNewContractVisibility },
-    { title: 'Contratos ativos', toogle: toogleMyContractVisibility },
-    { title: 'Contratos pendentes', toogle: toogleMyContractVisibility },
-    { title: 'Histórico', toogle: toogleMyContractVisibility },
+    { title: 'Criar contrato', toogle: () => toogleNewContractVisibility() },
+    {
+      title: 'Contratos ativos', toogle: () => {
+        toogleMyContractVisibility()
+        setContractFilter(AgreementStatus.accepted);
+      }
+    },
+    {
+      title: 'Contratos pendentes', toogle: () => {
+        toogleMyContractVisibility()
+        setContractFilter(AgreementStatus.pending);
+      }
+    },
+    {
+      title: 'Histórico', toogle: () => {
+        toogleMyContractVisibility()
+        setContractFilter(AgreementStatus.completed);
+      }
+    },
   ]
 
   const selectionServices = [
-    { title: 'Criar seleção', toogle: toogleNewSelectionVisibility },
-    { title: 'Seleções ativas', toogle: toogleMySelectionVisibility },
-    { title: 'Histórico', toogle: toogleMySelectionVisibility },
-    { title: 'Buscar seleções', toogle: toogleMySelectionVisibility },
+    { title: 'Criar seleção', toogle: () => toogleNewSelectionVisibility() },
+    {
+      title: 'Ativas', toogle: () => {
+        toogleMySelectionVisibility()
+        setSelectionFilter(SelectionStatus.active);
+      }
+    },
+    {
+      title: 'Em espera', toogle: () => {
+        toogleMySelectionVisibility()
+        setSelectionFilter(SelectionStatus.onHold);
+      }
+    },
+    {
+      title: 'Histórico', toogle: () => {
+        toogleMySelectionVisibility()
+        setSelectionFilter(SelectionStatus.closed);
+      }
+    },
   ]
 
   return (
@@ -67,6 +100,18 @@ function Services() {
                   />
                 </ArrowContainer>
             )}
+
+            <ArrowContainer>
+              <span>Buscar seleções</span>
+              <img
+                alt="Buscar seleções"
+                src={ArrowIcon}
+                onClick={() => {
+                  toogleMySelectionVisibility()
+                  setSelectionFilter(SelectionStatus.active);
+                }}
+              />
+            </ArrowContainer>
           </ServicesContainer>
 
         </BoxContainer>
@@ -74,9 +119,9 @@ function Services() {
       <Footer />
 
       <NewContract />
-      <MyContract />
+      <MyContract filter={contractFilter} />
       <NewSelection />
-      <MySelection />
+      <MySelection filter={selectionFilter} />
 
     </>
   );
