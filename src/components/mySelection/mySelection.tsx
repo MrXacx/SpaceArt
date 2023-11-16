@@ -10,11 +10,23 @@ import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import SelectionBox from "../selectionBox/selectionBox";
 import { UserContext } from "../../contexts/UserContext";
+import dayjs from "dayjs";
+import { SeletionStatus } from "../../enums/ServiceStatus";
 
-function MySelection() {
+interface MySelectionProps {
+  filter: SeletionStatus;
+}
+
+function MySelection(props: MySelectionProps) {
   const { hideMySelection, toogleMySelectionVisibility } = useContext(ModalContext);
   const { fetchSelectionsByOwner } = useContext(UserContext);
-  const [selections, setSelections] = useState([]);
+  const [selections, setSelections] = useState<any[]>([]);
+
+  const filter = ([
+    (item: any): boolean => dayjs().isBefore(`${item.date.start} : ${item.time.start}`, 'minute'),
+    (item: any): boolean => item.locked,
+    (item: any): boolean => dayjs().isAfter(`${item.date.end} : ${item.time.end}`, 'minute'),
+  ])[props.filter];
 
   useEffect(() =>
     fetchSelectionsByOwner()
@@ -31,19 +43,21 @@ function MySelection() {
           <h1>Minhas seleções</h1>
         </HeaderLogo>
         <SignContainer>
-          {selections.map(
-            (item: any) =>
-              <SelectionBox
-                id={item.id}
-                title={item.title}
-                locked={item.locked}
-                art={item.art}
-                time={item.price}
-                price={item.price}
-                date={item.date}
-                description={item.description}
-              />
-          )}
+          {selections
+            .filter((item: any) => filter(item))
+            .map(
+              (item: any) =>
+                <SelectionBox
+                  id={item.id}
+                  title={item.title}
+                  locked={item.locked}
+                  art={item.art}
+                  time={item.time}
+                  price={item.price}
+                  date={item.date}
+                  description={item.description}
+                />
+            )}
         </SignContainer>
       </ModalContainer>
     </Modal>
