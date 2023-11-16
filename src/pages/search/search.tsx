@@ -20,13 +20,12 @@ import { AccountType } from "../../enums/AccountType"
 function Search() {
   const [isNameFilterSelected, setNameFilterSelected] = useState(true);
   const [isLocationFilterSelected, setLocationFilterSelected] = useState(false);
-  
-  let { searchResult, fetchRandomUsers } = useContext(SearchContext);
+
+  let { searchResult, fetchRandomUsers, artFilter } = useContext(SearchContext);
   const [type, setType] = useState(AccountType.artist);
 
   useEffect(() => {
-    //     if(!data) fetchRandomUsers(type);
-
+    fetchRandomUsers(type);
   }, [fetchRandomUsers, type]);
 
   return (
@@ -86,18 +85,20 @@ function Search() {
 
       <SearchResultContainer>
         <CardProfileContainer>
-          {searchResult.map((data: any) =>
-            CardProfile(
-              data.id,
-              data.index,
-              data.image,
-              data.name,
-              data.type,
-              data.city,
-              data.state,
-              data.art,
-              data.wage
-            ))}
+          {searchResult
+            .filter((item: any) => item.art = artFilter || artFilter === undefined)
+            .map((data: any) =>
+              CardProfile(
+                data.id,
+                data.index,
+                data.image,
+                data.name,
+                data.type,
+                data.city,
+                data.state,
+                data.art,
+                data.wage
+              ))}
         </CardProfileContainer>
 
       </SearchResultContainer>

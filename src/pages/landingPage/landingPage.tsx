@@ -28,7 +28,7 @@ import { AccountType } from "../../enums/AccountType";
 function LandingPage() {
 
   const navigate = useNavigate();
-  let { searchResult, fetchRandomUsers } = useContext(SearchContext);
+  let { searchResult, fetchRandomUsers, artFilter } = useContext(SearchContext);
 
   useEffect(() => fetchRandomUsers(AccountType.artist))
 
@@ -89,19 +89,21 @@ function LandingPage() {
         <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
         <LocationFilterBar withArtField={true} />
         <CardProfileContainer>
-          {searchResult.map( // converte o estado do contexto em component
-            (data: any) =>
-              CardProfile(
-                data.id,
-                data.index,
-                data.image,
-                data.name,
-                data.type,
-                data.city,
-                data.state,
-                data.art,
-                data.wage
-              ))
+          {searchResult
+            .filter((item: any) => item.art = artFilter || artFilter === undefined)
+            .map( // converte o estado do contexto em component
+              (data: any) =>
+                CardProfile(
+                  data.id,
+                  data.index,
+                  data.image,
+                  data.name,
+                  data.type,
+                  data.city,
+                  data.state,
+                  data.art,
+                  data.wage
+                ))
           }
         </CardProfileContainer>
       </SearchArtistContainer>
