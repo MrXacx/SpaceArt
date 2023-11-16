@@ -69,34 +69,6 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
-export const FormInputTextbox = styled.input`
-  width: 75%;
-  height: 100px;
-  padding: 0.5rem;
-  border-radius: 3px;
-  margin: 0.5rem 0;
-  border: 1px solid #545454;
-  transition: 300ms;
-
-  &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
-    outline: none;
-    transform: scale(1.03);
-  }
-
-  &::placeholder {
-    color: #000;
-  }
-
-  &:disabled {
-    background-color: rgb(182, 182, 182);
-  }
-`;
-
 export const FormInputFullField = styled.input`
   width: 75%;
   height: 25px;
@@ -107,13 +79,7 @@ export const FormInputFullField = styled.input`
   transition: 300ms;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -121,8 +87,18 @@ export const FormInputFullField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
+`;
+
+export const FormSelectField = styled.select`
+  width: 75%;
+  height: 25px;
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 0.5rem 0;
+  border: 1px solid #545454;
+  transition: 300ms;
 `;
 
 export const FormInputHalfField = styled.input`
@@ -135,13 +111,7 @@ export const FormInputHalfField = styled.input`
   transition: 300ms;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -149,7 +119,7 @@ export const FormInputHalfField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
@@ -170,6 +140,15 @@ export const FormInputButton = styled.button`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
+`;
+
+export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
+  width: 90%;
+  display: ${({hidden}) => hidden ? "none" : "inline"};
+  color: black;
+  font-size: 1rem;
+  text-align: center;
+  margin: .5rem 0;
 `;
