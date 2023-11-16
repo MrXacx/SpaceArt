@@ -11,10 +11,10 @@ import { ModalContext } from "../../contexts/ModalContext";
 import SelectionBox from "../selectionBox/selectionBox";
 import { UserContext } from "../../contexts/UserContext";
 import dayjs from "dayjs";
-import { SeletionStatus } from "../../enums/ServiceStatus";
+import { SelectionStatus } from "../../enums/ServiceStatus";
 
 interface MySelectionProps {
-  filter: SeletionStatus;
+  filter: SelectionStatus;
 }
 
 function MySelection(props: MySelectionProps) {

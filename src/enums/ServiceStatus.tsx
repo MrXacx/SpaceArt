@@ -2,6 +2,6 @@ export enum AgreementStatus {
   pending, accepted, completed
 }
 
-export enum SeletionStatus {
+export enum SelectionStatus {
   onHold, active, closed
 }
