@@ -14,8 +14,14 @@ interface SelectionBoxProps {
   title: string;
   art: ArtType,
   price: number;
-  date: string[];
-  time: string[];
+  date: {
+    start: string,
+    end: string,
+  };
+  time: {
+    start: string,
+    end: string,
+  };
   locked: boolean;
   description: string;
 }
@@ -41,15 +47,15 @@ function SelectionBox(props: SelectionBoxProps) {
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
             <span>Período</span>
-            <span>{`${props.date[0]} - ${props.date[1]}`}</span>
+            <span>{`${props.date.start} - ${props.date.end}`}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
             <span>Horário de início</span>
-            <span>{props.time[0]}</span>
+            <span>{props.time.start}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
             <span>Horário de encerramento</span>
-            <span>{props.time[0]}</span>
+            <span>{props.time.end}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
             <span>Descrição</span>

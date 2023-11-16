@@ -14,7 +14,10 @@ interface ContractBoxProps {
   art: ArtType,
   date: string,
   price: number;
-  time: string[];
+  time: {
+    start: string,
+    end: string,
+  };
   description: string;
   status: string;
 }
@@ -40,7 +43,7 @@ function ContractBox(props: ContractBoxProps) {
           </ContractHiddenDetailItem>
           <ContractHiddenDetailItem>
             <span>Período</span>
-            <span>{props.time[0]}</span>
+            <span>{`${props.time.start} - ${props.time.end}`}</span>
           </ContractHiddenDetailItem>
           <ContractHiddenDetailItem>
             <span>Descrição</span>
