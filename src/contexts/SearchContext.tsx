@@ -2,6 +2,7 @@
 import { Artist, Enterprise, User } from "../api/User";
 import { AccountType } from "../enums/AccountType";
 import { BrazilianState } from "../enums/BrazilianState";
+import { ArtType } from "../enums/ArtType";
 import { createContext, useState } from "react";
 
 interface SearchStoreProps {
@@ -13,6 +14,7 @@ export const SearchContext = createContext({} as any);
 export const SearchProvider = ({ children }: SearchStoreProps) => {
 
 	const [searchResult, setSearchResult] = useState<any[]>([]);
+	const [artFilter, setArtFilter] = useState<ArtType>();
 
 	const turnListOnCardData = (users: User[]) => {
 
@@ -75,6 +77,8 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
 				fetchRandomUsers,
 				fetchUsersByName,
 				fetchUsersByLocation,
+				artFilter,
+				setArtFilter
 			}}
 		>
 			{children}

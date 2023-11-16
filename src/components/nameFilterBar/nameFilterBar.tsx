@@ -19,8 +19,15 @@ function NameFilterBar(props: FilterBarProps) {
 	const [art, setArt] = useState<ArtType>();
 	
 	
-	const { fetchUsersByName } = useContext(SearchContext);
-    
+	const { fetchUsersByName, setArtFilter } = useContext(SearchContext);
+
+	const search = () => {
+		fetchUsersByName(
+			props.withArtField ? AccountType.artist : AccountType.enterprise,
+			name
+		)
+		if (art) setArtFilter(art);
+	}
 	return (
 		<CategoryContainer with_art_field={props.withArtField}>
 
@@ -41,12 +48,7 @@ function NameFilterBar(props: FilterBarProps) {
 					.map((type: ArtType) => <option value={type}>{type}</option>)
 				}
 			</CategorySelect>
-			<CategoryButton onClick={() =>
-			    fetchUsersByName(
-			        props.withArtField ? AccountType.artist : AccountType.enterprise,
-			        name
-			    )
-			}>PESQUISAR</CategoryButton>
+			<CategoryButton onClick={() => search()}>PESQUISAR</CategoryButton>
 		</CategoryContainer>
 	);
 }

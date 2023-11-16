@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
 	CategoryButton,
 	CategoryContainer,
@@ -6,21 +6,32 @@ import {
 } from "./filterBarStyles";
 import { ArtTypesUtil, ArtType } from "../../enums/ArtType";
 import { BrazilianStatesUtil, BrazilianState } from "../../enums/BrazilianState";
-
+import { UserContext } from "../../contexts/UserContext";
+import { AccountType } from "../../enums/AccountType";
 
 interface FilterBarProps { // Parâmetros que o componente deve receber
 	withArtField: boolean
 }
-
 
 function LocationFilterBar(props: FilterBarProps) {
 
 	const [state, setState] = useState<BrazilianState>();
 	const [city, setCity] = useState("");
 	const [cities] = useState<string[]>([]);
-	const [type, setType] = useState<ArtType>();
+	const [art, setArt] = useState<ArtType>();
+	const { fetchUsersByLocation, setArtFilter } = useContext(UserContext)
 
-	const search = () => { };
+	const search = () => {
+		fetchUsersByLocation(
+			props.withArtField ? AccountType.artist : AccountType.enterprise,
+			state,
+			city,
+			0,
+			25
+		);
+
+		if (art) setArtFilter(art);
+	};
 
 	return (
 		<CategoryContainer with_art_field={props.withArtField}>
@@ -46,8 +57,8 @@ function LocationFilterBar(props: FilterBarProps) {
 
 			<CategorySelect
 				hidden={!props.withArtField}
-				value={type}
-				onChange={(e: any) => setType(e.target.value)}
+				value={art}
+				onChange={(e: any) => setArt(e.target.value)}
 			>
 				<option disabled selected>ESCOLHA TIPO DE ARTE</option>
 				{ArtTypesUtil
