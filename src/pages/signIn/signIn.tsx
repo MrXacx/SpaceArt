@@ -34,7 +34,6 @@ function SignIn() {
       try {
         signIn(email, password);
       } catch (e: any) {
-        setValidInput('false');
         setInputErrorMessage(e.message);
       }
     }

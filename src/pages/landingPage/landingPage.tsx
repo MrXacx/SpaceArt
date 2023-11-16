@@ -87,7 +87,7 @@ function LandingPage() {
       </ChooseArtistContainer>
       <SearchArtistContainer>
         <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
-        <LocationFilterBar withArtField="true" />
+        <LocationFilterBar withArtField={true} />
         <CardProfileContainer>
           {searchResult.map( // converte o estado do contexto em component
             (data: any) =>
