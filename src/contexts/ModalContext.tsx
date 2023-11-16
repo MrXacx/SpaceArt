@@ -13,6 +13,7 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
   const [hideMySelection, setHideMySelection] = useState(true);
   const [hideProfileUpdate, setHideProfileUpdate] = useState(true);
   const [hideNewPost, setHideNewPost] = useState(true);
+  const [hideSelectArtist, setHideSelectArtist] = useState(true);
 
   const toogleNewContractVisibility = () => setHideNewContract(!hideNewContract);
   const toogleNewSelectionVisibility = () => setHideNewSelection(!hideNewSelection);
@@ -20,6 +21,7 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
   const toogleMySelectionVisibility = () => setHideMySelection(!hideMySelection);
   const toogleProfileUpdateVisibility = () => setHideProfileUpdate(!hideProfileUpdate);
   const toogleNewPostVisibility = () => setHideNewPost(!hideNewPost);
+  const toogleSelectArtistVisibility = () => setHideSelectArtist(!hideSelectArtist);
 
   return (
     <ModalContext.Provider
@@ -36,6 +38,8 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
         toogleProfileUpdateVisibility,
         hideNewPost,
         toogleNewPostVisibility,
+        hideSelectArtist,
+        toogleSelectArtistVisibility,
       }}
     >
       {children}
