@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CategoryContainer = styled.div<{with_art_field: string}>`
+export const CategoryContainer = styled.div<{with_art_field: boolean}>`
   width: 70%;
   display: grid;
   margin: 0 auto;
@@ -10,14 +10,14 @@ export const CategoryContainer = styled.div<{with_art_field: string}>`
   grid-template-columns: 1fr;
   row-gap: 1.5rem;
   @media (min-width: 960px) {
-    grid-template-columns: ${(e) => JSON.parse(e.with_art_field) ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)'};
+    grid-template-columns: ${({ with_art_field }) => with_art_field ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)'};
     row-gap: 0;
     column-gap: 60px;
   }
 `;
 
-export const CategorySelect = styled.select<{is_visible?: string}>`
-  display: ${(e) => JSON.parse(e.is_visible ?? 'true') ? 'block' : 'none'};
+export const CategorySelect = styled.select<{hidden?: boolean}>`
+  display: ${({ hidden }) => hidden ? 'none' : 'block'};
   height: 3.2rem;
   border: none;
   border-radius: 10px;

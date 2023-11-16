@@ -10,7 +10,7 @@ import { AccountType } from "../../enums/AccountType";
 import { SearchContext, } from "../../contexts/SearchContext";
 
 interface FilterBarProps {
-	withArtField: string
+	withArtField: boolean
 }
 
 function NameFilterBar(props: FilterBarProps) {
@@ -29,7 +29,7 @@ function NameFilterBar(props: FilterBarProps) {
 				value={name}
 				onChange={(e: any) => setName(e.target.value)}
 			/>
-			<CategorySelect is_visible={props.withArtField}
+			<CategorySelect hidden={!props.withArtField}
 				value={art}
 				onChange={(e: any) => setArt(e.target.value)}
 
@@ -43,7 +43,7 @@ function NameFilterBar(props: FilterBarProps) {
 			</CategorySelect>
 			<CategoryButton onClick={() =>
 			    fetchUsersByName(
-			        JSON.parse(props.withArtField) ? AccountType.artist : AccountType.enterprise,
+			        props.withArtField ? AccountType.artist : AccountType.enterprise,
 			        name
 			    )
 			}>PESQUISAR</CategoryButton>

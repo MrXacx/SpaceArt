@@ -50,7 +50,7 @@ export const FilterOptionsContainer = styled.div`
   
 `;
 
-export const FilterOption = styled.button<{ selected: string }>`
+export const FilterOption = styled.button<{ selected: boolean }>`
   width: 100%;
   padding: 0.5rem;
   margin: .5rem;
@@ -59,11 +59,10 @@ export const FilterOption = styled.button<{ selected: string }>`
   box-shadow: none;
   cursor: pointer;
   font-weight: 700;
-  background-color: ${(e) => JSON.parse(e.selected) ? '#ff8311' : 'transparent'};
+  background-color: ${({ selected }) => selected ? '#ff8311' : 'transparent'};
   transition: .3s;
   font-size: 1.3rem;
-  
-  color: ${(e) => JSON.parse(e.selected) ? '#fff' : '#ff8311'};
+  color: ${({ selected }) => selected ? '#fff' : '#ff8311'};
 `;
 
 export const FilterBarContainer = styled.div`
@@ -72,8 +71,8 @@ export const FilterBarContainer = styled.div`
   place-items: center;
 `;
 
-export const FilterBarItem = styled.div<{ is_visible: string }>`
-  display: ${(e) => JSON.parse(e.is_visible) ? 'grid' : 'none'};
+export const FilterBarItem = styled.div<{ hidden: boolean }>`
+  display: ${({ hidden }) => hidden ? 'none' : 'grid'};
   width: 100%;
 `;
 

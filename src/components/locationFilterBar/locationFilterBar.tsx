@@ -9,13 +9,13 @@ import { BrazilianStatesUtil, BrazilianState } from "../../enums/BrazilianState"
 
 
 interface FilterBarProps { // Parâmetros que o componente deve receber
-	withArtField: string
+	withArtField: boolean
 }
 
 
 function LocationFilterBar(props: FilterBarProps) {
 
-	const [state, setState] = useState <BrazilianState>();
+	const [state, setState] = useState<BrazilianState>();
 	const [city, setCity] = useState("");
 	const [cities] = useState<string[]>([]);
 	const [type, setType] = useState<ArtType>();
@@ -24,7 +24,7 @@ function LocationFilterBar(props: FilterBarProps) {
 
 	return (
 		<CategoryContainer with_art_field={props.withArtField}>
-			
+
 			<CategorySelect value={state} onChange={(e: any) => setState(e.target.value)}>
 				<option disabled selected>SELECIONE SEU ESTADO</option>
 				{BrazilianStatesUtil
@@ -39,13 +39,13 @@ function LocationFilterBar(props: FilterBarProps) {
 			>
 				<option value="" disabled selected> SELECIONE SUA CIDADE</option>
 				{cities
-                    .sort((a: string, b: string) => a.localeCompare(b))
-                    .map(city => <option value={city}>{city}</option>)
+					.sort((a: string, b: string) => a.localeCompare(b))
+					.map(city => <option value={city}>{city}</option>)
 				}
 			</CategorySelect>
 
 			<CategorySelect
-				is_visible={props.withArtField}
+				hidden={!props.withArtField}
 				value={type}
 				onChange={(e: any) => setType(e.target.value)}
 			>

@@ -19,20 +19,16 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
-  const [isValidInput, setValidInput] = useState('true');
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
   const userSignIn = () => {
     const { error } = signInSchema.validate({ email, password }); // Valida email e senha
     if (error) {
       // Executa se error contiver conteúdo
-      setValidInput('false'); // Invalida estado do entrada
       setInputErrorMessage(error.message); // Atualiza mensagem de erro
 
     } else {
       // Remove qualquer configuração de estado inválido
-      setValidInput('true');
       setInputErrorMessage("");
       
       try {
@@ -59,7 +55,7 @@ function SignIn() {
               userSignIn();
             }}
           >
-            <FormInputErrorMessage visibility={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
             <FormInputFullField
               type="email"
               placeholder="Email"

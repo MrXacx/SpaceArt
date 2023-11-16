@@ -14,19 +14,14 @@ import LocationFilterBar from "../../components/locationFilterBar/locationFilter
 import NameFilterBar from "../../components/nameFilterBar/nameFilterBar";
 import { SearchContext } from "../../contexts/SearchContext";
 import CardProfile from "../../components/cardProfile/cardProfile";
-import { UserContext } from "../../contexts/UserContext";
 
 import { AccountType } from "../../enums/AccountType"
 
 function Search() {
-  const [isNameFilterSelected, setNameFilterSelected] = useState("true");
-  const [isLocationFilterSelected, setLocationFilterSelected] = useState("false");
-  const [isArtistSearched, setArtistSearched] = useState("true");
-  const [isEnterpriseSearched, setEnterpriseSearched] = useState("false");
-
+  const [isNameFilterSelected, setNameFilterSelected] = useState(true);
+  const [isLocationFilterSelected, setLocationFilterSelected] = useState(false);
+  
   let { searchResult, fetchRandomUsers } = useContext(SearchContext);
-
-  const [data] = useState(searchResult);
   const [type, setType] = useState(AccountType.artist);
 
   useEffect(() => {
@@ -43,17 +38,13 @@ function Search() {
           <span>BUSCAR POR</span>
           <FilterOptionsContainer>
             <FilterOption
-              selected={
-                Boolean(type === AccountType.artist).toString()
-              }
+              selected={type === AccountType.artist}
               onClick={() => setType(AccountType.artist)}
             >
               ARTISTA
             </FilterOption>
             <FilterOption
-              selected={
-                Boolean(type === AccountType.enterprise).toString()
-              }
+              selected={type === AccountType.enterprise}
               onClick={() => setType(AccountType.enterprise)}
             >
               EMPRESA
@@ -66,8 +57,8 @@ function Search() {
             <FilterOption
               selected={isNameFilterSelected}
               onClick={() => {
-                setNameFilterSelected("true");
-                setLocationFilterSelected("false");
+                setNameFilterSelected(true);
+                setLocationFilterSelected(false);
               }}
             >
               NOME
@@ -75,8 +66,8 @@ function Search() {
             <FilterOption
               selected={isLocationFilterSelected}
               onClick={() => {
-                setLocationFilterSelected("true");
-                setNameFilterSelected("false");
+                setLocationFilterSelected(true);
+                setNameFilterSelected(false);
               }}
             >
               LOCALIZAÇÃO
@@ -85,11 +76,11 @@ function Search() {
         </div>
       </ChooseFilterContainer>
       <FilterBarContainer>
-        <FilterBarItem is_visible={isNameFilterSelected}>
-          <NameFilterBar withArtField={isArtistSearched} />
+        <FilterBarItem hidden={!isNameFilterSelected}>
+          <NameFilterBar withArtField={type === AccountType.artist} />
         </FilterBarItem>
-        <FilterBarItem is_visible={isLocationFilterSelected}>
-          <LocationFilterBar withArtField={isArtistSearched} />
+        <FilterBarItem hidden={!isLocationFilterSelected}>
+          <LocationFilterBar withArtField={type === AccountType.artist} />
         </FilterBarItem>
       </FilterBarContainer>
 

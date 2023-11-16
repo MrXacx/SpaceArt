@@ -59,7 +59,7 @@ export const FormInputTextbox = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
@@ -87,7 +87,7 @@ export const FormInputFullField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
@@ -115,7 +115,7 @@ export const FormInputHalfField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
@@ -136,6 +136,6 @@ export const FormInputButton = styled.button`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;

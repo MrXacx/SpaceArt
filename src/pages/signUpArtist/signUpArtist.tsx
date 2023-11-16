@@ -40,7 +40,6 @@ function SignUpArtist() {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [inputErrorMessage, setInputErrorMessage] = useState("");
-  const [isValidInput, setInputValidate] = useState('true');
 
   const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
 
@@ -81,7 +80,6 @@ function SignUpArtist() {
 
       if (dateDiff >= 18) {
         setInputErrorMessage("");
-        setInputValidate('true');
 
         userData.location = { cep, state, city };
 
@@ -98,7 +96,6 @@ function SignUpArtist() {
       error = new Error('O usuário deve ter 18 anos ou mais.')
     }
 
-    setInputValidate('false')
     setInputErrorMessage(error.message);
 
   }
@@ -116,7 +113,7 @@ function SignUpArtist() {
             e.preventDefault();
             userSignUp();
           }}>
-            <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
 
             <FormInputFullField
               type="text"

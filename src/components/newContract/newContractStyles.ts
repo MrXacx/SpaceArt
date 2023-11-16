@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Modal = styled.div<{ hidden?: boolean }>`
-  visibility: ${({hidden}) => hidden ? 'hidden' : 'visible'};
+  visibility: ${({ hidden }) => hidden ? 'hidden' : 'visible'};
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.55);
@@ -44,7 +44,7 @@ export const FormInputButton = styled.button`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
@@ -238,7 +238,7 @@ export const FormInputTextbox = styled.textarea`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
@@ -260,7 +260,7 @@ export const FormInputFullField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
@@ -282,13 +282,13 @@ export const FormInputHalfField = styled.input`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;
 
-export const FormInputErrorMessage = styled.span<{ hidden: string }>`
+export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
   width: 90%;
-  display: ${(c) => (JSON.parse(c.hidden) ? "none" : "inline")};
+  display: ${({ hidden }) => hidden ? "none" : "inline"};
   color: black;
   font-size: 1rem;
   text-align: center;

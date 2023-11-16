@@ -37,7 +37,6 @@ function SignUpEnterprise() {
   const [repeatPassword, setRepeatPassword] = useState("");
 
   const [inputErrorMessage, setInputErrorMessage] = useState("");
-  const [isValidInput, setInputValidate] = useState('true');
 
   const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"].sort((a: string, b: string) => a.localeCompare(b));
 
@@ -73,7 +72,6 @@ function SignUpEnterprise() {
     if (error) {
 
       setInputErrorMessage(error.message);
-      setInputValidate('false');
 
     } else {
 
@@ -104,7 +102,7 @@ function SignUpEnterprise() {
             e.preventDefault();
             userSignUp();
           }}>
-            <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
 
             <FormInputFullField
               type="text"

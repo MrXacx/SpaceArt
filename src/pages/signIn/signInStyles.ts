@@ -41,9 +41,9 @@ export const SignContainer = styled.form`
   margin: 0 auto;
 `;
 
-export const FormInputErrorMessage = styled.span<{visibility: string}>`
+export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
   width: 100%;
-  display: ${(visibility) => Boolean(visibility) ? 'inline' : 'none'};
+  display: ${(hidden) => hidden ? 'none' : 'inline'};
   color: white;
   font-size: .75rem;
   text-align: center;
@@ -61,13 +61,7 @@ export const FormInputFullField = styled.input`
   border: 1px solid #fff;
 
   &:focus {
-    padding: 0.5rem;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    border: 1px solid #545454;
-    transition: 300ms;
     outline: none;
-    transform: scale(1.03);
   }
 
   &::placeholder {
@@ -96,6 +90,6 @@ export const FormInputButton = styled.button`
   }
 
   &:disabled {
-    background-color: rgb(182, 182, 182);
+    background-color: rgb(210, 210, 210);
   }
 `;

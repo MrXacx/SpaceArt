@@ -42,7 +42,6 @@ function NewContract() {
   const [finalTime, setFinalTime] = useState('');
   const [description, setDescription] = useState('');
   const [inputErrorMessage, setInputErrorMessage] = useState('');
-  const [isValidInput, setInputValidate] = useState('true');
   const [searchedName, setSearchedName] = useState('');
   const [selectedArtist, setSelectedArtist] = useState(artist?.toObject());
 
@@ -80,11 +79,9 @@ function NewContract() {
     });
 
     if (error) {
-      setInputValidate('false');
       setInputErrorMessage(error.message);
 
     } else {
-      setInputValidate('true');
       setInputErrorMessage('');
       sendAgreement({
         hirer: id,
@@ -152,7 +149,7 @@ function NewContract() {
               city={selectedArtist.location?.city}
               state={selectedArtist.location?.state}
             />
-            <FormInputErrorMessage hidden={isValidInput}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
             <FormInputFullField value={art} type="text" placeholder="Arte" disabled />
             <FormInputFullField
               type="number"

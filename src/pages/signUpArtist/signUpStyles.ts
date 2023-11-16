@@ -38,9 +38,9 @@ export const SignContainer = styled.form`
   }
 `;
 
-export const FormInputErrorMessage = styled.span<{ hidden: string }>`
+export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
   width: 90%;
-  display: ${(c) => (JSON.parse(c.hidden) ? "none" : "inline")};
+  display: ${({ hidden }) => hidden ? "none" : "inline"};
   color: black;
   font-size: 1rem;
   text-align: center;
