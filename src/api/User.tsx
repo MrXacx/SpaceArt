@@ -28,7 +28,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 
   path = "/user"; // Rote de consulta
 
-  factory = ()  => new User();
+  factory = () => new User();
 
   /**
    * Preenche todos os atributos da classe
@@ -102,7 +102,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       User.errorTypes
         .HTTPRequestError.throw(response.statusText);
     }
-    
+
     return this.factory().build(JSON.parse(response.data)); // Intancia o retorno
   }
 

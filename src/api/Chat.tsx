@@ -106,7 +106,7 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
     return list;
   }
 
-  toObject(){
+  toObject() {
     return {
       id: this.id,
       artist: this.artist,

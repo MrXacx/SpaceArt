@@ -215,7 +215,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
 
 
   // SELEÇÕES
-  const sendSelection = (data:{
+  const sendSelection = (data: {
     owner: string;
     price: number;
     art: ArtType;
@@ -224,17 +224,17 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     initialTime: string;
     finalTime: string;
   }) => new Selection()
-  .build({
-    ...data,
-    owner: new Enterprise(data.owner),
-    date: [data.initialDate, data.finalDate],
-    time: [data.initialTime, data.finalTime],
-  })
-  .create()
-  .catch((e: any) => {
-    console.log(`Erro na criação de uma seleção: ${e.message}`);
-    throw new Error(`Erro na criação de uma seleção`);
-  })
+    .build({
+      ...data,
+      owner: new Enterprise(data.owner),
+      date: [data.initialDate, data.finalDate],
+      time: [data.initialTime, data.finalTime],
+    })
+    .create()
+    .catch((e: any) => {
+      console.log(`Erro na criação de uma seleção: ${e.message}`);
+      throw new Error(`Erro na criação de uma seleção`);
+    })
 
 
   const fetchSelectionsByArt = (art: ArtType, offset = 0, limit = 20) => new Selection()
@@ -257,8 +257,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     .fetchApplications(offset, limit)
     .then((applications) => Promise.all(
       applications.map(
-      (item) => item.toObject().artist?.fetch()
-    )))
+        (item) => item.toObject().artist?.fetch()
+      )))
     .catch((e: any) => console.log(`Erro na busca por submissões: ${e.message}`));
 
   // CONVERSAS
