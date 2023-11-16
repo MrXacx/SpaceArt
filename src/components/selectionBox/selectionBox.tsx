@@ -5,9 +5,15 @@ import {
   SelectionDetailHeader,
   SelectionHiddenDetailItem,
   SelectionHiddenDetail,
+  SelectionOptions,
+  SelectionOptionButton,
 } from "./selectionBoxStyles";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ArtType } from "../../enums/ArtType";
+import { UserContext } from "../../contexts/UserContext";
+import { SelectSelectionContext } from "../../contexts/SelectSelectionContext";
+import dayjs from "dayjs";
+import { Enterprise } from "../../api/User";
 
 interface SelectionBoxProps {
   id: string;
@@ -29,7 +35,9 @@ interface SelectionBoxProps {
 
 function SelectionBox(props: SelectionBoxProps) {
   const [isOpened, setOpened] = useState(false);
-
+  const { deleteSelection } = useContext(UserContext);
+  const { setSelection } = useContext(SelectSelectionContext);
+  
   return (
     <SelectionCard>
       <SelectionInnerContainer>
@@ -61,6 +69,12 @@ function SelectionBox(props: SelectionBoxProps) {
             <span>Descrição</span>
             <span>{props.description}</span>
           </SelectionHiddenDetailItem>
+
+          <SelectionOptions>
+            <SelectionOptionButton hidden={!dayjs().isBefore(`${props.date.end} ${props.time.end}`, 'minutes')} danger={true} onClick={() => deleteSelection(props.id)}>Deletar</SelectionOptionButton>
+            <SelectionOptionButton hidden={!dayjs().isAfter(`${props.date.start} ${props.time.start}`)} onClick={() => setSelection(new Enterprise(props.id))}>Obter resultados</SelectionOptionButton>
+          </SelectionOptions>
+
         </SelectionHiddenDetail>
       </SelectionInnerContainer>
     </SelectionCard>

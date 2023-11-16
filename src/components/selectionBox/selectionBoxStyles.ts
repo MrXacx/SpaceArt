@@ -44,17 +44,6 @@ export const SelectionDetailHeader = styled.div`
   }
 `;
 
-export const SelectionHiddenDetail = styled.div<{ opened: boolean }>`
-  width: 100%;
-  display: ${({ opened }) => opened ? 'flex' : 'none'};
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  
-  div:last-of-type {
-    min-width: 75%;
-  }
-`;
-
 export const SelectionHiddenDetailItem = styled.div`
     max-width: 50%;
     margin: 1rem 2rem;
@@ -66,6 +55,19 @@ export const SelectionHiddenDetailItem = styled.div`
         opacity: .75;
     }
 `;
+
+export const SelectionHiddenDetail = styled.div<{ opened: boolean }>`
+  width: 100%;
+  display: ${({ opened }) => opened ? 'flex' : 'none'};
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  
+  ${SelectionHiddenDetailItem}:last-of-type {
+    min-width: 75%;
+  }
+`;
+
+
 
 export const SelectionCard = styled.div`
   display: flex;
@@ -84,3 +86,24 @@ export const SelectionCard = styled.div`
     }
   }
 `;
+
+export const SelectionOptions = styled.div`
+  width: 100%;
+  padding: .25rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+`;
+export const SelectionOptionButton = styled.button<{ hidden: boolean, danger?: boolean }>`
+    width: 35%;
+    display: ${({ hidden }) => hidden ? 'none' : 'inline'};
+    background-color: ${({ danger }) => danger ? 'red' : '#ff8311'};
+    padding: 0.5rem;
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0 1px 4px #000;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+`
