@@ -168,12 +168,4 @@ export const FormInputButton = styled.button`
   font-weight: 700;
   text-transform: uppercase;
   margin-top: 1.5rem;
-
-  &::placeholder {
-    color: #000;
-  }
-
-  &:disabled {
-    background-color: rgb(210, 210, 210);
-  }
 `;
