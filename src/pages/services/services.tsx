@@ -119,7 +119,7 @@ function Services() {
       <Footer />
 
       <NewContract />
-      {/*<MyContract filter={contractFilter} />*/}
+      <MyContract filter={contractFilter} />
       <NewSelection />
      <MySelection filter={selectionFilter} />
 
