@@ -40,7 +40,7 @@ export const SelectionDetailHeader = styled.div`
   }
 `;
 
-export const SelectionHiddenDetailItem = styled.div`
+export const SelectionHiddenDetailItem = styled.span`
   max-width: 50%;
   margin: 1rem 2rem;
   display: flex;
@@ -58,11 +58,8 @@ export const SelectionHiddenDetail = styled.div<{ opened: boolean }>`
   justify-content: space-evenly;
   flex-wrap: wrap;
 
-  ${SelectionHiddenDetailItem} {
+  > span:last-of-type {
     min-width: 75%;
-    &:last-of-type {
-      background-color: red;
-    }
   }
 `;
 

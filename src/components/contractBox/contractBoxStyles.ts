@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-
-
 export const ContractInnerContainer = styled.div`
   width: 100%;
   display: flex;
@@ -83,4 +81,29 @@ export const ContractCard = styled.div`
       background-color: #0001;
     }
   }
+`;
+
+export const ContractOptions = styled.div`
+  width: 100%;
+  padding: 0.25rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const ContractOptionButton = styled.button<{
+  hidden: boolean;
+  danger?: boolean;
+}>`
+  width: 35%;
+  margin: 0 0.5rem;
+  height: 7vh;
+  display: ${({ hidden }) => (hidden ? "none" : "inline")};
+  background-color: ${({ danger }) => (danger ? "#ff2e2e" : "#ff8311")};
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 1px 4px #0008;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
 `;

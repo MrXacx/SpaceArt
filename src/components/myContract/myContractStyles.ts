@@ -137,7 +137,7 @@ export const LocalContainer = styled.div`
   }
 
   span {
-    :last-of-type {
+    &:last-of-type {
       padding: 5px 20px;
       background-color: #fa8b08;
       font-size: 0.8em;

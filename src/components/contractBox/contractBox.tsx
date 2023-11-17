@@ -5,23 +5,24 @@ import {
   ContractDetailHeader,
   ContractHiddenDetailItem,
   ContractHiddenDetail,
+  ContractOptions,
+  ContractOptionButton,
 } from "./contractBoxStyles";
 import { useState } from "react";
 import { ArtType } from "../../enums/ArtType";
 
 interface ContractBoxProps {
   id: string;
-  art: ArtType,
-  date: string,
+  art: ArtType;
+  date: string;
   price: number;
   time: {
-    start: string,
-    end: string,
+    start: string;
+    end: string;
   };
   description: string;
   status: string;
 }
-
 
 function ContractBox(props: ContractBoxProps) {
   const [isOpened, setOpened] = useState(false);
@@ -49,6 +50,24 @@ function ContractBox(props: ContractBoxProps) {
             <span>Descrição</span>
             <span>{props.description}</span>
           </ContractHiddenDetailItem>
+
+          <ContractOptions>
+            <ContractOptionButton
+              type="button"
+              hidden={false}
+              danger={true}
+              onClick={() => {}}
+            >
+              Interromper
+            </ContractOptionButton>
+            <ContractOptionButton
+              type="button"
+              hidden={false}
+              onClick={() => {}}
+            >
+              Conferir avaliações
+            </ContractOptionButton>
+          </ContractOptions>
         </ContractHiddenDetail>
       </ContractInnerContainer>
     </ContractCard>

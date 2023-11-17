@@ -65,11 +65,11 @@ function SelectionBox(props: SelectionBoxProps) {
             <span>{`${props.date.start} - ${props.date.end}`}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Horário de início</span>
+            <span>Horário de abertura</span>
             <span>{props.time.start}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Horário de encerramento</span>
+            <span>Horário de encerramnto</span>
             <span>{props.time.end}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
