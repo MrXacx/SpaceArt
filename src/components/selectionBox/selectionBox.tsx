@@ -13,6 +13,7 @@ import { ArtType } from "../../enums/ArtType";
 import { UserContext } from "../../contexts/UserContext";
 import { SelectSelectionContext } from "../../contexts/SelectSelectionContext";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat"; 
 import { Enterprise } from "../../api/User";
 
 interface SelectionBoxProps {
@@ -37,7 +38,10 @@ function SelectionBox(props: SelectionBoxProps) {
   const [isOpened, setOpened] = useState(false);
   const { deleteSelection } = useContext(UserContext);
   const { setSelection } = useContext(SelectSelectionContext);
-  
+  dayjs.extend(customParseFormat);
+  const isAfter = dayjs(`${props.date.end} ${props.time.end}`, 'DD/MM/YYYY HH:mm').isAfter();
+
+
   return (
     <SelectionCard>
       <SelectionInnerContainer>
@@ -71,8 +75,8 @@ function SelectionBox(props: SelectionBoxProps) {
           </SelectionHiddenDetailItem>
 
           <SelectionOptions>
-            <SelectionOptionButton hidden={!dayjs().isBefore(`${props.date.end} ${props.time.end}`, 'minutes')} danger={true} onClick={() => deleteSelection(props.id)}>Deletar</SelectionOptionButton>
-            <SelectionOptionButton hidden={!dayjs().isAfter(`${props.date.start} ${props.time.start}`)} onClick={() => setSelection(new Enterprise(props.id))}>Obter resultados</SelectionOptionButton>
+            <SelectionOptionButton type="button" hidden={isAfter} danger={true} onClick={() => deleteSelection(props.id)}>Deletar</SelectionOptionButton>
+            <SelectionOptionButton type="button" hidden={!isAfter} onClick={() => setSelection(new Enterprise(props.id))}>Obter resultados</SelectionOptionButton>
           </SelectionOptions>
 
         </SelectionHiddenDetail>

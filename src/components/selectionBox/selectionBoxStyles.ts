@@ -98,11 +98,11 @@ export const SelectionOptions = styled.div`
 export const SelectionOptionButton = styled.button<{ hidden: boolean, danger?: boolean }>`
     width: 35%;
     display: ${({ hidden }) => hidden ? 'none' : 'inline'};
-    background-color: ${({ danger }) => danger ? 'red' : '#ff8311'};
-    padding: 0.5rem;
+    background-color: ${({ danger }) => danger ? '#ff2e2e' : '#ff8311'};
+    padding: 0.5rem 1rem;
     border-radius: 3px;
     border: none;
-    box-shadow: 0 1px 4px #000;
+    box-shadow: 0 1px 4px #0008;
     color: #fff;
     font-weight: 700;
     text-transform: uppercase;
