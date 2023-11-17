@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { ModalProvider } from "./contexts/ModalContext";
 import { SearchProvider } from "./contexts/SearchContext";
+import { SelectSelectionProvider } from "./contexts/SelectSelectionContext";
 import { SelectArtistProvider } from "./contexts/SelectArtistContext";
 
 const root = ReactDOM.createRoot(
@@ -13,9 +14,11 @@ root.render(
   <React.StrictMode>
     <ModalProvider>
       <SearchProvider>
-        <SelectArtistProvider>
-          <App />
-        </SelectArtistProvider>
+        <SelectSelectionProvider>
+          <SelectArtistProvider>
+            <App />
+          </SelectArtistProvider>
+        </SelectSelectionProvider>
       </SearchProvider>
     </ModalProvider>
   </React.StrictMode>
