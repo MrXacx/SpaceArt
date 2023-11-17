@@ -19,7 +19,9 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 export const ModalContainer = styled.div<{ hidden?: boolean }>`
   display: ${({ hidden }) => hidden ? 'none' : 'flex'};
   width: 50vw;
-  min-height: 70vh;
+  height: 70vh;
+  max-height: 70vh;
+  overflow: hidden scroll;
   background-color: white;
   border-radius: 6px;
   flex-direction: column;
