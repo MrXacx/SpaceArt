@@ -16,8 +16,8 @@ export const Modal = styled.div<{ hidden?: boolean }>`
   justify-content: center;
 `;
 
-export const ModalContainer = styled.div`
-  display: flex;
+export const ModalContainer = styled.div<{ hidden?: boolean }>`
+  display: ${({ hidden }) => hidden ? 'none' : 'flex'};
   width: 50vw;
   min-height: 70vh;
   background-color: white;

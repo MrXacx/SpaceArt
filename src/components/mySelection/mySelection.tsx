@@ -14,9 +14,10 @@ import SelectionBox from "../selectionBox/selectionBox";
 import { UserContext } from "../../contexts/UserContext";
 import { SelectSelectionContext } from "../../contexts/SelectSelectionContext";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat"; 
 import { SelectionStatus } from "../../enums/ServiceStatus";
 import ArtistBoxCheck from "../artistBoxCheck/artistBoxCheck";
-import { ArtTypesUtil } from "../../enums/ArtType";
+import { ArtType, ArtTypesUtil } from "../../enums/ArtType";
 
 interface MySelectionProps {
   filter: SelectionStatus;
@@ -27,38 +28,50 @@ function MySelection(props: MySelectionProps) {
   const { fetchSelectionsByOwner, fetchArtistsInSelection } = useContext(UserContext);
   const { selection } = useContext(SelectSelectionContext);
 
-  const [selections, setSelections] = useState<any[]>([]);
+  dayjs.extend(customParseFormat);
+
+  const [selections, setSelections] = useState<any[]>([
+    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'07:30', end:'16:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'08:00', end:'15:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'', locked:true, art:ArtType.music, time:{start:'16:00', end:'16:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'', locked:true, art:ArtType.music, time:{start:'07:30', end:'13:00'}, date:{start:'10/11/2023', end:'17/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'', locked:true, art:ArtType.music, time:{start:'07:30', end:'16:00'}, date:{start:'10/11/2023', end:'15/11/2023'}, price:500, description:'testando'},
+  ]);
   const [artists, setArtists] = useState<any[]>([]);
 
   const filter = ([
-    (item: any): boolean => dayjs().isBefore(`${item.date.start} : ${item.time.start}`, 'minute'),
-    (item: any): boolean => item.locked,
-    (item: any): boolean => dayjs().isAfter(`${item.date.end} : ${item.time.end}`, 'minute'),
+    (item: any) => dayjs(`${item.date.start} ${item.time.start}`, 'DD/MM/YYYY HH:mm').isBefore(),
+    (item: any) => !item.locked,
+    (item: any) => dayjs(`${item.date.start} ${item.time.start}`, 'DD/MM/YYYY HH:mm').isAfter(),
   ])[props.filter];
 
-  useEffect(() =>
-    fetchSelectionsByOwner()
-      .then(setSelections)
-      .catch(console.error)
+  useEffect(() =>{
+    //fetchSelectionsByOwner()
+      //.then(setSelections)
+      //.catch(console.error)
+    }
     , [fetchSelectionsByOwner]);
 
   const fetchArtists = useCallback(() =>
-    fetchArtistsInSelection(selection?.getID())
-      .then(setArtists),
+    {/*fetchArtistsInSelection(selection?.getID())
+  .then(setArtists)*/},
     [fetchArtistsInSelection, selection]);
 
   useEffect(() => fetchArtists(), [fetchArtists]);
 
   return (
     <Modal hidden={hideMySelection}>
-      <ModalContainer hidden={hideSelectArtist}>
+      <ModalContainer hidden={!hideSelectArtist}>
         <HeaderLogo>
           <Icon alt="X" src={XIcon} onClick={() => toogleMySelectionVisibility()} />
           <h1>Minhas seleções</h1>
         </HeaderLogo>
         <SignContainer>
           {selections
-            .filter((item: any) => filter(item))
+            .filter((item: any) => {
+              console.log(`${item.date.start} ${item.time.start}`);
+              return filter(item)
+            })
             .map(
               (item: any) =>
                 <SelectionBox
@@ -74,7 +87,7 @@ function MySelection(props: MySelectionProps) {
             )}
         </SignContainer>
       </ModalContainer>
-      <ModalContainer hidden={!hideSelectArtist}>
+      <ModalContainer hidden={hideSelectArtist}>
         <HeaderLogo>
           <Icon alt="X" src={XIcon} onClick={() => toogleSelectArtistVisibility()} />
           <h1>Selecione um artista</h1>
