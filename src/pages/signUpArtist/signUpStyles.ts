@@ -126,7 +126,6 @@ export const FormSelectField = styled.select`
     width: 47vw; 
     margin: 0.5rem;
   }
-
 `;
 
 export const FormInputButton = styled.button`

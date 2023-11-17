@@ -6,7 +6,7 @@ export const FeedContainer = styled.div`
   display: grid;
   row-gap: 35px;
   box-sizing: border-box;
-  padding-top: 15vh;
+  margin-top: 20vh;
 `;
 
 export const PostContainer = styled.div`

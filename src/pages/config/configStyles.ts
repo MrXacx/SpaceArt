@@ -5,12 +5,13 @@ export const MainContainer = styled.div`
   align-items: center;
   min-height: 100vh;
   background: #fff;
-`;
+  `;
 
 export const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 20vh;
 `;
 
 export const ConfigContainer = styled.div`
@@ -29,6 +30,7 @@ export const ArrowContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin: .3rem 0;
 
   img {
     width: 25px;

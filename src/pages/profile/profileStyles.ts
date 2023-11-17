@@ -1,7 +1,7 @@
 import styled, { createGlobalStyle } from "styled-components";
 
 export const Spacing = styled.div`
-  height: 100px;
+  height: 15vh;
   background-color: #fff;
 `;
 

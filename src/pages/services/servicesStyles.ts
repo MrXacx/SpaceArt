@@ -29,7 +29,8 @@ export const ArrowContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
+  margin: .3rem 0;
+  
   img {
     width: 25px;
     cursor: pointer;
