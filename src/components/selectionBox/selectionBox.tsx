@@ -15,6 +15,7 @@ import { SelectSelectionContext } from "../../contexts/SelectSelectionContext";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat"; 
 import { Enterprise } from "../../api/User";
+import { ModalContext } from "../../contexts/ModalContext";
 
 interface SelectionBoxProps {
   id: string;
@@ -38,6 +39,8 @@ function SelectionBox(props: SelectionBoxProps) {
   const [isOpened, setOpened] = useState(false);
   const { deleteSelection } = useContext(UserContext);
   const { setSelection } = useContext(SelectSelectionContext);
+  const { toogleSelectArtistVisibility } = useContext(ModalContext);
+
   dayjs.extend(customParseFormat);
   const isAfter = dayjs(`${props.date.end} ${props.time.end}`, 'DD/MM/YYYY HH:mm').isAfter();
 
@@ -75,8 +78,11 @@ function SelectionBox(props: SelectionBoxProps) {
           </SelectionHiddenDetailItem>
 
           <SelectionOptions>
-            <SelectionOptionButton type="button" hidden={isAfter} danger={true} onClick={() => deleteSelection(props.id)}>Deletar</SelectionOptionButton>
-            <SelectionOptionButton type="button" hidden={!isAfter} onClick={() => setSelection(new Enterprise(props.id))}>Obter resultados</SelectionOptionButton>
+            <SelectionOptionButton type="button" hidden={isAfter  && props.locked } danger={true} onClick={() => deleteSelection(props.id)}>Deletar</SelectionOptionButton>
+            <SelectionOptionButton type="button" hidden={!isAfter} onClick={() => {
+              setSelection(new Enterprise(props.id))
+              toogleSelectArtistVisibility()
+              }}>Obter resultados</SelectionOptionButton>
           </SelectionOptions>
 
         </SelectionHiddenDetail>

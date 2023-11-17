@@ -63,7 +63,6 @@ export const FooterTitle = styled.span`
   font-weight: 800;
   font-size: 17px;
   margin: 1.5rem 0;
-
 `;
 
 export const ArtTypeContainer = styled.ul`

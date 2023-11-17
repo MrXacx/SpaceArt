@@ -3,9 +3,6 @@ import styled from "styled-components";
 export const Modal = styled.div<{ hidden?: boolean }>`
   visibility: ${({ hidden }) => hidden ? 'hidden' : 'visible'};
   width: 100vw;
-  height: 70vh;
-  max-height: 70vh;
-  overflow: hidden scroll;
   background-color: rgba(0, 0, 0, 0.55);
   position: fixed;
   top: 0;
@@ -20,7 +17,7 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 
 export const ModalContainer = styled.div`
   width: 50vw;
-  height: 85vh;
+  height: 70vh;
   background-color: white;
   border-radius: 6px;
   display: flex;
@@ -73,6 +70,8 @@ export const SignContainer = styled.form`
   flex-wrap: wrap;
   width: 50vw;
   margin: 0 auto;
+  max-height: 50vh;
+  overflow: hidden scroll;
 `;
 
 export const FormInputTextbox = styled.input`

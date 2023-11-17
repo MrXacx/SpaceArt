@@ -17,7 +17,6 @@ export const HeaderContainer = styled.header`
   @media (min-width: 960px) {
       justify-content: space-between;
     }
-
 `;
 
 export const SpaceartContainer = styled.div`
