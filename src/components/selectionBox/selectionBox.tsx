@@ -13,27 +13,26 @@ import { ArtType } from "../../enums/ArtType";
 import { UserContext } from "../../contexts/UserContext";
 import { SelectSelectionContext } from "../../contexts/SelectSelectionContext";
 import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat"; 
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Enterprise } from "../../api/User";
 import { ModalContext } from "../../contexts/ModalContext";
 
 interface SelectionBoxProps {
   id: string;
   title: string;
-  art: ArtType,
+  art: ArtType;
   price: number;
   date: {
-    start: string,
-    end: string,
+    start: string;
+    end: string;
   };
   time: {
-    start: string,
-    end: string,
+    start: string;
+    end: string;
   };
   locked: boolean;
   description: string;
 }
-
 
 function SelectionBox(props: SelectionBoxProps) {
   const [isOpened, setOpened] = useState(false);
@@ -42,18 +41,20 @@ function SelectionBox(props: SelectionBoxProps) {
   const { toogleSelectArtistVisibility } = useContext(ModalContext);
 
   dayjs.extend(customParseFormat);
-  const isAfter = dayjs(`${props.date.end} ${props.time.end}`, 'DD/MM/YYYY HH:mm').isAfter();
-
+  const isAfter = dayjs(
+    `${props.date.end} ${props.time.end}`,
+    "DD/MM/YYYY HH:mm"
+  ).isAfter();
 
   return (
     <SelectionCard>
       <SelectionInnerContainer>
-        <SelectionMask opened={isOpened}>
+        <SelectionMask opened={isOpened} onClick={() => setOpened(!isOpened)}>
           <SelectionDetailHeader>
             <span>{props.art}</span>
             <h3>{props.title}</h3>
           </SelectionDetailHeader>
-          <input type="checkbox" onClick={() => setOpened(!isOpened)} />
+          <input type="checkbox" checked={isOpened} />
         </SelectionMask>
         <SelectionHiddenDetail opened={isOpened}>
           <SelectionHiddenDetailItem>
@@ -65,11 +66,11 @@ function SelectionBox(props: SelectionBoxProps) {
             <span>{`${props.date.start} - ${props.date.end}`}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Horário de início</span>
+            <span>Horário de abertura</span>
             <span>{props.time.start}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Horário de encerramento</span>
+            <span>Horário de encerramnto</span>
             <span>{props.time.end}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
@@ -78,13 +79,25 @@ function SelectionBox(props: SelectionBoxProps) {
           </SelectionHiddenDetailItem>
 
           <SelectionOptions>
-            <SelectionOptionButton type="button" hidden={isAfter  && props.locked } danger={true} onClick={() => deleteSelection(props.id)}>Deletar</SelectionOptionButton>
-            <SelectionOptionButton type="button" hidden={!isAfter} onClick={() => {
-              setSelection(new Enterprise(props.id))
-              toogleSelectArtistVisibility()
-              }}>Obter resultados</SelectionOptionButton>
+            <SelectionOptionButton
+              type="button"
+              hidden={isAfter && props.locked}
+              danger={true}
+              onClick={() => deleteSelection(props.id)}
+            >
+              Deletar
+            </SelectionOptionButton>
+            <SelectionOptionButton
+              type="button"
+              hidden={!isAfter}
+              onClick={() => {
+                setSelection(new Enterprise(props.id));
+                toogleSelectArtistVisibility();
+              }}
+            >
+              Obter resultados
+            </SelectionOptionButton>
           </SelectionOptions>
-
         </SelectionHiddenDetail>
       </SelectionInnerContainer>
     </SelectionCard>

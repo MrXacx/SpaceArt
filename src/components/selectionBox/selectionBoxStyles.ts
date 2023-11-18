@@ -14,16 +14,28 @@ export const SelectionInnerContainer = styled.div`
 export const SelectionMask = styled.div<{ opened: boolean }>`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0.5rem;
   border-radius: 5px;
-  box-shadow: ${({ opened }) => (opened ? " 2px 0 5px #0005;" : "none")};
+  background-color: ${({ opened }) => (opened ? "#fa8b08" : "auto")};
+  color: ${({ opened }) => (opened ? "#fff" : "auto")};
+
+  input {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    justify-content: space-between;
+    input {
+      display: inline;
+    }
+  }
 `;
 
 export const SelectionDetailHeader = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
 
   span {
@@ -38,17 +50,8 @@ export const SelectionDetailHeader = styled.div`
     padding-left: 10px;
     margin: 0;
   }
-`;
-
-export const SelectionHiddenDetailItem = styled.div`
-  max-width: 50%;
-  margin: 1rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  span:first-of-type {
-    opacity: 0.75;
+  @media (min-width: 768px) {
+    flex-direction: row;
   }
 `;
 
@@ -57,12 +60,22 @@ export const SelectionHiddenDetail = styled.div<{ opened: boolean }>`
   display: ${({ opened }) => (opened ? "flex" : "none")};
   justify-content: space-evenly;
   flex-wrap: wrap;
+`;
 
-  ${SelectionHiddenDetailItem} {
-    min-width: 75%;
-    &:last-of-type {
-      background-color: red;
-    }
+export const SelectionHiddenDetailItem = styled.span`
+  width: 100%;
+  margin: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  span:first-of-type {
+    opacity: 0.75;
+    margin: 0.25rem 0;
+  }
+
+  span {
+    text-align: center;
   }
 `;
 
@@ -79,25 +92,31 @@ export const SelectionCard = styled.div`
 
   &:hover {
     ${SelectionMask} {
-      background-color: #0001;
+      background-color: #fa8b08;
+      color: #fff;
     }
   }
 `;
 
 export const SelectionOptions = styled.div`
   width: 100%;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 export const SelectionOptionButton = styled.button<{
   hidden: boolean;
   danger?: boolean;
 }>`
-  width: 35%;
+  width: 70%;
   margin: 0 0.5rem;
-  height: 7vh;
+  height: 4vh;
   display: ${({ hidden }) => (hidden ? "none" : "inline")};
   background-color: ${({ danger }) => (danger ? "#ff2e2e" : "#ff8311")};
   padding: 0.5rem 1rem;
@@ -107,4 +126,9 @@ export const SelectionOptionButton = styled.button<{
   color: #fff;
   font-weight: 700;
   text-transform: uppercase;
+
+  @media (min-width: 768px) {
+    width: 35%;
+    height: 7vh;
+  }
 `;
