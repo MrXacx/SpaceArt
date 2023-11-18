@@ -31,11 +31,11 @@ function MySelection(props: MySelectionProps) {
   dayjs.extend(customParseFormat);
 
   const [selections, setSelections] = useState<any[]>([
-    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'07:30', end:'16:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
-    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'08:00', end:'15:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
-    {id:'', title:'', locked:true, art:ArtType.music, time:{start:'16:00', end:'16:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
-    {id:'', title:'', locked:true, art:ArtType.music, time:{start:'07:30', end:'13:00'}, date:{start:'10/11/2023', end:'17/11/2023'}, price:500, description:'testando'},
-    {id:'', title:'', locked:true, art:ArtType.music, time:{start:'07:30', end:'16:00'}, date:{start:'10/11/2023', end:'15/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'Testando', locked:false, art:ArtType.music, time:{start:'07:30', end:'16:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'Testando', locked:false, art:ArtType.music, time:{start:'08:00', end:'15:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'Testando', locked:true, art:ArtType.music, time:{start:'16:00', end:'16:00'}, date:{start:'17/11/2023', end:'19/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'Testando', locked:true, art:ArtType.music, time:{start:'07:30', end:'13:00'}, date:{start:'10/11/2023', end:'17/11/2023'}, price:500, description:'testando'},
+    {id:'', title:'Testando', locked:true, art:ArtType.music, time:{start:'07:30', end:'16:00'}, date:{start:'10/11/2023', end:'15/11/2023'}, price:500, description:'testando'},
   ]);
   const [artists, setArtists] = useState<any[]>([]);
 
@@ -68,10 +68,7 @@ function MySelection(props: MySelectionProps) {
         </HeaderLogo>
         <SignContainer>
           {selections
-            .filter((item: any) => {
-              console.log(`${item.date.start} ${item.time.start}`);
-              return filter(item)
-            })
+            .filter(filter)
             .map(
               (item: any) =>
                 <SelectionBox
@@ -96,7 +93,7 @@ function MySelection(props: MySelectionProps) {
 
           <SearchResults>
             {artists.map(
-              (artist: any) => (
+              (artist) => (
                 <ArtistBoxCheck
                   name={artist.name}
                   image={artist.image}

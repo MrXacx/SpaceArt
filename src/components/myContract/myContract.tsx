@@ -13,6 +13,8 @@ import ContractBox from "../contractBox/contractBox";
 import { UserContext } from "../../contexts/UserContext";
 import { AgreementStatus } from "../../enums/ServiceStatus";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat"; 
+import { ArtType } from "../../enums/ArtType";
 interface MyContractProps {
   filter: AgreementStatus;
 }
@@ -20,18 +22,25 @@ interface MyContractProps {
 function MyContract(props: MyContractProps) {
   const { hideMyContract, toogleMyContractVisibility } = useContext(ModalContext);
   const { fetchAgreementsByUser } = useContext(UserContext);
-  const [contracts, setContracts] = useState<any[]>([]);
+  const [contracts, setContracts] = useState<any[]>([
+    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'07:30', end:'16:00'}, date:'17/11/2023', price:500, description:'testando', status:'send'},
+    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'17:30', end:'23:00'}, date:'17/11/2023', price:500, description:'testando', status:'accepted'},
+    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'09:50', end:'17:00'}, date:'17/11/2023', price:500, description:'testando', status:'accepted'},
+    {id:'', title:'', locked:false, art:ArtType.music, time:{start:'10:00', end:'14:00'}, date:'17/11/2023', price:500, description:'testando', status:'refused'},
+  ]);
+
+  dayjs.extend(customParseFormat);
 
   const filter = ([
     (item: any): boolean => item.status == "send",
-    (item: any): boolean => item.status == "accepted" && dayjs().isAfter(`${item.date} ${item.time.end}`),
-    (item: any): boolean => item.status == "accepted" || item.status == "refused",
+    (item: any): boolean => item.status == "accepted" && dayjs(`${item.date} ${item.time.end}`, 'DD/MM/YYYY HH:mm').isAfter(),
+    (item: any): boolean => (item.status == "accepted" && dayjs(`${item.date} ${item.time.end}`, 'DD/MM/YYYY HH:mm').isBefore()) || item.status == "refused",
   ])[props.filter];
 
-  useEffect(() =>
-    fetchAgreementsByUser()
+  useEffect(() => {
+    /*fetchAgreementsByUser()
       .then(setContracts)
-      .catch(console.error)
+  .catch(console.error)*/ }
     , [fetchAgreementsByUser]);
 
   return (

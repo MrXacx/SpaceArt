@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Modal = styled.div<{ hidden?: boolean }>`
-  visibility: ${({ hidden }) => hidden ? 'hidden' : 'visible'};
-  width: 100vw;
+  visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
+  width: 100%;
   height: 70vh;
   background-color: rgba(0, 0, 0, 0.55);
   position: fixed;
@@ -17,14 +17,17 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 `;
 
 export const ModalContainer = styled.div`
-  display:  flex;
-  width: 50vw;
-  min-height: 70vh;
+  width: 72%;
+  height: 70vh;
   background-color: white;
   border-radius: 6px;
+  display: flex;
   flex-direction: column;
   padding: 50px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  @media (min-width: 768px) {
+    width: 50vw;
+  }
 `;
 
 export const FormInputButton = styled.button`
@@ -123,12 +126,11 @@ export const SearchArtistButton = styled.button`
 `;
 
 export const SearchResults = styled.div`
-    width: 90%; 
-    height: 45vh;
-    max-height: 45vh;
-    overflow-y: scroll;
+  width: 90%;
+  height: 45vh;
+  max-height: 45vh;
+  overflow-y: scroll;
 `;
-
 
 export const MainSignUpContainer = styled.div`
   display: grid;
@@ -139,7 +141,6 @@ export const InnerContainer = styled.div`
   justify-self: center;
   align-self: center;
 `;
-
 
 export const ProfileInformationContainer = styled.div`
   width: 100%;
@@ -290,9 +291,9 @@ export const FormInputHalfField = styled.input`
 
 export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
   width: 90%;
-  display: ${({ hidden }) => hidden ? "none" : "inline"};
+  display: ${({ hidden }) => (hidden ? "none" : "inline")};
   color: black;
   font-size: 1rem;
   text-align: center;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 `;

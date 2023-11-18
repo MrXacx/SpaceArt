@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Modal = styled.div<{ hidden?: boolean }>`
-  visibility: ${({hidden}) => hidden ? 'hidden' : 'visible'};
-  width: 100vw;
+  visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.55);
   position: fixed;
   top: 0;
@@ -16,14 +16,17 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 `;
 
 export const ModalContainer = styled.div`
-  display: flex;
-  width: 50vw;
+  width: 72%;
   height: 70vh;
   background-color: white;
   border-radius: 6px;
+  display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  @media (min-width: 768px) {
+    width: 50vw;
+  }
 `;
 
 export const MainSignUpContainer = styled.div`
@@ -147,9 +150,9 @@ export const FormInputButton = styled.button`
 
 export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
   width: 90%;
-  display: ${({hidden}) => hidden ? "none" : "inline"};
+  display: ${({ hidden }) => (hidden ? "none" : "inline")};
   color: black;
   font-size: 1rem;
   text-align: center;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 `;

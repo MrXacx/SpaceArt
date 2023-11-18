@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Modal = styled.div<{ hidden?: boolean }>`
-  visibility: ${({ hidden }) => hidden ? 'hidden' : 'visible'};
-  width: 100vw;
+  visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.55);
   position: fixed;
   top: 0;
@@ -16,14 +16,17 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 `;
 
 export const ModalContainer = styled.div<{ hidden?: boolean }>`
-  display: ${({ hidden }) => hidden ? 'none' : 'flex'};
-  width: 50vw;
+  display: ${({ hidden }) => (hidden ? "none" : "flex")};
+  width: 72%;
   height: 70vh;
   background-color: white;
   border-radius: 6px;
   flex-direction: column;
   padding: 50px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  @media (min-width: 768px) {
+    width: 50vw;
+  }
 `;
 
 export const MainSignUpContainer = styled.div`
@@ -58,27 +61,26 @@ export const Icon = styled.img`
   cursor: pointer;
 `;
 
-export const SignContainer = styled.form`
+export const SignContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 50vw;
+  width: 100%;
   margin: 0 auto;
   max-height: 50vh;
   overflow: hidden scroll;
-`;
 
-export const ArtistInfo = styled.div`
-  display: flex;
-  flex-direction: column;
+  @media (min-width: 768px) {
+    width: 50vw;
+  }
 `;
 
 export const SearchResults = styled.div`
-    width: 90%; 
-    height: 45vh;
-    max-height: 45vh;
-    overflow-y: scroll;
+  width: 90%;
+  height: 45vh;
+  max-height: 45vh;
+  overflow-y: scroll;
 `;
 
 export const FormInputButton = styled.button`

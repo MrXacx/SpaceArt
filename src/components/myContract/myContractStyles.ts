@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Modal = styled.div<{ hidden?: boolean }>`
-  visibility: ${({ hidden }) => hidden ? 'hidden' : 'visible'};
-  width: 100vw;
+  visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
+  width: 100%;
   overflow: hidden scroll;
   background-color: rgba(0, 0, 0, 0.55);
   position: fixed;
@@ -17,14 +17,17 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 `;
 
 export const ModalContainer = styled.div`
-  display: flex;
-  width: 50vw;
+  display: ${({ hidden }) => (hidden ? "none" : "flex")};
+  width: 72%;
   height: 70vh;
   background-color: white;
   border-radius: 6px;
   flex-direction: column;
   padding: 50px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  @media (min-width: 768px) {
+    width: 50vw;
+  }
 `;
 
 export const MainSignUpContainer = styled.div`
@@ -59,16 +62,19 @@ export const Icon = styled.img`
   cursor: pointer;
 `;
 
-export const SignContainer = styled.form`
+export const SignContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  display: flex;
   flex-wrap: wrap;
-  width: 50vw;
+  width: 100%;
   margin: 0 auto;
   max-height: 50vh;
   overflow: hidden scroll;
+
+  @media (min-width: 768px) {
+    width: 50vw;
+  }
 `;
 
 export const ProfileInformationContainer = styled.div`
@@ -137,7 +143,7 @@ export const LocalContainer = styled.div`
   }
 
   span {
-    :last-of-type {
+    &:last-of-type {
       padding: 5px 20px;
       background-color: #fa8b08;
       font-size: 0.8em;
@@ -151,4 +157,3 @@ export const ArtistInfo = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
