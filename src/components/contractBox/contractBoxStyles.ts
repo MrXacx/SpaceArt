@@ -20,6 +20,7 @@ export const ContractMask = styled.div<{ opened: boolean }>`
   border-radius: 5px;
   background-color: ${({ opened }) => (opened ? "#fa8b08" : "auto")};
   color: ${({ opened }) => (opened ? "#fff" : "auto")};
+  cursor: pointer;
 
   input {
     display: none;
@@ -90,10 +91,12 @@ export const ContractCard = styled.div`
   margin: 10px 0;
   padding: 0 0.5rem;
 
-  &:hover {
-    ${ContractMask} {
-      background-color: #fa8b08;
-      color: #fff;
+  @media (min-width: 960px) {
+    &:hover {
+      ${ContractMask} {
+        background-color: #fa8b08;
+        color: #fff;
+      }
     }
   }
 `;
@@ -115,7 +118,7 @@ export const ContractOptionButton = styled.button<{
   danger?: boolean;
 }>`
   width: 70%;
-  margin: 0 0.5rem;
+  margin: 0.25rem auto;
   height: 4vh;
   display: ${({ hidden }) => (hidden ? "none" : "inline")};
   background-color: ${({ danger }) => (danger ? "#ff2e2e" : "#ff8311")};
@@ -126,9 +129,12 @@ export const ContractOptionButton = styled.button<{
   color: #fff;
   font-weight: 700;
   text-transform: uppercase;
+  cursor: pointer;
 
   @media (min-width: 768px) {
     width: 35%;
     height: 7vh;
+    margin: 0 0.5rem;
+    height: 3rem;
   }
 `;
