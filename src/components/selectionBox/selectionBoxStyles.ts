@@ -50,6 +50,7 @@ export const SelectionDetailHeader = styled.div`
     padding-left: 10px;
     margin: 0;
   }
+
   @media (min-width: 768px) {
     flex-direction: row;
   }
@@ -69,13 +70,13 @@ export const SelectionHiddenDetailItem = styled.span`
   flex-direction: column;
   align-items: center;
 
-  span:first-of-type {
-    opacity: 0.75;
-    margin: 0.25rem 0;
-  }
-
   span {
     text-align: center;
+
+    &:first-of-type {
+      opacity: 0.75;
+      margin: 0.25rem 0;
+    }
   }
 `;
 

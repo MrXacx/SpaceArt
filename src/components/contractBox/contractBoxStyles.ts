@@ -69,13 +69,13 @@ export const ContractHiddenDetailItem = styled.div`
   flex-direction: column;
   align-items: center;
 
-  span:first-of-type {
-    opacity: 0.75;
-    margin: 0.25rem 0;
-  }
-
   span {
     text-align: center;
+
+    &:first-of-type {
+      opacity: 0.75;
+      margin: 0.25rem 0;
+    }
   }
 `;
 
