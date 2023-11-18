@@ -29,16 +29,6 @@ export const ModalContainer = styled.div<{ hidden?: boolean }>`
   }
 `;
 
-export const MainSignUpContainer = styled.div`
-  display: grid;
-  min-height: 80vh;
-`;
-
-export const InnerContainer = styled.div`
-  justify-self: center;
-  align-self: center;
-`;
-
 export const HeaderLogo = styled.header`
   width: 100%;
   display: flex;
