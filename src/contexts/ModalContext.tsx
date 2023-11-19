@@ -14,14 +14,21 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
   const [hideProfileUpdate, setHideProfileUpdate] = useState(true);
   const [hideNewPost, setHideNewPost] = useState(true);
   const [hideSelectArtist, setHideSelectArtist] = useState(true);
+  const [hideLookRates, setHideLookRates] = useState(true);
 
-  const toogleNewContractVisibility = () => setHideNewContract(!hideNewContract);
-  const toogleNewSelectionVisibility = () => setHideNewSelection(!hideNewSelection);
+  const toogleNewContractVisibility = () =>
+    setHideNewContract(!hideNewContract);
+  const toogleNewSelectionVisibility = () =>
+    setHideNewSelection(!hideNewSelection);
   const toogleMyContractVisibility = () => setHideMyContract(!hideMyContract);
-  const toogleMySelectionVisibility = () => setHideMySelection(!hideMySelection);
-  const toogleProfileUpdateVisibility = () => setHideProfileUpdate(!hideProfileUpdate);
+  const toogleMySelectionVisibility = () =>
+    setHideMySelection(!hideMySelection);
+  const toogleProfileUpdateVisibility = () =>
+    setHideProfileUpdate(!hideProfileUpdate);
   const toogleNewPostVisibility = () => setHideNewPost(!hideNewPost);
-  const toogleSelectArtistVisibility = () => setHideSelectArtist(!hideSelectArtist);
+  const toogleSelectArtistVisibility = () =>
+    setHideSelectArtist(!hideSelectArtist);
+  const toogleLookRatesVisibility = () => setHideLookRates(!hideLookRates);
 
   return (
     <ModalContext.Provider
@@ -40,6 +47,8 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
         toogleNewPostVisibility,
         hideSelectArtist,
         toogleSelectArtistVisibility,
+        hideLookRates,
+        toogleLookRatesVisibility,
       }}
     >
       {children}
