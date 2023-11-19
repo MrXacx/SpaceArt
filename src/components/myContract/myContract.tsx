@@ -75,30 +75,7 @@ function MyContract(props: MyContractProps) {
       status: "refused",
     },
   ]);
-  const [rates, setRates] = useState<any[]>([
-    {
-      author: {
-        id: "",
-        index: 0,
-        name: "Arthur Novais",
-        image: "https://thispersondoesnotexist.com/",
-      },
-      rate: 5.5,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquam dolor eget facilisis sollicitudin. Vivamus non facilisis nunc, in fringilla lectus. Vivamus vitae imperdiet magna. Quisque elementum ex sem. Curabitur convallis, lacus nec pharetra.",
-    },
-    {
-      author: {
-        id: "",
-        index: 0,
-        name: "Arthur Novais",
-        image: "https://thispersondoesnotexist.com/",
-      },
-      rate: 5.5,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquam dolor eget facilisis sollicitudin. Vivamus non facilisis nunc, in fringilla lectus. Vivamus vitae imperdiet magna. Quisque elementum ex sem. Curabitur convallis, lacus nec pharetra.",
-    },
-  ]);
+  const [rates, setRates] = useState<any[]>([]);
 
   dayjs.extend(customParseFormat);
 
@@ -117,9 +94,7 @@ function MyContract(props: MyContractProps) {
   ][props.filter];
 
   useEffect(() => {
-    /*fetchAgreementsByUser()
-      .then(setContracts)
-  .catch(console.error)*/
+    fetchAgreementsByUser().then(setContracts).catch(console.error);
   }, [fetchAgreementsByUser]);
 
   return (
