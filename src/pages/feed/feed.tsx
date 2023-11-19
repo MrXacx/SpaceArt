@@ -39,7 +39,7 @@ function Feed() {
               />
               <div>
                 <span>{data?.author.name}</span>
-                <span>{dayjs(data?.postTime).fromNow(true)}</span>
+                <span>{dayjs(data?.postTime).fromNow()}</span>
               </div>
             </ProfileContainer>
             <TextContentContainer>{data?.message}</TextContentContainer>
