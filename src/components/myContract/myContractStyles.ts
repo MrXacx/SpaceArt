@@ -16,7 +16,7 @@ export const Modal = styled.div<{ hidden?: boolean }>`
   justify-content: center;
 `;
 
-export const ModalContainer = styled.div`
+export const ModalContainer = styled.div<{ hidden: boolean }>`
   display: ${({ hidden }) => (hidden ? "none" : "flex")};
   width: 72%;
   height: 70vh;
@@ -72,4 +72,7 @@ export const SearchResults = styled.div`
   height: 45vh;
   max-height: 45vh;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

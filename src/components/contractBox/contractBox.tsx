@@ -8,8 +8,11 @@ import {
   ContractOptions,
   ContractOptionButton,
 } from "./contractBoxStyles";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ArtType } from "../../enums/ArtType";
+import { SelectAgreementContext } from "../../contexts/SelectAgreement";
+import { ModalContext } from "../../contexts/ModalContext";
+import { Agreement } from "../../api/Agreement";
 
 interface ContractBoxProps {
   id: string;
@@ -26,6 +29,8 @@ interface ContractBoxProps {
 
 function ContractBox(props: ContractBoxProps) {
   const [isOpened, setOpened] = useState(false);
+  const { setAgreement } = useContext(SelectAgreementContext);
+  const { toogleLookRatesVisibility } = useContext(ModalContext);
 
   return (
     <ContractCard>
@@ -63,7 +68,10 @@ function ContractBox(props: ContractBoxProps) {
             <ContractOptionButton
               type="button"
               hidden={false}
-              onClick={() => {}}
+              onClick={() => {
+                setAgreement(new Agreement(props.id));
+                toogleLookRatesVisibility();
+              }}
             >
               Conferir avaliações
             </ContractOptionButton>
