@@ -7,57 +7,48 @@ import {
 } from "./feedStyles";
 
 import HeaderLogged from "../../components/headerLogged/headerLogged";
-import { useEffect, useContext, useState, useCallback } from "react";
+import { useEffect, useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import portuguesPlugin from "dayjs/locale/pt-br";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { useNavigate } from "react-router-dom";
 
-function Feed() {    
-  const { isLogged, fetchRandomPosts } = useContext(UserContext);
+function Feed() {
+  dayjs.locale(portuguesPlugin);
+  dayjs.extend(relativeTime);
+  const { fetchRandomPosts } = useContext(UserContext);
   const navigate = useNavigate();
-  const [posts, setPosts] = useState<JSX.Element[]>();
-  const fetchPosts = useCallback(() =>
+  const [posts, setPosts] = useState<any[]>([]);
 
-    fetchRandomPosts()
-      .then((list: any[]) => list.map((data: any) =>
-      (<PostContainer>
-        <ProfileContainer>
-          <img
-            src={data?.author.image}
-            alt={`Perfil de ${data?.author.name}`}
-            onClick={() => navigate(`user/${data?.user.index}`)}
-          />
-          <div>
-            <span>{data?.author.name}</span>
-            <span>{dayjs(data?.postTime).format('DD/MM')}</span>
-          </div>
-        </ProfileContainer>
-        <TextContentContainer>
-          {data?.message}
-        </TextContentContainer>
-        <ProfilePostImage src={data?.media} alt="imagem" />
-      </PostContainer>)
-      )), [fetchRandomPosts, navigate]);
-  
-
-  if (!isLogged) {
-    //navigate('/');
-  }
   useEffect(() => {
-    fetchPosts()
-      .then(setPosts);
-  }, [fetchPosts, setPosts]);
-
+    fetchRandomPosts().then(setPosts);
+  }, [fetchRandomPosts, setPosts]);
 
   return (
     <>
       <HeaderLogged />
       <FeedContainer>
-        {posts}
+        {posts.map((data: any) => (
+          <PostContainer>
+            <ProfileContainer>
+              <img
+                src={data?.author.image}
+                alt={`Perfil de ${data?.author.name}`}
+                onClick={() => navigate(`user/${data?.user.index}`)}
+              />
+              <div>
+                <span>{data?.author.name}</span>
+                <span>{dayjs(data?.postTime).fromNow(true)}</span>
+              </div>
+            </ProfileContainer>
+            <TextContentContainer>{data?.message}</TextContentContainer>
+            <ProfilePostImage src={data?.media} alt="imagem" />
+          </PostContainer>
+        ))}
       </FeedContainer>
-    </>)
-
-};
+    </>
+  );
+}
 
 export default Feed;
