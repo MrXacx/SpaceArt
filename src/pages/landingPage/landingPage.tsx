@@ -26,11 +26,12 @@ import { SearchContext } from "../../contexts/SearchContext";
 import { AccountType } from "../../enums/AccountType";
 
 function LandingPage() {
-
   const navigate = useNavigate();
   let { searchResult, fetchRandomUsers, artFilter } = useContext(SearchContext);
 
-  useEffect(() => fetchRandomUsers(AccountType.artist))
+  useEffect(() =>
+    searchResult.length === 0 ? fetchRandomUsers(AccountType.artist) : null
+  );
 
   const artItems = [
     { image: MicImage, name: "MÚSICA" },
@@ -50,7 +51,9 @@ function LandingPage() {
             <br></br>TÊM VEZ
           </span>
           <div>
-            <button onClick={() => navigate('/signUp/artist')}>CRIE UMA CONTA</button>
+            <button onClick={() => navigate("/signUp/artist")}>
+              CRIE UMA CONTA
+            </button>
           </div>
         </OpeningBannerContent>
       </OpeningBannerContainer>
@@ -90,8 +93,11 @@ function LandingPage() {
         <LocationFilterBar withArtField={true} />
         <CardProfileContainer>
           {searchResult
-            .filter((item: any) => item.art = artFilter || artFilter === undefined)
-            .map( // converte o estado do contexto em component
+            .filter(
+              (item: any) => (item.art = artFilter || artFilter === undefined)
+            )
+            .map(
+              // converte o estado do contexto em component
               (data: any) =>
                 CardProfile(
                   data.id,
@@ -103,8 +109,8 @@ function LandingPage() {
                   data.state,
                   data.art,
                   data.wage
-                ))
-          }
+                )
+            )}
         </CardProfileContainer>
       </SearchArtistContainer>
       <Footer />

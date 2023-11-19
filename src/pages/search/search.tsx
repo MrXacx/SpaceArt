@@ -15,7 +15,7 @@ import NameFilterBar from "../../components/nameFilterBar/nameFilterBar";
 import { SearchContext } from "../../contexts/SearchContext";
 import CardProfile from "../../components/cardProfile/cardProfile";
 
-import { AccountType } from "../../enums/AccountType"
+import { AccountType } from "../../enums/AccountType";
 
 function Search() {
   const [isNameFilterSelected, setNameFilterSelected] = useState(true);
@@ -25,8 +25,8 @@ function Search() {
   const [type, setType] = useState(AccountType.artist);
 
   useEffect(() => {
-    fetchRandomUsers(type);
-  }, [fetchRandomUsers, type]);
+    if (searchResult.length === 0) fetchRandomUsers(type);
+  }, [fetchRandomUsers, searchResult, type]);
 
   return (
     <>
@@ -86,7 +86,9 @@ function Search() {
       <SearchResultContainer>
         <CardProfileContainer>
           {searchResult
-            .filter((item: any) => item.art = artFilter || artFilter === undefined)
+            .filter(
+              (item: any) => item.art === artFilter || artFilter === undefined
+            )
             .map((data: any) =>
               CardProfile(
                 data.id,
@@ -98,9 +100,9 @@ function Search() {
                 data.state,
                 data.art,
                 data.wage
-              ))}
+              )
+            )}
         </CardProfileContainer>
-
       </SearchResultContainer>
     </>
   );
