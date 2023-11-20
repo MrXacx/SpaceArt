@@ -1,7 +1,11 @@
 export enum AgreementStatus {
-  pending, accepted, completed
+  pending,
+  accepted,
+  completed,
 }
 
 export enum SelectionStatus {
-  onHold, active, closed
+  onHold,
+  active,
+  closed,
 }

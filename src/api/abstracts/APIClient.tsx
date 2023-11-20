@@ -32,13 +32,13 @@ export abstract class SpaceArtAPIClient extends APIClient {
 export abstract class IndexedAPIClient extends SpaceArtAPIClient {
   protected id: string | undefined;
 
-  constructor(id: string | null = null) {
+  constructor(id?: string) {
     super();
-    this.id = id ?? undefined;
+    this.id = id as string;
   }
 
   setID = (id: string) => (this.id = id);
-  getID = () => this.id as string;
+  getID = () => this.id;
 }
 
 export interface APIClientFactory {

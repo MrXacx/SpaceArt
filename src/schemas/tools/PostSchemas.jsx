@@ -1,11 +1,7 @@
 import Joi from "joi";
 
 export const postSchema = Joi.object({
-	content: Joi.string()
-		.min(1)
-		.max(256)
-		.required(),
+  content: Joi.string().min(1).max(256).required(),
 
-	media: Joi.string()
-		.required(),
+  media: Joi.string().required(),
 });

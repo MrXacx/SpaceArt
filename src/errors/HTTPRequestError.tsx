@@ -4,7 +4,7 @@ export class HTTPRequestError extends Error {
     this.message = message;
   }
 
-  static throw(message = '') {
+  static throw(message = "") {
     throw new HTTPRequestError(message);
   }
 }

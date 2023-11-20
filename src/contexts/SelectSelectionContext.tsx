@@ -7,13 +7,13 @@ interface SelectSelectionStoreProps {
 
 export const SelectSelectionContext = createContext({} as any);
 
-export const SelectSelectionProvider = ({ children }: SelectSelectionStoreProps) => {
-
+export const SelectSelectionProvider = ({
+  children,
+}: SelectSelectionStoreProps) => {
   const [selection, setSelection] = useState<Selection>();
 
   return (
-    <SelectSelectionContext.Provider
-      value={{ selection, setSelection }}>
+    <SelectSelectionContext.Provider value={{ selection, setSelection }}>
       {children}
     </SelectSelectionContext.Provider>
   );

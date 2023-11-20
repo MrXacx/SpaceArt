@@ -13,7 +13,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
   private time: string[] | undefined;
   public rates: Rate[] = [];
 
-  private path = '/agreement';
+  private path = "/agreement";
 
   factory = () => new Agreement();
 
@@ -23,15 +23,15 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
    * @returns Agreement
    */
   public build(agreement: {
-    id?: string,
-    hirer: Enterprise,
-    hired: Artist,
-    description: string,
-    art: string,
-    price: number,
-    date: string,
-    time: string[],
-    status?: string,
+    id?: string;
+    hirer: Enterprise;
+    hired: Artist;
+    description: string;
+    art: string;
+    price: number;
+    date: string;
+    time: string[];
+    status?: string;
   }): Agreement {
     this.id = agreement.id;
     this.hirer = agreement.hirer;
@@ -50,18 +50,23 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
    * Cria um contrato
    */
   public async create() {
-    let response = await this.request.post(this.path, JSON.stringify({
-      hirer: this.hirer?.getID(),
-      hired: this.hired?.getID(),
-      art: this.art,
-      description: this.description,
-      price: this.price,
-      date: this.date,
-      time: this.time?.join(";"),
-    }));
+    let response = await this.request.post(
+      this.path,
+      JSON.stringify({
+        hirer: this.hirer?.getID(),
+        hired: this.hired?.getID(),
+        art: this.art,
+        description: this.description,
+        price: this.price,
+        date: this.date,
+        time: this.time?.join(";"),
+      })
+    );
 
     if (response.status !== Agreement.httpStatusCode.OK) {
-      Agreement.errorTypes.HTTPRequestError.throw("Não foi possível criar um contrato");
+      Agreement.errorTypes.HTTPRequestError.throw(
+        "Não foi possível criar um contrato"
+      );
     }
   }
 
@@ -73,12 +78,12 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
     const response = await this.request.get(`${this.path}?id=${this.id}`);
 
     if (response.status !== Agreement.httpStatusCode.OK) {
-      Agreement.errorTypes
-        .HTTPRequestError
-        .throw(`Não foi possível encontrar o contrato ${this.id}`);
+      Agreement.errorTypes.HTTPRequestError.throw(
+        `Não foi possível encontrar o contrato ${this.id}`
+      );
     }
 
-    const agreementData = JSON.parse(response.data)
+    const agreementData = JSON.parse(response.data);
 
     const agreement = this.factory().build({
       id: agreementData.id,
@@ -87,12 +92,14 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       art: agreementData.art,
       price: agreementData.price,
       date: agreementData.date,
-      time: Object.entries(agreementData.time).map(item => item[1] as string),
+      time: Object.entries(agreementData.time).map((item) => item[1] as string),
       status: agreementData.status,
       description: agreementData.description,
     });
 
-    agreement.rates = agreement.rates.concat(await new Rate(agreement).fetchList()); // Obtém avaliações do contrato
+    agreement.rates = agreement.rates.concat(
+      await new Rate(agreement).fetchList()
+    ); // Obtém avaliações do contrato
 
     return agreement;
   }
@@ -103,8 +110,14 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
    * @param int offset
    * @param int limit
    */
-  public async fetchList(user: User, offset = 0, limit = 10): Promise<Agreement[]> {
-    let response = await this.request.get(`${this.path}/list?user=${user.getID()}&offset=${offset}&limit=${limit}`);
+  public async fetchList(
+    user: User,
+    offset = 0,
+    limit = 10
+  ): Promise<Agreement[]> {
+    let response = await this.request.get(
+      `${this.path}/list?user=${user.getID()}&offset=${offset}&limit=${limit}`
+    );
 
     if (response.status !== Agreement.httpStatusCode.OK) {
       Agreement.errorTypes.HTTPRequestError.throw(
@@ -112,21 +125,20 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       );
     }
 
-    return JSON.parse(response.data).map((data: any) => { // Itera lista de contratos
+    return JSON.parse(response.data).map((data: any) => {
+      // Itera lista de contratos
       data.hirer = new Enterprise(data.hirer);
       data.hired = new Artist(data.hired);
       const agreement = this.factory().build(data); // Instancia o contrato
 
-      if (data.status === "accepted") { // Executa apenas se o contrato já foi aceito
-        new Rate(
-          new Agreement(data.id)
-        ) // Instancia avaliação
+      if (data.status === "accepted") {
+        // Executa apenas se o contrato já foi aceito
+        new Rate(new Agreement(data.id)) // Instancia avaliação
           .fetchList() // Busca as avaliações associadas no banco
-          .then(rates => agreement.rates = rates); // Associa avaliações ao contrato
+          .then((rates) => (agreement.rates = rates)); // Associa avaliações ao contrato
       }
 
       return agreement;
-
     });
   }
 
@@ -134,7 +146,10 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
    * Deleta um contrato
    */
   public async delete() {
-    let response = await this.request.post(`${this.path}/delete`, JSON.stringify({ id: this.id }));
+    let response = await this.request.post(
+      `${this.path}/delete`,
+      JSON.stringify({ id: this.id })
+    );
 
     if (response.status !== Agreement.httpStatusCode.NO_CONTENT) {
       Agreement.errorTypes.HTTPRequestError.throw(
@@ -155,6 +170,6 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       time: this.time,
       description: this.description,
       rates: this.rates,
-    }
+    };
   }
 }

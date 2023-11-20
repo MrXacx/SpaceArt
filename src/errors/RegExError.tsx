@@ -4,7 +4,7 @@ export class RegExError extends Error {
     this.message = message;
   }
 
-  static throw(message = ''){
+  static throw(message = "") {
     throw new RegExError(message);
   }
 }

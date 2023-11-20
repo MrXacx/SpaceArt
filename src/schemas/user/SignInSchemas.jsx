@@ -4,6 +4,6 @@ import { UserSchemas } from "./UserSchemas";
 const { emailSchema, passwordSchema } = UserSchemas;
 
 export const signInSchema = Joi.object({
-	email: emailSchema.required(),
-	password: passwordSchema.required(),
+  email: emailSchema.required(),
+  password: passwordSchema.required(),
 });

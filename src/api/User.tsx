@@ -5,7 +5,6 @@ import { AccountType } from "../enums/AccountType";
  * Classe de consulta de dados de usuários
  */
 export class User extends IndexedAPIClient implements APIClientFactory {
-
   protected index: number | undefined;
   protected token: string | undefined;
   protected type: AccountType | string | undefined;
@@ -18,13 +17,15 @@ export class User extends IndexedAPIClient implements APIClientFactory {
   protected description: string | undefined;
   protected rate: number | undefined;
   protected verified: boolean | undefined;
-  protected location: {
-    cep: string,
-    state: string,
-    city: string,
-    neighborhood?: string,
-    address?: string,
-  } | undefined; // Objeto para dados de localização
+  protected location:
+    | {
+        cep: string;
+        state: string;
+        city: string;
+        neighborhood?: string;
+        address?: string;
+      }
+    | undefined; // Objeto para dados de localização
 
   path = "/user"; // Rote de consulta
 
@@ -34,28 +35,27 @@ export class User extends IndexedAPIClient implements APIClientFactory {
    * Preenche todos os atributos da classe
    */
   build(user: {
-    id?: string,
-    token?: string,
-    type?: AccountType | string,
-    index?: number,
-    name?: string,
-    email?: string,
-    password?: string,
-    phone?: string,
+    id?: string;
+    token?: string;
+    type?: AccountType | string;
+    index?: number;
+    name?: string;
+    email?: string;
+    password?: string;
+    phone?: string;
     location?: {
-      cep: string,
-      state: string,
-      city: string,
-      neighborhood?: string,
-      address?: string,
-    },
-    image?: string,
-    website?: string,
-    description?: string,
-    rate?: number,
-    verified?: boolean,
+      cep: string;
+      state: string;
+      city: string;
+      neighborhood?: string;
+      address?: string;
+    };
+    image?: string;
+    website?: string;
+    description?: string;
+    rate?: number;
+    verified?: boolean;
   }) {
-
     this.id = user.id;
     this.index = user.index;
     this.token = user.token;
@@ -69,23 +69,27 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     this.description = user.description;
     this.rate = user.rate;
     this.verified = user.verified;
-    this.type = this.type ?? user.type
+    this.type = this.type ?? user.type;
     return this;
   }
 
   /**
    * Consulta dados de identificação
    */
-  async signIn(email = this.email as string, password = this.password as string) {
-    let response = await this.request.get(`${this.path}/sign-in?email=${email}&password=${password}`);
+  async signIn(
+    email = this.email as string,
+    password = this.password as string
+  ) {
+    let response = await this.request.get(
+      `${this.path}/sign-in?email=${email}&password=${password}`
+    );
 
-    if (response.status !== User.httpStatusCode.OK) { // Executa caso o código da resposta não seja OK
-      User.errorTypes
-        .HTTPRequestError.throw(response.statusText); // Emite exceção
+    if (response.status !== User.httpStatusCode.OK) {
+      // Executa caso o código da resposta não seja OK
+      User.errorTypes.HTTPRequestError.throw(response.statusText); // Emite exceção
     }
 
     return this.factory().build(JSON.parse(response.data));
-
   }
 
   /**
@@ -95,17 +99,17 @@ export class User extends IndexedAPIClient implements APIClientFactory {
    */
   public async fetch(isToken = false): Promise<any> {
     let response = await this.request.get(
-      `${this.path}?id=${isToken ? this.token : this.id}&token=${isToken}&type=${this.type}`
+      `${this.path}?id=${
+        isToken ? this.token : this.id
+      }&token=${isToken}&type=${this.type}`
     );
 
     if (response.status !== User.httpStatusCode.OK) {
-      User.errorTypes
-        .HTTPRequestError.throw(response.statusText);
+      User.errorTypes.HTTPRequestError.throw(response.statusText);
     }
 
     return this.factory().build(JSON.parse(response.data)); // Intancia o retorno
   }
-
 
   async fetchForIndex(): Promise<any> {
     let response = await this.request.get(
@@ -113,8 +117,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     );
 
     if (response.status !== User.httpStatusCode.OK) {
-      User.errorTypes
-        .HTTPRequestError.throw(response.data);
+      User.errorTypes.HTTPRequestError.throw(response.data);
     }
 
     return this.factory().build(JSON.parse(response.data)); // Intancia o retorno
@@ -131,62 +134,81 @@ export class User extends IndexedAPIClient implements APIClientFactory {
    * Busca lista de usuários filtrando pelo nome completo ou parcial
    */
   fetchListFilteringName(name: string, offset = 0, limit = 25) {
-    return this.fetchList(`filter=name&offset=${offset}&limit=${limit}&type=${this.type}&name=${name}`);
+    return this.fetchList(
+      `filter=name&offset=${offset}&limit=${limit}&type=${this.type}&name=${name}`
+    );
   }
 
   /**
    * Busca lista de usuários filtrando o município do usuário
    */
-  fetchListFilteringLocation(state: string, city: string, offset = 0, limit = 25) {
-    return this.fetchList(`filter=location&offset=${offset}&limit=${limit}&type=${this.type}&state=${state}&city=${city}`);
+  fetchListFilteringLocation(
+    state: string,
+    city: string,
+    offset = 0,
+    limit = 25
+  ) {
+    return this.fetchList(
+      `filter=location&offset=${offset}&limit=${limit}&type=${this.type}&state=${state}&city=${city}`
+    );
   }
 
   private async fetchList(parameters: string): Promise<this[]> {
     let response = await this.request.get(`${this.path}/list?${parameters}`);
 
     if (response.status !== User.httpStatusCode.OK) {
-      User.errorTypes
-        .HTTPRequestError.throw(response.statusText);
+      User.errorTypes.HTTPRequestError.throw(response.statusText);
     }
 
-    return JSON.parse(response.data)
-      .map((item: any) => this.factory().build(item));
+    return JSON.parse(response.data).map((item: any) =>
+      this.factory().build(item)
+    );
   }
 
   /**
    * Atualiza lista de atributos
    */
-  async updateList(attributes: { name: string, value: string | boolean | number }[]) {
-
+  async updateList(
+    attributes: { name: string; value: string | boolean | number }[]
+  ) {
     let responses = await Promise.all(
-      attributes.map((column) =>
-        this.request.post(`${this.path}/update`, JSON.stringify({
-          id: this.token,
-          type: this.type,
-          column: column.name,
-          info: column.value,
-        }))// atualiza dados da api
+      attributes.map(
+        (column) =>
+          this.request.post(
+            `${this.path}/update`,
+            JSON.stringify({
+              id: this.token,
+              type: this.type,
+              column: column.name,
+              info: column.value,
+            })
+          ) // atualiza dados da api
       )
     );
 
     return responses
-      .filter(response => response.status !== User.httpStatusCode.NO_CONTENT)
-      .map((response, index) =>
-        new User.errorTypes
-          .HTTPRequestError(
+      .filter((response) => response.status !== User.httpStatusCode.NO_CONTENT)
+      .map(
+        (response, index) =>
+          new User.errorTypes.HTTPRequestError(
             `Não foi possível atualizar o item ${attributes[index].name} com o valor ${attributes[index].value}`
-          ));
+          )
+      );
   }
 
   /**
    * Deleta usuário
    */
   async delete() {
-    let response = await this.request.post(`${this.path}/delete`, JSON.stringify({ id: this.token as string }));
+    let response = await this.request.post(
+      `${this.path}/delete`,
+      JSON.stringify({ id: this.token as string })
+    );
 
     if (response.status !== User.httpStatusCode.NO_CONTENT) {
-      User.errorTypes
-        .HTTPRequestError.throw(`Não foi possível deletar o usuário ${this.token}`);
+      User.errorTypes.HTTPRequestError.throw(
+        `Não foi possível deletar o usuário ${this.token}`
+      );
     }
   }
 
@@ -206,7 +228,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       rate: this.rate,
       verified: this.verified,
       location: this.location,
-    }
+    };
   }
 }
 
@@ -216,9 +238,10 @@ export class Artist extends User {
   private wage: number | undefined;
   private birthday: string | undefined;
 
-  constructor(id: string | null = null) {
-    super(id);
-    this.type = 'artist';
+  constructor(id?: string) {
+    super(id as string);
+    console.log(id);
+    this.type = "artist";
   }
 
   factory = () => new Artist();
@@ -236,26 +259,27 @@ export class Artist extends User {
    * Cadastra um usuário
    */
   async signUp() {
-
-    let response = await this.request.post(this.path, JSON.stringify({
-      name: this.name,
-      image: this.image,
-      type: this.type,
-      phone: this.phone,
-      email: this.email,
-      password: this.password,
-      birthday: this.birthday,
-      cpf: this.cpf,
-      cep: this.location?.cep,
-      state: this.location?.state,
-      city: this.location?.city,
-      art: this.art,
-      wage: this.wage,
-    }));
+    let response = await this.request.post(
+      this.path,
+      JSON.stringify({
+        name: this.name,
+        image: this.image,
+        type: this.type,
+        phone: this.phone,
+        email: this.email,
+        password: this.password,
+        birthday: this.birthday,
+        cpf: this.cpf,
+        cep: this.location?.cep,
+        state: this.location?.state,
+        city: this.location?.city,
+        art: this.art,
+        wage: this.wage,
+      })
+    );
 
     if (response.status !== User.httpStatusCode.CREATED) {
-      User.errorTypes
-        .HTTPRequestError.throw(response.data);
+      User.errorTypes.HTTPRequestError.throw(response.data);
     }
   }
 
@@ -266,7 +290,7 @@ export class Artist extends User {
       art: this.art,
       wage: this.wage,
       birthday: this.birthday,
-    }
+    };
   }
 }
 
@@ -275,8 +299,8 @@ export class Enterprise extends User {
   private companyName: string | undefined;
   private section: string | undefined;
 
-  constructor(id: string | null = null) {
-    super(id);
+  constructor(id?: string) {
+    super(id as string);
     this.type = AccountType.enterprise;
   }
 
@@ -295,26 +319,28 @@ export class Enterprise extends User {
    * Cadastra um usuário
    */
   async signUp() {
-    let response = await this.request.post(this.path, JSON.stringify({
-      name: this.name,
-      companyName: this.companyName,
-      image: this.image,
-      section: this.section,
-      phone: this.phone,
-      type: this.type,
-      email: this.email,
-      password: this.password,
-      cnpj: this.cnpj,
-      cep: this.location?.cep,
-      state: this.location?.state,
-      city: this.location?.city,
-      neighborhood: this.location?.neighborhood,
-      address: this.location?.address,
-    }));
+    let response = await this.request.post(
+      this.path,
+      JSON.stringify({
+        name: this.name,
+        companyName: this.companyName,
+        image: this.image,
+        section: this.section,
+        phone: this.phone,
+        type: this.type,
+        email: this.email,
+        password: this.password,
+        cnpj: this.cnpj,
+        cep: this.location?.cep,
+        state: this.location?.state,
+        city: this.location?.city,
+        neighborhood: this.location?.neighborhood,
+        address: this.location?.address,
+      })
+    );
 
     if (response.status !== Enterprise.httpStatusCode.CREATED) {
-      Enterprise.errorTypes
-        .HTTPRequestError.throw((await response).statusText);
+      Enterprise.errorTypes.HTTPRequestError.throw((await response).statusText);
     }
   }
 
@@ -324,7 +350,6 @@ export class Enterprise extends User {
       cnpj: this.cnpj,
       companyName: this.companyName,
       section: this.section,
-    }
+    };
   }
-
 }

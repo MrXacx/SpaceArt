@@ -1,4 +1,3 @@
-
 import { Artist, Enterprise, User } from "../api/User";
 import { AccountType } from "../enums/AccountType";
 import { BrazilianState } from "../enums/BrazilianState";
@@ -6,82 +5,97 @@ import { ArtType } from "../enums/ArtType";
 import { createContext, useState } from "react";
 
 interface SearchStoreProps {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export const SearchContext = createContext({} as any);
 
 export const SearchProvider = ({ children }: SearchStoreProps) => {
+  const [searchResult, setSearchResult] = useState<any[]>([]);
+  const [artFilter, setArtFilter] = useState<ArtType>();
 
-	const [searchResult, setSearchResult] = useState<any[]>([]);
-	const [artFilter, setArtFilter] = useState<ArtType>();
+  const turnListOnCardData = (users: User[]) => {
+    return users.map((user) => {
+      const data = user.toObject();
 
-	const turnListOnCardData = (users: User[]) => {
+      // Obtém art e wage apenas caso a busca envolva artistas
+      const { art, wage } =
+        user instanceof Artist
+          ? user.toObject()
+          : { art: undefined, wage: undefined };
 
-		return users.map(user => {
-			const data = user.toObject();
+      return {
+        id: data.id,
+        index: data.index,
+        image: data.image,
+        name: data.name,
+        type: data.type,
+        cep: data.location?.cep,
+        city: data.location?.city,
+        state: data.location?.state,
+        art,
+        wage,
+      };
+    });
+  };
 
-			// Obtém art e wage apenas caso a busca envolva artistas
-			const { art, wage } = user instanceof Artist ? user.toObject() : { art: undefined, wage: undefined };
+  const fetchRandomUsers = (typeSearched: AccountType, page = 0, limit = 5) => {
+    // eslint-disable-next-line eqeqeq
+    const userClient =
+      typeSearched === AccountType.artist ? new Artist() : new Enterprise();
+    userClient
+      .fetchListWithoutFilter(page, limit)
+      .then(turnListOnCardData)
+      .then(setSearchResult)
+      .catch((e) => console.error(e));
+  };
 
-			return {
-				id: data.id,
-				index: data.index,
-				image: data.image,
-				name: data.name,
-				type: data.type,
-				cep: data.location?.cep,
-				city: data.location?.city,
-				state: data.location?.state,
-				art, wage,
-			}
-		});
-	}
+  const fetchUsersByName = (
+    typeSearched: AccountType,
+    name: string,
+    page = 0,
+    limit = 5
+  ) => {
+    // eslint-disable-next-line eqeqeq
+    const userClient =
+      typeSearched === AccountType.artist ? new Artist() : new Enterprise();
+    userClient
+      .fetchListFilteringName(name, page, limit)
+      .then(turnListOnCardData)
+      .then(setSearchResult)
+      .catch((e) => console.error(e.message));
+  };
 
-	const fetchRandomUsers = (typeSearched: AccountType, page = 0, limit = 5) => {
+  const fetchUsersByLocation = (
+    typeSearched: AccountType,
+    state: BrazilianState,
+    city: string,
+    page = 0,
+    limit = 5
+  ) => {
+    // eslint-disable-next-line eqeqeq
+    const userClient =
+      typeSearched === AccountType.artist ? new Artist() : new Enterprise();
+    userClient
+      .fetchListFilteringLocation(state, city, page, limit)
+      .then(turnListOnCardData)
+      .then(setSearchResult)
+      .catch((e) => console.error(e.message));
+  };
 
-		// eslint-disable-next-line eqeqeq
-		const userClient = typeSearched == AccountType.artist ? new Artist() : new Enterprise();
-		userClient
-			.fetchListWithoutFilter(page, limit)
-			.then(turnListOnCardData)
-			.then(setSearchResult)
-			.catch(e => console.error(e));
-	}
-
-	const fetchUsersByName = (typeSearched: AccountType, name: string, page = 0, limit = 5) => {
-		// eslint-disable-next-line eqeqeq
-		const userClient = typeSearched == AccountType.artist ? new Artist() : new Enterprise();
-		userClient
-			.fetchListFilteringName(name, page, limit)
-			.then(turnListOnCardData)
-			.then(setSearchResult)
-			.catch(e => console.error(e.message));
-	}
-
-	const fetchUsersByLocation = (typeSearched: AccountType, state: BrazilianState, city: string, page = 0, limit = 5) => {
-		// eslint-disable-next-line eqeqeq
-		const userClient = typeSearched == AccountType.artist ? new Artist() : new Enterprise();
-		userClient
-			.fetchListFilteringLocation(state, city, page, limit)
-			.then(turnListOnCardData)
-			.then(setSearchResult)
-			.catch(e => console.error(e.message));
-	}
-
-	return (
-		<SearchContext.Provider
-			value={{
-				searchResult,
-				setSearchResult,
-				fetchRandomUsers,
-				fetchUsersByName,
-				fetchUsersByLocation,
-				artFilter,
-				setArtFilter
-			}}
-		>
-			{children}
-		</SearchContext.Provider>
-	);
+  return (
+    <SearchContext.Provider
+      value={{
+        searchResult,
+        setSearchResult,
+        fetchRandomUsers,
+        fetchUsersByName,
+        fetchUsersByLocation,
+        artFilter,
+        setArtFilter,
+      }}
+    >
+      {children}
+    </SearchContext.Provider>
+  );
 };

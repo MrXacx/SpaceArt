@@ -17,7 +17,6 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ArtType } from "../../enums/ArtType";
 import RateBox from "../rateBox/rateBox";
-import { useNavigate } from "react-router-dom";
 interface MyContractProps {
   filter: AgreementStatus;
 }
