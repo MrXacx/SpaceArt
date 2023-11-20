@@ -17,13 +17,16 @@ import ChatIcon from "../../assets/black_chat.svg";
 import SettingIcon from "../../assets/star.svg";
 import ThreePointsIcon from "../../assets/three_points.svg";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
 
 function HeaderLogged() {
   const { user, isLogged } = useContext(UserContext);
   const navigate = useNavigate();
-  if (!isLogged) navigate("/signIn");
+
+  useEffect(() => {
+    if (!isLogged) navigate("/signIn");
+  }, [isLogged, navigate]);
 
   return (
     <HeaderContainer>
