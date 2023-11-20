@@ -17,13 +17,14 @@ interface ArtistBoxProps {
   name: string;
   image: string;
   art: ArtType;
-  cep: string;
-  city: string;
-  state: string;
+  location: {
+    city: string;
+    state: string;
+  };
 }
 
 function ArtistBox(props: ArtistBoxProps) {
-  const {setArtist} = useContext(SelectArtistContext);
+  const { setArtist } = useContext(SelectArtistContext);
 
   return (
     <ArtistSelected>
@@ -36,15 +37,10 @@ function ArtistBox(props: ArtistBoxProps) {
           </ProfileDetail>
           <LocalContainer>
             <Icon alt="local" src={LocalIcon} />
-            <span>{`${props.city} - ${props.state}`}</span>
+            <span>{`${props.location.city} - ${props.location.state}`}</span>
           </LocalContainer>
         </ProfileInnerContainer>
-        <Icon alt="X" src={XIcon} onClick={
-          (e: any) => {
-            setArtist(undefined)
-            // Retorna para selectArtist
-          }
-        }/>
+        <Icon alt="X" src={XIcon} onClick={(e: any) => setArtist(undefined)} />
       </ProfileInformationContainer>
     </ArtistSelected>
   );

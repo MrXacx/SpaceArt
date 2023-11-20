@@ -14,12 +14,14 @@ import { useContext } from "react";
 import { SelectArtistContext } from "../../contexts/SelectArtistContext";
 
 interface ArtistBoxProps {
+  id: string;
   name: string;
   image: string;
   art: ArtType;
-  cep: string;
-  city: string;
-  state: string;
+  location: {
+    city: string;
+    state: string;
+  };
   wage: number;
 }
 
@@ -37,22 +39,24 @@ function ArtistBoxCheck(props: ArtistBoxProps) {
           </ProfileDetail>
           <LocalContainer>
             <Icon alt="local" src={LocalIcon} />
-            <span>{`${props.city} - ${props.state}`}</span>
+            <span>{`${props.location.city} - ${props.location.state}`}</span>
           </LocalContainer>
         </ProfileInnerContainer>
-        <input type="radio" name="artist" onClick={(e: any) => setArtist(
-          new Artist().build({
-            name: props.name,
-            image: props.image,
-            art: props.art,
-            wage: props.wage,
-            location: {
-              cep: props.cep,
-              city: props.city,
-              state: props.state,
-            },
-          })
-        )} />
+        <input
+          type="radio"
+          name="artist"
+          onClick={(e: any) =>
+            setArtist(
+              new Artist(props.id).build({
+                name: props.name,
+                image: props.image,
+                art: props.art,
+                wage: props.wage,
+                location: props.location,
+              })
+            )
+          }
+        />
       </ProfileInformationContainer>
     </ArtistSelected>
   );
