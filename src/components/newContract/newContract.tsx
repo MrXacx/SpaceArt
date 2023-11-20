@@ -30,8 +30,12 @@ import { AccountType } from "../../enums/AccountType";
 import SearchWhiteIcon from "../../assets/search_white.svg";
 
 function NewContract() {
-  const { hideNewContract, toogleNewContractVisibility } =
-    useContext(ModalContext);
+  const {
+    hideNewContract,
+    toogleNewContractVisibility,
+    skipSelectArtistToContract,
+    setSkipSelectArtistToContract,
+  } = useContext(ModalContext);
   const { id, sendAgreement, fetchChats } = useContext(UserContext);
   const { artist } = useContext(SelectArtistContext);
   const { fetchUsersByName, searchResult, setSearchResult } =
@@ -45,9 +49,7 @@ function NewContract() {
   const [description, setDescription] = useState("");
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [searchedName, setSearchedName] = useState("");
-  const [selectedArtist, setSelectedArtist] = useState<any>(
-    artist ? artist.toObject() : null
-  );
+  const [selectedArtist, setSelectedArtist] = useState<any>();
 
   const fetchRecentChats = useCallback(
     () =>
@@ -66,23 +68,40 @@ function NewContract() {
   );
 
   useEffect(() => {
-    if (!artist) {
+    if (!artist && searchedName.length === 0) {
       fetchRecentChats()
+        .then((chats: any[]) =>
+          chats.map((item) => ({
+            ...item,
+            cep: item.location.cep,
+            state: item.location.state,
+            city: item.location.city,
+          }))
+        )
         .then(setSearchResult) // Define artistas padrões
         .catch((e: any) => console.log(e.message));
     }
-  }, [fetchChats, fetchRecentChats, artist, setSearchResult]);
+  }, [fetchChats, fetchRecentChats, artist, setSearchResult, searchedName]);
+
+  useEffect(() => {
+    if (artist && skipSelectArtistToContract) {
+      setSelectedArtist(artist.toObject());
+    } else if (!artist && selectedArtist) {
+      setSelectedArtist(undefined);
+    }
+  }, [artist, selectedArtist, skipSelectArtistToContract]);
 
   useEffect(() => {
     try {
+      const { art, wage } = artist?.toObject();
       // Substitui dados pelos valores do artista selecionado
-      setArt(ArtTypesUtil.parse(selectedArtist?.art));
-      setPrice(selectedArtist?.wage);
+      setArt(ArtTypesUtil.parse(art));
+      setPrice(wage);
     } catch (e: any) {
       setPrice(0);
       setArt(undefined);
     }
-  }, [selectedArtist, setArt]);
+  }, [artist, setArt]);
 
   const createAgreement = () => {
     const formatedDate = dayjs(date).format("DD/MM/YYYY");
@@ -121,7 +140,10 @@ function NewContract() {
           <Icon
             alt="X"
             src={XIcon}
-            onClick={() => toogleNewContractVisibility()}
+            onClick={() => {
+              toogleNewContractVisibility();
+              setSkipSelectArtistToContract(false);
+            }}
           />
           <h1>{!selectedArtist ? "Selecione um artista" : "Novo contrato"}</h1>
         </HeaderLogo>
@@ -151,14 +173,17 @@ function NewContract() {
                   image={artist.image}
                   art={ArtTypesUtil.parse(artist.art)}
                   location={{
-                    city: artist.location.city ?? "Desconhecido",
-                    state: artist.location.state ?? "Desconhecido",
+                    cep: artist.cep ?? "Desconhecido",
+                    city: artist.city ?? "Desconhecido",
+                    state: artist.state ?? "Desconhecido",
                   }}
                   wage={artist.wage}
                 />
               ))}
             </SearchResults>
-            <FormInputButton onClick={() => setSelectedArtist(artist)}>
+            <FormInputButton
+              onClick={() => setSelectedArtist(artist?.toObject())}
+            >
               AVANÇAR
             </FormInputButton>
           </SignContainer>
@@ -171,12 +196,12 @@ function NewContract() {
             }}
           >
             <ArtistBox
-              name={selectedArtist.name}
-              image={selectedArtist.image}
-              art={selectedArtist.art}
+              name={selectedArtist?.name}
+              image={selectedArtist?.image}
+              art={selectedArtist?.art}
               location={{
-                city: artist.location.city,
-                state: artist.location.state,
+                city: selectedArtist?.location.city,
+                state: selectedArtist?.location.state,
               }}
             />
             <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>

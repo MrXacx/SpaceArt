@@ -30,6 +30,7 @@ function MySelection(props: MySelectionProps) {
     hideSelectArtist,
     toogleSelectArtistVisibility,
     toogleNewContractVisibility,
+    setSkipSelectArtistToContract,
   } = useContext(ModalContext);
   const { fetchSelectionsByOwner, fetchArtistsInSelection } =
     useContext(UserContext);
@@ -99,7 +100,10 @@ function MySelection(props: MySelectionProps) {
           <Icon
             alt="X"
             src={XIcon}
-            onClick={() => toogleSelectArtistVisibility()}
+            onClick={() => {
+              toogleSelectArtistVisibility();
+              setSkipSelectArtistToContract(false);
+            }}
           />
           <h1>Selecione um artista</h1>
         </HeaderLogo>
@@ -112,6 +116,7 @@ function MySelection(props: MySelectionProps) {
                 image={artist.image}
                 art={ArtTypesUtil.parse(artist.art)}
                 location={{
+                  cep: artist.location.cep ?? "Desconhecido",
                   city: artist.location.city,
                   state: artist.location.state,
                 }}
@@ -123,6 +128,7 @@ function MySelection(props: MySelectionProps) {
             onClick={() => {
               toogleMySelectionVisibility();
               toogleNewContractVisibility();
+              setSkipSelectArtistToContract(true);
             }}
           >
             CONTRATAR
