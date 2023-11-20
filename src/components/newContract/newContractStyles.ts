@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Modal = styled.div<{ hidden?: boolean }>`
-  visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
+  display: ${({ hidden }) => (hidden ? "none" : "flex")};
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
@@ -11,7 +11,6 @@ export const Modal = styled.div<{ hidden?: boolean }>`
   left: 0;
   bottom: 0;
   z-index: 5;
-  display: flex;
   align-items: center;
   justify-content: center;
 `;
@@ -93,14 +92,14 @@ export const SearchArtistButton = styled.button`
 `;
 
 export const SearchResults = styled.div`
-  width: 90%;
+  width: 95%;
   height: 45vh;
   max-height: 45vh;
-  overflow-y: scroll;
+  overflow: hidden scroll;
 `;
 
 export const FormInputTextbox = styled.textarea`
-  width: 75%;
+  width: 100%;
   height: 100px;
   padding: 0.5rem;
   border-radius: 3px;
@@ -181,10 +180,11 @@ export const FormInputHalfField = styled.input`
   }
   @media (min-width: 768px) {
     width: 41%;
-    &:nth-child(odd) {
+
+    &:nth-child(even) {
       margin-right: 0.5rem;
     }
-    &:nth-child(even) {
+    &:nth-child(odd) {
       margin-left: 0.5rem;
     }
   }
