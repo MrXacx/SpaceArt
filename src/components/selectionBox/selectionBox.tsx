@@ -22,31 +22,27 @@ interface SelectionBoxProps {
   title: string;
   art: ArtType;
   price: number;
-  date: {
-    start: string;
-    end: string;
-  };
-  time: {
-    start: string;
-    end: string;
-  };
+  date: string[];
+  time: string[];
   locked: boolean;
-  description: string;
 }
 
 function SelectionBox(props: SelectionBoxProps) {
+  const [hidden, setHidden] = useState(false);
   const [isOpened, setOpened] = useState(false);
+
   const { deleteSelection } = useContext(UserContext);
   const { setSelection } = useContext(SelectSelectionContext);
   const { toogleSelectArtistVisibility } = useContext(ModalContext);
-
   dayjs.extend(customParseFormat);
   const isAfter = dayjs(
-    `${props.date.end} ${props.time.end}`,
+    `${props.date[1]} ${props.time[1]}`,
     "DD/MM/YYYY HH:mm"
   ).isAfter();
 
-  return (
+  return hidden ? (
+    <></>
+  ) : (
     <SelectionCard>
       <SelectionInnerContainer>
         <SelectionMask opened={isOpened} onClick={() => setOpened(!isOpened)}>
@@ -59,23 +55,15 @@ function SelectionBox(props: SelectionBoxProps) {
         <SelectionHiddenDetail opened={isOpened}>
           <SelectionHiddenDetailItem>
             <span>Preço</span>
-            <span>{`R$${props.price}`}</span>
+            <span>{`R$${props.price.toFixed(2)}`}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Período</span>
-            <span>{`${props.date.start} - ${props.date.end}`}</span>
+            <span>Data de abertura</span>
+            <span>{`${props.date[0]} ${props.time[0]}`}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Horário de abertura</span>
-            <span>{props.time.start}</span>
-          </SelectionHiddenDetailItem>
-          <SelectionHiddenDetailItem>
-            <span>Horário de encerramnto</span>
-            <span>{props.time.end}</span>
-          </SelectionHiddenDetailItem>
-          <SelectionHiddenDetailItem>
-            <span>Descrição</span>
-            <span>{props.description}</span>
+            <span>Data de encerramnto</span>
+            <span>{`${props.date[1]} ${props.time[1]}`}</span>
           </SelectionHiddenDetailItem>
 
           <SelectionOptions>
@@ -83,7 +71,10 @@ function SelectionBox(props: SelectionBoxProps) {
               type="button"
               hidden={isAfter && props.locked}
               danger={true}
-              onClick={() => deleteSelection(props.id)}
+              onClick={() => {
+                deleteSelection(props.id);
+                setHidden(true);
+              }}
             >
               Deletar
             </SelectionOptionButton>
