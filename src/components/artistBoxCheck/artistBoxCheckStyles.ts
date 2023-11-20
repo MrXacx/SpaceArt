@@ -4,48 +4,55 @@ export const Icon = styled.img`
   cursor: pointer;
 `;
 
-export const ArtistSelected = styled.div`
+export const ArtistSelected = styled.div<{ selected: boolean }>`
   display: flex;
   flex-direction: row;
-  width: 98%;
+  width: 100%;
   height: 10vh;
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: ${({ selected }) =>
+    selected ? "1px solid rgba(0, 0, 0, 0)" : "1px solid rgba(0, 0, 0, 0.3)"};
   border-left: none;
   align-items: center;
   margin: 10px auto;
+  transition: 300ms;
+  cursor: pointer;
+  background-color: ${({ selected }) => (selected ? "#fa8b08" : "#fff")};
+  color: ${({ selected }) => (selected ? "#fff" : "#000")};
+
+  > div > div:last-of-type {
+    display: ${({ selected }) => (selected ? "none" : "flex")};
+  }
 `;
 
 export const ProfileImage = styled.img`
   object-fit: cover;
-  max-width: 10vw;
-  max-height: 10vh;
+  max-width: 15vw;
+  height: 100%;
   border-radius: 10px 0 0 10px;
-`;
-
-export const ProfileInnerContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-left: 15px;
 `;
 
 export const ProfileDetail = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 10px;
 
   span {
-    padding: 5px 20px;
+    padding: 0.25rem 1rem;
     background-color: #fa8b08;
-    font-size: 0.8em;
     color: #fff;
     border-radius: 50px;
+    font-size: 0.65rem;
+
+    @media (min-width: 960px) {
+      font-size: 0.7rem;
+    }
   }
 
   h3 {
     padding-right: 10px;
     margin: 0;
+    font-size: 1rem;
   }
 `;
 
@@ -57,15 +64,13 @@ export const LocalContainer = styled.div`
   ${Icon} {
     cursor: default;
     margin-left: -5px;
+    height: 1.25rem;
   }
 
   span {
-    :last-of-type {
-      padding: 5px 20px;
-      background-color: #fa8b08;
-      font-size: 0.8em;
-      color: #fff;
-      border-radius: 50px;
+    font-size: 0.65rem;
+    @media (min-width: 960px) {
+      font-size: 0.7rem;
     }
   }
 `;
@@ -78,9 +83,8 @@ export const ArtistInfo = styled.div`
 export const ProfileInformationContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
-
-  input {
-    margin: 25px;
-  }
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  padding-left: 15px;
 `;

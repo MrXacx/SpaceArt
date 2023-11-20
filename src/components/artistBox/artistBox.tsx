@@ -12,6 +12,7 @@ import XIcon from "../../assets/x.svg";
 import { useContext } from "react";
 import { ArtType } from "../../enums/ArtType";
 import { SelectArtistContext } from "../../contexts/SelectArtistContext";
+import { ModalContext } from "../../contexts/ModalContext";
 
 interface ArtistBoxProps {
   name: string;
@@ -25,6 +26,7 @@ interface ArtistBoxProps {
 
 function ArtistBox(props: ArtistBoxProps) {
   const { setArtist } = useContext(SelectArtistContext);
+  const { setSkipSelectArtistToContract } = useContext(ModalContext);
 
   return (
     <ArtistSelected>
@@ -40,7 +42,14 @@ function ArtistBox(props: ArtistBoxProps) {
             <span>{`${props.location.city} - ${props.location.state}`}</span>
           </LocalContainer>
         </ProfileInnerContainer>
-        <Icon alt="X" src={XIcon} onClick={(e: any) => setArtist(undefined)} />
+        <Icon
+          alt="X"
+          src={XIcon}
+          onClick={(e: any) => {
+            setArtist(undefined);
+            setSkipSelectArtistToContract(false);
+          }}
+        />
       </ProfileInformationContainer>
     </ArtistSelected>
   );

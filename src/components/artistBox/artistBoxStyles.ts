@@ -7,25 +7,27 @@ export const Icon = styled.img`
 export const ArtistSelected = styled.div`
   display: flex;
   flex-direction: row;
-  width: 77%;
-  height: 100px;
+  width: 100%;
+  height: 10vh;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-left: none;
   align-items: center;
-  margin: 10px 0;
+  margin: 10px auto;
 `;
 
 export const ProfileImage = styled.img`
   object-fit: cover;
-  max-width: 100px;
-  max-height: 100px;
-  border-radius: 10px;
+  max-width: 15vw;
+  height: 100%;
+  border-radius: 10px 0 0 10px;
 `;
 
 export const ProfileInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
   padding-left: 15px;
 `;
 
@@ -36,16 +38,21 @@ export const ProfileDetail = styled.div`
   margin-bottom: 10px;
 
   span {
-    padding: 5px 20px;
+    padding: 0.25rem 1rem;
     background-color: #fa8b08;
-    font-size: 0.8em;
     color: #fff;
     border-radius: 50px;
+    font-size: 0.65rem;
+
+    @media (min-width: 960px) {
+      font-size: 0.7rem;
+    }
   }
 
   h3 {
     padding-right: 10px;
     margin: 0;
+    font-size: 1rem;
   }
 `;
 
@@ -57,15 +64,13 @@ export const LocalContainer = styled.div`
   ${Icon} {
     cursor: default;
     margin-left: -5px;
+    height: 1.25rem;
   }
 
   span {
-    :last-of-type {
-      padding: 5px 20px;
-      background-color: #fa8b08;
-      font-size: 0.8em;
-      color: #fff;
-      border-radius: 50px;
+    font-size: 0.65rem;
+    @media (min-width: 960px) {
+      font-size: 0.7rem;
     }
   }
 `;
