@@ -63,7 +63,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       })
     );
 
-    if (response.status !== Agreement.httpStatusCode.OK) {
+    if (response.status !== Agreement.httpStatusCode.CREATED) {
       Agreement.errorTypes.HTTPRequestError.throw(
         "Não foi possível criar um contrato"
       );

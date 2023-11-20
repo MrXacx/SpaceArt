@@ -240,7 +240,6 @@ export class Artist extends User {
 
   constructor(id?: string) {
     super(id as string);
-    console.log(id);
     this.type = "artist";
   }
 

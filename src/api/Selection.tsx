@@ -206,7 +206,7 @@ class SelectionApplication extends SpaceArtAPIClient {
       })
     );
 
-    if (response.status !== Selection.httpStatusCode.OK) {
+    if (response.status !== Selection.httpStatusCode.CREATED) {
       SelectionApplication.errorTypes.HTTPRequestError.throw(
         `Não foi possível submeter uma aplicação à seleção ${this.selection.getID()}`
       );

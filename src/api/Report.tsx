@@ -21,10 +21,10 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
    * @param object
    */
   build(report: {
-    id?: string,
-    accepted?: boolean,
-    reported: User,
-    reason: string,
+    id?: string;
+    accepted?: boolean;
+    reported: User;
+    reason: string;
   }) {
     this.id = report.id;
     this.reported = report.reported;
@@ -36,16 +36,17 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
    * Cria nova denúncia na API
    */
   async create() {
-    const response = await this.request.post(this.path, JSON.stringify({
-      reporter: this.reporter.getID(),
-      reported: this.reported?.getID(),
-      reason: this.reason as string
-    }));
+    const response = await this.request.post(
+      this.path,
+      JSON.stringify({
+        reporter: this.reporter.getID(),
+        reported: this.reported?.getID(),
+        reason: this.reason as string,
+      })
+    );
 
-    if (response.status !== Report.httpStatusCode.OK) {
-      Report.errorTypes
-        .HTTPRequestError
-        .throw(response.statusText);
+    if (response.status !== Report.httpStatusCode.CREATED) {
+      Report.errorTypes.HTTPRequestError.throw(response.statusText);
     }
   }
 
@@ -54,18 +55,18 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
    */
   async fetcList(offset = 0, limit = 10) {
     let response = await this.request.get(
-      `${this.path}?offset=${offset}&limit=${limit}&reporter=${this.reporter.getID()}`
+      `${
+        this.path
+      }?offset=${offset}&limit=${limit}&reporter=${this.reporter.getID()}`
     );
 
     if (response.status !== Report.httpStatusCode.OK) {
-      Report.errorTypes
-        .HTTPRequestError
-        .throw(response.statusText);
+      Report.errorTypes.HTTPRequestError.throw(response.statusText);
     }
 
     return JSON.parse(response.data).map((report: any) => {
       report.reported = new User(report.reported);
-      return this.factory().build(report)
+      return this.factory().build(report);
     }); // Instancia todos as denúncias obtidas
   }
 
@@ -76,6 +77,6 @@ export class Report extends IndexedAPIClient implements APIClientFactory {
       reported: this.reported,
       reason: this.reason,
       accepted: this.accepted,
-    }
+    };
   }
 }
