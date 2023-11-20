@@ -15,6 +15,8 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
   const [hideNewPost, setHideNewPost] = useState(true);
   const [hideSelectArtist, setHideSelectArtist] = useState(true);
   const [hideLookRates, setHideLookRates] = useState(true);
+  const [skipSelectArtistToContract, setSkipSelectArtistToContract] =
+    useState(false);
 
   const toogleNewContractVisibility = () =>
     setHideNewContract(!hideNewContract);
@@ -49,6 +51,8 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
         toogleSelectArtistVisibility,
         hideLookRates,
         toogleLookRatesVisibility,
+        skipSelectArtistToContract,
+        setSkipSelectArtistToContract,
       }}
     >
       {children}
