@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { SelectionStatus } from "../../enums/ServiceStatus";
 import ArtistBoxCheck from "../artistBoxCheck/artistBoxCheck";
-import { ArtType, ArtTypesUtil } from "../../enums/ArtType";
+import { ArtTypesUtil } from "../../enums/ArtType";
 
 interface MySelectionProps {
   filter: SelectionStatus;
@@ -40,29 +40,32 @@ function MySelection(props: MySelectionProps) {
   const [selections, setSelections] = useState<any[]>([]);
   const [artists, setArtists] = useState<any[]>([]);
 
-  const filter = [
+  const filterMethod = [
     (item: any) =>
       dayjs(
-        `${item.date.start} ${item.time.start}`,
+        `${item.date?.start} ${item.time?.start}`,
         "DD/MM/YYYY HH:mm"
       ).isBefore(),
     (item: any) => !item.locked,
     (item: any) =>
       dayjs(
-        `${item.date.start} ${item.time.start}`,
+        `${item.date?.start} ${item.time.start}`,
         "DD/MM/YYYY HH:mm"
       ).isAfter(),
   ][props.filter];
 
   useEffect(() => {
-    fetchSelectionsByOwner().then(setSelections).catch(console.error);
+    fetchSelectionsByOwner().then(setSelections).catch();
   }, [fetchSelectionsByOwner]);
 
-  const fetchArtists = useCallback(() => {
-    fetchArtistsInSelection(selection?.getID()).then(setArtists);
-  }, [fetchArtistsInSelection, selection]);
+  const fetchArtists = useCallback(
+    () => fetchArtistsInSelection(selection?.getID()).then(setArtists),
+    [fetchArtistsInSelection, selection]
+  );
 
-  useEffect(() => fetchArtists(), [fetchArtists]);
+  useEffect(() => {
+    if (selection) fetchArtists();
+  }, [fetchArtists, selection]);
 
   return (
     <Modal hidden={hideMySelection}>
@@ -76,18 +79,20 @@ function MySelection(props: MySelectionProps) {
           <h1>Minhas seleções</h1>
         </HeaderLogo>
         <SignContainer>
-          {selections.filter(filter).map((item: any) => (
-            <SelectionBox
-              id={item.id}
-              title={item.title}
-              locked={item.locked}
-              art={item.art}
-              time={item.time}
-              price={item.price}
-              date={item.date}
-              description={item.description}
-            />
-          ))}
+          {selections
+            .filter((item: any) => (item ? filterMethod(item) : false))
+            .map((item: any) => (
+              <SelectionBox
+                id={item.id}
+                title={item.title}
+                locked={item.locked}
+                art={item.art}
+                time={item.time}
+                price={item.price}
+                date={item.date}
+                description={item.description}
+              />
+            ))}
         </SignContainer>
       </ModalContainer>
       <ModalContainer hidden={hideSelectArtist}>
@@ -103,12 +108,14 @@ function MySelection(props: MySelectionProps) {
           <SearchResults>
             {artists.map((artist) => (
               <ArtistBoxCheck
+                id={artist.id}
                 name={artist.name}
                 image={artist.image}
                 art={ArtTypesUtil.parse(artist.art)}
-                cep={artist.cep}
-                city={artist.city}
-                state={artist.state}
+                location={{
+                  city: artist.location.city,
+                  state: artist.location.state,
+                }}
                 wage={artist.wage}
               />
             ))}

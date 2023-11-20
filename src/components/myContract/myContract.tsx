@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ArtType } from "../../enums/ArtType";
 import RateBox from "../rateBox/rateBox";
+import { useNavigate } from "react-router-dom";
 interface MyContractProps {
   filter: AgreementStatus;
 }
@@ -28,7 +29,8 @@ function MyContract(props: MyContractProps) {
     hideLookRates,
     toogleLookRatesVisibility,
   } = useContext(ModalContext);
-  const { fetchAgreementsByUser } = useContext(UserContext);
+  const { id, fetchAgreementsByUser } = useContext(UserContext);
+
   const [contracts, setContracts] = useState<any[]>([
     {
       id: "",
@@ -94,8 +96,8 @@ function MyContract(props: MyContractProps) {
   ][props.filter];
 
   useEffect(() => {
-    fetchAgreementsByUser().then(setContracts).catch(console.error);
-  }, [fetchAgreementsByUser]);
+    fetchAgreementsByUser(id).then(setContracts).catch(console.error);
+  }, [fetchAgreementsByUser, id]);
 
   return (
     <Modal hidden={hideMyContract}>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Modal = styled.div<{ hidden?: boolean }>`
   visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
   width: 100%;
+  height: 100%;
   overflow: hidden scroll;
   background-color: rgba(0, 0, 0, 0.55);
   position: fixed;
