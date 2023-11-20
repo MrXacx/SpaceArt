@@ -208,7 +208,7 @@ class SelectionApplication extends SpaceArtAPIClient {
     let response = await this.request.post(
       `${this.path}`,
       JSON.stringify({
-        artist: this.artist?.getID(),
+        user: this.artist?.getID(),
         selection: this.selection.getID(),
       })
     );
@@ -238,7 +238,7 @@ class SelectionApplication extends SpaceArtAPIClient {
 
     return JSON.parse(response.data).map(
       (data: any) =>
-        new SelectionApplication(this.selection, new Artist(data.artist))
+        new SelectionApplication(this.selection, new Artist(data.user))
     );
   }
 
