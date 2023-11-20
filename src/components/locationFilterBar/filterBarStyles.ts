@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CategoryContainer = styled.div<{with_art_field: boolean}>`
+export const CategoryContainer = styled.div<{ with_art_field: boolean }>`
   width: 70%;
   display: grid;
   margin: 0 auto;
@@ -10,20 +10,22 @@ export const CategoryContainer = styled.div<{with_art_field: boolean}>`
   grid-template-columns: 1fr;
   row-gap: 1.5rem;
   @media (min-width: 960px) {
-    grid-template-columns: ${({ with_art_field }) => with_art_field ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)'};
+    width: auto;
+    grid-template-columns: ${({ with_art_field }) =>
+      with_art_field ? "repeat(4, 1fr)" : "repeat(3, 1fr)"};
     row-gap: 0;
     column-gap: 60px;
   }
 `;
 
-export const CategorySelect = styled.select<{hidden?: boolean}>`
-  display: ${({ hidden }) => hidden ? 'none' : 'block'};
+export const CategorySelect = styled.select<{ hidden?: boolean }>`
+  display: ${({ hidden }) => (hidden ? "none" : "block")};
   height: 3.2rem;
   border: none;
   border-radius: 10px;
   padding-left: 10px;
   background-color: #fff;
-  
+
   option {
     text-transform: capitalize;
   }
