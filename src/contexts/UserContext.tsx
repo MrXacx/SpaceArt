@@ -279,7 +279,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           const selection = item.toObject();
           return {
             ...selection,
-            owner: selection.owner?.getID(),
+            owner: id as string,
           };
         })
       )
