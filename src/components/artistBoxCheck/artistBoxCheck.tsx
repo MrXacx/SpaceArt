@@ -48,6 +48,7 @@ function ArtistBoxCheck(props: ArtistBoxProps) {
           onClick={(e: any) =>
             setArtist(
               new Artist(props.id).build({
+                id: props.id,
                 name: props.name,
                 image: props.image,
                 art: props.art,
