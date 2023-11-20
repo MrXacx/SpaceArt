@@ -45,7 +45,9 @@ function NewContract() {
   const [description, setDescription] = useState("");
   const [inputErrorMessage, setInputErrorMessage] = useState("");
   const [searchedName, setSearchedName] = useState("");
-  const [selectedArtist, setSelectedArtist] = useState(artist?.toObject());
+  const [selectedArtist, setSelectedArtist] = useState<any>(
+    artist ? artist.toObject() : null
+  );
 
   const fetchRecentChats = useCallback(
     () =>
@@ -98,17 +100,18 @@ function NewContract() {
       setInputErrorMessage(error.message);
     } else {
       setInputErrorMessage("");
-      console.log(selectedArtist.toObject());
       sendAgreement({
         hirer: id,
-        hired: selectedArtist.getID(),
+        hired: selectedArtist.id,
         art,
         price,
         date: formatedDate,
         initialTime,
         finalTime,
         description,
-      });
+      })
+        .then(() => toogleNewContractVisibility())
+        .catch((e: any) => setInputErrorMessage(e.message));
     }
   };
   return (
