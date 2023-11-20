@@ -3,7 +3,6 @@ import { Message } from "./Message";
 import { Artist, Enterprise, User } from "./User";
 
 export class Chat extends IndexedAPIClient implements APIClientFactory {
-
   private artist: Artist | undefined;
   private enterprise: Enterprise | undefined;
   private lastMessage: string | undefined;
@@ -15,10 +14,10 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
   private path = "/chat";
 
   build(chat: {
-    id?: string,
-    last_message?: string,
-    artist: Artist,
-    enterprise: Enterprise,
+    id?: string;
+    last_message?: string;
+    artist: Artist;
+    enterprise: Enterprise;
   }) {
     this.id = chat.id;
     this.lastMessage = chat.last_message;
@@ -32,14 +31,18 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
    * Cria uma conversa
    */
   async create() {
-    let response = await this.request.post(`${this.path}`, JSON.stringify({
-      artist: this.artist?.getID(),
-      enterprise: this.enterprise?.getID(),
-    }));
+    let response = await this.request.post(
+      `${this.path}`,
+      JSON.stringify({
+        artist: this.artist?.getID(),
+        enterprise: this.enterprise?.getID(),
+      })
+    );
 
     if (response.status !== Chat.httpStatusCode.CREATED) {
-      Chat.errorTypes
-        .HTTPRequestError.throw("Não foi possível enviar uma mensagem para o banco");
+      Chat.errorTypes.HTTPRequestError.throw(
+        "Não foi possível enviar uma mensagem para o banco"
+      );
     }
   }
 
@@ -50,16 +53,17 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
     let response = await this.request.get(`${this.path}?id=${this.id}`);
 
     if (response.status !== Chat.httpStatusCode.OK) {
-      Chat.errorTypes
-        .HTTPRequestError
-        .throw(`Não foi possível buscar a conversa ${this.id}`);
+      Chat.errorTypes.HTTPRequestError.throw(
+        `Não foi possível buscar a conversa ${this.id}`
+      );
     }
 
     const chatData = JSON.parse(response.data);
-    chatData.artist = new Artist(chatData.artist)
-    chatData.enterprise = new Enterprise(chatData.enterprise);
-
-    return this.factory().build(chatData);
+    return this.factory().build({
+      ...chatData,
+      artist: new Artist(chatData.artist),
+      enterprise: new Enterprise(chatData.enterprise),
+    });
   }
 
   /**
@@ -71,23 +75,19 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
     );
 
     if (response.status !== Chat.httpStatusCode.OK) {
-      Chat.errorTypes
-        .HTTPRequestError.throw(
-          "Não foi possível buscar uma lista de conversas"
-        );
+      Chat.errorTypes.HTTPRequestError.throw(
+        "Não foi possível buscar uma lista de conversas"
+      );
     }
 
-    return JSON.parse(response.data).map((chat: any) => {
-      chat.artist = new Artist(chat.artist);
-      chat.enterprise = new Enterprise(chat.enterprise);
-      const chatModel = this.factory().build(chat); // Instancia chat com base no objeto literal
-
-      chatModel
-        .fetchMessages() // Obtém as mensagens iniciais da conversa
-        .then((messages: any) => messages.forEach(chatModel.messages.push)); // Armazena mensagens
-
-      return chatModel; // Retorna a conversa
-    });
+    return JSON.parse(response.data).map(
+      (chat: any) =>
+        this.factory().build({
+          ...chat,
+          artist: new Artist(chat.artist),
+          enterprise: new Enterprise(chat.enterprise),
+        }) // Instancia chat com base no objeto literal
+    );
   }
 
   sendMessage = async (sender: User, content: string) =>
@@ -104,7 +104,7 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
     const list = await new Message(this).fetchList(offset, limit);
     list.forEach(this.messages.push);
     return list;
-  }
+  };
 
   toObject() {
     return {
@@ -113,6 +113,6 @@ export class Chat extends IndexedAPIClient implements APIClientFactory {
       enterprise: this.enterprise,
       lastMessage: this.lastMessage,
       messages: this.messages,
-    }
+    };
   }
 }
