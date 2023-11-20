@@ -90,7 +90,6 @@ function MySelection(props: MySelectionProps) {
                 time={item.time}
                 price={item.price}
                 date={item.date}
-                description={item.description}
               />
             ))}
         </SignContainer>
