@@ -65,17 +65,21 @@ export const SignContainer = styled.form`
   display: flex;
   align-items: center;
   justify-content: center;
-  display: flex;
   flex-wrap: wrap;
-  width: 50vw;
+  width: 75vw;
   margin: 0 auto;
+  padding-right: 0.5rem;
   max-height: 50vh;
   overflow: hidden scroll;
+
+  @media (min-width: 768px) {
+    width: 40vw;
+  }
 `;
 
 export const FormInputFullField = styled.input`
-  width: 75%;
-  height: 25px;
+  width: 100%;
+  height: 3vh;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
@@ -96,8 +100,8 @@ export const FormInputFullField = styled.input`
 `;
 
 export const FormSelectField = styled.select`
-  width: 75%;
-  height: 25px;
+  width: 100%;
+  height: 6vh;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
@@ -106,11 +110,11 @@ export const FormSelectField = styled.select`
 `;
 
 export const FormInputHalfField = styled.input`
-  width: 35.7%;
-  height: 25px;
+  width: 100%;
+  height: 3vh;
   padding: 0.5rem;
   border-radius: 3px;
-  margin: 0.5rem 0.5rem;
+  margin: 0.5rem 0;
   border: 1px solid #545454;
   transition: 300ms;
 
@@ -124,6 +128,22 @@ export const FormInputHalfField = styled.input`
 
   &:disabled {
     background-color: rgb(210, 210, 210);
+  }
+  @media (min-width: 768px) {
+    width: 41%;
+    &:nth-child(odd) {
+      margin-right: 0.5rem;
+    }
+    &:nth-child(even) {
+      margin-left: 0.5rem;
+    }
+  }
+  @media (min-width: 960px) {
+    width: 43.5%;
+  }
+
+  @media (min-width: 1080px) {
+    width: 45.3%;
   }
 `;
 
