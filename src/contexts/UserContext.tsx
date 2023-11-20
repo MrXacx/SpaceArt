@@ -257,11 +257,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         date: [data.initialDate, data.finalDate],
         time: [data.initialTime, data.finalTime],
       })
-      .create()
-      .catch((e: any) => {
-        console.log(`Erro na criação de uma seleção: ${e.message}`);
-        throw new Error(`Erro na criação de uma seleção`);
-      });
+      .create();
 
   const fetchSelectionsByArt = (art: ArtType, offset = 0, limit = 20) =>
     new Selection()
