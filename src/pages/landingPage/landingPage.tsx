@@ -29,9 +29,9 @@ function LandingPage() {
   const navigate = useNavigate();
   let { searchResult, fetchRandomUsers, artFilter } = useContext(SearchContext);
 
-  useEffect(() =>
-    searchResult.length === 0 ? fetchRandomUsers(AccountType.artist) : null
-  );
+  useEffect(() => {
+    if (searchResult.length === 0) fetchRandomUsers(AccountType.artist);
+  }, [fetchRandomUsers, searchResult.length]);
 
   const artItems = [
     { image: MicImage, name: "MÚSICA" },
