@@ -7,12 +7,13 @@ import {
 } from "./abstracts/APIClient";
 
 export class Selection extends IndexedAPIClient implements APIClientFactory {
-  private art: string | undefined;
-  private price: number | undefined;
-  private owner: Enterprise | undefined;
-  private locked: boolean | undefined;
-  private time: string[] | undefined;
-  private date: string[] | undefined;
+  private art?: string;
+  private price?: number;
+  private owner?: Enterprise;
+  private locked?: boolean;
+  private time?: string[];
+  private date?: string[];
+  private title?: string;
 
   path = "/selection";
 
@@ -23,6 +24,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
    */
   build(selection: {
     id?: string;
+    title?: string;
     art?: ArtType | string;
     owner?: Enterprise;
     price?: number;
@@ -31,6 +33,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
     locked?: boolean;
   }) {
     this.id = selection.id;
+    this.title = selection.title;
     this.art = selection.art;
     this.owner = selection.owner;
     this.price = selection.price;
@@ -49,6 +52,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
       this.path,
       JSON.stringify({
         owner: this.owner?.getID(),
+        title: this.title,
         art: this.art,
         price: this.price,
         date: this.date?.join(";"),
@@ -99,6 +103,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
     return JSON.parse(response.data).map((selection: any) =>
       new Selection().build({
         id: selection.id,
+        title: selection.title,
         art: selection.art,
         owner: new Enterprise(selection.enterprise),
         price: selection.price,
@@ -124,6 +129,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
 
     return this.factory().build({
       id: selection.id as string,
+      title: selection.title,
       art: selection.art as string,
       owner: new Enterprise(selection.owner),
       price: selection.price as number,
@@ -171,6 +177,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
   toObject() {
     return {
       id: this.id,
+      title: this.title,
       art: this.art,
       owner: this.owner,
       price: this.price,
@@ -181,12 +188,12 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
 }
 
 class SelectionApplication extends SpaceArtAPIClient {
-  private artist: Artist | undefined;
+  private artist?: Artist;
   private selection: Selection;
 
   private path = "/selection/application";
 
-  constructor(selection: Selection, artist: Artist | null = null) {
+  constructor(selection: Selection, artist?: Artist) {
     super();
 
     this.selection = selection;
