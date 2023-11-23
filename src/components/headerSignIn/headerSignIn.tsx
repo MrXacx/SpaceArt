@@ -5,15 +5,21 @@ import {
   NavContainer,
   NavItemContainer,
   NavItems,
-  SignUpButton,
   SpaceartContainer,
   SpaceartLogo,
   SpaceartTitle,
 } from "./headerSignInStyles";
-
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 function HeaderSignIn() {
   const navigate = useNavigate();
+  const { isLogged } = useContext(UserContext);
+
+  useEffect(() => {
+    if (isLogged) navigate("/feed");
+  }, [isLogged, navigate]);
+
   return (
     <HeaderContainer>
       <SpaceartContainer onClick={() => navigate("/")}>
@@ -25,7 +31,9 @@ function HeaderSignIn() {
       </SpaceartContainer>
       <NavContainer>
         <NavItemContainer>
-          <NavItems onClick={() => navigate("/signUp/artist")}>CRIAR UMA CONTA</NavItems>
+          <NavItems onClick={() => navigate("/signUp/artist")}>
+            CRIAR UMA CONTA
+          </NavItems>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>
