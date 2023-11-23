@@ -7,8 +7,15 @@ import {
 import ArrowIcon from "../../assets/arrow.png";
 import Footer from "../../components/footer/footer";
 import HeaderLogged from "../../components/headerLogged/headerLogged";
+import ProfileUpdate from "../../components/profileUpdate/profileUpdate";
+import { useContext } from "react";
+import { ModalContext } from "../../contexts/ModalContext";
+import PrivateDataUpdate from "../../components/privateDataUpdate/privateDataUpdate";
 
 function Config() {
+  const { toogleProfileUpdateVisibility, tooglePrivateDataUpdateVisibility } =
+    useContext(ModalContext);
+
   return (
     <>
       <HeaderLogged />
@@ -17,7 +24,7 @@ function Config() {
           <ConfigContainer>
             <h2>Aparência</h2>
 
-            <ArrowContainer>
+            <ArrowContainer onClick={() => toogleProfileUpdateVisibility()}>
               <span>Editar perifl</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
@@ -35,7 +42,7 @@ function Config() {
           <ConfigContainer>
             <h2>Gerenciamento de conta</h2>
 
-            <ArrowContainer>
+            <ArrowContainer onClick={() => tooglePrivateDataUpdateVisibility()}>
               <span>Alterar dados privados</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
@@ -51,6 +58,9 @@ function Config() {
         </BoxContainer>
       </MainContainer>
       <Footer />
+
+      <ProfileUpdate />
+      <PrivateDataUpdate />
     </>
   );
 }

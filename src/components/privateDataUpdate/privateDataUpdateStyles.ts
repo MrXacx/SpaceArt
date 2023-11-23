@@ -16,7 +16,7 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 
 export const ModalContainer = styled.div`
   width: 72%;
-  height: 60vh;
+  height: 70vh;
   max-height: 70vh;
   background-color: white;
   border-radius: 6px;
@@ -27,7 +27,6 @@ export const ModalContainer = styled.div`
   overflow: hidden;
   @media (min-width: 768px) {
     width: 50vw;
-    height: 50vh;
   }
 `;
 
@@ -81,54 +80,6 @@ export const SignContainer = styled.form`
   padding-right: 0.5rem;
   overflow: hidden scroll;
 `;
-export const FormTextbox = styled.textarea`
-  width: 100%;
-  height: 6vh;
-  padding: 0.5rem;
-  border-radius: 3px;
-  margin: 0.5rem 0;
-  border: 1px solid #545454;
-  transition: 300ms;
-
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: #000;
-  }
-
-  &:disabled {
-    background-color: rgb(210, 210, 210);
-  }
-`;
-
-export const FormSelectField = styled.select`
-  width: 100%;
-  height: 6vh;
-  padding: 0.5rem;
-  border-radius: 3px;
-  margin: 0.5rem 0;
-  border: 1px solid #545454;
-  transition: 300ms;
-
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: #000;
-  }
-
-  &:disabled {
-    background-color: rgb(210, 210, 210);
-  }
-
-  @media (min-width: 960px) {
-    height: 5vh;
-  }
-`;
-
 export const FormInputFullField = styled.input`
   width: 100%;
   height: 3vh;

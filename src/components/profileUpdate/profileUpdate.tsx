@@ -2,6 +2,8 @@ import {
   FormInputButton,
   FormInputFullField,
   FormInputHalfField,
+  FormSelectField,
+  FormTextbox,
   HeaderLogo,
   Icon,
   InnerContainer,
@@ -11,12 +13,33 @@ import {
   Modal,
 } from "./profileUpdateStyles";
 import XIcon from "../../assets/x.svg";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
+import { ArtTypesUtil } from "../../enums/ArtType";
+import { UserContext } from "../../contexts/UserContext";
+import { AccountType } from "../../enums/AccountType";
 
 function ProfileUpdate() {
   const { hideProfileUpdate, toogleProfileUpdateVisibility } =
     useContext(ModalContext);
+  const { user, type } = useContext(UserContext);
+
+  const [name, setName] = useState(user.name);
+  const [section, setSection] = useState(user.name);
+  const [image, setImage] = useState(user.name);
+  const [description, setDescription] = useState(user.name);
+  const [wage, setWage] = useState(user.name);
+  const [art, setArt] = useState(user.art);
+
+  const businessSections = [
+    "artes",
+    "comércio",
+    "educação",
+    "engenharia",
+    "finanças",
+    "saúde",
+    "transporte",
+  ].sort((a: string, b: string) => a.localeCompare(b));
 
   return (
     <Modal hidden={hideProfileUpdate}>
@@ -29,29 +52,58 @@ function ProfileUpdate() {
                 src={XIcon}
                 onClick={() => toogleProfileUpdateVisibility()}
               />
-              <h1>Alterar perfil</h1>
-              <p>
-                Altere todos os campos que deseja atualizar. Caso não tenha
-                encontrado o campo desejado, isso significa que o dado informado
-                não pode ser modificado por questão de segurança.
-              </p>
+              <h1>Atualizar perfil</h1>
             </HeaderLogo>
             <SignContainer>
-              <FormInputHalfField type="text" placeholder="Nome artístico" />
-              <FormInputHalfField type="tel" placeholder="Telefone" />
-              <FormInputFullField type="text" placeholder="Foto de perfil" />
-              <FormInputFullField type="text" placeholder="Arte" />
-              <FormInputFullField type="text" placeholder="Descrição" />
-              <FormInputFullField type="text" placeholder="CEP" />
-              <FormInputHalfField type="text" placeholder="Cidade" />
-              <FormInputHalfField type="text" placeholder="UF" />
-              <FormInputFullField type="text" placeholder="Bairro" />
-              <FormInputFullField type="text" placeholder="Endereço" />
-              <FormInputHalfField type="password" placeholder="Nova senha" />
               <FormInputHalfField
-                type="password"
-                placeholder="Repita a nova senha"
+                type="text"
+                placeholder="Nome"
+                value={name}
+                onChange={({ target }) => setName(target.value)}
               />
+              <FormInputHalfField
+                type="file"
+                accept="image/*"
+                size={40000}
+                placeholder="Foto de perfil"
+                onChange={({ target }) => setImage(target.value)}
+              />
+              {type === AccountType.artist ? (
+                <>
+                  <FormSelectField
+                    value={art}
+                    onChange={({ target }) => setArt(target.value)}
+                  >
+                    <option disabled selected>
+                      Arte
+                    </option>
+                    {ArtTypesUtil.values().map((item) => (
+                      <option value={item}>{item}</option>
+                    ))}
+                  </FormSelectField>
+                  <FormInputFullField
+                    type="number"
+                    value={wage}
+                    onChange={({ target }) => setWage(parseFloat(target.value))}
+                  />
+                </>
+              ) : (
+                <FormSelectField
+                  value={section}
+                  onChange={({ target }) => setSection(target.value)}
+                >
+                  <option disabled>Setor de atuação</option>
+                  {businessSections.map((section) => (
+                    <option value={section}>{section}</option>
+                  ))}
+                </FormSelectField>
+              )}
+              <FormTextbox
+                placeholder="Descrição"
+                onChange={({ target }) => setDescription(target.value)}
+              >
+                {description}
+              </FormTextbox>
               <FormInputButton>Salvar Alterações</FormInputButton>
             </SignContainer>
           </InnerContainer>
