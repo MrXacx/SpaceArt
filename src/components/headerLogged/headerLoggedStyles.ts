@@ -5,7 +5,7 @@ export const Icon = styled.img`
   max-width: 20px;
   min-height: 20px;
   max-height: 20px;
-  padding: .7rem;
+  padding: 0.7rem;
   border-radius: 5px;
   &:hover {
     background-color: #f0f0f0;
@@ -14,9 +14,9 @@ export const Icon = styled.img`
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 100px;
+  height: 7rem;
   background-color: rgba(255, 255, 255, 0.96);
-  padding: 0 32px;
+  padding: 1rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -49,7 +49,8 @@ export const SpaceartContainer = styled.div`
 export const SpaceartTitle = styled.div``;
 
 export const SpaceartLogo = styled.img`
-  width: 50px;
+  width: 2.5rem;
+  margin-right: 0.5rem;
 `;
 
 export const NavItemContainer = styled.ul`

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 100px;
+  height: 7rem;
   background-color: rgba(255, 255, 255, 0.9);
   box-sizing: border-box;
   display: flex;
@@ -60,7 +60,7 @@ export const NavContainer = styled.nav`
   display: none;
   @media (min-width: 960px) {
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
   }
 `;
 

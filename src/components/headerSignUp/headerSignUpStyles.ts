@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 100px;
+  height: 7rem;
   background-color: #fff;
   padding: 1rem;
   box-sizing: border-box;
@@ -13,10 +13,10 @@ export const HeaderContainer = styled.header`
   box-shadow: 0 1px 30px rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
-  
+
   @media (min-width: 960px) {
-      justify-content: space-between;
-    }
+    justify-content: space-between;
+  }
 `;
 
 export const SpaceartContainer = styled.div`
@@ -26,7 +26,7 @@ export const SpaceartContainer = styled.div`
 `;
 
 export const SpaceartTitle = styled.div`
-   display: flex;
+  display: flex;
   align-items: center;
   span:first-of-type {
     color: #fa8b08;
@@ -93,7 +93,7 @@ export const SignUpButton = styled.button`
   font-weight: bold;
   border: none;
   transition: 0.3s;
-  @media (min-width: 960px) {  
+  @media (min-width: 960px) {
     :hover {
       background-color: #f47c2e;
     }

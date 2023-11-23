@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 100px;
+  height: 7rem;
   background-color: transparent;
   padding: 1rem;
   box-sizing: border-box;
@@ -11,7 +11,7 @@ export const HeaderContainer = styled.header`
   justify-content: center;
   position: fixed;
   top: 0;
-  
+
   @media (min-width: 960px) {
     justify-content: space-between;
   }
