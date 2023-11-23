@@ -131,6 +131,9 @@ export const SelectionOptionButton = styled.button<{
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (min-width: 768px) {
     width: 35%;

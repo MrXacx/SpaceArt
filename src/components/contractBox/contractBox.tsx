@@ -69,7 +69,9 @@ function ContractBox(props: ContractBoxProps) {
               type="button"
               hidden={false}
               onClick={() => {
-                setAgreement(new Agreement(props.id));
+                setAgreement(
+                  new Agreement().build({ id: props.id, status: props.status })
+                );
                 toogleLookRatesVisibility();
               }}
             >
