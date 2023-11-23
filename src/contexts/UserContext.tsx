@@ -10,6 +10,7 @@ import DefaultImage from "../assets/marco_image.png";
 import { ImageCompressor } from "../services/ImageCompressor";
 import { Chat } from "../api/Chat";
 import { ArtType } from "../enums/ArtType";
+import { Rate } from "../api/Rate";
 
 interface UserStoreProps {
   children: React.ReactNode;
@@ -230,15 +231,32 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       })
       .create();
 
-  const fetchAgreementsByUser = (id: string, offset = 0, limit = 500) =>
+  const fetchAgreementsByUser = (
+    agreementID: string,
+    offset = 0,
+    limit = 500
+  ) =>
     new Agreement()
       .fetchList(
         // Busca uma lista de contratos de um usuário qualquer
-        new User(id),
+        new User(agreementID),
         offset,
         limit
       )
       .then((list: Agreement[]) => list.map((item) => item.toObject()));
+
+  const fetchRatesFromAgreement = (agreementID: string) =>
+    new Rate(new Agreement(agreementID)).fetchList().then((rates) =>
+      Promise.all(
+        rates.map((item: Rate) => {
+          const rate = item.toObject();
+          return rate.author?.fetch().then((author) => {
+            rate.author = author; // Sobrepõe objeto de User por um objeto literal com dados buscados
+            return rate;
+          });
+        })
+      )
+    );
 
   // SELEÇÕES
   const sendSelection = (data: {
@@ -343,6 +361,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchPostsByUser,
         sendAgreement,
         fetchAgreementsByUser,
+        fetchRatesFromAgreement,
         sendSelection,
         fetchSelectionsByArt,
         fetchSelectionsByOwner,

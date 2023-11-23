@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ArtType } from "../../enums/ArtType";
 import RateBox from "../rateBox/rateBox";
+import { SelectAgreementContext } from "../../contexts/SelectAgreement";
 interface MyContractProps {
   filter: AgreementStatus;
 }
@@ -28,7 +29,9 @@ function MyContract(props: MyContractProps) {
     hideLookRates,
     toogleLookRatesVisibility,
   } = useContext(ModalContext);
-  const { id, fetchAgreementsByUser } = useContext(UserContext);
+  const { id, fetchAgreementsByUser, fetchRatesFromAgreement } =
+    useContext(UserContext);
+  const { agreement } = useContext(SelectAgreementContext);
 
   const [contracts, setContracts] = useState<any[]>([
     {
@@ -98,6 +101,12 @@ function MyContract(props: MyContractProps) {
     fetchAgreementsByUser(id).then(setContracts).catch(console.error);
   }, [fetchAgreementsByUser, id]);
 
+  useEffect(() => {
+    if (agreement) {
+      fetchRatesFromAgreement.then(setRates); // Obtém avaliações do contrato
+    }
+  }, [agreement, fetchRatesFromAgreement]);
+
   return (
     <Modal hidden={hideMyContract}>
       <ModalContainer hidden={!hideLookRates}>
@@ -115,7 +124,7 @@ function MyContract(props: MyContractProps) {
             .map((item: any) => (
               <ContractBox
                 id={item.id}
-                status={item.status}
+                status={item.status ?? "t"}
                 art={item.art}
                 time={item.time}
                 price={item.price}
