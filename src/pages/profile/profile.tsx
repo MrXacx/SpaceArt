@@ -21,7 +21,6 @@ import {
   ProfileGlobalStyle,
   ProfileHeader,
   ProfileTools,
-  Spacing,
   TypeJobIcon,
   UserDetails,
   UserDetailsHeader,
@@ -152,7 +151,6 @@ function Profile() {
   return (
     <>
       <HeaderLogged />
-      <Spacing />
       <ProfileGlobalStyle />
       <ProfileHeader>
         <ProfileContent>

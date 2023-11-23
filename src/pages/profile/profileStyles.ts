@@ -1,18 +1,9 @@
 import styled, { createGlobalStyle } from "styled-components";
 
-export const Spacing = styled.div`
-  height: 15vh;
-  background-color: #fff;
-`;
-
 export const ProfileGlobalStyle = createGlobalStyle`
 
   *::-webkit-scrollbar-thumb {
     background-color: transparent;
-  }
-
-  body {
-    background-color: #f5f5f5;
   }
 
   ul, ol {
@@ -59,7 +50,7 @@ export const DescriptionContainer = styled.div<{ is_visible: string }>`
   justify-self: center;
   align-self: center;
   color: #000;
-  background-color: #f5f5f5;
+  background-color: #fcfcfc;
   padding: 1rem 0;
 
   span {
