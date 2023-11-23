@@ -14,106 +14,130 @@ import NewSelection from "../../components/newSelection/newSelection";
 import MySelection from "../../components/mySelection/mySelection";
 import { useContext, useState } from "react";
 import { AgreementStatus, SelectionStatus } from "../../enums/ServiceStatus";
+import { UserContext } from "../../contexts/UserContext";
+import { AccountType } from "../../enums/AccountType";
 
 function Services() {
+  const { type } = useContext(UserContext);
 
-  // Criar alternativa para conter mais de um modal na mesma página
-  const { toogleNewContractVisibility, toogleNewSelectionVisibility, toogleMyContractVisibility, toogleMySelectionVisibility } = useContext(ModalContext);
-  const [contractFilter, setContractFilter] = useState(AgreementStatus.accepted);
-  const [selectionFilter, setSelectionFilter] = useState(SelectionStatus.active);
+  const {
+    toogleNewContractVisibility,
+    toogleNewSelectionVisibility,
+    toogleMyContractVisibility,
+    toogleMySelectionVisibility,
+  } = useContext(ModalContext);
+
+  const [contractFilter, setContractFilter] = useState(
+    AgreementStatus.accepted
+  );
+
+  const [selectionFilter, setSelectionFilter] = useState(
+    SelectionStatus.active
+  );
 
   const agreementServices = [
-    { title: 'Criar contrato', toogle: () => toogleNewContractVisibility() },
     {
-      title: 'Contratos ativos', toogle: () => {
-        toogleMyContractVisibility()
+      title: "Contratos ativos",
+      toogle: () => {
+        toogleMyContractVisibility();
         setContractFilter(AgreementStatus.accepted);
-      }
+      },
     },
     {
-      title: 'Contratos pendentes', toogle: () => {
-        toogleMyContractVisibility()
+      title: "Contratos pendentes",
+      toogle: () => {
+        toogleMyContractVisibility();
         setContractFilter(AgreementStatus.pending);
-      }
+      },
     },
-    {
-      title: 'Histórico', toogle: () => {
-        toogleMyContractVisibility()
-        setContractFilter(AgreementStatus.completed);
-      }
-    },
-  ]
+  ];
 
   const selectionServices = [
-    { title: 'Criar seleção', toogle: () => toogleNewSelectionVisibility() },
+    { title: "Criar seleção", toogle: () => toogleNewSelectionVisibility() },
     {
-      title: 'Ativas', toogle: () => {
-        toogleMySelectionVisibility()
+      title: "Ativas",
+      toogle: () => {
+        toogleMySelectionVisibility();
         setSelectionFilter(SelectionStatus.active);
-      }
+      },
     },
     {
-      title: 'Em espera', toogle: () => {
-        toogleMySelectionVisibility()
+      title: "Em espera",
+      toogle: () => {
+        toogleMySelectionVisibility();
         setSelectionFilter(SelectionStatus.onHold);
-      }
+      },
     },
     {
-      title: 'Histórico', toogle: () => {
-        toogleMySelectionVisibility()
+      title: "Histórico",
+      toogle: () => {
+        toogleMySelectionVisibility();
         setSelectionFilter(SelectionStatus.closed);
-      }
+      },
     },
-  ]
+  ];
 
   return (
     <>
       <HeaderLogged />
       <MainContainer>
         <BoxContainer>
-
           <ServicesContainer>
             <h2>Contratos</h2>
-            {agreementServices.map(
-              (service) =>
-                <ArrowContainer>
+            {type === AccountType.enterprise ? (
+              agreementServices.map((service) => (
+                <ArrowContainer onClick={() => service.toogle()}>
                   <span>{service.title}</span>
-                  <img
-                    alt={service.title}
-                    src={ArrowIcon}
-                    onClick={() => service.toogle()}
-                  />
+                  <img alt={service.title} src={ArrowIcon} />
                 </ArrowContainer>
+              ))
+            ) : (
+              <ArrowContainer onClick={() => toogleNewContractVisibility()}>
+                <span>Criar contrato</span>
+                <img alt="Buscar seleções" src={ArrowIcon} />
+              </ArrowContainer>
             )}
-          </ServicesContainer>
-
-          <ServicesContainer>
-            <h2>Seleções</h2>
-            {selectionServices.map(
-              (service) =>
-                <ArrowContainer>
-                  <span>{service.title}</span>
-                  <img
-                    alt={service.title}
-                    src={ArrowIcon}
-                    onClick={() => service.toogle()}
-                  />
-                </ArrowContainer>
-            )}
-
             <ArrowContainer>
-              <span>Buscar seleções</span>
+              <span>Histórico</span>
               <img
-                alt="Buscar seleções"
+                alt="Histórico"
                 src={ArrowIcon}
                 onClick={() => {
-                  toogleMySelectionVisibility()
-                  setSelectionFilter(SelectionStatus.active);
+                  toogleMyContractVisibility();
+                  setContractFilter(AgreementStatus.completed);
                 }}
               />
             </ArrowContainer>
           </ServicesContainer>
 
+          <ServicesContainer>
+            <h2>Seleções</h2>
+
+            {type === AccountType.enterprise ? (
+              selectionServices.map((service) => (
+                <ArrowContainer>
+                  <span>{service.title}</span>
+                  <img
+                    alt={service.title}
+                    src={ArrowIcon}
+                    onClick={() => service.toogle()}
+                  />
+                </ArrowContainer>
+              ))
+            ) : (
+              <ArrowContainer>
+                <span>Buscar seleções</span>
+                <img
+                  alt="Buscar seleções"
+                  src={ArrowIcon}
+                  onClick={() => {
+                    toogleMySelectionVisibility();
+                    setSelectionFilter(SelectionStatus.active);
+                  }}
+                />
+              </ArrowContainer>
+            )}
+          </ServicesContainer>
         </BoxContainer>
       </MainContainer>
       <Footer />
@@ -121,8 +145,7 @@ function Services() {
       <NewContract />
       <MyContract filter={contractFilter} />
       <NewSelection />
-     <MySelection filter={selectionFilter} />
-
+      <MySelection filter={selectionFilter} />
     </>
   );
 }
