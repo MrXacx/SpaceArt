@@ -1,24 +1,19 @@
 import styled from "styled-components";
 
-export const Spacing = styled.div`
-  height: 15vh;
-  background-color: #fff;
-`;
-
 export const ChooseFilterContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;  
+  justify-content: space-between;
   margin: 1rem auto;
   width: 80%;
 
-  >div {
+  > div {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;  
+    justify-content: space-between;
     margin: 1rem auto;
 
     span {
@@ -27,15 +22,14 @@ export const ChooseFilterContainer = styled.div`
       text-align: center;
       font-size: 1.5rem;
     }
-  
   }
-  
-  @media (min-width: 960px){
+
+  @media (min-width: 960px) {
     flex-direction: row;
     justify-content: space-evenly;
-    
+
     span {
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
   }
 `;
@@ -47,22 +41,21 @@ export const FilterOptionsContainer = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 66%;
-  
 `;
 
 export const FilterOption = styled.button<{ selected: boolean }>`
   width: 100%;
   padding: 0.5rem;
-  margin: .5rem;
+  margin: 0.5rem;
   border-radius: 5px;
   border: none;
   box-shadow: none;
   cursor: pointer;
   font-weight: 700;
-  background-color: ${({ selected }) => selected ? '#ff8311' : 'transparent'};
-  transition: .3s;
+  background-color: ${({ selected }) => (selected ? "#ff8311" : "transparent")};
+  transition: 0.3s;
   font-size: 1.3rem;
-  color: ${({ selected }) => selected ? '#fff' : '#ff8311'};
+  color: ${({ selected }) => (selected ? "#fff" : "#ff8311")};
 `;
 
 export const FilterBarContainer = styled.div`
@@ -72,14 +65,13 @@ export const FilterBarContainer = styled.div`
 `;
 
 export const FilterBarItem = styled.div<{ hidden: boolean }>`
-  display: ${({ hidden }) => hidden ? 'none' : 'grid'};
+  display: ${({ hidden }) => (hidden ? "none" : "grid")};
   width: 100%;
 `;
 
 export const SearchResultContainer = styled.div`
   width: 100%;
   display: flex;
-  background-color: #f5f5f5;
   color: #fa8b08;
   justify-content: center;
   flex-direction: column;
@@ -104,7 +96,7 @@ export const CardProfileContainer = styled.div`
   grid-template-columns: 1fr;
   gap: 4rem;
   padding: 50px 0;
-    
+
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }

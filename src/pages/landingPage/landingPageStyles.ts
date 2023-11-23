@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
-const backgroundImage = "https://cdn.discordapp.com/attachments/462392117038284830/1157743576176922765/image.png?ex=6519b83a&is=651866ba&hm=051128e0e3e4462e2eacdb78ca574fd89dbb9a2e5a38957c1d8e8270296cd7a5&";
+const backgroundImage =
+  "https://cdn.discordapp.com/attachments/462392117038284830/1157743576176922765/image.png?ex=6519b83a&is=651866ba&hm=051128e0e3e4462e2eacdb78ca574fd89dbb9a2e5a38957c1d8e8270296cd7a5&";
 
 export const OpeningBannerContainer = styled.div`
   width: 100%;
   height: 80vh;
-  background-image: linear-gradient(180deg, transparent, black), url(${backgroundImage});
+  background-image: linear-gradient(180deg, transparent, black),
+    url(${backgroundImage});
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -14,7 +16,8 @@ export const OpeningBannerContainer = styled.div`
   }
   @media (min-width: 960px) {
     height: 100vh;
-    background-image: linear-gradient(90deg, transparent, black), url(${backgroundImage});
+    background-image: linear-gradient(90deg, transparent, black),
+      url(${backgroundImage});
   }
 `;
 
@@ -24,7 +27,7 @@ export const OpeningBannerContent = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  box-sizing: border-box;  
+  box-sizing: border-box;
   padding: 0;
 
   span {
@@ -34,7 +37,7 @@ export const OpeningBannerContent = styled.div`
     font-size: 2.5rem;
     text-align: center;
     display: block;
-    
+
     b {
       color: #fa8b08;
     }
@@ -62,25 +65,25 @@ export const OpeningBannerContent = styled.div`
     cursor: pointer;
   }
 
-    @media (min-width: 768px) {
+  @media (min-width: 768px) {
     span {
       font-size: 4.25rem;
-    }        
+    }
   }
 
-  @media (min-width: 960px) { 
+  @media (min-width: 960px) {
     padding-right: 150px;
 
-    span {   
+    span {
       text-align: right;
       width: 100%;
     }
 
     div {
-     justify-content: flex-end;
+      justify-content: flex-end;
     }
 
-    button{
+    button {
       width: 17vw;
     }
   }
@@ -92,7 +95,7 @@ export const AboutUsContainer = styled.div`
   place-items: center;
   margin: 80px auto;
 
-  @media (min-width: 960px){
+  @media (min-width: 960px) {
     margin: 100px auto;
     grid-template-columns: repeat(2, 1fr);
   }
@@ -113,11 +116,11 @@ export const AboutUsText = styled.div`
 
 export const AboutUsBanner = styled.img`
   display: none;
-    
+
   @media (min-width: 960px) {
     display: block;
     width: 40vw;
-  }  
+  }
 `;
 
 export const ChooseArtistContainer = styled.div`
@@ -157,7 +160,7 @@ export const ArtCardContainer = styled.div`
   justify-self: center;
   align-self: center;
   width: 100%;
-  display: flex;  
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
@@ -185,7 +188,6 @@ export const ArtCardContainer = styled.div`
 export const SearchArtistContainer = styled.div`
   width: 100%;
   display: flex;
-  background-color: #f5f5f5;
   color: #fa8b08;
   justify-content: center;
   flex-direction: column;
@@ -201,7 +203,6 @@ export const SearchArtistContainer = styled.div`
       font-size: 1.5rem;
     }
   }
-  
 `;
 
 export const CardProfileContainer = styled.div`
@@ -211,7 +212,7 @@ export const CardProfileContainer = styled.div`
   grid-template-columns: 1fr;
   gap: 4rem;
   padding: 50px 0;
-    
+
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }

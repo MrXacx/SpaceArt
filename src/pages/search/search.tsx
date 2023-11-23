@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import HeaderLogged from "../../components/headerLogged/headerLogged";
 import {
-  Spacing,
   ChooseFilterContainer,
   FilterOptionsContainer,
   FilterOption,
@@ -31,7 +30,6 @@ function Search() {
   return (
     <>
       <HeaderLogged />
-      <Spacing />
       <ChooseFilterContainer>
         <div>
           <span>BUSCAR POR</span>

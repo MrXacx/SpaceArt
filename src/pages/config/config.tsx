@@ -15,25 +15,34 @@ function Config() {
       <MainContainer>
         <BoxContainer>
           <ConfigContainer>
-            <h2>Editar Perfil</h2>
+            <h2>Aparência</h2>
+
             <ArrowContainer>
-              <span>Dados Privados</span>
-              <img alt="seta" src={ArrowIcon} />
-            </ArrowContainer>
-            <ArrowContainer>
-              <span>Suas denúncias</span>
+              <span>Editar perifl</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
           </ConfigContainer>
+
           <ConfigContainer>
             <h2>Denúncia</h2>
+
             <ArrowContainer>
               <span>Suas denúncias</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
           </ConfigContainer>
+
           <ConfigContainer>
             <h2>Gerenciamento de conta</h2>
+
+            <ArrowContainer>
+              <span>Alterar dados privados</span>
+              <img alt="seta" src={ArrowIcon} />
+            </ArrowContainer>
+            <ArrowContainer>
+              <span>Desconectar</span>
+              <img alt="seta" src={ArrowIcon} />
+            </ArrowContainer>
             <ArrowContainer>
               <span>Apagar conta</span>
               <img alt="seta" src={ArrowIcon} />
