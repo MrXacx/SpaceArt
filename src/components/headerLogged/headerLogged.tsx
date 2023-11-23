@@ -14,7 +14,7 @@ import HomeIcon from "../../assets/house.svg";
 import PlusIcon from "../../assets/plus.svg";
 import SuitcaseIcon from "../../assets/suitcase.svg";
 import ChatIcon from "../../assets/black_chat.svg";
-import SettingIcon from "../../assets/star.svg";
+import SettingIcon from "../../assets/settings.svg";
 import ThreePointsIcon from "../../assets/three_points.svg";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
