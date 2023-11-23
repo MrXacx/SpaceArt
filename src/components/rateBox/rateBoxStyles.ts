@@ -27,6 +27,8 @@ export const AuthorDetails = styled.div`
 
   img {
     max-width: 10vw;
+    height: 7vh;
+    overflow: hidden;
     border-radius: 50%;
     margin-right: 0.5rem;
   }
