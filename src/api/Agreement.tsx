@@ -24,13 +24,13 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
    */
   public build(agreement: {
     id?: string;
-    hirer: Enterprise;
-    hired: Artist;
-    description: string;
-    art: string;
-    price: number;
-    date: string;
-    time: string[];
+    hirer?: Enterprise;
+    hired?: Artist;
+    description?: string;
+    art?: string;
+    price?: number;
+    date?: string;
+    time?: string[];
     status?: string;
   }): Agreement {
     this.id = agreement.id;
@@ -97,9 +97,7 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       description: agreementData.description,
     });
 
-    agreement.rates = agreement.rates.concat(
-      await new Rate(agreement).fetchList()
-    ); // Obtém avaliações do contrato
+    console.log(agreement);
 
     return agreement;
   }
@@ -130,13 +128,6 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       data.hirer = new Enterprise(data.hirer);
       data.hired = new Artist(data.hired);
       const agreement = this.factory().build(data); // Instancia o contrato
-
-      if (data.status === "accepted") {
-        // Executa apenas se o contrato já foi aceito
-        new Rate(new Agreement(data.id)) // Instancia avaliação
-          .fetchList() // Busca as avaliações associadas no banco
-          .then((rates) => (agreement.rates = rates)); // Associa avaliações ao contrato
-      }
 
       return agreement;
     });
