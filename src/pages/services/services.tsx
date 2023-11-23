@@ -97,16 +97,14 @@ function Services() {
                 <img alt="Buscar seleções" src={ArrowIcon} />
               </ArrowContainer>
             )}
-            <ArrowContainer>
+            <ArrowContainer
+              onClick={() => {
+                toogleMyContractVisibility();
+                setContractFilter(AgreementStatus.completed);
+              }}
+            >
               <span>Histórico</span>
-              <img
-                alt="Histórico"
-                src={ArrowIcon}
-                onClick={() => {
-                  toogleMyContractVisibility();
-                  setContractFilter(AgreementStatus.completed);
-                }}
-              />
+              <img alt="Histórico" src={ArrowIcon} />
             </ArrowContainer>
           </ServicesContainer>
 
@@ -115,26 +113,20 @@ function Services() {
 
             {type === AccountType.enterprise ? (
               selectionServices.map((service) => (
-                <ArrowContainer>
+                <ArrowContainer onClick={() => service.toogle()}>
                   <span>{service.title}</span>
-                  <img
-                    alt={service.title}
-                    src={ArrowIcon}
-                    onClick={() => service.toogle()}
-                  />
+                  <img alt={service.title} src={ArrowIcon} />
                 </ArrowContainer>
               ))
             ) : (
-              <ArrowContainer>
+              <ArrowContainer
+                onClick={() => {
+                  toogleMySelectionVisibility();
+                  setSelectionFilter(SelectionStatus.active);
+                }}
+              >
                 <span>Buscar seleções</span>
-                <img
-                  alt="Buscar seleções"
-                  src={ArrowIcon}
-                  onClick={() => {
-                    toogleMySelectionVisibility();
-                    setSelectionFilter(SelectionStatus.active);
-                  }}
-                />
+                <img alt="Buscar seleções" src={ArrowIcon} />
               </ArrowContainer>
             )}
           </ServicesContainer>
