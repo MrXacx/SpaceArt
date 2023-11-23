@@ -364,11 +364,10 @@ export const Calendar = styled.div`
 
   @media (min-width: 768px) {
     width: 40vw;
-    height: 35vh;
+    height: 55vh;
   }
   @media (min-width: 960px) {
     width: 80%;
-    height: 55vh;
   }
 `;
 
@@ -426,7 +425,7 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
   width: 100%;
   height: 50%;
   border-radius: 50%;
-  padding: 0.6rem 0.15rem;
+  padding: 0;
   transition: 300ms;
   cursor: pointer;
   text-align: center;
@@ -435,9 +434,16 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
     JSON.parse(c.selected) ? "#ff831185" : "transparent"};
   font-weight: ${(c) => (JSON.parse(c.selected) ? "bold" : "500")};
   border: 1px solid transparent;
-  &:hover {
-    border: 1px solid #ff831185;
-    font-weight: bold;
+
+  @media (min-width: 768px) {
+    padding: 0.2rem 0;
+  }
+  @media (min-width: 960px) {
+    padding: 0.6rem 0.15rem;
+    &:hover {
+      border: 1px solid #ff831185;
+      font-weight: bold;
+    }
   }
 `;
 
@@ -479,14 +485,15 @@ export const Jobs = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem 1rem;
 
-  @media (min-width: 960px) {
+  width: 100%;
+
+  @media (min-width: 768px) {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     overflow-y: hidden;
     height: auto;
-    width: 100%;
   }
 `;
 
