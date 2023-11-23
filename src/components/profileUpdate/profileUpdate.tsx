@@ -15,7 +15,8 @@ import { useContext } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 
 function ProfileUpdate() {
-  const { hideProfileUpdate, toogleProfileUpdateVisibility } = useContext(ModalContext);
+  const { hideProfileUpdate, toogleProfileUpdateVisibility } =
+    useContext(ModalContext);
 
   return (
     <Modal hidden={hideProfileUpdate}>
@@ -29,11 +30,11 @@ function ProfileUpdate() {
                 onClick={() => toogleProfileUpdateVisibility()}
               />
               <h1>Alterar perfil</h1>
-              <span>
+              <p>
                 Altere todos os campos que deseja atualizar. Caso não tenha
                 encontrado o campo desejado, isso significa que o dado informado
                 não pode ser modificado por questão de segurança.
-              </span>
+              </p>
             </HeaderLogo>
             <SignContainer>
               <FormInputHalfField type="text" placeholder="Nome artístico" />
@@ -43,14 +44,14 @@ function ProfileUpdate() {
               <FormInputFullField type="text" placeholder="Descrição" />
               <FormInputFullField type="text" placeholder="CEP" />
               <FormInputHalfField type="text" placeholder="Cidade" />
-              <FormInputHalfField
-                type="text"
-                placeholder="UF"
-              />
+              <FormInputHalfField type="text" placeholder="UF" />
               <FormInputFullField type="text" placeholder="Bairro" />
               <FormInputFullField type="text" placeholder="Endereço" />
               <FormInputHalfField type="password" placeholder="Nova senha" />
-              <FormInputHalfField type="password" placeholder="Repita a nova senha" />
+              <FormInputHalfField
+                type="password"
+                placeholder="Repita a nova senha"
+              />
               <FormInputButton>Salvar Alterações</FormInputButton>
             </SignContainer>
           </InnerContainer>
