@@ -18,11 +18,12 @@ function Footer() {
     <FooterContainer>
       <FirstRowContainer>
         <img alt="SpaceArt logo" src={SpaceartLogo} />
+
         <SocialMediaContainer>
           <img alt="Instagram logo" src={InstagramLogo} />
           <img alt="Facebook logo" src={FacebookLogo} />
           <img alt="Compartilhar logo" src={ShareLogo} />
-        <Message>Siga-nos</Message>
+          <Message>Siga-nos</Message>
         </SocialMediaContainer>
       </FirstRowContainer>
       <hr />
@@ -31,8 +32,8 @@ function Footer() {
           <FooterTitle>Tipos de arte</FooterTitle>
           <ArtTypeContainer>
             <ArtTypeItem>Artesanato</ArtTypeItem>
+            <ArtTypeItem>Canto</ArtTypeItem>
             <ArtTypeItem>Composição</ArtTypeItem>
-            <ArtTypeItem>Canção</ArtTypeItem>
             <ArtTypeItem>Dança</ArtTypeItem>
             <ArtTypeItem>Escultura</ArtTypeItem>
             <ArtTypeItem>Pintura</ArtTypeItem>
@@ -44,13 +45,11 @@ function Footer() {
           <ArtTypeContainer>
             <ArtTypeItem>Telefone</ArtTypeItem>
             <ArtTypeItem>E-mail</ArtTypeItem>
-            <ArtTypeItem>Horário de funcionamento</ArtTypeItem>
           </ArtTypeContainer>
         </section>
         <section>
           <FooterTitle>Institucional</FooterTitle>
           <ArtTypeContainer>
-            <ArtTypeItem>Sobre nós</ArtTypeItem>
             <ArtTypeItem>Termos e condições de uso</ArtTypeItem>
           </ArtTypeContainer>
         </section>

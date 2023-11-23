@@ -2,13 +2,14 @@ import styled from "styled-components";
 
 export const FooterContainer = styled.footer`
   color: #fff;
+  position: static;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   background-color: #fff;
   padding: 1rem 0;
-  box-shadow: 0 -3px 30px rgba(0, 0, 0, 0.5);;
+  box-shadow: 0 -3px 30px rgba(0, 0, 0, 0.5);
 
   hr {
     width: 65%;
