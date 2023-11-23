@@ -19,9 +19,9 @@ export const ConfigContainer = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 1rem;
   box-shadow: 0 0 7px #00000040;
-  margin: 0 auto 20px;
+  margin: 1rem auto;
 
   @media (min-width: 768px) {
     width: 70%;
@@ -36,14 +36,21 @@ export const ArrowContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 0.3rem 0;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  transition: 100ms;
 
   img {
     width: 25px;
-    cursor: pointer;
   }
 
   span {
     font-weight: 600;
+  }
+
+  @media (min-width: 960px) {
+    &:hover {
+      background-color: #f0f0f0;
+    }
   }
 `;
