@@ -203,3 +203,12 @@ export const FormInputButton = styled.button`
   margin-top: 1.5rem;
   cursor: pointer;
 `;
+
+export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
+  width: 90%;
+  display: ${({ hidden }) => (hidden ? "none" : "inline")};
+  color: black;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0.5rem 0;
+`;

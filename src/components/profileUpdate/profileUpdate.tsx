@@ -11,6 +11,7 @@ import {
   ModalContainer,
   SignContainer,
   Modal,
+  FormInputErrorMessage,
 } from "./profileUpdateStyles";
 import XIcon from "../../assets/x.svg";
 import { useContext, useState } from "react";
@@ -48,7 +49,7 @@ function ProfileUpdate() {
   ].sort((a: string, b: string) => a.localeCompare(b));
 
   const update = () => {
-    let items: any = { name, section, description, website, wage, art };
+    let items: any = { name, description, website };
 
     items =
       type === AccountType.artist
@@ -74,12 +75,9 @@ function ProfileUpdate() {
 
     if (image) items["image"] = image;
 
-    try {
-      updateLoggedUser(items);
-      toogleProfileUpdateVisibility();
-    } catch (e: any) {
-      console.error(e);
-    }
+    updateLoggedUser(items)
+      .then(toogleProfileUpdateVisibility)
+      .catch((e: any) => setInputeErrorMessage(e.message));
   };
 
   return (
@@ -101,6 +99,9 @@ function ProfileUpdate() {
                 update();
               }}
             >
+              <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>
+                {inputErrorMessage}
+              </FormInputErrorMessage>
               <FormInputHalfField
                 type="text"
                 placeholder={`Nome ${

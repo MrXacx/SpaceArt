@@ -172,7 +172,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       })
       .finally(fetchLoggedUser);
 
-  const updateLoggedUser = (data: {
+  const updateLoggedUser = async (data: {
     name?: string;
     email?: string;
     password?: string;
