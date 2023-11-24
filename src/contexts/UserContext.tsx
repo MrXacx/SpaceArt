@@ -125,7 +125,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           new Artist()
             .build({ ...artistData, image: result })
             .signUp() // realiza cadastro
-            .then(() => signIn(artistData.email, artistData.password)) // realiza login
+            .then(() => {
+              //logOut();
+              signIn(artistData.email, artistData.password);
+            }) // realiza login
             .catch(console.error)
       )
     );
@@ -157,7 +160,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           new Enterprise()
             .build({ ...enterpriseData, image: result })
             .signUp() // Cadastra artista
-            .then(() => signIn(enterpriseData.email, enterpriseData.password)) // Realiza login
+            .then(() => {
+              logOut();
+              signIn(enterpriseData.email, enterpriseData.password);
+            }) // Realiza login
             .catch(console.error)
       )
     );
@@ -208,6 +214,9 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       );
     }
   };
+
+  const deleteLoggedUse = () =>
+    new User().build({ token }).delete().then(logOut);
 
   const logOut = () => {
     sessionStorage.removeItem("user_id");
@@ -398,6 +407,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         signUpArtist,
         signUpEnterprise,
         updateLoggedUser,
+        deleteLoggedUse,
         logOut,
         fetchRandomPosts,
         fetchPostsByUser,
