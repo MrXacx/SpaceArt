@@ -36,8 +36,6 @@ import ProfileImage from "../../assets/verified.svg";
 import LocationIcon from "../../assets/location.svg";
 import StarIcon from "../../assets/star.svg";
 import GlobalIcon from "../../assets/global.svg";
-import ChatIcon from "../../assets/chat.svg";
-import ReportIcon from "../../assets/report.svg";
 import ShareIcon from "../../assets/share.svg";
 import MusicIcon from "../../assets/music.svg";
 import Footer from "../../components/footer/footer";
@@ -59,7 +57,6 @@ function Profile() {
   const {
     index,
     user,
-    type,
     fetchAnotherUser,
     fetchPostsByUser,
     fetchAgreementsByUser,
@@ -175,23 +172,19 @@ function Profile() {
               </UserDetailsHeader>
 
               <ul>
-                <UserDetailsItem
-                  hidden={Boolean(profileData.location).toString()}
-                >
+                <UserDetailsItem>
                   <Icon src={LocationIcon} alt="localização" />
                   <span>{`${profileData.location?.city ?? ""} - ${
                     profileData.location?.state ?? ""
                   }`}</span>
                 </UserDetailsItem>
 
-                <UserDetailsItem hidden={Boolean(profileData.rate).toString()}>
+                <UserDetailsItem>
                   <Icon src={StarIcon} alt="nota" />
                   <span>{profileData.rate?.toFixed(2)}</span>
                 </UserDetailsItem>
 
-                <UserDetailsItem
-                  hidden={Boolean(profileData.website).toString()}
-                >
+                <UserDetailsItem>
                   <Icon src={GlobalIcon} alt="site" />
                   <a
                     href={profileData.website}
@@ -206,22 +199,23 @@ function Profile() {
 
             <ProfileTools>
               <Icon
-                hidden={Boolean(
-                  // eslint-disable-next-line eqeqeq
-                  type == profileData.type
-                ).toString()}
-                src={ChatIcon}
-                alt="nova conversa"
+                src={ShareIcon}
+                alt="compartilhar"
+                onClick={() => {
+                  window.navigator
+                    .share({
+                      title: `${profileData.name} | Space Art`,
+                      text: `Conheça o perfil de ${profileData.name} no Space Art`,
+                      url: window.location.href,
+                    })
+                    .catch(console.log);
+                }}
               />
-              <Icon src={ReportIcon} alt="denunciar" />
-              <Icon src={ShareIcon} alt="compartilhar" />
             </ProfileTools>
           </UserInfo>
         </ProfileContent>
 
-        <DescriptionContainer
-          is_visible={Boolean(profileData.description).toString()}
-        >
+        <DescriptionContainer is_visible={profileData.description}>
           <span>Descrição</span>
           <p>{profileData.description}</p>
         </DescriptionContainer>

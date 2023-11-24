@@ -34,15 +34,6 @@ function Config() {
           </ConfigContainer>
 
           <ConfigContainer>
-            <h2>Denúncia</h2>
-
-            <ArrowContainer>
-              <span>Suas denúncias</span>
-              <img alt="seta" src={ArrowIcon} />
-            </ArrowContainer>
-          </ConfigContainer>
-
-          <ConfigContainer>
             <h2>Gerenciamento de conta</h2>
 
             <ArrowContainer onClick={() => tooglePrivateDataUpdateVisibility()}>

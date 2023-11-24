@@ -41,9 +41,9 @@ export const ProfileContent = styled.div`
   }
 `;
 
-export const DescriptionContainer = styled.div<{ is_visible: string }>`
+export const DescriptionContainer = styled.div<{ is_visible: boolean }>`
   width: 100%;
-  display: ${(c: any) => (JSON.parse(c.is_visible) ? "flex" : "none")};
+  display: ${({ is_visible }) => (is_visible ? "flex" : "none")};
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
@@ -135,12 +135,10 @@ export const Blob = styled.div`
     margin: 0.5rem;
     height: 17vh;
     max-width: 22vw;
-
-
   }
 
   @media (min-width: 960px) {
-    margin: 0.5rem 0.5rem 1rem 0.5rem ;
+    margin: 0.5rem 0.5rem 1rem 0.5rem;
     height: 25vh;
     max-width: 12vw;
   }
@@ -149,8 +147,8 @@ export const Blob = styled.div`
   }
 `;
 
-export const Icon = styled.img<{ hidden?: string }>`
-  display: ${(c) => (JSON.parse(c.hidden ?? "false") ? "none" : "flex")};
+export const Icon = styled.img<{ hidden?: boolean }>`
+  display: ${({ hidden }) => (hidden ? "none" : "flex")};
   max-width: 23px;
 `;
 
@@ -161,9 +159,9 @@ export const UserInfo = styled.div`
   justify-content: center;
   margin: 0 auto;
 
-@media (min-width: 768px) {
-  margin: 0 1rem;
-}
+  @media (min-width: 768px) {
+    margin: 0 1rem;
+  }
 
   @media (min-width: 960px) {
     justify-content: flex-start;
@@ -225,11 +223,10 @@ export const UserDetailsHeader = styled.div`
   }
 `;
 
-export const UserDetailsItem = styled.li<{ hidden: string }>`
+export const UserDetailsItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 0.75rem;
   margin: 0.5rem;
   padding: 0.5rem;
