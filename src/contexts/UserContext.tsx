@@ -103,11 +103,11 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const signUpArtist = async (artistData: {
     name: string;
     email: string;
-    cpf: string;
+    CPF: string;
     password: string;
     phone: string;
     location: {
-      cep: string;
+      CEP: string;
       state: string;
       city: string;
     };
@@ -136,11 +136,11 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     companyName: string;
     section: string;
     email: string;
-    cnpj: string;
+    CNPJ: string;
     password: string;
     phone: string;
     location: {
-      cep: string;
+      CEP: string;
       state: string;
       city: string;
       neighborhood: string;
@@ -167,40 +167,45 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     updating
       .updateAll()
       .then((errors) => {
-        errors.forEach(console.log);
+        console.log(errors);
         if (errors.length > 0) throw Error("Atualização falhou");
       })
       .finally(fetchLoggedUser);
 
-  const updateLoggedUser = async (data: {
-    name?: string;
-    email?: string;
-    password?: string;
-    phone?: string;
-    location?: {
-      cep: string;
-      state: string;
-      city: string;
-      neighborhood?: string;
-      address?: string;
-    };
-    image?: File;
-    website?: string;
-    description?: string;
-    section?: string;
-    wage?: number;
-    art?: ArtType;
-  }) => {
+  const updateLoggedUser = async (
+    data:
+      | {
+          name?: string;
+          email?: string;
+          password?: string;
+          phone?: string;
+          location?: {
+            CEP: string;
+            state: string;
+            city: string;
+            neighborhood?: string;
+            address?: string;
+          };
+          image?: File;
+          website?: string;
+          description?: string;
+          section?: string;
+          wage?: number;
+          art?: ArtType;
+        }
+      | any
+  ) => {
     const model = type === AccountType.artist ? new Artist() : new Enterprise();
 
     if (data.image) {
-      ImageCompressor.fromFile(data.image).then((image: Blob) =>
-        ImageCompressor.toBase64(image, (result: string) => {
-          handleUpdating(model.build({ ...data, token, image: result }));
-        })
+      const image = await ImageCompressor.fromFile(data.image);
+      ImageCompressor.toBase64(image, (result: string) =>
+        handleUpdating(model.build({ ...data, token, image: result }))
       );
     } else {
-      handleUpdating(model.build({ ...data, token, image: undefined }));
+      return await handleUpdating(
+        model.build({ ...data, token, image: undefined })
+      );
     }
   };
 
