@@ -168,22 +168,42 @@ export class User extends IndexedAPIClient implements APIClientFactory {
   /**
    * Atualiza lista de atributos
    */
-  async updateList(
-    attributes: { name: string; value: string | boolean | number }[]
-  ) {
+  async updateAll() {
+    // eslint-disable-next-line eqeqeq
+    let available: any = this.toObject(); // Obtém todos os atributos da class
+
+    // Coloca todos atributos no mesmo nível
+    Object.entries(available.location ?? {}).forEach(
+      ([key, value]) => (available[key] = value)
+    );
+
+    delete available.location; // deleta objeto de localização
+
     let responses = await Promise.all(
-      attributes.map(
-        (column) =>
-          this.request.post(
-            `${this.path}/update`,
-            JSON.stringify({
-              id: this.token,
-              type: this.type,
-              column: column.name,
-              info: column.value,
-            })
-          ) // atualiza dados da api
-      )
+      Object.entries(available)
+        .filter(
+          (
+            [key, value] // Remove itens inalteráveis e indefinidos
+          ) =>
+            value &&
+            !["id", "token", "email", "rate", "type"].some(
+              (item) => item === key
+            )
+        )
+        .map(
+          (
+            [key, value] // Realiza a requisição
+          ) =>
+            this.request.post(
+              `${this.path}/update`,
+              JSON.stringify({
+                id: this.token,
+                type: this.type,
+                column: key,
+                info: value,
+              })
+            ) // atualiza dados da api
+        )
     );
 
     return responses
@@ -191,7 +211,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       .map(
         (response, index) =>
           new User.errorTypes.HTTPRequestError(
-            `Não foi possível atualizar o item ${attributes[index].name} com o valor ${attributes[index].value}`
+            "Falha na atualização " + JSON.parse(response.data)
           )
       );
   }
