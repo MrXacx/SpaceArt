@@ -61,18 +61,12 @@ function LandingPage() {
         <AboutUsText>
           <h2>QUEM SOMOS</h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-            volutpat id nisi et fermentum. Mauris pulvinar odio imperdiet,
-            semper risus vitae, ultricies nunc. Morbi tincidunt turpis et
-            convallis placerat. Nullam vitae gravida ipsum. Quisque vulputate
-            sagittis luctus. Vestibulum a bibendum nibh, eu ullamcorper nisl.
-            Sed venenatis vestibulum nisl, in eleifend leo tristique in. Duis et
-            sapien quam. Aliquam luctus ex nec tempor tincidunt. Aenean faucibus
-            auctor porta. Ut accumsan lacus non consectetur ornare. Duis
-            pulvinar imperdiet sagittis. Curabitur at velit non lorem aliquam
-            sodales. Sed porta, erat eget interdum vehicula, ex velit sodales
-            tortor, vel volutpat nibh ligula et lacus. Maecenas volutpat nisl a
-            sem tincidunt sollicitudin sed eu libero.
+            A Space art é um projeto que foi desenvolvido para ser focado na
+            conexão entre artistas informais e empreendedores, facilitando a
+            busca por interesses e a comunicação de uma forma revolucionária
+            para toda a indústria do setor artístico e cultural,
+            disponibilizando para o usuário diversas ferramentas de
+            personalização.
           </p>
         </AboutUsText>
         <AboutUsBanner alt="Man painting abstract art" src={AboutUsImage} />
