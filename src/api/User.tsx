@@ -170,16 +170,16 @@ export class User extends IndexedAPIClient implements APIClientFactory {
    */
   async updateAll() {
     // eslint-disable-next-line eqeqeq
-    let available: any = this.toObject(); // Obtém todos os atributos da class
+    let attributes: any = this.toObject(); // Obtém todos os atributos da class
 
     // Coloca todos atributos no mesmo nível
-    Object.entries(available.location).forEach(
-      ([key, value]) => (available[key] = value)
+    Object.entries(attributes.location).forEach(
+      ([key, value]) => (attributes[key] = value)
     );
 
-    delete available.location; // deleta objeto de localização
+    delete attributes.location; // deleta objeto de localização
 
-    available = Object.entries(available).filter(
+    attributes = Object.entries(attributes).filter(
       // Remove itens inalteráveis e indefinidos
       ([key, value]) =>
         value &&
@@ -188,7 +188,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 
     let responses = await Promise.all(
       // Realiza a requisição
-      available.map(
+      attributes.map(
         ([key, value]: any[]) =>
           this.request.post(
             `${this.path}/update`,
