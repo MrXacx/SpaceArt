@@ -125,10 +125,10 @@ export const FormInputHalfField = styled.input`
   @media (min-width: 768px) {
     width: 43%;
 
-    &:nth-child(odd) {
+    &:nth-child(even) {
       margin-right: 0.5rem;
     }
-    &:nth-child(even) {
+    &:nth-child(odd) {
       margin-left: 0.5rem;
     }
   }
@@ -153,4 +153,13 @@ export const FormInputButton = styled.button`
   text-transform: uppercase;
   margin-top: 1.5rem;
   cursor: pointer;
+`;
+
+export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
+  width: 90%;
+  display: ${({ hidden }) => (hidden ? "none" : "inline")};
+  color: black;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0.5rem 0;
 `;
