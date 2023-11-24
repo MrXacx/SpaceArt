@@ -3,7 +3,14 @@
 * {
   font-family: "Quicksand", sans-serif;
 }
+a{
+  text-decoration: none;
+  color: #000;
+}
 
+html{
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
   padding-top: 7rem;

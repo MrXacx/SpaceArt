@@ -57,7 +57,7 @@ function LandingPage() {
           </div>
         </OpeningBannerContent>
       </OpeningBannerContainer>
-      <AboutUsContainer>
+      <AboutUsContainer id="about-us">
         <AboutUsText>
           <h2>QUEM SOMOS</h2>
           <p>
@@ -71,7 +71,7 @@ function LandingPage() {
         </AboutUsText>
         <AboutUsBanner alt="Man painting abstract art" src={AboutUsImage} />
       </AboutUsContainer>
-      <ChooseArtistContainer>
+      <ChooseArtistContainer id="art-types">
         <h2>ESCOLHA SEU MODELO DE ARTE PREFERIDO</h2>
         <ChooseArtistCardContainer>
           {artItems.map((artItem) => (
@@ -82,7 +82,7 @@ function LandingPage() {
           ))}
         </ChooseArtistCardContainer>
       </ChooseArtistContainer>
-      <SearchArtistContainer>
+      <SearchArtistContainer id="search-artists">
         <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
         <LocationFilterBar withArtField={true} />
         <CardProfileContainer>

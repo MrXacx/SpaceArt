@@ -112,13 +112,13 @@ function PrivateDataUpdate() {
               <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>
                 {inputErrorMessage}
               </FormInputErrorMessage>
-              <FormInputHalfField
+              <FormInputFullField
                 type="tel"
                 placeholder="Telefone"
                 value={phone}
                 onChange={({ target }) => setPhone(target.value)}
               />
-              <FormInputHalfField
+              <FormInputFullField
                 type="text"
                 placeholder="CEP"
                 value={CEP}

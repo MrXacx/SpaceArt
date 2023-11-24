@@ -46,10 +46,9 @@ function Header() {
           <Icon src={HamburgerIcon} alt="" />
         </HeaderContainer>
         <HamburgerMenuContainer>
-          <span>CADASTRAR COMO EMPRESA</span>
-          <span>CADASTRAR COMO ARTISTA</span>
-          <span>ENTRAR COMO EMPRESA</span>
-          <span>ENTRAR COMO ARTISTA</span>
+          <span onClick={() => navigate('/signUp/enterprise')}>CADASTRAR COMO EMPRESA</span>
+          <span onClick={() => navigate('/signUp/artist')}>CADASTRAR COMO ARTISTA</span>
+          <span onClick={() => navigate('/signIn')}>ENTRAR</span>
         </HamburgerMenuContainer>
       </HeaderMainContainer>
     </>
