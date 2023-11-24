@@ -20,6 +20,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { ArtTypesUtil } from "../../enums/ArtType";
 
 function SignUpArtist() {
   const { signUpArtist } = useContext(UserContext);
@@ -37,8 +38,6 @@ function SignUpArtist() {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [inputErrorMessage, setInputErrorMessage] = useState("");
-
-  const artTypes = ["música", "dança", "escultura", "atuação", "pintura"];
 
   const searchLocation = (code: string) => {
     new PostalCodeWebClient()
@@ -158,7 +157,7 @@ function SignUpArtist() {
               <option value="" disabled>
                 Escolha uma modalidade artística
               </option>
-              {artTypes.map((type: any) => (
+              {ArtTypesUtil.values().map((type: any) => (
                 <option value={type}>{type}</option>
               ))}
             </FormSelectField>
