@@ -3,8 +3,13 @@ import Joi from "joi";
 import { UserSchemas } from "./UserSchemas";
 import { LocationSchemas } from "../LocationSchemas";
 
-const { citySchema, stateSchema, neighborhoodSchema, addressSchema } =
-  LocationSchemas;
+const {
+  postalCodeSchema,
+  citySchema,
+  stateSchema,
+  neighborhoodSchema,
+  addressSchema,
+} = LocationSchemas;
 const {
   nameSchema,
   descriptionSchema,
@@ -13,25 +18,25 @@ const {
   wageSchema,
   sectionSchema,
 } = UserSchemas;
-const privateDataUpdatingSchema = {
-  phone: phoneSchema,
-  password: passwordSchema,
-  repeatPassword: Joi.ref("password"),
 
-  city: citySchema,
-  state: stateSchema,
+const privateDataUpdatingSchema = {
+  phone: phoneSchema.optional(),
+  password: passwordSchema.optional(),
+  repeatPassword: Joi.ref("password"),
+  CEP: postalCodeSchema.optional(),
+  city: citySchema.optional(),
+  state: stateSchema.optional(),
 };
 
 export const enterprisePrivateDataUpdatingSchema = Joi.object({
   ...privateDataUpdatingSchema,
-  neighborhood: neighborhoodSchema,
-  address: addressSchema,
+  neighborhood: neighborhoodSchema.optional(),
+  address: addressSchema.optional(),
 });
 
-export const artistPrivateDataUpdatingSchema = Joi.object({
-  ...privateDataUpdatingSchema,
-  wage: wageSchema,
-});
+export const artistPrivateDataUpdatingSchema = Joi.object(
+  privateDataUpdatingSchema
+);
 
 export const profileArtistUpdateSchemas = Joi.object({
   name: nameSchema.optional(),
