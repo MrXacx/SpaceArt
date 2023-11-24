@@ -3,7 +3,14 @@ import styled from "styled-components";
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 7rem;
-  background-color: transparent;
+  background-color: #050300;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(5, 3, 0, 1) 23%,
+    rgba(25, 7, 3, 0.9719537473192402) 90%
+  );
+
   padding: 1rem;
   box-sizing: border-box;
   display: flex;
