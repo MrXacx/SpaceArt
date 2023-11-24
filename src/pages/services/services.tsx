@@ -35,20 +35,6 @@ function Services() {
     SelectionStatus.active
   );
 
-  const agreementServices = [
-    {
-      title: "Criar contrato",
-      toogle: () => toogleNewContractVisibility(),
-    },
-    {
-      title: "Contratos pendentes",
-      toogle: () => {
-        toogleMyContractVisibility();
-        setContractFilter(AgreementStatus.pending);
-      },
-    },
-  ];
-
   const selectionServices = [
     { title: "Criar seleção", toogle: () => toogleNewSelectionVisibility() },
     {
@@ -82,27 +68,41 @@ function Services() {
           <ServicesContainer>
             <h2>Contratos</h2>
             {type === AccountType.enterprise ? (
-              agreementServices.map((service) => (
-                <ArrowContainer onClick={() => service.toogle()}>
-                  <span>{service.title}</span>
-                  <img alt={service.title} src={ArrowIcon} />
-                </ArrowContainer>
-              ))
+              <ArrowContainer onClick={() => toogleNewContractVisibility()}>
+                <span>Criar contrato</span>
+                <img alt="Criar contrato" src={ArrowIcon} />
+              </ArrowContainer>
             ) : (
+              <></>
+            )}
+
+            <ArrowContainer
+              onClick={() => {
+                toogleMyContractVisibility();
+                setContractFilter(AgreementStatus.accepted);
+              }}
+            >
+              <span>Contratos ativos</span>
+              <img alt="Contratos ativos" src={ArrowIcon} />
+            </ArrowContainer>
+            {type === AccountType.enterprise ? (
               <ArrowContainer
                 onClick={() => {
                   toogleMyContractVisibility();
                   setContractFilter(AgreementStatus.accepted);
                 }}
               >
-                <span>Contratos ativos</span>
-                <img alt="Contratos ativos" src={ArrowIcon} />
+                <span>Contratos pendentes</span>
+                <img alt="Contratos pendentes" src={ArrowIcon} />
               </ArrowContainer>
+            ) : (
+              <></>
             )}
+
             <ArrowContainer
               onClick={() => {
                 toogleMyContractVisibility();
-                setContractFilter(AgreementStatus.completed);
+                setContractFilter(AgreementStatus.pending);
               }}
             >
               <span>Histórico</span>
