@@ -44,4 +44,14 @@ export const UserSchemas = {
   cnpjSchema: Joi.string()
     .pattern(new RegExp(/^\d{14}$/))
     .error((error) => new Error("O CNPJ deve conter 14 dígitos")),
+
+  descriptionSchema: Joi.string().trim().max(256),
+
+  wageSchema: Joi.number().min(1),
+
+  sectionSchema: Joi.string()
+    .trim()
+    .min(1)
+    .max(30)
+    .error((error) => new Error("A seção deve conter entre 1 e 30 caracteres")),
 };

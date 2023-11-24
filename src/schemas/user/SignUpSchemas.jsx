@@ -20,6 +20,8 @@ const {
   passwordSchema,
   cpfSchema,
   cnpjSchema,
+  sectionSchema,
+  wageSchema,
 } = UserSchemas;
 
 const signUpSchema = {
@@ -35,13 +37,7 @@ const signUpSchema = {
 
 export const artistSignUpSchema = Joi.object({
   ...signUpSchema,
-  wage: Joi.number()
-    .precision(2)
-    .error(
-      (error) =>
-        new Error("A pretensão salarial deve conter duas casas decimais")
-    )
-    .required(),
+  wage: wageSchema.required(),
 
   cpf: cpfSchema
     .error((error) => new Error("É obrigatório apresentar um CPF"))
@@ -73,12 +69,7 @@ export const enterpriseSignUpSchema = Joi.object({
     )
     .required(),
 
-  section: Joi.string()
-    .trim()
-    .min(1)
-    .max(30)
-    .error((error) => new Error("A seção deve conter entre 1 e 30 caracteres"))
-    .required(),
+  section: sectionSchema.required(),
 
   address: addressSchema.required(),
   neighborhood: neighborhoodSchema.required(),
