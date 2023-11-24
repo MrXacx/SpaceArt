@@ -16,8 +16,7 @@ export const Modal = styled.div<{ hidden?: boolean }>`
 
 export const ModalContainer = styled.div`
   width: 72%;
-  height: 60vh;
-  max-height: 70vh;
+  height: 70vh;
   background-color: white;
   border-radius: 6px;
   display: flex;
@@ -27,7 +26,6 @@ export const ModalContainer = styled.div`
   overflow: hidden;
   @media (min-width: 768px) {
     width: 50vw;
-    height: 50vh;
   }
 `;
 
@@ -105,7 +103,6 @@ export const FormTextbox = styled.textarea`
 
 export const FormSelectField = styled.select`
   width: 100%;
-  height: 6vh;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
@@ -125,7 +122,7 @@ export const FormSelectField = styled.select`
   }
 
   @media (min-width: 960px) {
-    height: 5vh;
+    height: 7vh;
   }
 `;
 
@@ -174,10 +171,10 @@ export const FormInputHalfField = styled.input`
   @media (min-width: 768px) {
     width: 43%;
 
-    &:nth-child(odd) {
+    &:nth-child(even) {
       margin-right: 0.5rem;
     }
-    &:nth-child(even) {
+    &:nth-child(odd) {
       margin-left: 0.5rem;
     }
   }
@@ -186,7 +183,7 @@ export const FormInputHalfField = styled.input`
   }
 
   @media (min-width: 1080px) {
-    width: 46.3%;
+    width: 46%;
   }
 `;
 

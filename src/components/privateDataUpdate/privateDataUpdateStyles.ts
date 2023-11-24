@@ -135,10 +135,6 @@ export const FormInputHalfField = styled.input`
   @media (min-width: 960px) {
     width: 44.5%;
   }
-
-  @media (min-width: 1080px) {
-    width: 46.3%;
-  }
 `;
 
 export const FormInputButton = styled.button`
