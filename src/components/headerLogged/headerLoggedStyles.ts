@@ -1,10 +1,8 @@
 import styled from "styled-components";
 
 export const Icon = styled.img`
-  min-width: 20px;
-  max-width: 20px;
-  min-height: 20px;
-  max-height: 20px;
+  width: 1rem;
+  height: 1rem;
   padding: 0.7rem;
   border-radius: 5px;
   &:hover {
@@ -97,10 +95,15 @@ export const SignUpButton = styled.button`
   }
 `;
 
-export const ProfilePicture = styled.img`
-  border-radius: 50px;
-  min-height: 40px;
-  min-width: 40px;
-  max-height: 40px;
+export const ProfilePicture = styled.div`
   max-width: 40px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  
+  img {
+    height: 40px;
+    width: inherit;
+  }
 `;
