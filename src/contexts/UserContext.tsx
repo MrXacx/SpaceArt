@@ -39,15 +39,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     const user = // Obtém objeto de uma classe compatível com o tipo de conta do usuário
       // eslint-disable-next-line eqeqeq
       type == AccountType.artist ? new Artist(id) : new Enterprise(id);
-
-    setUser(
-      (
-        await user
-          .build({ token, type }) // Informa dados de identificação
-          .fetch(true)
-      ) // Busca dados do usuário
-        .toObject()
-    );
+    user
+      .build({ token, type }) // Informa dados de identificação
+      .fetch(true) // Busca dados do usuário
+      .then((data: Artist | Enterprise) => setUser(data.toObject()));
   }, [id, token, type]);
 
   const fetchAnotherUser = (index: number, type?: AccountType) => {
@@ -166,6 +161,47 @@ export const UserStorage = ({ children }: UserStoreProps) => {
             .catch(console.error)
       )
     );
+  };
+
+  const handleUpdating = (updating: Artist | Enterprise) =>
+    updating
+      .updateAll()
+      .then((errors) => {
+        errors.forEach(console.log);
+        if (errors.length > 0) throw Error("Atualização falhou");
+      })
+      .finally(fetchLoggedUser);
+
+  const updateLoggedUser = (data: {
+    name?: string;
+    email?: string;
+    password?: string;
+    phone?: string;
+    location?: {
+      cep: string;
+      state: string;
+      city: string;
+      neighborhood?: string;
+      address?: string;
+    };
+    image?: File;
+    website?: string;
+    description?: string;
+    section?: string;
+    wage?: number;
+    art?: ArtType;
+  }) => {
+    const model = type === AccountType.artist ? new Artist() : new Enterprise();
+
+    if (data.image) {
+      ImageCompressor.fromFile(data.image).then((image: Blob) =>
+        ImageCompressor.toBase64(image, (result: string) => {
+          handleUpdating(model.build({ ...data, token, image: result }));
+        })
+      );
+    } else {
+      handleUpdating(model.build({ ...data, token, image: undefined }));
+    }
   };
 
   const logOut = () => {
@@ -356,6 +392,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         signIn,
         signUpArtist,
         signUpEnterprise,
+        updateLoggedUser,
         logOut,
         fetchRandomPosts,
         fetchPostsByUser,
