@@ -11,10 +11,13 @@ import ProfileUpdate from "../../components/profileUpdate/profileUpdate";
 import { useContext } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import PrivateDataUpdate from "../../components/privateDataUpdate/privateDataUpdate";
+import { UserContext } from "../../contexts/UserContext";
 
 function Config() {
   const { toogleProfileUpdateVisibility, tooglePrivateDataUpdateVisibility } =
     useContext(ModalContext);
+
+  const { logOut, deleteLoggedUse } = useContext(UserContext);
 
   return (
     <>
@@ -46,11 +49,21 @@ function Config() {
               <span>Alterar dados privados</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
-            <ArrowContainer>
+            <ArrowContainer onClick={logOut}>
               <span>Desconectar</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
-            <ArrowContainer>
+            <ArrowContainer
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Você tem certeza de que deseja excluir esta conta? Esse ato não poderá ser desfeito"
+                  )
+                ) {
+                  deleteLoggedUse();
+                }
+              }}
+            >
               <span>Apagar conta</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
