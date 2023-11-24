@@ -97,8 +97,6 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       description: agreementData.description,
     });
 
-    console.log(agreement);
-
     return agreement;
   }
 
