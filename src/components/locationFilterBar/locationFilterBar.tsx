@@ -11,6 +11,7 @@ import {
 } from "../../enums/BrazilianState";
 import { AccountType } from "../../enums/AccountType";
 import { SearchContext } from "../../contexts/SearchContext";
+import { BrazilianCitiesWebClient } from "../../services/BrazilianCitiesWebClient";
 
 interface FilterBarProps {
   // Parâmetros que o componente deve receber
@@ -20,7 +21,7 @@ interface FilterBarProps {
 function LocationFilterBar(props: FilterBarProps) {
   const [state, setState] = useState<BrazilianState>();
   const [city, setCity] = useState("");
-  const [cities] = useState<string[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
   const [art, setArt] = useState<ArtType>();
   const { fetchUsersByLocation, setArtFilter } = useContext(SearchContext);
 
@@ -40,7 +41,21 @@ function LocationFilterBar(props: FilterBarProps) {
     <CategoryContainer with_art_field={props.withArtField}>
       <CategorySelect
         value={state}
-        onChange={(e: any) => setState(e.target.value)}
+        onChange={({ target }) => {
+          try {
+            const value = BrazilianStatesUtil.parse(target.value);
+            setState(value);
+            setCity("");
+            new BrazilianCitiesWebClient()
+              .fetch(value)
+              .then(setCities)
+              .catch((e: any) => {
+                throw e;
+              });
+          } catch (e: any) {
+            console.log(e);
+          }
+        }}
       >
         <option disabled selected>
           SELECIONE SEU ESTADO
@@ -56,8 +71,7 @@ function LocationFilterBar(props: FilterBarProps) {
         value={city}
         onChange={(e: any) => setCity(e.target.value)}
       >
-        <option value="" disabled selected>
-          {" "}
+        <option value={""} disabled selected>
           SELECIONE SUA CIDADE
         </option>
         {cities
