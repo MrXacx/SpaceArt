@@ -31,7 +31,7 @@ export const SignContainer = styled.form`
   justify-content: center;
   flex-wrap: wrap;
   width: 80vw;
-  margin: 0 auto;
+  margin: 5vh auto;
 
   @media (min-width: 960px) {
     width: 50vw; 
@@ -68,7 +68,7 @@ export const FormInputFullField = styled.input`
   }
 
   @media (min-width: 960px) {
-    width: 46vw; 
+    width: 45vw; 
   }
 `;
 
@@ -95,22 +95,21 @@ export const FormInputHalfField = styled.input`
 
   @media (min-width: 768px) {
     width: 36vw;
-    &:nth-child(odd) {
-      margin-right: 0.5rem;
+    &:nth-child(1n) {
+      margin-right: 0.2rem;
     }
-    &:nth-child(even) {
-      margin-left: 0.5rem;
+    &:nth-child(2n) {
+      margin-left: 0.2rem;
     }
   }
   @media (min-width: 960px) {
-    width: 22.2vw;
-    margin: 0.5rem;
+    width: 43%;
   }
 `;
 
 export const FormSelectField = styled.select`
   width: 100%;
-  height: 5vh;
+  height: 6vh;
   padding: 0.5rem;
   border-radius: 3px;
   margin: 0.5rem 0;
@@ -123,7 +122,7 @@ export const FormSelectField = styled.select`
   }
 
   @media (min-width: 960px) {
-    width: 47vw; 
+    width: 46vw; 
     margin: 0.5rem;
   }
 `;
@@ -140,4 +139,5 @@ export const FormInputButton = styled.button`
   font-weight: 700;
   text-transform: uppercase;
   margin-top: 1.5rem;
+  cursor: pointer;
 `;

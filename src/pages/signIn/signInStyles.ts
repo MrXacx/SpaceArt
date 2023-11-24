@@ -84,6 +84,7 @@ export const FormInputButton = styled.button`
   font-weight: 700;
   text-transform: uppercase;
   margin-top: 1.5rem;
+  cursor: pointer;
 
   &::placeholder {
     color: #000;
