@@ -104,34 +104,48 @@ export const UserImage = styled.div`
   justify-content: center;
   width: 100%;
 
-  img:last-of-type {
+  > img {
     display: none;
   }
 
   @media (min-width: 768px) {
     width: auto;
-    img:last-of-type {
+    > img {
       display: flex;
     }
   }
 `;
 
-export const Blob = styled.img`
+export const Blob = styled.div`
+  display: flex;
+  justify-content: center;
   border: 3px solid #ff8311;
   margin: 0.5rem;
-  height: 15vh;
-  max-width: 30vw;
+  max-width: 40vw;
   border-radius: 50%;
+  height: 18vh;
+  overflow: hidden;
+
+  img {
+    width: max-content;
+    height: 100%;
+  }
 
   @media (min-width: 768px) {
     margin: 0.5rem;
-    height: 13vh;
-    max-width: 17vw;
+    height: 17vh;
+    max-width: 22vw;
+
+
   }
 
   @media (min-width: 960px) {
-    height: 20vh;
-    max-width: 20vw;
+    margin: 0.5rem 0.5rem 1rem 0.5rem ;
+    height: 25vh;
+    max-width: 12vw;
+  }
+  @media (min-width: 1024px) {
+    max-width: 15vw;
   }
 `;
 
@@ -144,11 +158,15 @@ export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   width: fit-content;
+  justify-content: center;
   margin: 0 auto;
 
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
+  margin: 0 1rem;
+}
+
+  @media (min-width: 960px) {
     justify-content: flex-start;
-    margin: 0 1rem;
   }
 `;
 
@@ -447,9 +465,9 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
   }
 `;
 
-export const JobsDayContainer = styled.div`
+export const JobsDayContainer = styled.div<{ hidden: boolean }>`
   width: 100%;
-  display: flex;
+  display: ${({ hidden }) => (hidden ? "none" : "block")};
   flex-direction: column;
   align-items: center;
   @media (min-width: 960px) {
@@ -475,7 +493,7 @@ export const DateHeader = styled.span`
 `;
 
 export const JobWrapper = styled.div`
-  height: 33vh;
+  max-height: 33vh;
   width: 100%;
   overflow-y: scroll;
 `;
@@ -544,21 +562,34 @@ export const TypeJobIcon = styled.div`
 
 export const PostWrapper = styled.ol`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
+  gap: 2rem 0;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
 `;
 
 export const Post = styled.li`
-  margin: 1rem;
-  padding: 1vw;
-  background-color: #202020;
   border-radius: 5px;
   box-shadow: 0 5px 10px #0005;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
   img {
     border-radius: 5px;
-    width: 20vw;
+    width: inherit;
+    height: 30vh;
     object-fit: cover;
     transition: 300ms;
     margin: 0.25rem;
+  }
+
+  @media (min-width: 768px) {
+    max-width: 20vw;
+    background-color: #202020;
+    padding: 1vw;
   }
 `;
