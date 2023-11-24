@@ -37,11 +37,8 @@ function Services() {
 
   const agreementServices = [
     {
-      title: "Contratos ativos",
-      toogle: () => {
-        toogleMyContractVisibility();
-        setContractFilter(AgreementStatus.accepted);
-      },
+      title: "Criar contrato",
+      toogle: () => toogleNewContractVisibility(),
     },
     {
       title: "Contratos pendentes",
@@ -92,9 +89,14 @@ function Services() {
                 </ArrowContainer>
               ))
             ) : (
-              <ArrowContainer onClick={() => toogleNewContractVisibility()}>
-                <span>Criar contrato</span>
-                <img alt="Buscar seleções" src={ArrowIcon} />
+              <ArrowContainer
+                onClick={() => {
+                  toogleMyContractVisibility();
+                  setContractFilter(AgreementStatus.accepted);
+                }}
+              >
+                <span>Contratos ativos</span>
+                <img alt="Contratos ativos" src={ArrowIcon} />
               </ArrowContainer>
             )}
             <ArrowContainer
