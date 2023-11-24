@@ -8,6 +8,7 @@ export const CardProfileContent = styled.div`
   flex-direction: column;
 
   > img {
+    cursor: pointer;
     width: inherit;
     height: 20vh;
     object-fit: cover;

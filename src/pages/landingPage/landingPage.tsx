@@ -98,18 +98,19 @@ function LandingPage() {
             )
             .map(
               // converte o estado do contexto em component
-              (data: any) =>
-                CardProfile(
-                  data.id,
-                  data.index,
-                  data.image,
-                  data.name,
-                  data.type,
-                  data.city,
-                  data.state,
-                  data.art,
-                  data.wage
-                )
+              (data: any) => (
+                <CardProfile
+                  id={data.id}
+                  index={data.index}
+                  image={data.image}
+                  name={data.name}
+                  type={data.type}
+                  city={data.city}
+                  state={data.state}
+                  art={data.art}
+                  wage={data.wage}
+                />
+              )
             )}
         </CardProfileContainer>
       </SearchArtistContainer>

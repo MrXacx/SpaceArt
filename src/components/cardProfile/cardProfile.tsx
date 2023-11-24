@@ -6,36 +6,45 @@ import {
 
 import LocalIcon from "../../assets/local.svg";
 import WageIcon from "../../assets/wage.svg";
+import { useNavigate } from "react-router-dom";
 
-function CardProfile(
-  id: string,
-  index: number,
-  image: string,
-  name: string,
-  type: string,
-  city: string,
-  state: string,
-  art?: string,
-  wage?: number
-) {
+interface CardProfileProps {
+  id: string;
+  index: number;
+  image: string;
+  name: string;
+  type: string;
+  city: string;
+  state: string;
+  art?: string;
+  wage?: number;
+}
+
+function CardProfile(props: CardProfileProps) {
+  const navigate = useNavigate();
+
   return (
     <CardProfileContent>
-      <img alt="profile" src={image} />
+      <img
+        alt="profile"
+        src={props.image}
+        onClick={() => navigate(`/user/${props.index}`)}
+      />
       <CardProfileDetail>
         <div>
-          <span>{name}</span>
-          <span>{art ?? type}</span>
+          <span>{props.name}</span>
+          <span>{props.art ?? props.type}</span>
         </div>
         <UserCardDetailContainer>
           <img alt="local icon" src={LocalIcon} />
           <span>
-            {city}, {state}
+            {props.city}, {props.state}
           </span>
         </UserCardDetailContainer>
-        {wage ? (
+        {props.wage ? (
           <UserCardDetailContainer>
             <img alt="wage icon" src={WageIcon} />
-            <span>R${wage.toFixed(2).replace(".", ",")}</span>
+            <span>R${props.wage.toFixed(2).replace(".", ",")}</span>
           </UserCardDetailContainer>
         ) : null}
       </CardProfileDetail>
