@@ -25,7 +25,7 @@ function HeaderLogged() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLogged) navigate("/signIn");
+    // if (!isLogged) navigate("/signIn");
   }, [isLogged, navigate]);
 
   return (
@@ -66,11 +66,13 @@ function HeaderLogged() {
             onClick={() => navigate("/config")}
           />
           <Icon src={ThreePointsIcon} />
-          <ProfilePicture
-            src={user.image}
-            alt={`Perfil de ${user.name}`}
-            onClick={() => navigate(`/user/${user.index}`)}
-          />
+          <ProfilePicture>
+            <img
+              src={user.image}
+              alt={`Perfil de ${user.name}`}
+              onClick={() => navigate(`/user/${user.index}`)}
+            />
+          </ProfilePicture>
         </NavItemContainer>
       </NavContainer>
     </HeaderContainer>

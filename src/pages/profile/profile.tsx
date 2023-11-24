@@ -155,7 +155,9 @@ function Profile() {
       <ProfileHeader>
         <ProfileContent>
           <UserImage>
-            <Blob src={profileData.image ?? ""} alt={profileData.name ?? ""} />
+            <Blob>
+              <img src={profileData.image} alt={profileData.name ?? ""} />
+            </Blob>
             <Icon src={ProfileImage} alt="Usuário com mais de 100 contratos" />
           </UserImage>
           <UserInfo>
@@ -259,7 +261,7 @@ function Profile() {
               {iterateCalendar()}
             </CalendarNumberContainer>
           </Calendar>
-          <JobsDayContainer>
+          <JobsDayContainer hidden={agreements.length === 0}>
             <DateHeader>
               {dayjs(selectedDate).calendar(null, {
                 sameDay: "[Hoje]",
