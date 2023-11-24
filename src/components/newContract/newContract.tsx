@@ -171,7 +171,7 @@ function NewContract() {
                   id={artist.id}
                   name={artist.name}
                   image={artist.image}
-                  art={ArtTypesUtil.parse(artist.art)}
+                  art={artist.art}
                   location={{
                     CEP: artist.CEP ?? "Desconhecido",
                     city: artist.city ?? "Desconhecido",
