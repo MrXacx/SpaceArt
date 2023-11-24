@@ -6,7 +6,8 @@ export const MainSignInContainer = styled.div`
   min-height: 100vh;
   background-image: url(${EclipseImage});
   background-position: 50% 45%;
-  background-size: 98%;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 export const InnerContainer = styled.div`
@@ -37,8 +38,12 @@ export const SignContainer = styled.form`
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-  width: 18vw;
+  width: 90%;
   margin: 0 auto;
+
+  @media (min-width: 768px) {
+    width: 18vw;
+  }
 `;
 
 export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
