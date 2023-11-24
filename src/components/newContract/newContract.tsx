@@ -73,7 +73,7 @@ function NewContract() {
         .then((chats: any[]) =>
           chats.map((item) => ({
             ...item,
-            cep: item.location.cep,
+            CEP: item.location.CEP,
             state: item.location.state,
             city: item.location.city,
           }))
@@ -173,7 +173,7 @@ function NewContract() {
                   image={artist.image}
                   art={ArtTypesUtil.parse(artist.art)}
                   location={{
-                    cep: artist.cep ?? "Desconhecido",
+                    CEP: artist.CEP ?? "Desconhecido",
                     city: artist.city ?? "Desconhecido",
                     state: artist.state ?? "Desconhecido",
                   }}

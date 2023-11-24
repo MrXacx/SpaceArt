@@ -5,9 +5,7 @@ import {
   FormInputButton,
   FormInputFullField,
   FormInputHalfField,
-
   FormSelectField,
-
   HeaderLogo,
   InnerContainer,
   MainSignUpContainer,
@@ -21,8 +19,7 @@ import { artistSignUpSchema } from "../../schemas/user/SignUpSchemas";
 import { UserContext } from "../../contexts/UserContext";
 
 import dayjs from "dayjs";
-import relativeTime from 'dayjs/plugin/relativeTime';
-
+import relativeTime from "dayjs/plugin/relativeTime";
 
 function SignUpArtist() {
   const { signUpArtist } = useContext(UserContext);
@@ -30,61 +27,59 @@ function SignUpArtist() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [cpf, setCPF] = useState("");
+  const [CPF, setCPF] = useState("");
   const [birthday, setBirthday] = useState("");
   const [wage, setWage] = useState(0);
   const [art, setArt] = useState("");
-  const [cep, setCEP] = useState("");
+  const [CEP, setCEP] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
-  const artTypes = ['música', 'dança', 'escultura', 'atuação', 'pintura'];
+  const artTypes = ["música", "dança", "escultura", "atuação", "pintura"];
 
   const searchLocation = (code: string) => {
-
     new PostalCodeWebClient()
       .fetch(code)
 
       .then((location: any) => {
-        setState(location.state)
+        setState(location.state);
         setCity(location.city);
       })
       .catch(console.log);
-  }
+  };
 
   const userSignUp = () => {
     const userData: any = {
-
       name,
       email,
       phone,
-      cpf,
-      birthday: dayjs(birthday).format('DD/MM/YYYY'),
+      CPF,
+      birthday: dayjs(birthday).format("DD/MM/YYYY"),
       art,
       wage,
-      cep,
+      CEP,
       state,
       city,
       password,
-      repeatPassword
-    }
+      repeatPassword,
+    };
 
     let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
 
     if (!error) {
-      dayjs.extend(relativeTime)
+      dayjs.extend(relativeTime);
       const dateDiff = parseInt(dayjs(birthday).toNow(true).substring(0, 2)); // Obtém idade do usuário
 
       if (dateDiff >= 18) {
         setInputErrorMessage("");
 
-        userData.location = { cep, state, city };
+        userData.location = { CEP, state, city };
 
         // Apaga itens não utilizados
-        delete userData.cep;
+        delete userData.CEP;
         delete userData.state;
         delete userData.city;
         delete userData.repeatPassword;
@@ -93,27 +88,33 @@ function SignUpArtist() {
         return;
       }
 
-      error = new Error('O usuário deve ter 18 anos ou mais.')
+      error = new Error("O usuário deve ter 18 anos ou mais.");
     }
 
     setInputErrorMessage(error.message);
-
-  }
+  };
 
   return (
     <>
-      <HeaderAlt altPageRoute="/signUp/enterprise" altPageTitle="SOU EMPREENDEDOR" />
+      <HeaderAlt
+        altPageRoute="/signUp/enterprise"
+        altPageTitle="SOU EMPREENDEDOR"
+      />
       <MainSignUpContainer>
         <InnerContainer>
           <HeaderLogo>
             <img alt="Space art logo" src={SpaceartLogo} />
             <h1>Cadastro de artista</h1>
           </HeaderLogo>
-          <SignContainer onSubmit={(e: any) => {
-            e.preventDefault();
-            userSignUp();
-          }}>
-            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
+          <SignContainer
+            onSubmit={(e: any) => {
+              e.preventDefault();
+              userSignUp();
+            }}
+          >
+            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>
+              {inputErrorMessage}
+            </FormInputErrorMessage>
 
             <FormInputFullField
               type="text"
@@ -140,7 +141,7 @@ function SignUpArtist() {
               type="text"
               placeholder="CPF"
               inputMode="numeric"
-              value={cpf}
+              value={CPF}
               onChange={(e: any) => setCPF(e.target.value)}
             />
 
@@ -154,16 +155,18 @@ function SignUpArtist() {
               value={art}
               onChange={(e: any) => setArt(e.target.value)}
             >
-              <option value="" disabled>Escolha uma modalidade artística</option>
-              {artTypes.map((type: any) =>
+              <option value="" disabled>
+                Escolha uma modalidade artística
+              </option>
+              {artTypes.map((type: any) => (
                 <option value={type}>{type}</option>
-              )}
+              ))}
             </FormSelectField>
 
             <FormInputFullField
               type="number"
               placeholder="Pretensão salarial"
-              value={wage > 0 ? wage : ''}
+              value={wage > 0 ? wage : ""}
               onChange={(e: any) => setWage(e.target.value)}
             />
 
@@ -171,9 +174,9 @@ function SignUpArtist() {
               type="text"
               placeholder="CEP"
               inputMode="numeric"
-              value={cep}
+              value={CEP}
               onChange={(e: any) => {
-                setCEP(e.target.value)
+                setCEP(e.target.value);
                 if (e.target.value.length === 8) {
                   searchLocation(e.target.value);
                 }

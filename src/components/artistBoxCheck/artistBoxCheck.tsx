@@ -18,7 +18,7 @@ interface ArtistBoxProps {
   image: string;
   art: ArtType;
   location: {
-    cep: string;
+    CEP: string;
     city: string;
     state: string;
   };

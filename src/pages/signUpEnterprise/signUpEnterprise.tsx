@@ -27,8 +27,8 @@ function SignUpEnterprise() {
   const [phone, setPhone] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [section, setSection] = useState("");
-  const [cnpj, setCNPJ] = useState("");
-  const [cep, setCEP] = useState("");
+  const [CNPJ, setCNPJ] = useState("");
+  const [CEP, setCEP] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
@@ -38,47 +38,62 @@ function SignUpEnterprise() {
 
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
-  const businessSections = ["artes", "comércio", "educação", "engenharia", "finanças", "saúde", "transporte"].sort((a: string, b: string) => a.localeCompare(b));
+  const businessSections = [
+    "artes",
+    "comércio",
+    "educação",
+    "engenharia",
+    "finanças",
+    "saúde",
+    "transporte",
+  ].sort((a: string, b: string) => a.localeCompare(b));
 
   const searchCNPJ = (code: string) => {
-
     new CNPJWebClient()
       .fetch(code)
-      .then(cnpj => {
-        setName(cnpj.nameFantasy);
-        setCompanyName(cnpj.companyName);
+      .then((CNPJ) => {
+        setName(CNPJ.nameFantasy);
+        setCompanyName(CNPJ.companyName);
       })
       .catch(console.log);
-  }
+  };
 
   const searchLocation = (code: string) => {
-
     new PostalCodeWebClient()
       .fetch(code)
-      .then(location => {
+      .then((location) => {
         setState(location.state);
         setCity(location.city);
         setNeighborhood(location.neighborhood);
       })
       .catch(console.log);
-  }
+  };
 
   const userSignUp = () => {
     const userData: any = {
-      name, email, phone, cnpj, section, companyName, cep, state, city, neighborhood, address, password, repeatPassword
-    }
+      name,
+      email,
+      phone,
+      CNPJ,
+      section,
+      companyName,
+      CEP,
+      state,
+      city,
+      neighborhood,
+      address,
+      password,
+      repeatPassword,
+    };
 
     let { error } = enterpriseSignUpSchema.validate(userData);
     if (error) {
-
       setInputErrorMessage(error.message);
-
     } else {
-
-      userData.location = { cep, state, city, neighborhood, address };
+      userData.location = { CEP, state, city, neighborhood, address };
 
       // Remove itens que não são esperados no contexto
-      delete userData.cep;
+      delete userData.CEP;
       delete userData.state;
       delete userData.city;
       delete userData.neighborhood;
@@ -87,7 +102,7 @@ function SignUpEnterprise() {
 
       signUpEnterprise(userData);
     }
-  }
+  };
 
   return (
     <>
@@ -98,11 +113,15 @@ function SignUpEnterprise() {
             <img alt="Space art logo" src={SpaceartLogo} />
             <h1>Cadastro de artista</h1>
           </HeaderLogo>
-          <SignContainer onSubmit={(e: any) => {
-            e.preventDefault();
-            userSignUp();
-          }}>
-            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
+          <SignContainer
+            onSubmit={(e: any) => {
+              e.preventDefault();
+              userSignUp();
+            }}
+          >
+            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>
+              {inputErrorMessage}
+            </FormInputErrorMessage>
 
             <FormInputFullField
               type="text"
@@ -130,11 +149,11 @@ function SignUpEnterprise() {
               type="text"
               placeholder="CNPJ"
               inputMode="numeric"
-              value={cnpj}
+              value={CNPJ}
               onChange={(e: any) => {
-                const cnpj = e.target.value;
-                setCNPJ(cnpj)
-                if (cnpj.length === 14) searchCNPJ(cnpj);
+                const CNPJ = e.target.value;
+                setCNPJ(CNPJ);
+                if (CNPJ.length === 14) searchCNPJ(CNPJ);
               }}
             />
 
@@ -142,19 +161,21 @@ function SignUpEnterprise() {
               value={section}
               onChange={(e: any) => setSection(e.target.value)}
             >
-              <option value="" disabled>Escolha um setor de atuação</option>
-              {businessSections.map((section) =>
+              <option value="" disabled>
+                Escolha um setor de atuação
+              </option>
+              {businessSections.map((section) => (
                 <option value={section}>{section}</option>
-              )}
+              ))}
             </FormSelectField>
 
             <FormInputFullField
               type="text"
               placeholder="CEP"
               inputMode="numeric"
-              value={cep}
+              value={CEP}
               onChange={(e: any) => {
-                setCEP(e.target.value)
+                setCEP(e.target.value);
                 if (e.target.value.length === 8) {
                   searchLocation(e.target.value);
                 }

@@ -19,7 +19,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
   protected verified: boolean | undefined;
   protected location:
     | {
-        cep: string;
+        CEP: string;
         state: string;
         city: string;
         neighborhood?: string;
@@ -44,7 +44,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     password?: string;
     phone?: string;
     location?: {
-      cep: string;
+      CEP: string;
       state: string;
       city: string;
       neighborhood?: string;
@@ -173,37 +173,33 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     let available: any = this.toObject(); // Obtém todos os atributos da class
 
     // Coloca todos atributos no mesmo nível
-    Object.entries(available.location ?? {}).forEach(
+    Object.entries(available.location).forEach(
       ([key, value]) => (available[key] = value)
     );
 
     delete available.location; // deleta objeto de localização
 
+    available = Object.entries(available).filter(
+      // Remove itens inalteráveis e indefinidos
+      ([key, value]) =>
+        value &&
+        !["id", "token", "email", "rate", "type"].some((item) => item === key)
+    );
+
     let responses = await Promise.all(
-      Object.entries(available)
-        .filter(
-          (
-            [key, value] // Remove itens inalteráveis e indefinidos
-          ) =>
-            value &&
-            !["id", "token", "email", "rate", "type"].some(
-              (item) => item === key
-            )
-        )
-        .map(
-          (
-            [key, value] // Realiza a requisição
-          ) =>
-            this.request.post(
-              `${this.path}/update`,
-              JSON.stringify({
-                id: this.token,
-                type: this.type,
-                column: key,
-                info: value,
-              })
-            ) // atualiza dados da api
-        )
+      // Realiza a requisição
+      available.map(
+        ([key, value]: any[]) =>
+          this.request.post(
+            `${this.path}/update`,
+            JSON.stringify({
+              id: this.token,
+              type: this.type,
+              column: key,
+              info: value,
+            })
+          ) // atualiza dados da api
+      )
     );
 
     return responses
@@ -211,7 +207,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
       .map(
         (response, index) =>
           new User.errorTypes.HTTPRequestError(
-            "Falha na atualização " + JSON.parse(response.data)
+            "Falha na atualização " + response.data
           )
       );
   }
@@ -253,7 +249,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
 }
 
 export class Artist extends User {
-  private cpf: string | undefined;
+  private CPF: string | undefined;
   private art: string | undefined;
   private wage: number | undefined;
   private birthday: string | undefined;
@@ -268,7 +264,7 @@ export class Artist extends User {
   build(artist: any) {
     super.build(artist);
     this.wage = artist.wage;
-    this.cpf = artist.cpf;
+    this.CPF = artist.CPF;
     this.art = artist.art;
     this.birthday = artist.birthday;
     return this;
@@ -288,8 +284,8 @@ export class Artist extends User {
         email: this.email,
         password: this.password,
         birthday: this.birthday,
-        cpf: this.cpf,
-        cep: this.location?.cep,
+        CPF: this.CPF,
+        CEP: this.location?.CEP,
         state: this.location?.state,
         city: this.location?.city,
         art: this.art,
@@ -305,7 +301,7 @@ export class Artist extends User {
   toObject() {
     return {
       ...super.toObject(),
-      cpf: this.cpf,
+      CPF: this.CPF,
       art: this.art,
       wage: this.wage,
       birthday: this.birthday,
@@ -314,7 +310,7 @@ export class Artist extends User {
 }
 
 export class Enterprise extends User {
-  private cnpj: string | undefined;
+  private CNPJ: string | undefined;
   private companyName: string | undefined;
   private section: string | undefined;
 
@@ -327,7 +323,7 @@ export class Enterprise extends User {
 
   build(enterprise: any) {
     super.build(enterprise);
-    this.cnpj = enterprise.cnpj;
+    this.CNPJ = enterprise.CNPJ;
     this.companyName = enterprise.companyName;
     this.section = enterprise.section;
 
@@ -349,8 +345,8 @@ export class Enterprise extends User {
         type: this.type,
         email: this.email,
         password: this.password,
-        cnpj: this.cnpj,
-        cep: this.location?.cep,
+        CNPJ: this.CNPJ,
+        CEP: this.location?.CEP,
         state: this.location?.state,
         city: this.location?.city,
         neighborhood: this.location?.neighborhood,
@@ -366,7 +362,7 @@ export class Enterprise extends User {
   toObject() {
     return {
       ...super.toObject(),
-      cnpj: this.cnpj,
+      CNPJ: this.CNPJ,
       companyName: this.companyName,
       section: this.section,
     };

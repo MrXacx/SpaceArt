@@ -116,7 +116,7 @@ function MySelection(props: MySelectionProps) {
                 image={artist.image}
                 art={ArtTypesUtil.parse(artist.art)}
                 location={{
-                  cep: artist.location.cep ?? "Desconhecido",
+                  CEP: artist.location.CEP ?? "Desconhecido",
                   city: artist.location.city,
                   state: artist.location.state,
                 }}

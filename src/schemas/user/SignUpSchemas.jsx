@@ -30,7 +30,7 @@ const signUpSchema = {
   phone: phoneSchema.required(),
   password: passwordSchema.required(),
   repeatPassword: Joi.ref("password"), // deve ser idêntica ao password
-  cep: postalCodeSchema.required(),
+  CEP: postalCodeSchema.required(),
   city: citySchema.required(),
   state: stateSchema.required(),
 };
@@ -39,7 +39,7 @@ export const artistSignUpSchema = Joi.object({
   ...signUpSchema,
   wage: wageSchema.required(),
 
-  cpf: cpfSchema
+  CPF: cpfSchema
     .error((error) => new Error("É obrigatório apresentar um CPF"))
     .required(),
 
@@ -58,7 +58,7 @@ export const artistSignUpSchema = Joi.object({
 
 export const enterpriseSignUpSchema = Joi.object({
   ...signUpSchema,
-  cnpj: cnpjSchema.required(),
+  CNPJ: cnpjSchema.required(),
 
   companyName: Joi.string()
     .trim()

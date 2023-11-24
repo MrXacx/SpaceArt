@@ -30,7 +30,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
         image: data.image,
         name: data.name,
         type: data.type,
-        cep: data.location?.cep,
+        CEP: data.location?.CEP,
         city: data.location?.city,
         state: data.location?.state,
         art,
