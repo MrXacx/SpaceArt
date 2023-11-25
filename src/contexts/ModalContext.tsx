@@ -18,6 +18,7 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
   const [hidePrivateDataUpdate, setHidePrivateDataUpdate] = useState(true);
   const [skipSelectArtistToContract, setSkipSelectArtistToContract] =
     useState(false);
+  const [hideSearchSelection, setHideSearchSelection] = useState(true);
 
   const toogleNewContractVisibility = () =>
     setHideNewContract(!hideNewContract);
@@ -34,6 +35,8 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
   const toogleLookRatesVisibility = () => setHideLookRates(!hideLookRates);
   const tooglePrivateDataUpdateVisibility = () =>
     setHidePrivateDataUpdate(!hidePrivateDataUpdate);
+  const toogleSearchSelectionVisibility = () =>
+    setHideSearchSelection(!hideSearchSelection);
 
   return (
     <ModalContext.Provider
@@ -58,6 +61,8 @@ export const ModalProvider = ({ children }: ModalStoreProps) => {
         setSkipSelectArtistToContract,
         hidePrivateDataUpdate,
         tooglePrivateDataUpdateVisibility,
+        hideSearchSelection,
+        toogleSearchSelectionVisibility,
       }}
     >
       {children}
