@@ -252,12 +252,20 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     new Post()
       .build({ author: new User(id) })
       .fetchListByAuthor(offset, limit)
-      .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
+      .then((posts: Post[]) => Promise.all(posts.map(handlePost)))
+      .catch((e: any) => {
+        console.error(e.message);
+        return [];
+      });
 
   const fetchRandomPosts = (offset = 0, limit = 25) =>
     new Post()
       .fetchList(offset, limit)
-      .then((posts: Post[]) => Promise.all(posts.map(handlePost)));
+      .then((posts: Post[]) => Promise.all(posts.map(handlePost)))
+      .catch((e: any) => {
+        console.error(e.message);
+        return [];
+      });
 
   // CONTRATOS
   const sendAgreement = (data: {
@@ -293,20 +301,30 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         offset,
         limit
       )
-      .then((list: Agreement[]) => list.map((item) => item.toObject()));
+      .then((list: Agreement[]) => list.map((item) => item.toObject()))
+      .catch((e: any) => {
+        console.error(e.message);
+        return [];
+      });
 
   const fetchRatesFromAgreement = (agreementID: string) =>
-    new Rate(new Agreement(agreementID)).fetchList().then((rates) =>
-      Promise.all(
-        rates.map((item: Rate) => {
-          const rate = item.toObject();
-          return rate.author?.fetch().then((author) => {
-            rate.author = author; // Sobrepõe objeto de User por um objeto literal com dados buscados
-            return rate;
-          });
-        })
+    new Rate(new Agreement(agreementID))
+      .fetchList()
+      .then((rates) =>
+        Promise.all(
+          rates.map((item: Rate) => {
+            const rate = item.toObject();
+            return rate.author?.fetch().then((author) => {
+              rate.author = author; // Sobrepõe objeto de User por um objeto literal com dados buscados
+              return rate;
+            });
+          })
+        )
       )
-    );
+      .catch((e: any) => {
+        console.error(e.message);
+        return [];
+      });
 
   // SELEÇÕES
   const sendSelection = (data: {
@@ -334,9 +352,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .then((selections: Selection[]) =>
         selections.map((item) => item.toObject())
       )
-      .catch((e: any) =>
-        console.log(`Erro ao buscar seleções de ${art}: ${e.message}`)
-      );
+      .catch((e: any) => {
+        console.log(`Erro ao buscar seleções de ${art}: ${e.message}`);
+        return [];
+      });
 
   const fetchSelectionsByOwner = (offset = 0, limit = 20) =>
     new Selection()
@@ -351,18 +370,20 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           };
         })
       )
-      .catch((e: any) =>
-        console.log("Erro ao buscar seleções do usuário: ", e.message)
-      );
+      .catch((e: any) => {
+        console.log("Erro ao buscar seleções do usuário: ", e.message);
+        return [];
+      });
   const fetchArtistsInSelection = (id: string, offset = 0, limit = 20) =>
     new Selection(id)
       .fetchApplications(offset, limit)
       .then((applications) =>
         Promise.all(applications.map((item) => item.toObject().artist?.fetch()))
       )
-      .catch((e: any) =>
-        console.log(`Erro na busca por submissões: ${e.message}`)
-      );
+      .catch((e: any) => {
+        console.log(`Erro na busca por submissões: ${e.message}`);
+        return [];
+      });
 
   const deleteSelection = (id: string) =>
     new Selection(id)
@@ -385,7 +406,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           };
         })
       )
-      .catch((e: any) => console.error(e.message));
+      .catch((e: any) => {
+        console.error(e.message);
+        return [];
+      });
 
   useEffect(() => {
     if (isLogged && !isLoaded) {
