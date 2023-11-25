@@ -345,6 +345,11 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       })
       .create();
 
+  const submitApplication = (selectionID: string) =>
+    new Selection(selectionID)
+      .submitApplication(new Artist(id))
+      .catch(console.log);
+
   const fetchSelectionsByArt = (art: ArtType, offset = 0, limit = 20) =>
     new Selection()
       .build({ art })
@@ -374,6 +379,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         console.log("Erro ao buscar seleções do usuário: ", e.message);
         return [];
       });
+
   const fetchArtistsInSelection = (id: string, offset = 0, limit = 20) =>
     new Selection(id)
       .fetchApplications(offset, limit)
@@ -439,6 +445,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchAgreementsByUser,
         fetchRatesFromAgreement,
         sendSelection,
+        submitApplication,
         fetchSelectionsByArt,
         fetchSelectionsByOwner,
         fetchArtistsInSelection,
