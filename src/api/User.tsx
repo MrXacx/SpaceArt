@@ -173,7 +173,7 @@ export class User extends IndexedAPIClient implements APIClientFactory {
     let attributes: any = this.toObject(); // Obtém todos os atributos da class
 
     // Coloca todos atributos no mesmo nível
-    Object.entries(attributes.location).forEach(
+    Object.entries(attributes.location ?? {}).forEach(
       ([key, value]) => (attributes[key] = value)
     );
 
