@@ -105,6 +105,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
         id: selection.id,
         title: selection.title,
         art: selection.art,
+        locked: selection.locked,
         owner: new Enterprise(selection.enterprise),
         price: selection.price,
         date: Object.entries(selection.date).map((item) => item[1] as string),
@@ -183,6 +184,7 @@ export class Selection extends IndexedAPIClient implements APIClientFactory {
       price: this.price,
       date: this.date,
       time: this.time,
+      locked: this.locked,
     };
   }
 }
