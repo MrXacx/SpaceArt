@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Modal = styled.div<{ hidden?: boolean }>`
-  visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
+  display: ${({ hidden }) => (hidden ? "none" : "flex")};
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.55);
@@ -11,7 +11,6 @@ export const Modal = styled.div<{ hidden?: boolean }>`
   left: 0;
   bottom: 0;
   z-index: 5;
-  display: flex;
   align-items: center;
   justify-content: center;
 `;
