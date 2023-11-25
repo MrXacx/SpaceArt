@@ -6,7 +6,7 @@ import { AccountType, AccountTypesUtil } from "../enums/AccountType";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoLoggedAcessError } from "../errors/NoLoggedAcessError";
-import DefaultImage from "../assets/marco_image.png";
+import DefaultImage from "../assets/default.webp";
 import { ImageCompressor } from "../services/ImageCompressor";
 import { Chat } from "../api/Chat";
 import { ArtType } from "../enums/ArtType";
