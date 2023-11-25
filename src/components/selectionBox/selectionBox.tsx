@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Enterprise } from "../../api/User";
 import { ModalContext } from "../../contexts/ModalContext";
+import { AccountType } from "../../enums/AccountType";
 
 interface SelectionBoxProps {
   id: string;
@@ -31,7 +32,7 @@ function SelectionBox(props: SelectionBoxProps) {
   const [hidden, setHidden] = useState(false);
   const [isOpened, setOpened] = useState(false);
 
-  const { deleteSelection } = useContext(UserContext);
+  const { deleteSelection, type, submitApplication } = useContext(UserContext);
   const { setSelection } = useContext(SelectSelectionContext);
   const { toogleSelectArtistVisibility } = useContext(ModalContext);
   dayjs.extend(customParseFormat);
@@ -69,7 +70,7 @@ function SelectionBox(props: SelectionBoxProps) {
           <SelectionOptions>
             <SelectionOptionButton
               type="button"
-              hidden={isAfter && props.locked}
+              hidden={type === AccountType.artist || isAfter}
               danger={true}
               onClick={() => {
                 deleteSelection(props.id);
@@ -80,13 +81,20 @@ function SelectionBox(props: SelectionBoxProps) {
             </SelectionOptionButton>
             <SelectionOptionButton
               type="button"
-              hidden={!isAfter}
+              hidden={type === AccountType.artist || !isAfter}
               onClick={() => {
                 setSelection(new Enterprise(props.id));
                 toogleSelectArtistVisibility();
               }}
             >
               Obter resultados
+            </SelectionOptionButton>
+            <SelectionOptionButton
+              type="button"
+              hidden={type === AccountType.enterprise || !isAfter}
+              onClick={() => submitApplication(props.id)}
+            >
+              Aplicar para a vaga
             </SelectionOptionButton>
           </SelectionOptions>
         </SelectionHiddenDetail>

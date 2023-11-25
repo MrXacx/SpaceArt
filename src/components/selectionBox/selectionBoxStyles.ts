@@ -121,7 +121,7 @@ export const SelectionOptionButton = styled.button<{
   width: 70%;
   margin: 0.25rem auto;
   height: 4vh;
-  display: ${({ hidden }) => (hidden ? "none" : "inline")};
+  display: ${({ hidden }) => (hidden ? "none" : "flex")};
   background-color: ${({ danger }) => (danger ? "#ff2e2e" : "#ff8311")};
   padding: 0.5rem 1rem;
   border-radius: 3px;
@@ -131,7 +131,6 @@ export const SelectionOptionButton = styled.button<{
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
-  display: flex;
   align-items: center;
   justify-content: center;
 
