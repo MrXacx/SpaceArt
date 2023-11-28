@@ -10,7 +10,6 @@ export const HeaderContainer = styled.header`
     rgba(5, 3, 0, 1) 23%,
     rgba(25, 7, 3, 0.9719537473192402) 90%
   );
-
   padding: 1rem;
   box-sizing: border-box;
   display: flex;
@@ -33,13 +32,16 @@ export const SpaceartContainer = styled.div`
 export const SpaceartTitle = styled.div`
   display: flex;
   align-items: center;
+
   span:first-of-type {
     color: #fa8b08;
   }
+
   span {
     color: #fff;
     white-space: nowrap;
     font-size: 2rem;
+
     @media (min-width: 960px) {
       font-size: 4rem;
     }
@@ -60,12 +62,9 @@ export const NavItemContainer = styled.ul`
 `;
 
 export const NavContainer = styled.nav`
-  display: none;
-  @media (min-width: 960px) {
-    display: flex;
-    flex-direction: row;
-    justify-content: right;
-  }
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
 `;
 
 export const NavItems = styled.li`
@@ -76,6 +75,7 @@ export const NavItems = styled.li`
   text-decoration: none;
   white-space: nowrap;
   font-size: 1rem;
+
   @media (min-width: 960px) {
     font-size: 19px;
   }
@@ -96,6 +96,7 @@ export const SignUpButton = styled.button`
   font-weight: bold;
   border: none;
   transition: 0.3s;
+
   @media (min-width: 960px) {
     &:hover {
       background-color: #f47c2e;
