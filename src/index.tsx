@@ -7,22 +7,25 @@ import { SearchProvider } from "./contexts/SearchContext";
 import { SelectSelectionProvider } from "./contexts/SelectSelectionContext";
 import { SelectArtistProvider } from "./contexts/SelectArtistContext";
 import { SelectAgreementProvider } from "./contexts/SelectAgreement";
+import { HideProvider } from "./contexts/HideContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ModalProvider>
-      <SearchProvider>
-        <SelectSelectionProvider>
-          <SelectAgreementProvider>
-            <SelectArtistProvider>
-              <App />
-            </SelectArtistProvider>
-          </SelectAgreementProvider>
-        </SelectSelectionProvider>
-      </SearchProvider>
-    </ModalProvider>
+    <HideProvider>
+      <ModalProvider>
+        <SearchProvider>
+          <SelectSelectionProvider>
+            <SelectAgreementProvider>
+              <SelectArtistProvider>
+                <App />
+              </SelectArtistProvider>
+            </SelectAgreementProvider>
+          </SelectSelectionProvider>
+        </SearchProvider>
+      </ModalProvider>
+    </HideProvider>
   </React.StrictMode>
 );
