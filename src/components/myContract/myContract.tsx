@@ -98,7 +98,7 @@ function MyContract(props: MyContractProps) {
   ][props.filter];
 
   useEffect(() => {
-    fetchAgreementsByUser(id).then(setContracts).catch(console.error);
+    fetchAgreementsByUser(id).then(setContracts).catch(console.log);
   }, [fetchAgreementsByUser, id]);
 
   useEffect(() => {

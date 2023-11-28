@@ -63,7 +63,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .build({ index })
       .fetchForIndex()
       .then((response) => response.toObject())
-      .catch((e) => console.error(e.message));
+      .catch((e) => console.log(e.message));
   };
 
   const signIn = (email: string, password: string) => {
@@ -94,7 +94,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         if (e instanceof NoLoggedAcessError) {
           NoLoggedAcessError.throw(e.message);
         } else {
-          console.error(e.message);
+          console.log(e.message);
           NoLoggedAcessError.throw("Tentativa de login falhou");
         }
       });
@@ -129,7 +129,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
               //logOut();
               signIn(artistData.email, artistData.password);
             }) // realiza login
-            .catch(console.error)
+            .catch(console.log)
       )
     );
   };
@@ -164,7 +164,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
               logOut();
               signIn(enterpriseData.email, enterpriseData.password);
             }) // Realiza login
-            .catch(console.error)
+            .catch(console.log)
       )
     );
   };
@@ -254,7 +254,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .fetchListByAuthor(offset, limit)
       .then((posts: Post[]) => Promise.all(posts.map(handlePost)))
       .catch((e: any) => {
-        console.error(e.message);
+        console.log(e.message);
         return [];
       });
 
@@ -263,7 +263,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .fetchList(offset, limit)
       .then((posts: Post[]) => Promise.all(posts.map(handlePost)))
       .catch((e: any) => {
-        console.error(e.message);
+        console.log(e.message);
         return [];
       });
 
@@ -303,7 +303,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       )
       .then((list: Agreement[]) => list.map((item) => item.toObject()))
       .catch((e: any) => {
-        console.error(e.message);
+        console.log(e.message);
         return [];
       });
 
@@ -322,7 +322,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         )
       )
       .catch((e: any) => {
-        console.error(e.message);
+        console.log(e.message);
         return [];
       });
 
@@ -413,7 +413,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         })
       )
       .catch((e: any) => {
-        console.error(e.message);
+        console.log(e.message);
         return [];
       });
 

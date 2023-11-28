@@ -47,7 +47,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
       .fetchListWithoutFilter(page, limit)
       .then(turnListOnCardData)
       .then(setSearchResult)
-      .catch((e) => console.error(e));
+      .catch((e) => console.log(e));
   };
 
   const fetchUsersByName = (
@@ -63,7 +63,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
       .fetchListFilteringName(name, page, limit)
       .then(turnListOnCardData)
       .then(setSearchResult)
-      .catch((e) => console.error(e.message));
+      .catch((e) => console.log(e.message));
   };
 
   const fetchUsersByLocation = (
@@ -80,7 +80,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
       .fetchListFilteringLocation(state, city, page, limit)
       .then(turnListOnCardData)
       .then(setSearchResult)
-      .catch((e) => console.error(e.message));
+      .catch((e) => console.log(e.message));
   };
 
   return (

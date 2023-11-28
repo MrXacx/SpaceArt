@@ -93,7 +93,7 @@ function Profile() {
   useEffect(() => {
     fetchProfileOwner()
       .then((id: string) => Promise.all([fecthPosts(id), fetchAgreement(id)]))
-      .catch((e: any) => console.error(e.message));
+      .catch((e: any) => console.log(e.message));
   }, [fetchAgreement, fecthPosts, fetchProfileOwner]);
 
   const iterateCalendar = () => {
