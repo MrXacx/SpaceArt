@@ -8,7 +8,7 @@ export const HeaderContainer = styled.header`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   backdrop-filter: blur(8px) saturate(1.2);
   box-shadow: 0 1px 30px rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -28,14 +28,16 @@ export const SpaceartContainer = styled.div`
 export const SpaceartTitle = styled.div`
   display: flex;
   align-items: center;
+
   span:first-of-type {
     color: #fa8b08;
   }
+
   span {
     color: #000;
     white-space: nowrap;
-
     font-size: 2rem;
+
     @media (min-width: 960px) {
       font-size: 4rem;
     }
@@ -97,5 +99,36 @@ export const SignUpButton = styled.button`
     :hover {
       background-color: #f47c2e;
     }
+  }
+`;
+
+export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
+  width: 100%;
+  display: ${({ hide }) => (hide ? "none" : "flex")};
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+
+  span {
+    padding: 0.5rem 0;
+    text-align: center;
+
+    &:nth-of-type(2) {
+      background-color: #ff6600;
+      color: #fff;
+    }
+
+    &:nth-of-type(3) {
+      background-color: #ff6600;
+      color: #fff;
+    }
+  }
+`;
+
+export const Icon = styled.img`
+  display: none;
+
+  @media (max-width: 960px) {
+    display: block;
   }
 `;
