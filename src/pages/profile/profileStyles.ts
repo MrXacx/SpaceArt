@@ -346,11 +346,7 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
-<<<<<<< HEAD
 export const CalendarContainer = styled.div<{ expanded: boolean }>`
-=======
-export const CalendarContainer = styled.div`
->>>>>>> main
   display: grid;
   width: 100%;
   background-color: transparent;
@@ -358,7 +354,6 @@ export const CalendarContainer = styled.div`
   margin-bottom: 2rem;
   gap: 2rem;
 
-<<<<<<< HEAD
   > div:last-of-type {
     transition: 500ms;
     display: ${({ expanded }) => (expanded ? "flex" : "none")};
@@ -368,12 +363,8 @@ export const CalendarContainer = styled.div`
     width: 80%;
     grid-template-columns: ${({ expanded }) =>
       expanded ? "repeat(2, 1fr)" : "1fr"};
-=======
-  @media (min-width: 768px) {
-    width: 80%;
-    grid-template-columns: repeat(2, 1fr);
->>>>>>> main
   }
+
   @media (min-width: 960px) {
     background-color: #fff;
     width: 63%;
@@ -478,14 +469,8 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
   }
 `;
 
-<<<<<<< HEAD
 export const JobsDayContainer = styled.div`
   width: 100%;
-=======
-export const JobsDayContainer = styled.div<{ hidden: boolean }>`
-  width: 100%;
-  display: ${({ hidden }) => (hidden ? "none" : "block")};
->>>>>>> main
   flex-direction: column;
   align-items: center;
   @media (min-width: 960px) {
@@ -504,10 +489,7 @@ export const DateHeader = styled.span`
   background-color: #000;
   border-radius: 5px;
   padding: 1rem;
-<<<<<<< HEAD
   display: block;
-=======
->>>>>>> main
 
   @media (min-width: 960px) {
     width: 60%;

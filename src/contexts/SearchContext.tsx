@@ -47,11 +47,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
       .fetchListWithoutFilter(page, limit)
       .then(turnListOnCardData)
       .then(setSearchResult)
-<<<<<<< HEAD
       .catch((e) => console.log(e));
-=======
-      .catch((e) => console.error(e));
->>>>>>> main
   };
 
   const fetchUsersByName = (

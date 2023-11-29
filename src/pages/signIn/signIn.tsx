@@ -26,7 +26,6 @@ function SignIn() {
     if (error) {
       // Executa se error contiver conteúdo
       setInputErrorMessage(error.message); // Atualiza mensagem de erro
-<<<<<<< HEAD
     } else {
       // Remove qualquer configuração de estado inválido
       setInputErrorMessage("");
@@ -34,18 +33,6 @@ function SignIn() {
       signIn(email, password).catch((e: any) =>
         setInputErrorMessage(e.message)
       );
-=======
-
-    } else {
-      // Remove qualquer configuração de estado inválido
-      setInputErrorMessage("");
-      
-      try {
-        signIn(email, password);
-      } catch (e: any) {
-        setInputErrorMessage(e.message);
-      }
->>>>>>> main
     }
   };
 
@@ -64,13 +51,9 @@ function SignIn() {
               userSignIn();
             }}
           >
-<<<<<<< HEAD
             <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>
               {inputErrorMessage}
             </FormInputErrorMessage>
-=======
-            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
->>>>>>> main
             <FormInputFullField
               type="email"
               placeholder="Email"
@@ -87,10 +70,6 @@ function SignIn() {
             />
 
             <FormInputButton>Entrar</FormInputButton>
-<<<<<<< HEAD
-=======
-
->>>>>>> main
           </SignContainer>
         </InnerContainer>
       </MainSignInContainer>

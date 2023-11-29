@@ -14,17 +14,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import Spaceart from "../../assets/spaceart.svg";
 import HamburgerIcon from "../../assets/hamburger.svg";
-<<<<<<< HEAD
 import { HideContext } from "../../contexts/HideContext";
 import { useContext } from "react";
 
 function Header() {
   const { hide, setHide } = useContext(HideContext);
-
-=======
-
-function Header() {
->>>>>>> main
   const navigate = useNavigate();
   return (
     <>
@@ -52,8 +46,7 @@ function Header() {
               </SignUpButton>
             </NavItemContainer>
           </NavContainer>
-<<<<<<< HEAD
-          <Icon src={HamburgerIcon} alt="" onClick={() => setHide(!hide)}/>
+          <Icon src={HamburgerIcon} alt="" onClick={() => setHide(!hide)} />
         </HeaderContainer>
         <HamburgerMenuContainer hide={hide}>
           <span onClick={() => navigate("/signUp/enterprise")}>
@@ -63,14 +56,6 @@ function Header() {
             CADASTRAR COMO ARTISTA
           </span>
           <span onClick={() => navigate("/signIn")}>ENTRAR</span>
-=======
-          <Icon src={HamburgerIcon} alt="" />
-        </HeaderContainer>
-        <HamburgerMenuContainer>
-          <span onClick={() => navigate('/signUp/enterprise')}>CADASTRAR COMO EMPRESA</span>
-          <span onClick={() => navigate('/signUp/artist')}>CADASTRAR COMO ARTISTA</span>
-          <span onClick={() => navigate('/signIn')}>ENTRAR</span>
->>>>>>> main
         </HamburgerMenuContainer>
       </HeaderMainContainer>
     </>

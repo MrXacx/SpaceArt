@@ -122,15 +122,9 @@ export const Icon = styled.img`
   }
 `;
 
-<<<<<<< HEAD
 export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
   width: 100%;
   display: ${({ hide }) => (hide ? "none" : "flex")};
-=======
-export const HamburgerMenuContainer = styled.div`
-  width: 100%;
-  display: flex;
->>>>>>> main
   flex-direction: column;
   justify-content: center;
   background-color: #fff;

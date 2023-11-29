@@ -20,11 +20,7 @@ import TheaterImage from "../../assets/theater_banner.png";
 import LocationFilterBar from "../../components/locationFilterBar/locationFilterBar";
 import CardProfile from "../../components/cardProfile/cardProfile";
 import Footer from "../../components/footer/footer";
-<<<<<<< HEAD
-import { useContext, useEffect, useState } from "react";
-=======
 import { useContext, useEffect } from "react";
->>>>>>> main
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../contexts/SearchContext";
 import { AccountType } from "../../enums/AccountType";
