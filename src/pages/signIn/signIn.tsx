@@ -26,16 +26,13 @@ function SignIn() {
     if (error) {
       // Executa se error contiver conteúdo
       setInputErrorMessage(error.message); // Atualiza mensagem de erro
-
     } else {
       // Remove qualquer configuração de estado inválido
       setInputErrorMessage("");
-      
-      try {
-        signIn(email, password);
-      } catch (e: any) {
-        setInputErrorMessage(e.message);
-      }
+
+      signIn(email, password).catch((e: any) =>
+        setInputErrorMessage(e.message)
+      );
     }
   };
 
@@ -54,7 +51,9 @@ function SignIn() {
               userSignIn();
             }}
           >
-            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>{inputErrorMessage}</FormInputErrorMessage>
+            <FormInputErrorMessage hidden={inputErrorMessage.length === 0}>
+              {inputErrorMessage}
+            </FormInputErrorMessage>
             <FormInputFullField
               type="email"
               placeholder="Email"
@@ -71,7 +70,6 @@ function SignIn() {
             />
 
             <FormInputButton>Entrar</FormInputButton>
-
           </SignContainer>
         </InnerContainer>
       </MainSignInContainer>

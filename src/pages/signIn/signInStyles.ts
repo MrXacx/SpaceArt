@@ -48,11 +48,11 @@ export const SignContainer = styled.form`
 
 export const FormInputErrorMessage = styled.span<{ hidden: boolean }>`
   width: 100%;
-  display: ${(hidden) => hidden ? 'none' : 'inline'};
+  visibility: ${({ hidden }) => (hidden ? "hidden" : "visible")};
   color: white;
-  font-size: .75rem;
+  font-size: 0.75rem;
   text-align: center;
-  margin: .75rem 0;
+  margin: 0.75rem 0;
 `;
 
 export const FormInputFullField = styled.input`
@@ -76,7 +76,6 @@ export const FormInputFullField = styled.input`
   &:disabled {
     background-color: rgb(210, 210, 210);
   }
-  
 `;
 
 export const FormInputButton = styled.button`
