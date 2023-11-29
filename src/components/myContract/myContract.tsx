@@ -103,7 +103,7 @@ function MyContract(props: MyContractProps) {
 
   useEffect(() => {
     if (agreement) {
-      fetchRatesFromAgreement.then(setRates); // Obtém avaliações do contrato
+      fetchRatesFromAgreement(agreement.getID()).then(setRates); // Obtém avaliações do contrato
     }
   }, [agreement, fetchRatesFromAgreement]);
 
