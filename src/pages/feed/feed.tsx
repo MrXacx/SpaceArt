@@ -33,18 +33,18 @@ function Feed() {
           <PostContainer>
             <ProfileContainer>
               <img
-                src={data?.author.image}
-                alt={`Perfil de ${data?.author.name}`}
-                onClick={() => navigate(`user/${data?.user.index}`)}
+                src={data.author.image}
+                alt={`Perfil de ${data.author.name}`}
+                onClick={() => navigate(`/user/${data.author.index}`)}
               />
               <div>
-                <span>{data?.author.name}</span>
-                <span>{dayjs(data?.postTime).fromNow()}</span>
+                <span>{data.author.name}</span>
+                <span>{dayjs(data.postTime).fromNow()}</span>
               </div>
             </ProfileContainer>
-            <TextContentContainer>{data?.message}</TextContentContainer>
+            <TextContentContainer>{data.message}</TextContentContainer>
             <ProfilePostImage>
-              <img src={data?.media} alt="imagem" />
+              <img src={data.media} alt="imagem" />
             </ProfilePostImage>
           </PostContainer>
         ))}
