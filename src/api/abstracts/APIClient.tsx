@@ -25,7 +25,7 @@ export abstract class APIClient {
 
 export abstract class SpaceArtAPIClient extends APIClient {
   protected request = new Axios({
-    baseURL: "http://localhost:80",
+    baseURL: "http://https://rest-spaceart.000webhostapp.com",
   });
 }
 
