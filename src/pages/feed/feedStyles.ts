@@ -14,7 +14,6 @@ export const PostContainer = styled.div`
   border-radius: 20px;
   padding: 20px;
   width: 500px;
-  height: 600px;
   margin: 0 auto;
   background-color: #fff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -27,6 +26,7 @@ export const ProfileContainer = styled.div`
   img {
     max-width: 45px;
     padding-right: 10px;
+    border-radius: 50%;
   }
 
   div {
@@ -44,13 +44,18 @@ export const ProfileContainer = styled.div`
   }
 `;
 
-export const TextContentContainer = styled.div`
-  p {
-    font-size: 1rem;
-  }
+export const TextContentContainer = styled.p`
+  font-size: .8rem 0;
 `;
 
-export const ProfilePostImage = styled.img`
+export const ProfilePostImage = styled.div`
   width: 100%;
+  max-height: 300px;
   align-self: end;
+  display: flex;
+  justify-content: center;
+
+  img{
+    width: 100%;
+  }
 `;

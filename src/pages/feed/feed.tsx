@@ -43,7 +43,9 @@ function Feed() {
               </div>
             </ProfileContainer>
             <TextContentContainer>{data?.message}</TextContentContainer>
-            <ProfilePostImage src={data?.media} alt="imagem" />
+            <ProfilePostImage>
+              <img src={data?.media} alt="imagem" />
+            </ProfilePostImage>
           </PostContainer>
         ))}
       </FeedContainer>
