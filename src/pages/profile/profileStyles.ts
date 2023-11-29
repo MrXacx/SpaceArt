@@ -346,7 +346,7 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
-export const CalendarContainer = styled.div`
+export const CalendarContainer = styled.div<{ expanded: boolean }>`
   display: grid;
   width: 100%;
   background-color: transparent;
@@ -354,9 +354,15 @@ export const CalendarContainer = styled.div`
   margin-bottom: 2rem;
   gap: 2rem;
 
+  > div:last-of-type {
+    transition: 500ms;
+    display: ${({ expanded }) => (expanded ? "flex" : "none")};
+  }
+
   @media (min-width: 768px) {
     width: 80%;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: ${({ expanded }) =>
+      expanded ? "repeat(2, 1fr)" : "1fr"};
   }
   @media (min-width: 960px) {
     background-color: #fff;
@@ -462,9 +468,8 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
   }
 `;
 
-export const JobsDayContainer = styled.div<{ hidden: boolean }>`
+export const JobsDayContainer = styled.div`
   width: 100%;
-  display: ${({ hidden }) => (hidden ? "none" : "block")};
   flex-direction: column;
   align-items: center;
   @media (min-width: 960px) {
@@ -483,6 +488,7 @@ export const DateHeader = styled.span`
   background-color: #000;
   border-radius: 5px;
   padding: 1rem;
+  display: block;
 
   @media (min-width: 960px) {
     width: 60%;
