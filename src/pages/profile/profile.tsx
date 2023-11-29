@@ -64,7 +64,10 @@ function Profile() {
   const [profileData, setProfileData] = useState<any>({});
   const [posts, setPosts] = useState<any[]>([]);
   const [agreements, setAgreements] = useState<any[]>([]);
+<<<<<<< HEAD
   const [filteredAgreements, setFilterrfAgreements] = useState<any[]>([]);
+=======
+>>>>>>> main
   const [date, setDate] = useState(dayjs().set("date", 1));
   const [selectedDate, selectDate] = useState(dayjs());
 
@@ -94,13 +97,18 @@ function Profile() {
   useEffect(() => {
     fetchProfileOwner()
       .then((id: string) => Promise.all([fecthPosts(id), fetchAgreement(id)]))
+<<<<<<< HEAD
       .catch((e: any) => console.log(e.message));
+=======
+      .catch((e: any) => console.error(e.message));
+>>>>>>> main
   }, [fetchAgreement, fecthPosts, fetchProfileOwner]);
 
   const iterateCalendar = () => {
     let i = 0;
     const days: any = [];
     switch (date.format("dddd").toLowerCase()) {
+<<<<<<< HEAD
       case "domingo":
         i = 0;
         break;
@@ -120,18 +128,45 @@ function Profile() {
         i = -5;
         break;
       case "sábado":
+=======
+      case "sunday":
+        i = 0;
+        break;
+      case "monday":
+        i = -1;
+        break;
+      case "tuesday":
+        i = -2;
+        break;
+      case "wednesday":
+        i = -3;
+        break;
+      case "thursday":
+        i = -4;
+        break;
+      case "friday":
+        i = -5;
+        break;
+      case "saturday":
+>>>>>>> main
         i = -6;
         break;
     }
 
+<<<<<<< HEAD
     console.log(i);
+=======
+>>>>>>> main
     const limit = 35 + i;
 
     while (i < limit) {
       const currentDate = date.add(i++, "days");
       days.push(
         <CalendarNumberItem
+<<<<<<< HEAD
           title={currentDate.format("dddd")}
+=======
+>>>>>>> main
           // eslint-disable-next-line no-loop-func
           selected={Boolean(
             currentDate.format("DD/MM/YYYY") ===
@@ -148,6 +183,7 @@ function Profile() {
     return days;
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     setFilterrfAgreements(
       agreements.filter((item: any) =>
@@ -155,6 +191,8 @@ function Profile() {
       )
     );
   }, [agreements, selectedDate]);
+=======
+>>>>>>> main
   return (
     <>
       <HeaderLogged />
@@ -232,7 +270,11 @@ function Profile() {
       </ProfileHeader>
 
       <Wrapper>
+<<<<<<< HEAD
         <CalendarContainer expanded={filteredAgreements.length > 0}>
+=======
+        <CalendarContainer>
+>>>>>>> main
           <Calendar>
             <CalendarHeader>
               <MonthNavbar>
@@ -265,7 +307,11 @@ function Profile() {
               {iterateCalendar()}
             </CalendarNumberContainer>
           </Calendar>
+<<<<<<< HEAD
           <JobsDayContainer>
+=======
+          <JobsDayContainer hidden={agreements.length === 0}>
+>>>>>>> main
             <DateHeader>
               {dayjs(selectedDate).calendar(null, {
                 sameDay: "[Hoje]",
@@ -279,7 +325,14 @@ function Profile() {
 
             <JobWrapper>
               <Jobs>
+<<<<<<< HEAD
                 {filteredAgreements
+=======
+                {agreements
+                  .filter((item: any) =>
+                    selectedDate.isSame(dayjs(item.date, "DD/MM/YYYY"), "date")
+                  )
+>>>>>>> main
                   .sort((a: any, b: any) =>
                     dayjs(a.time.start, "HH:mm").isBefore(
                       dayjs(b.time.start, "HH:mm")

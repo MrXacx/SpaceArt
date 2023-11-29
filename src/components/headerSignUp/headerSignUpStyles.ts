@@ -8,7 +8,11 @@ export const HeaderContainer = styled.header`
   box-sizing: border-box;
   display: flex;
   align-items: center;
+<<<<<<< HEAD
   justify-content: space-between;
+=======
+  justify-content: flex-start;
+>>>>>>> main
   backdrop-filter: blur(8px) saturate(1.2);
   box-shadow: 0 1px 30px rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -28,6 +32,7 @@ export const SpaceartContainer = styled.div`
 export const SpaceartTitle = styled.div`
   display: flex;
   align-items: center;
+<<<<<<< HEAD
 
   span:first-of-type {
     color: #fa8b08;
@@ -38,6 +43,16 @@ export const SpaceartTitle = styled.div`
     white-space: nowrap;
     font-size: 2rem;
 
+=======
+  span:first-of-type {
+    color: #fa8b08;
+  }
+  span {
+    color: #000;
+    white-space: nowrap;
+
+    font-size: 2rem;
+>>>>>>> main
     @media (min-width: 960px) {
       font-size: 4rem;
     }
@@ -101,6 +116,7 @@ export const SignUpButton = styled.button`
     }
   }
 `;
+<<<<<<< HEAD
 
 export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
   width: 100%;
@@ -132,3 +148,5 @@ export const Icon = styled.img`
     display: block;
   }
 `;
+=======
+>>>>>>> main

@@ -98,7 +98,11 @@ function MyContract(props: MyContractProps) {
   ][props.filter];
 
   useEffect(() => {
+<<<<<<< HEAD
     fetchAgreementsByUser(id).then(setContracts).catch(console.log);
+=======
+    fetchAgreementsByUser(id).then(setContracts).catch(console.error);
+>>>>>>> main
   }, [fetchAgreementsByUser, id]);
 
   useEffect(() => {

@@ -255,6 +255,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .then((posts: Post[]) => Promise.all(posts.map(handlePost)))
       .catch((e: any) => {
         console.log(e.message);
+
         return [];
       });
 
@@ -264,6 +265,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .then((posts: Post[]) => Promise.all(posts.map(handlePost)))
       .catch((e: any) => {
         console.log(e.message);
+
         return [];
       });
 
@@ -304,6 +306,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       .then((list: Agreement[]) => list.map((item) => item.toObject()))
       .catch((e: any) => {
         console.log(e.message);
+
         return [];
       });
 
@@ -327,7 +330,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       });
 
   const deleteAgreement = (agreement: string) =>
-    new Agreement(agreement).delete();
+    new Agreement(agreement).delete().catch(console.log);
 
   // SELEÇÕES
   const sendSelection = (data: {
@@ -417,6 +420,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       )
       .catch((e: any) => {
         console.log(e.message);
+
         return [];
       });
 
