@@ -13,6 +13,7 @@ import { ArtType } from "../../enums/ArtType";
 import { SelectAgreementContext } from "../../contexts/SelectAgreement";
 import { ModalContext } from "../../contexts/ModalContext";
 import { Agreement } from "../../api/Agreement";
+import { UserContext } from "../../contexts/UserContext";
 
 interface ContractBoxProps {
   id: string;
@@ -29,10 +30,14 @@ interface ContractBoxProps {
 
 function ContractBox(props: ContractBoxProps) {
   const [isOpened, setOpened] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const { deleteAgreement } = useContext(UserContext);
   const { setAgreement } = useContext(SelectAgreementContext);
   const { toogleLookRatesVisibility } = useContext(ModalContext);
 
-  return (
+  return hidden ? (
+    <></>
+  ) : (
     <ContractCard>
       <ContractInnerContainer>
         <ContractMask opened={isOpened} onClick={() => setOpened(!isOpened)}>
@@ -61,7 +66,15 @@ function ContractBox(props: ContractBoxProps) {
               type="button"
               hidden={false}
               danger={true}
-              onClick={() => {}}
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Você tem certeza disso? Essa ação não pode ser desfeita!"
+                  )
+                ) {
+                  deleteAgreement(props.id).then(() => setHidden(true));
+                }
+              }}
             >
               Interromper
             </ContractOptionButton>

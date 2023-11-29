@@ -326,6 +326,9 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         return [];
       });
 
+  const deleteAgreement = (agreement: string) =>
+    new Agreement(agreement).delete();
+
   // SELEÇÕES
   const sendSelection = (data: {
     owner: string;
@@ -444,6 +447,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         sendAgreement,
         fetchAgreementsByUser,
         fetchRatesFromAgreement,
+        deleteAgreement,
         sendSelection,
         submitApplication,
         fetchSelectionsByArt,
