@@ -2,7 +2,6 @@
   "name": "spaceartts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://MrXacx.github.io/spaceart",
   "dependencies": {
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@joi/date": "^2.1.0",
@@ -32,8 +31,6 @@
     "webp-converter-browser": "^1.0.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
