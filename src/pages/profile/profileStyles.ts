@@ -347,28 +347,36 @@ export const Wrapper = styled.div`
 `;
 
 export const CalendarContainer = styled.div<{ expanded: boolean }>`
-  display: grid;
   width: 100%;
   background-color: transparent;
   padding: 2rem 0;
   margin-bottom: 2rem;
-  gap: 2rem;
 
-  > div:last-of-type {
-    transition: 500ms;
-    display: ${({ expanded }) => (expanded ? "flex" : "none")};
+  > h1 {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+  > div {
+    display: grid;
+    gap: 2rem;
+
+    > div:last-of-type {
+      transition: 500ms;
+      display: ${({ expanded }) => (expanded ? "flex" : "none")};
+    }
   }
 
   @media (min-width: 768px) {
     width: 80%;
-    grid-template-columns: ${({ expanded }) =>
-      expanded ? "repeat(2, 1fr)" : "1fr"};
+    > div {
+      grid-template-columns: ${({ expanded }) =>
+        expanded ? "repeat(2, 1fr)" : "1fr"};
+    }
   }
 
   @media (min-width: 960px) {
     background-color: #fff;
     width: 63%;
-    max-height: 55vh;
     padding: 2rem 0;
     border-radius: 5px;
     box-shadow: 0 5px 10px #0005;
@@ -385,11 +393,11 @@ export const Calendar = styled.div`
   border-radius: 5px;
 
   @media (min-width: 768px) {
-    width: 40vw;
+    max-width: 65vw;
     height: 55vh;
   }
   @media (min-width: 960px) {
-    width: 80%;
+    max-width: 80%;
   }
 `;
 
@@ -445,7 +453,6 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
   align-self: center;
   justify-self: center;
   width: 100%;
-  height: 50%;
   border-radius: 50%;
   padding: 0;
   transition: 300ms;
@@ -457,8 +464,11 @@ export const CalendarNumberItem = styled.span<{ selected: string }>`
   font-weight: ${(c) => (JSON.parse(c.selected) ? "bold" : "500")};
   border: 1px solid transparent;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   @media (min-width: 768px) {
-    padding: 0.2rem 0;
   }
   @media (min-width: 960px) {
     padding: 0.6rem 0.15rem;

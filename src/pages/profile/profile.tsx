@@ -230,71 +230,76 @@ function Profile() {
 
       <Wrapper>
         <CalendarContainer expanded={filteredAgreements.length > 0}>
-          <Calendar>
-            <CalendarHeader>
-              <MonthNavbar>
-                <button onClick={() => setDate(date.subtract(1, "month"))}>
-                  {"<"}
-                </button>
+          <h1>
+            {profileData.index === index ? "Sua agenda" : "Agenda do usuário"}
+          </h1>
+          <div>
+            <Calendar>
+              <CalendarHeader>
+                <MonthNavbar>
+                  <button onClick={() => setDate(date.subtract(1, "month"))}>
+                    {"<"}
+                  </button>
 
-                <span>
-                  {date.format(
-                    dayjs().isSame(date, "year") ? "MMMM" : "MMMM/YYYY"
-                  )}
-                </span>
+                  <span>
+                    {date.format(
+                      dayjs().isSame(date, "year") ? "MMMM" : "MMMM/YYYY"
+                    )}
+                  </span>
 
-                <button onClick={() => setDate(date.add(1, "month"))}>
-                  {">"}
-                </button>
-              </MonthNavbar>
+                  <button onClick={() => setDate(date.add(1, "month"))}>
+                    {">"}
+                  </button>
+                </MonthNavbar>
 
-              <DaysOfWeek>
-                <span>Dom</span>
-                <span>Seg</span>
-                <span>Ter</span>
-                <span>Qua</span>
-                <span>Qui</span>
-                <span>Sex</span>
-                <span>Sab</span>
-              </DaysOfWeek>
-            </CalendarHeader>
-            <CalendarNumberContainer>
-              {iterateCalendar()}
-            </CalendarNumberContainer>
-          </Calendar>
-          <JobsDayContainer>
-            <DateHeader>
-              {dayjs(selectedDate).calendar(null, {
-                sameDay: "[Hoje]",
-                nextDay: "[Amanhã] ",
-                lastDay: "[Ontem]",
-                nextWeek: "DD/MM/YYYY",
-                lastWeek: "DD/MM/YYYY",
-                sameElse: "DD/MM/YYYY",
-              })}
-            </DateHeader>
+                <DaysOfWeek>
+                  <span>Dom</span>
+                  <span>Seg</span>
+                  <span>Ter</span>
+                  <span>Qua</span>
+                  <span>Qui</span>
+                  <span>Sex</span>
+                  <span>Sab</span>
+                </DaysOfWeek>
+              </CalendarHeader>
+              <CalendarNumberContainer>
+                {iterateCalendar()}
+              </CalendarNumberContainer>
+            </Calendar>
+            <JobsDayContainer>
+              <DateHeader>
+                {dayjs(selectedDate).calendar(null, {
+                  sameDay: "[Hoje]",
+                  nextDay: "[Amanhã] ",
+                  lastDay: "[Ontem]",
+                  nextWeek: "DD/MM/YYYY",
+                  lastWeek: "DD/MM/YYYY",
+                  sameElse: "DD/MM/YYYY",
+                })}
+              </DateHeader>
 
-            <JobWrapper>
-              <Jobs>
-                {filteredAgreements
-                  .sort((a: any, b: any) =>
-                    dayjs(a.time.start, "HH:mm").isBefore(
-                      dayjs(b.time.start, "HH:mm")
+              <JobWrapper>
+                <Jobs>
+                  {filteredAgreements
+                    .sort((a: any, b: any) =>
+                      dayjs(a.time.start, "HH:mm").isBefore(
+                        dayjs(b.time.start, "HH:mm")
+                      )
+                        ? -1
+                        : 1
                     )
-                      ? -1
-                      : 1
-                  )
-                  .map((item: any) => (
-                    <JobInfo>
-                      <JobHour>{`${item.time.start} - ${item.time.end}`}</JobHour>
-                      <TypeJobIcon>
-                        <Icon alt={item.art} src={MusicIcon} />
-                      </TypeJobIcon>
-                    </JobInfo>
-                  ))}
-              </Jobs>
-            </JobWrapper>
-          </JobsDayContainer>
+                    .map((item: any) => (
+                      <JobInfo>
+                        <JobHour>{`${item.time.start} - ${item.time.end}`}</JobHour>
+                        <TypeJobIcon>
+                          <Icon alt={item.art} src={MusicIcon} />
+                        </TypeJobIcon>
+                      </JobInfo>
+                    ))}
+                </Jobs>
+              </JobWrapper>
+            </JobsDayContainer>
+          </div>
         </CalendarContainer>
         <PostWrapper>
           {posts.map((post: any) => (
