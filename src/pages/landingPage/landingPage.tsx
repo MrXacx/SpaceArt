@@ -88,7 +88,7 @@ function LandingPage() {
         <CardProfileContainer>
           {searchResult
             .filter(
-              (item: any) => (item.art = artFilter || artFilter === undefined)
+              (item: any) => item.art === artFilter || artFilter === undefined
             )
             .map(
               // converte o estado do contexto em component
