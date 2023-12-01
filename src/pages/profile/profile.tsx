@@ -47,6 +47,7 @@ import dayjs from "dayjs";
 import portugueseLocale from "dayjs/locale/pt-br";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import calendar from "dayjs/plugin/calendar";
+import { AccountType } from "../../enums/AccountType";
 
 function Profile() {
   dayjs.extend(customParseFormat);
@@ -166,8 +167,16 @@ function Profile() {
           </UserImage>
           <UserInfo>
             <UserStats>
-              <li>{`${posts.length} Publicações`}</li>
-              <li>{`${agreements.length} Contratos`}</li>
+              <li>
+                {posts.length > 1
+                  ? `${posts.length} Publicações`
+                  : `${posts.length} Publicação`}
+              </li>
+              <li>
+                {agreements.length > 1
+                  ? `${agreements.length} Contratos`
+                  : `${agreements.length} Contrato`}
+              </li>
             </UserStats>
 
             <UserDetails>
@@ -191,16 +200,20 @@ function Profile() {
                   <span>{profileData.rate?.toFixed(2)}</span>
                 </UserDetailsItem>
 
-                <UserDetailsItem>
-                  <Icon src={GlobalIcon} alt="site" />
-                  <a
-                    href={profileData.website}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Meu site
-                  </a>
-                </UserDetailsItem>
+                {profileData.website ? (
+                  <UserDetailsItem>
+                    <Icon src={GlobalIcon} alt="site" />
+                    <a
+                      href={profileData.website}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Meu site
+                    </a>
+                  </UserDetailsItem>
+                ) : (
+                  <></>
+                )}
               </ul>
             </UserDetails>
 
