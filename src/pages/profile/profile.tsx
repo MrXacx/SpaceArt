@@ -47,7 +47,6 @@ import dayjs from "dayjs";
 import portugueseLocale from "dayjs/locale/pt-br";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import calendar from "dayjs/plugin/calendar";
-import { AccountType } from "../../enums/AccountType";
 
 function Profile() {
   dayjs.extend(customParseFormat);

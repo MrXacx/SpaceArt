@@ -61,7 +61,6 @@ export const DescriptionContainer = styled.div<{ is_visible: boolean }>`
   }
 
   p {
-    width: 60vw;
     max-width: 60vw;
     border-radius: 5px;
     margin: 1.5rem auto 0 auto;
