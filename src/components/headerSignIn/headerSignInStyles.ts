@@ -1,27 +1,23 @@
 import styled from "styled-components";
 
+export const HeaderMainContainer = styled.div`
+  position: fixed;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  top: 0;
+`;
+
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 7rem;
+  height: 5.25rem;
   background-color: #050300;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(5, 3, 0, 1) 23%,
-    rgba(25, 7, 3, 0.9719537473192402) 90%
-  );
-
   padding: 1rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-
-  @media (min-width: 960px) {
-    justify-content: space-between;
-  }
+  justify-content: space-between;
 `;
 
 export const SpaceartContainer = styled.div`
@@ -30,33 +26,25 @@ export const SpaceartContainer = styled.div`
   cursor: pointer;
 `;
 
-export const SpaceartTitle = styled.div`
-  display: flex;
-  align-items: center;
-  span:first-of-type {
+export const SpaceartTitle = styled.span`
+  margin: auto 0;
+  font-size: 2.25rem;
+  color: #fff;
+  white-space: nowrap;
+  filter: brightness(0.7);
+
+  span {
     color: #fa8b08;
   }
-  span {
-    color: #fff;
-    white-space: nowrap;
-    font-size: 2rem;
-    @media (min-width: 960px) {
-      font-size: 4rem;
-    }
+
+  @media (min-width: 960px) {
+    font-size: 2.5rem;
   }
 `;
 
 export const SpaceartLogo = styled.img`
   width: 2.5rem;
-  margin-right: 0.5rem;
-`;
-
-export const NavItemContainer = styled.ul`
-  width: 100%;
-  display: grid;
-  place-items: center;
-  column-gap: 2rem;
-  margin: 0 0.5rem;
+  margin-right: 1rem;
 `;
 
 export const NavContainer = styled.nav`
@@ -65,37 +53,54 @@ export const NavContainer = styled.nav`
   justify-content: right;
 `;
 
-export const NavItems = styled.li`
-  list-style: none;
+export const NavItems = styled.span`
   color: #fff;
   cursor: pointer;
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
   font-size: 1rem;
+
+  &:first-of-type {
+    display: none;
+  }
+  &:last-of-type {
+    display: block;
+  }
+
   @media (min-width: 960px) {
-    font-size: 19px;
+    &:first-of-type {
+      display: block;
+    }
+    &:last-of-type {
+      display: none;
+    }
+    font-size: 1rem;
   }
 `;
 
-export const SignUpButton = styled.button`
-  width: 150px;
-  height: 40px;
-  background-color: #ff6600;
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
+export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
+  width: 100%;
+  display: ${({ hide }) => (hide ? "none" : "flex")};
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  border: none;
-  transition: 0.3s;
-  @media (min-width: 960px) {
+  background-color: transparent;
+
+  span {
+    padding: 0.5rem 0;
+    text-align: center;
+    background-color: #050300;
+    color: #fff;
+
     &:hover {
-      background-color: #f47c2e;
+
     }
   }
+`;
+
+export const Icon = styled.img`
+  width: 1rem;
+  height: 1rem;
+  padding: 0.7rem;
+  border-radius: 5px;
 `;

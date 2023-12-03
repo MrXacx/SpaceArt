@@ -14,6 +14,7 @@ export const HeaderLogo = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 3rem;
 
   img {
     max-width: 50px;

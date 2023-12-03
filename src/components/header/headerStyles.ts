@@ -11,7 +11,7 @@ export const HeaderMainContainer = styled.div`
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 7rem;
+  height: 5.25rem;
   background-color: rgba(255, 255, 255, 0.9);
   box-sizing: border-box;
   display: flex;
@@ -33,28 +33,24 @@ export const SpaceartContainer = styled.div`
   cursor: pointer;
 `;
 
-export const SpaceartTitle = styled.div`
-  display: flex;
-  align-items: center;
+export const SpaceartTitle = styled.span`
+  margin: auto 0;
+  font-size: 2.25rem;
+  color: #000;
+  white-space: nowrap;
 
-  span:first-of-type {
+  span {
     color: #fa8b08;
   }
 
-  span {
-    color: #000;
-    white-space: nowrap;
-    font-size: 2rem;
-
-    @media (min-width: 960px) {
-      font-size: 4rem;
-    }
+  @media (min-width: 960px) {
+    font-size : 2.5rem;
   }
 `;
 
 export const SpaceartLogo = styled.img`
   width: 2.5rem;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
 `;
 
 export const NavItemContainer = styled.ul`
@@ -127,18 +123,14 @@ export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
   display: ${({ hide }) => (hide ? "none" : "flex")};
   flex-direction: column;
   justify-content: center;
-  background-color: #fff;
 
   span {
     padding: 0.5rem 0;
     text-align: center;
+    color: #fff;
+    text-transform: uppercase;
 
     &:nth-of-type(3) {
-      background-color: #ff6600;
-      color: #fff;
-    }
-
-    &:nth-of-type(4) {
       background-color: #ff6600;
       color: #fff;
     }
