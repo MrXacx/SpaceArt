@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Spaceart from "../../assets/spaceart.svg";
 import {
   HamburgerMenuContainer,
+  HeaderMainContainer,
   HeaderContainer,
   Icon,
   NavContainer,
@@ -27,13 +28,12 @@ function HeaderSignUp(props: HeaderProps) {
   const navigate = useNavigate();
 
   return (
-    <>
+    <HeaderMainContainer>
       <HeaderContainer>
         <SpaceartContainer onClick={() => navigate("/")}>
           <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
           <SpaceartTitle>
-            <span>S</span>
-            <span>PACE ART</span>
+            <span>S</span>PACE ART
           </SpaceartTitle>
         </SpaceartContainer>
         <NavContainer>
@@ -49,12 +49,24 @@ function HeaderSignUp(props: HeaderProps) {
         <Icon src={HamburgerIcon} alt="" onClick={() => setHide(!hide)} />
       </HeaderContainer>
       <HamburgerMenuContainer hide={hide}>
-        <span onClick={() => navigate("/signIn")}>JÁ TENHO UMA CONTA</span>
-        <span onClick={() => navigate(props.altPageRoute)}>
+        <span
+          onClick={() => {
+            setHide(true);
+            navigate("/signIn");
+          }}
+        >
+          JÁ TENHO UMA CONTA
+        </span>
+        <span
+          onClick={() => {
+            setHide(true);
+            navigate(props.altPageRoute);
+          }}
+        >
           {props.altPageTitle}
         </span>
       </HamburgerMenuContainer>
-    </>
+    </HeaderMainContainer>
   );
 }
 

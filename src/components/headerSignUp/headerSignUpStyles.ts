@@ -1,5 +1,14 @@
 import styled from "styled-components";
 
+export const HeaderMainContainer = styled.div`
+  position: fixed;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  top: 0;
+`;
+
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 7rem;
@@ -11,8 +20,6 @@ export const HeaderContainer = styled.header`
   justify-content: space-between;
   backdrop-filter: blur(8px) saturate(1.2);
   box-shadow: 0 1px 30px rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
 
   @media (min-width: 960px) {
     justify-content: space-between;
@@ -25,27 +32,24 @@ export const SpaceartContainer = styled.div`
   cursor: pointer;
 `;
 
-export const SpaceartTitle = styled.div`
-  display: flex;
-  align-items: center;
+export const SpaceartTitle = styled.span`
+  margin: auto 0;
+  font-size: 2.25rem;
+  color: #000;
+  white-space: nowrap;
 
-  span:first-of-type {
+  span {
     color: #fa8b08;
   }
 
-  span {
-    color: #000;
-    white-space: nowrap;
-    font-size: 2rem;
-    @media (min-width: 960px) {
-      font-size: 4rem;
-    }
+  @media (min-width: 960px) {
+    font-size : 2.5rem;
   }
 `;
 
 export const SpaceartLogo = styled.img`
   width: 2.5rem;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
 `;
 
 export const NavItemContainer = styled.ul`
@@ -113,11 +117,6 @@ export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
     text-align: center;
 
     &:nth-of-type(2) {
-      background-color: #ff6600;
-      color: #fff;
-    }
-
-    &:nth-of-type(3) {
       background-color: #ff6600;
       color: #fff;
     }
