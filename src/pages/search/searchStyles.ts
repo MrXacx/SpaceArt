@@ -39,14 +39,18 @@ export const FilterOptionsContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  flex-direction: row;
-  width: 66%;
+  width: 100%;
+  margin: 0.5rem;
+
+  @media (min-width: 960px) {
+    flex-direction: row;
+    width: fit-content;
+  }
 `;
 
 export const FilterOption = styled.button<{ selected: boolean }>`
   width: 100%;
   padding: 0.5rem;
-  margin: 0.5rem;
   border-radius: 5px;
   border: none;
   box-shadow: none;
@@ -56,6 +60,10 @@ export const FilterOption = styled.button<{ selected: boolean }>`
   transition: 0.3s;
   font-size: 1.3rem;
   color: ${({ selected }) => (selected ? "#fff" : "#ff8311")};
+
+  @media (min-width: 960px) {
+    margin: 0.5rem;
+  }
 `;
 
 export const FilterBarContainer = styled.div`
