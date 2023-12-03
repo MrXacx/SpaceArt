@@ -1,19 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import Spaceart from "../../assets/spaceart.svg";
 import {
+  HamburgerMenuContainer,
+  HeaderMainContainer,
   HeaderContainer,
   NavContainer,
-  NavItemContainer,
   NavItems,
   SpaceartContainer,
   SpaceartLogo,
   SpaceartTitle,
+  Icon,
 } from "./headerSignInStyles";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/UserContext";
+import { HideContext } from "../../contexts/HideContext";
+import HamburgerIcon from "../../assets/white_hamburger.svg";
 
 function HeaderSignIn() {
   const navigate = useNavigate();
+  const { hide, setHide } = useContext(HideContext);
   const { isLogged } = useContext(UserContext);
 
   useEffect(() => {
@@ -21,22 +26,42 @@ function HeaderSignIn() {
   }, [isLogged, navigate]);
 
   return (
-    <HeaderContainer>
-      <SpaceartContainer onClick={() => navigate("/")}>
-        <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
-        <SpaceartTitle>
-          <span>S</span>
-          <span>PACE ART</span>
-        </SpaceartTitle>
-      </SpaceartContainer>
-      <NavContainer>
-        <NavItemContainer>
+    <HeaderMainContainer>
+      <HeaderContainer>
+        <SpaceartContainer onClick={() => navigate("/")}>
+          <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
+          <SpaceartTitle>
+            <span>S</span>PACE ART
+          </SpaceartTitle>
+        </SpaceartContainer>
+        <NavContainer>
           <NavItems onClick={() => navigate("/signUp/artist")}>
             CRIAR UMA CONTA
           </NavItems>
-        </NavItemContainer>
-      </NavContainer>
-    </HeaderContainer>
+          <NavItems onClick={() => setHide(!hide)}>
+            <Icon src={HamburgerIcon} alt="" />
+          </NavItems>
+        </NavContainer>
+      </HeaderContainer>
+      <HamburgerMenuContainer hide={hide}>
+        <span
+          onClick={() => {
+            setHide(true);
+            navigate("/signUp/artist");
+          }}
+        >
+          CADASTRAR COMO ARTISTA
+        </span>
+        <span
+          onClick={() => {
+            setHide(true);
+            navigate("/signUp/enterprise");
+          }}
+        >
+          CADASTRAR COMO EMPRESA
+        </span>
+      </HamburgerMenuContainer>
+    </HeaderMainContainer>
   );
 }
 
