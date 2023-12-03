@@ -11,7 +11,7 @@ export const HeaderMainContainer = styled.div`
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 7rem;
+  height: 5.25rem;
   background-color: #050300;
   padding: 1rem;
   box-sizing: border-box;
@@ -93,7 +93,7 @@ export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
     color: #fff;
 
     &:hover {
-      
+
     }
   }
 `;

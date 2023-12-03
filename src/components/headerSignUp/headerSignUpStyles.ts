@@ -11,7 +11,7 @@ export const HeaderMainContainer = styled.div`
 
 export const HeaderContainer = styled.header`
   width: 100%;
-  height: 7rem;
+  height: 5.25rem;
   background-color: #fff;
   padding: 1rem;
   box-sizing: border-box;
