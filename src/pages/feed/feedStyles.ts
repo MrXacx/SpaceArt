@@ -4,19 +4,30 @@ export const FeedContainer = styled.div`
   width: 100%;
   height: 100vh;
   display: grid;
-  row-gap: 35px;
   box-sizing: border-box;
+  margin: 3rem 0;
+  
+  row-gap: 25px;
+  @media (min-width: 960px) {
+    row-gap: 35px;
+  }
 `;
 
 export const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
-  padding: 20px;
-  width: 500px;
   margin: 0 auto;
-  background-color: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 90%;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2);
+
+  @media (min-width: 768px) {
+    background-color: #fff;
+    border-radius: 20px;
+    width: 500px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    
+  }
 `;
 
 export const ProfileContainer = styled.div`
@@ -45,7 +56,7 @@ export const ProfileContainer = styled.div`
 `;
 
 export const TextContentContainer = styled.p`
-  font-size: .8rem 0;
+  font-size: 0.8rem 0;
 `;
 
 export const ProfilePostImage = styled.div`
@@ -54,8 +65,10 @@ export const ProfilePostImage = styled.div`
   align-self: end;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 
-  img{
+  img {
     width: 100%;
+    border-radius: 5px;
   }
 `;
