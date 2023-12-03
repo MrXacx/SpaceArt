@@ -12,7 +12,7 @@ export const HeaderMainContainer = styled.div`
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 5.25rem;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #fff;
   box-sizing: border-box;
   display: flex;
   align-items: center;
