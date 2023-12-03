@@ -10,6 +10,15 @@ export const Icon = styled.img`
   }
 `;
 
+export const HeaderMainContainer = styled.div`
+  position: fixed;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  top: 0;
+`;
+
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 7rem;
@@ -21,21 +30,6 @@ export const HeaderContainer = styled.header`
   justify-content: space-between;
   backdrop-filter: blur(8px) saturate(1.2);
   box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 0;
-
-  span:first-of-type {
-    font-size: 50px;
-    color: #fa8b08;
-    padding-left: 20px;
-    white-space: nowrap;
-  }
-
-  span {
-    font-size: 50px;
-    color: #000;
-    white-space: nowrap;
-  }
 `;
 
 export const SpaceartContainer = styled.div`
@@ -44,54 +38,60 @@ export const SpaceartContainer = styled.div`
   cursor: pointer;
 `;
 
-export const SpaceartTitle = styled.div``;
+export const SpaceartTitle = styled.span`
+  margin: auto 0;
+  font-size: 2.25rem;
+  color: #000;
+  white-space: nowrap;
+
+  span {
+    color: #fa8b08;
+  }
+
+  @media (min-width: 960px) {
+    font-size: 2.5rem;
+  }
+`;
 
 export const SpaceartLogo = styled.img`
   width: 2.5rem;
-  margin-right: 0.5rem;
-`;
-
-export const NavItemContainer = styled.ul`
-  width: 100%;
-  display: flex;
-  align-items: center;
+  margin-right: 1rem;
 `;
 
 export const NavContainer = styled.nav`
   display: flex;
-  flex-direction: row;
-`;
-
-export const NavItems = styled.li`
-  list-style: none;
-  color: #fff;
-  cursor: pointer;
-  font-size: 19px;
-  font-weight: 500;
-  text-decoration: none;
-  padding-right: 30px;
-  white-space: nowrap;
-`;
-
-export const SignUpButton = styled.button`
-  width: 150px;
-  height: 40px;
-  background-color: #ff6600;
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  font-weight: bold;
-  border: none;
-  transition: 0.3s;
+  flex-direction: row;
 
-  :hover {
-    background-color: #f47c2e;
+  ${Icon} {
+    display: none;
+
+    &:last-of-type {
+      display: flex;
+    }
+
+    @media (min-width: 960px) {
+      display: flex;
+      &:last-of-type {
+        display: none;
+      }
+    }
+  }
+`;
+
+export const FloatingButton = styled.img`
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 1rem;
+  border-radius: 50%;
+  position: fixed;
+  right: 20px;
+  bottom: 50px;
+  box-shadow: 0 0 80px #000;
+  background-color: #ff6600;
+
+  @media (min-width: 960px) {
+    display: none;
   }
 `;
 
@@ -101,9 +101,31 @@ export const ProfilePicture = styled.div`
   display: flex;
   justify-content: center;
   overflow: hidden;
-  
+
   img {
     height: 40px;
     width: inherit;
+  }
+`;
+
+export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
+  width: 100%;
+  display: ${({ hide }) => (hide ? "none" : "flex")};
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+
+  span {
+    padding: 0.5rem 0;
+    text-align: center;
+    cursor: pointer;
+    transition: 200ms;
+    border-bottom: 1px solid #0002;
+
+    &:hover {
+      background-color: #ff6600;
+      border: none;
+      color: #fff;
+    }
   }
 `;
