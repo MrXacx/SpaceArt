@@ -12,7 +12,7 @@ export const HeaderMainContainer = styled.div`
 export const HeaderContainer = styled.header`
   width: 100%;
   height: 5.25rem;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #fff;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -127,7 +127,7 @@ export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
   span {
     padding: 0.5rem 0;
     text-align: center;
-    color: #fff;
+    color: #000;
     text-transform: uppercase;
 
     &:nth-of-type(3) {
