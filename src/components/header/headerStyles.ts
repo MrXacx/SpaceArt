@@ -44,7 +44,7 @@ export const SpaceartTitle = styled.span`
   }
 
   @media (min-width: 960px) {
-    font-size : 2.5rem;
+    font-size: 2.5rem;
   }
 `;
 
@@ -129,6 +129,7 @@ export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
     text-align: center;
     color: #000;
     text-transform: uppercase;
+    background-color: #fff;
 
     &:nth-of-type(3) {
       background-color: #ff6600;
