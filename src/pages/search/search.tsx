@@ -32,24 +32,24 @@ function Search() {
       <HeaderLogged />
       <ChooseFilterContainer>
         <div>
-          <span>BUSCAR POR</span>
+          <span>SEARCH FOR</span>
           <FilterOptionsContainer>
             <FilterOption
               selected={type === AccountType.artist}
               onClick={() => setType(AccountType.artist)}
             >
-              ARTISTA
+              ARTIST
             </FilterOption>
             <FilterOption
               selected={type === AccountType.enterprise}
               onClick={() => setType(AccountType.enterprise)}
             >
-              EMPRESA
+              COMPANY
             </FilterOption>
           </FilterOptionsContainer>
         </div>
         <div>
-          <span>FILTRAR POR</span>
+          <span>FILTER FOR</span>
           <FilterOptionsContainer>
             <FilterOption
               selected={isNameFilterSelected}
@@ -58,7 +58,7 @@ function Search() {
                 setLocationFilterSelected(false);
               }}
             >
-              NOME
+              NAME
             </FilterOption>
             <FilterOption
               selected={isLocationFilterSelected}
@@ -67,7 +67,7 @@ function Search() {
                 setNameFilterSelected(false);
               }}
             >
-              LOCALIZAÇÃO
+              LOCATION
             </FilterOption>
           </FilterOptionsContainer>
         </div>

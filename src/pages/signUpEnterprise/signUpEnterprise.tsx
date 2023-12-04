@@ -39,13 +39,13 @@ function SignUpEnterprise() {
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
   const businessSections = [
-    "artes",
-    "comércio",
-    "educação",
-    "engenharia",
-    "finanças",
-    "saúde",
-    "transporte",
+    "arts",
+    "trade",
+    "education",
+    "engineering",
+    "finance",
+    "health",
+    "transportation",
   ].sort((a: string, b: string) => a.localeCompare(b));
 
   const searchCNPJ = (code: string) => {
@@ -111,7 +111,7 @@ function SignUpEnterprise() {
         <InnerContainer>
           <HeaderLogo>
             <img alt="Space art logo" src={SpaceartLogo} />
-            <h1>Cadastro de artista</h1>
+            <h1>Artist registration</h1>
           </HeaderLogo>
           <SignContainer
             onSubmit={(e: any) => {
@@ -125,7 +125,7 @@ function SignUpEnterprise() {
 
             <FormInputFullField
               type="text"
-              placeholder="Nome fantasia"
+              placeholder="Nickname"
               value={name}
               onChange={(e: any) => setName(e.target.value)}
               disabled
@@ -140,7 +140,7 @@ function SignUpEnterprise() {
 
             <FormInputHalfField
               type="tel"
-              placeholder="Telefone"
+              placeholder="Phone number"
               value={phone}
               onChange={(e: any) => setPhone(e.target.value)}
             />
@@ -162,7 +162,7 @@ function SignUpEnterprise() {
               onChange={(e: any) => setSection(e.target.value)}
             >
               <option value="" disabled>
-                Escolha um setor de atuação
+                Choose an industry
               </option>
               {businessSections.map((section) => (
                 <option value={section}>{section}</option>
@@ -171,7 +171,7 @@ function SignUpEnterprise() {
 
             <FormInputFullField
               type="text"
-              placeholder="CEP"
+              placeholder="ZIP Code"
               inputMode="numeric"
               value={CEP}
               onChange={(e: any) => {
@@ -183,7 +183,7 @@ function SignUpEnterprise() {
             />
             <FormInputHalfField
               type="text"
-              placeholder="Cidade"
+              placeholder="City"
               value={city}
               onChange={(e: any) => setCity(e.target.value)}
               disabled
@@ -191,7 +191,7 @@ function SignUpEnterprise() {
 
             <FormInputHalfField
               type="text"
-              placeholder="UF"
+              placeholder="State"
               value={state}
               onChange={(e: any) => setState(e.target.value)}
               disabled
@@ -199,27 +199,27 @@ function SignUpEnterprise() {
 
             <FormInputHalfField
               type="text"
-              placeholder="Bairro"
+              placeholder="Neighborhood"
               value={neighborhood}
               onChange={(e: any) => setNeighborhood(e.target.value)}
               disabled
             />
             <FormInputHalfField
               type="text"
-              placeholder="Endereço"
+              placeholder="Address"
               value={address}
               onChange={(e: any) => setAddress(e.target.value)}
             />
 
             <FormInputHalfField
               type="password"
-              placeholder="Senha"
+              placeholder="Password"
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}
             />
             <FormInputHalfField
               type="password"
-              placeholder="Repita sua senha"
+              placeholder="Repeat password"
               value={repeatPassword}
               onChange={(e: any) => setRepeatPassword(e.target.value)}
             />

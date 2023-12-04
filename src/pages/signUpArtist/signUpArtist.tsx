@@ -66,18 +66,18 @@ function SignUpArtist() {
       repeatPassword,
     };
 
-    let { error } = artistSignUpSchema.validate(userData); // Obtém mensagem de erro, caso exita
+    let { error } = artistSignUpSchema.validate(userData); // Obtains message error, if hesitate 
 
     if (!error) {
       dayjs.extend(relativeTime);
-      const dateDiff = parseInt(dayjs(birthday).toNow(true).substring(0, 2)); // Obtém idade do usuário
+      const dateDiff = parseInt(dayjs(birthday).toNow(true).substring(0, 2)); // Gets user age
 
       if (dateDiff >= 18) {
         setInputErrorMessage("");
 
         userData.location = { CEP, state, city };
 
-        // Apaga itens não utilizados
+        // Delete non-utilized items
         delete userData.CEP;
         delete userData.state;
         delete userData.city;
@@ -87,7 +87,7 @@ function SignUpArtist() {
         return;
       }
 
-      error = new Error("O usuário deve ter 18 anos ou mais.");
+      error = new Error("A user must be 18 years old or older.");
     }
 
     setInputErrorMessage(error.message);
@@ -97,13 +97,13 @@ function SignUpArtist() {
     <>
       <HeaderAlt
         altPageRoute="/signUp/enterprise"
-        altPageTitle="SOU EMPREENDEDOR"
+        altPageTitle="ENTREPRENEUR"
       />
       <MainSignUpContainer>
         <InnerContainer>
           <HeaderLogo>
             <img alt="Space art logo" src={SpaceartLogo} />
-            <h1>Cadastro de artista</h1>
+            <h1>Artist registration</h1>
           </HeaderLogo>
           <SignContainer
             onSubmit={(e: any) => {
@@ -117,7 +117,7 @@ function SignUpArtist() {
 
             <FormInputFullField
               type="text"
-              placeholder="Nome completo"
+              placeholder="Full name"
               value={name}
               onChange={(e: any) => setName(e.target.value)}
             />
@@ -131,7 +131,7 @@ function SignUpArtist() {
 
             <FormInputHalfField
               type="tel"
-              placeholder="Telefone"
+              placeholder="Phone number"
               value={phone}
               onChange={(e: any) => setPhone(e.target.value)}
             />
@@ -146,7 +146,7 @@ function SignUpArtist() {
 
             <FormInputFullField
               type="date"
-              placeholder="Data de nascimento"
+              placeholder="Birthday"
               value={birthday}
               onChange={(e: any) => setBirthday(e.target.value)}
             />
@@ -155,7 +155,7 @@ function SignUpArtist() {
               onChange={(e: any) => setArt(e.target.value)}
             >
               <option value="" disabled>
-                Escolha uma modalidade artística
+                Choose an artistic modality
               </option>
               {ArtTypesUtil.values().map((type: any) => (
                 <option value={type}>{type}</option>
@@ -164,14 +164,14 @@ function SignUpArtist() {
 
             <FormInputFullField
               type="number"
-              placeholder="Pretensão salarial"
+              placeholder="Expected salary"
               value={wage > 0 ? wage : ""}
               onChange={(e: any) => setWage(e.target.value)}
             />
 
             <FormInputFullField
               type="text"
-              placeholder="CEP"
+              placeholder="ZIP Code"
               inputMode="numeric"
               value={CEP}
               onChange={(e: any) => {
@@ -208,7 +208,7 @@ function SignUpArtist() {
               value={repeatPassword}
               onChange={(e: any) => setRepeatPassword(e.target.value)}
             />
-            <FormInputButton>CRIAR CONTA</FormInputButton>
+            <FormInputButton>CREATE ACCOUNT</FormInputButton>
           </SignContainer>
         </InnerContainer>
       </MainSignUpContainer>

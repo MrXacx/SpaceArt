@@ -8,7 +8,7 @@ export const agreementSchema = Joi.object({
     .trim()
     .required()
     .error(
-      (error) => new Error("É obrigatório informar uma modalidade artística")
+      (error) => new Error("It is mandatory to provide an artistic modality")
     ),
 
   description: Joi.string()
@@ -17,21 +17,21 @@ export const agreementSchema = Joi.object({
     .max(256)
     .required()
     .error(
-      (error) => new Error("A descrição deve ter entre 1 e 256 caracteres")
+      (error) => new Error("Description must have between 1 and 256 characters")
     ),
 
   price: Joi.number()
     .precision(2)
     .required()
     .error(
-      (error) => new Error("É obrigatório informar um valor de pagamento")
+      (error) => new Error("It is mandatory to provide a payment amount")
     ),
 
   date: Joi.date()
     .format("DD/MM/YYYY")
     .required()
     .error(
-      (error) => new Error("A data do evento deve seguir o formato DD/MM/AAAA")
+      (error) => new Error("Event date must follow the format DD/MM/YYYY")
     ),
 
   initialTime: Joi.date()
@@ -39,7 +39,7 @@ export const agreementSchema = Joi.object({
     .required()
     .error(
       (error) =>
-        new Error("O horário de início do evento deve seguir o formato hh:mm")
+        new Error("Event start time must follow the format HH:mm")
     ),
 
   finalTime: Joi.date()
@@ -47,6 +47,6 @@ export const agreementSchema = Joi.object({
     .required()
     .error(
       (error) =>
-        new Error("O horário de fim do evento deve seguir o formato hh:mm")
+        new Error("Event end time must follow the format HH:mm")
     ),
 });

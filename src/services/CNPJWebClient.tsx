@@ -2,25 +2,25 @@ import { APIClient } from "../api/abstracts/APIClient";
 
 export class CNPJWebClient extends APIClient {
   /**
-   * Remove todos os caracteres não aceitos
+   * Remove all non-accepted characters
    */
   static sanitize = (code: string) => code.replaceAll(/\D/gi, "");
 
   /**
-   *  Confere se a string possui o formato correto
+   *  Checks if the string has the correct format
    */
   static matches = (code: string) => code.match(/^\d{14}$/);
 
   /**
-   *  Consulta dados associados ao CNPJ
+   *  Fetches data associated with the CNPJ
    */
   fetch = async (code: string) => {
-    code = CNPJWebClient.sanitize(code); // Remove caracteres especiais
+    code = CNPJWebClient.sanitize(code); // Remove special characters
 
     if (!CNPJWebClient.matches(code)) {
-      // Executa se o código não foir válido
+      // Executes if the code is not valid
       CNPJWebClient.errorTypes.RegExpError.throw(
-        `Formato do CNPJ está incorreto: ${code}.`
+        `Incorrect CNPJ format: ${code}.`
       );
     }
 
@@ -31,7 +31,7 @@ export class CNPJWebClient extends APIClient {
     if (response.status !== CNPJWebClient.httpStatusCode.OK) {
       // Executa  se o status não for de sucesso
       CNPJWebClient.errorTypes.HTTPRequestError.throw(
-        `Não foi possível encontrar o CNPJ ${code}`
+        `Could not find CNPJ ${code}`
       );
     }
 
