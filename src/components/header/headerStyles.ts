@@ -127,7 +127,7 @@ export const HamburgerMenuContainer = styled.div<{ hide?: boolean }>`
   span {
     padding: 0.5rem 0;
     text-align: center;
-    color: #fff;
+    color: #000;
     text-transform: uppercase;
 
     &:nth-of-type(3) {
