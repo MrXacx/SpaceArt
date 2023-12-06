@@ -39,13 +39,13 @@ function ProfileUpdate() {
   const [art, setArt] = useState(user.art);
 
   const businessSections = [
-    "artes",
-    "comércio",
-    "educação",
-    "engenharia",
-    "finanças",
-    "saúde",
-    "transporte",
+    "arts",
+    "trade",
+    "education",
+    "engineering",
+    "finance",
+    "health",
+    "transportation",
   ].sort((a: string, b: string) => a.localeCompare(b));
 
   const update = () => {
@@ -91,7 +91,7 @@ function ProfileUpdate() {
                 src={XIcon}
                 onClick={() => toogleProfileUpdateVisibility()}
               />
-              <h1>Atualizar perfil</h1>
+              <h1>Update profile</h1>
             </HeaderLogo>
             <SignContainer
               onSubmit={(e: any) => {
@@ -105,7 +105,7 @@ function ProfileUpdate() {
               <FormInputHalfField
                 type="text"
                 placeholder={`Nome ${
-                  type === AccountType.artist ? "Artístico" : "Fantasia"
+                  type === AccountType.artist ? "Artistic" : "Fantasy"
                 }`}
                 value={name}
                 onChange={({ target }) => setName(target.value)}
@@ -114,7 +114,7 @@ function ProfileUpdate() {
                 type="file"
                 accept="image/*"
                 size={40000}
-                placeholder="Foto de perfil"
+                placeholder="Profile photo"
                 onChange={({ target }) => setImage(target.files?.item(0))}
               />
               <FormInputFullField
@@ -132,7 +132,7 @@ function ProfileUpdate() {
                     }
                   >
                     <option disabled selected>
-                      Arte
+                      Art
                     </option>
                     {ArtTypesUtil.values().map((item) => (
                       <option value={item}>{item}</option>
@@ -149,7 +149,7 @@ function ProfileUpdate() {
                   value={section}
                   onChange={({ target }) => setSection(target.value)}
                 >
-                  <option disabled>Setor de atuação</option>
+                  <option disabled>Industry</option>
                   {businessSections.map((section) => (
                     <option value={section}>{section}</option>
                   ))}
@@ -161,7 +161,7 @@ function ProfileUpdate() {
               >
                 {description}
               </FormTextbox>
-              <FormInputButton>Salvar Alterações</FormInputButton>
+              <FormInputButton>Save</FormInputButton>
             </SignContainer>
           </InnerContainer>
         </MainSignUpContainer>

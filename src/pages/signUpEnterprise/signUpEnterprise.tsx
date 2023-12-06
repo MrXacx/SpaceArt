@@ -106,12 +106,12 @@ function SignUpEnterprise() {
 
   return (
     <>
-      <HeaderAlt altPageRoute="/signUp/artist" altPageTitle="SOU ARTISTA" />
+      <HeaderAlt altPageRoute="/signUp/artist" altPageTitle="ARTIST" />
       <MainSignUpContainer>
         <InnerContainer>
           <HeaderLogo>
             <img alt="Space art logo" src={SpaceartLogo} />
-            <h1>Artist registration</h1>
+            <h1>Entrepreneur registration</h1>
           </HeaderLogo>
           <SignContainer
             onSubmit={(e: any) => {
@@ -223,7 +223,7 @@ function SignUpEnterprise() {
               value={repeatPassword}
               onChange={(e: any) => setRepeatPassword(e.target.value)}
             />
-            <FormInputButton>CRIAR CONTA</FormInputButton>
+            <FormInputButton>CREATE ACCOUNT</FormInputButton>
           </SignContainer>
         </InnerContainer>
       </MainSignUpContainer>

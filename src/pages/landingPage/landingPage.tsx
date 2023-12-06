@@ -34,11 +34,11 @@ function LandingPage() {
   }, [fetchRandomUsers, searchResult.length]);
 
   const artItems = [
-    { image: MicImage, name: "MÚSICA" },
-    { image: ArtImage, name: "PINTURA" },
-    { image: DancerImage, name: "DANÇA" },
-    { image: SculptureImage, name: "ESCULTURA" },
-    { image: TheaterImage, name: "TEATRO" },
+    { image: MicImage, name: "MUSIC" },
+    { image: ArtImage, name: "PAINT" },
+    { image: DancerImage, name: "DANCE" },
+    { image: SculptureImage, name: "SCUPTURE" },
+    { image: TheaterImage, name: "THEATHER" },
   ];
 
   return (
@@ -47,32 +47,31 @@ function LandingPage() {
       <OpeningBannerContainer>
         <OpeningBannerContent>
           <span>
-            ONDE <b>TALENTOS</b>
-            <br></br>TÊM VEZ
+            WHERE <b>TALENTS</b>
+            <br></br>HAVE THEIR TURN
           </span>
           <div>
             <button onClick={() => navigate("/signUp/artist")}>
-              CRIE UMA CONTA
+              CREATE AN ACCOUNT
             </button>
           </div>
         </OpeningBannerContent>
       </OpeningBannerContainer>
       <AboutUsContainer id="about-us">
         <AboutUsText>
-          <h2>QUEM SOMOS</h2>
+          <h2>HOW WE ARE</h2>
           <p>
-            A Space art é um projeto que foi desenvolvido para ser focado na
-            conexão entre artistas informais e empreendedores, facilitando a
-            busca por interesses e a comunicação de uma forma revolucionária
-            para toda a indústria do setor artístico e cultural,
-            disponibilizando para o usuário diversas ferramentas de
-            personalização.
+            Space Art is a project that has been developed to focus on the
+            connection between informal artists and entrepreneurs, facilitating
+            the search for interests and communication in a revolutionary way
+            for the entire artistic and cultural sector. It provides users with
+            various customization tools.
           </p>
         </AboutUsText>
         <AboutUsBanner alt="Man painting abstract art" src={AboutUsImage} />
       </AboutUsContainer>
       <ChooseArtistContainer id="art-types">
-        <h2>ESCOLHA SEU MODELO DE ARTE PREFERIDO</h2>
+        <h2>CHOOSE YOUR FAVORITE ART</h2>
         <ChooseArtistCardContainer>
           {artItems.map((artItem) => (
             <ArtCardContainer>
@@ -83,7 +82,7 @@ function LandingPage() {
         </ChooseArtistCardContainer>
       </ChooseArtistContainer>
       <SearchArtistContainer id="search-artists">
-        <h2>BUSQUE ARTISTAS DE SUA CIDADE</h2>
+        <h2>SEARCH ARTIST OF YOUR CITY</h2>
         <LocationFilterBar withArtField={true} />
         <CardProfileContainer>
           {searchResult
@@ -91,7 +90,7 @@ function LandingPage() {
               (item: any) => item.art === artFilter || artFilter === undefined
             )
             .map(
-              // converte o estado do contexto em component
+              // covert context states in components
               (data: any) => (
                 <CardProfile
                   id={data.id}

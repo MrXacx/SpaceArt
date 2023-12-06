@@ -69,7 +69,7 @@ function Profile() {
 
   const fetchProfileOwner = useCallback(() => {
     if (params.index === index) {
-      // Executa caso o index da url condizer com o do usuário logado // Execute in case url index 
+      // Execute in case url index match with logged user
       setProfileData(user);
       return user.id;
     } else {

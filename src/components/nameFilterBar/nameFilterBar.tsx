@@ -32,7 +32,7 @@ function NameFilterBar(props: FilterBarProps) {
 		<CategoryContainer with_art_field={props.withArtField}>
 
 			<CategoryInput
-				placeholder="DIGITE O NOME DO USUÁRIO"
+				placeholder="TYPE USER NAME"
 				value={name}
 				onChange={(e: any) => setName(e.target.value)}
 			/>
@@ -41,14 +41,14 @@ function NameFilterBar(props: FilterBarProps) {
 				onChange={(e: any) => setArt(e.target.value)}
 
 			>
-				<option disabled selected>ESCOLHA TIPO DE ARTE</option>
+				<option disabled selected>CHOOSE ART TYPE</option>
 				{ArtTypesUtil
 					.values()
 					.sort((a: ArtType, b: ArtType) => a.localeCompare(b))
 					.map((type: ArtType) => <option value={type}>{type}</option>)
 				}
 			</CategorySelect>
-			<CategoryButton onClick={() => search()}>PESQUISAR</CategoryButton>
+			<CategoryButton onClick={() => search()}>SEARCH</CategoryButton>
 		</CategoryContainer>
 	);
 }

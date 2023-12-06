@@ -36,7 +36,7 @@ function HeaderSignIn() {
         </SpaceartContainer>
         <NavContainer>
           <NavItems onClick={() => navigate("/signUp/artist")}>
-            CRIAR UMA CONTA
+            CREATE AN ACCOUNT
           </NavItems>
           <NavItems onClick={() => setHide(!hide)}>
             <Icon src={HamburgerIcon} alt="" />
@@ -50,7 +50,7 @@ function HeaderSignIn() {
             navigate("/signUp/artist");
           }}
         >
-          CADASTRAR COMO ARTISTA
+          SIGN UP ARTIST
         </span>
         <span
           onClick={() => {
@@ -58,7 +58,7 @@ function HeaderSignIn() {
             navigate("/signUp/enterprise");
           }}
         >
-          CADASTRAR COMO EMPRESA
+          SIGN UP ENTERPRISE
         </span>
       </HamburgerMenuContainer>
     </HeaderMainContainer>

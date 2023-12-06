@@ -25,37 +25,37 @@ function Config() {
       <MainContainer>
         <BoxContainer>
           <ConfigContainer>
-            <h2>Aparência</h2>
+            <h2>Appearance</h2>
 
             <ArrowContainer onClick={() => toogleProfileUpdateVisibility()}>
-              <span>Editar perifl</span>
+              <span>Edit profile</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
           </ConfigContainer>
 
           <ConfigContainer>
-            <h2>Gerenciamento de conta</h2>
+            <h2>Manage account</h2>
 
             <ArrowContainer onClick={() => tooglePrivateDataUpdateVisibility()}>
-              <span>Alterar dados privados</span>
-              <img alt="seta" src={ArrowIcon} />
+              <span>Alter private data</span>
+              <img alt="arrow" src={ArrowIcon} />
             </ArrowContainer>
             <ArrowContainer onClick={logOut}>
-              <span>Desconectar</span>
-              <img alt="seta" src={ArrowIcon} />
+              <span>Disconnect</span>
+              <img alt="arrow" src={ArrowIcon} />
             </ArrowContainer>
             <ArrowContainer
               onClick={() => {
                 if (
                   window.confirm(
-                    "Você tem certeza de que deseja excluir esta conta? Esse ato não poderá ser desfeito"
+                    "Are you sure you want delete your account? This act is permanent."
                   )
                 ) {
                   deleteLoggedUse();
                 }
               }}
             >
-              <span>Apagar conta</span>
+              <span>Delete account</span>
               <img alt="seta" src={ArrowIcon} />
             </ArrowContainer>
           </ConfigContainer>

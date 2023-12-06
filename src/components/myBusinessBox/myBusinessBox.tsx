@@ -9,7 +9,7 @@ function MyBusinessBox() {
     <ArtistSelected>
       <ProfileInnerContainer>
         <ProfileDetail>
-          <span>Música</span>
+          <span>Music</span>
           <h3>Maria Betânia</h3>
         </ProfileDetail>
         <input type="checkbox" />

@@ -14,7 +14,7 @@ import { SearchContext } from "../../contexts/SearchContext";
 import { BrazilianCitiesWebClient } from "../../services/BrazilianCitiesWebClient";
 
 interface FilterBarProps {
-  // Parâmetros que o componente deve receber
+  // Parameters component must receive
   withArtField: boolean;
 }
 
@@ -58,7 +58,7 @@ function LocationFilterBar(props: FilterBarProps) {
         }}
       >
         <option disabled selected>
-          SELECIONE SEU ESTADO
+          SELECT A STATE
         </option>
         {BrazilianStatesUtil.values()
           .sort((a: BrazilianState, b: BrazilianState) => a.localeCompare(b))
@@ -72,7 +72,7 @@ function LocationFilterBar(props: FilterBarProps) {
         onChange={(e: any) => setCity(e.target.value)}
       >
         <option value={""} disabled selected>
-          SELECIONE SUA CIDADE
+          SELECT A CITY
         </option>
         {cities
           .sort((a: string, b: string) => a.localeCompare(b))
@@ -87,7 +87,7 @@ function LocationFilterBar(props: FilterBarProps) {
         onChange={(e: any) => setArt(e.target.value)}
       >
         <option disabled selected>
-          ESCOLHA TIPO DE ARTE
+          CHOOSE ART TYPE
         </option>
         {ArtTypesUtil.values()
           .sort((a: ArtType, b: ArtType) => a.localeCompare(b))
@@ -95,7 +95,7 @@ function LocationFilterBar(props: FilterBarProps) {
             <option value={type}>{type}</option>
           ))}
       </CategorySelect>
-      <CategoryButton onClick={(e: any) => search()}>PESQUISAR</CategoryButton>
+      <CategoryButton onClick={(e: any) => search()}>SEARCH</CategoryButton>
     </CategoryContainer>
   );
 }

@@ -64,7 +64,7 @@ function SignIn() {
 
             <FormInputFullField
               type="password"
-              placeholder="Senha"
+              placeholder="Passowrd"
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}
             />
