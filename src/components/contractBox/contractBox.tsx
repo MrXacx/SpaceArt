@@ -49,15 +49,15 @@ function ContractBox(props: ContractBoxProps) {
         </ContractMask>
         <ContractHiddenDetail opened={isOpened}>
           <ContractHiddenDetailItem>
-            <span>Preço</span>
+            <span>Price</span>
             <span>{`R$${props.price}`}</span>
           </ContractHiddenDetailItem>
           <ContractHiddenDetailItem>
-            <span>Período</span>
+            <span>Period</span>
             <span>{`${props.time.start} - ${props.time.end}`}</span>
           </ContractHiddenDetailItem>
           <ContractHiddenDetailItem>
-            <span>Descrição</span>
+            <span>Description</span>
             <span>{props.description}</span>
           </ContractHiddenDetailItem>
 
@@ -69,14 +69,14 @@ function ContractBox(props: ContractBoxProps) {
               onClick={() => {
                 if (
                   window.confirm(
-                    "Você tem certeza disso? Essa ação não pode ser desfeita!"
+                    "Are you sure? This action can't be unchanged!"
                   )
                 ) {
                   deleteAgreement(props.id).then(() => setHidden(true));
                 }
               }}
             >
-              Interromper
+              Interrupt
             </ContractOptionButton>
             <ContractOptionButton
               type="button"
@@ -88,7 +88,7 @@ function ContractBox(props: ContractBoxProps) {
                 toogleLookRatesVisibility();
               }}
             >
-              Conferir avaliações
+              Check rating
             </ContractOptionButton>
           </ContractOptions>
         </ContractHiddenDetail>

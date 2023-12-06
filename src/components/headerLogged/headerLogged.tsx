@@ -44,29 +44,29 @@ function HeaderLogged() {
           <NavContainer>
             <Icon
               src={HomeIcon}
-              title="Ir para home"
+              title="Go home"
               onClick={() => navigate("/feed")}
             />
             <Icon src={PlusIcon} title="Nova publicação" />
             <Icon
               src={SearchBlackIcon}
-              title="Pesquisar"
+              title="Search"
               onClick={() => navigate("/search")}
             />
             <Icon
               src={SuitcaseIcon}
-              title="Serviços"
+              title="Services"
               onClick={() => navigate("/services")}
             />
             <Icon
               src={SettingIcon}
-              title="Configurações"
+              title="Configuration"
               onClick={() => navigate("/config")}
             />
             <ProfilePicture>
               <img
                 src={user.image}
-                alt={`Perfil de ${user.name}`}
+                alt={`${user.name}'s profile`}
                 onClick={() => navigate(`/user/${user.index}`)}
               />
             </ProfilePicture>
@@ -88,7 +88,7 @@ function HeaderLogged() {
               navigate("/search");
             }}
           >
-            PESQUISAR
+            SEARCH
           </span>
           <span
             onClick={() => {
@@ -96,7 +96,7 @@ function HeaderLogged() {
               navigate("/services");
             }}
           >
-            SERVIÇOS
+            SERVICES
           </span>
           <span
             onClick={() => {
@@ -104,7 +104,7 @@ function HeaderLogged() {
               navigate("/config");
             }}
           >
-            CONFIGURAÇÕES
+            CONFIGURATION
           </span>
         </HamburgerMenuContainer>
       </HeaderMainContainer>

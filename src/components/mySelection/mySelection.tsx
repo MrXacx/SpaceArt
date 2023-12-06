@@ -77,7 +77,7 @@ function MySelection(props: MySelectionProps) {
             src={XIcon}
             onClick={() => toogleMySelectionVisibility()}
           />
-          <h1>Minhas seleções</h1>
+          <h1>My selections</h1>
         </HeaderLogo>
         <SignContainer>
           {selections
@@ -105,7 +105,7 @@ function MySelection(props: MySelectionProps) {
               setSkipSelectArtistToContract(false);
             }}
           />
-          <h1>Selecione um artista</h1>
+          <h1>Select an artist</h1>
         </HeaderLogo>
         <SignContainer>
           <SearchResults>
@@ -131,7 +131,7 @@ function MySelection(props: MySelectionProps) {
               setSkipSelectArtistToContract(true);
             }}
           >
-            CONTRATAR
+            HIRE
           </FormInputButton>
         </SignContainer>
       </ModalContainer>

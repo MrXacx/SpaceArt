@@ -29,7 +29,7 @@ const signUpSchema = {
   email: emailSchema.required(),
   phone: phoneSchema.required(),
   password: passwordSchema.required(),
-  repeatPassword: Joi.ref("password"), // deve ser idêntica ao password
+  repeatPassword: Joi.ref("password"), // must be identical to the password
   CEP: postalCodeSchema.required(),
   city: citySchema.required(),
   state: stateSchema.required(),
@@ -40,19 +40,19 @@ export const artistSignUpSchema = Joi.object({
   wage: wageSchema.required(),
 
   CPF: cpfSchema
-    .error((error) => new Error("É obrigatório apresentar um CPF"))
+    .error((error) => new Error("A CPF is required"))
     .required(),
 
   art: Joi.string()
     .error(
       (error) =>
-        new Error("A pretensão salarial deve conter duas casas decimais")
+        new Error("Salary expectation must have two decimal places")
     )
     .required(),
 
   birthday: Joi.date()
     .format("DD/MM/YYYY")
-    .error((error) => new Error("A data deve seguir o formato DD/MM/AAAA"))
+    .error((error) => new Error("Date must follow the format DD/MM/YYYY"))
     .required(),
 });
 
@@ -65,7 +65,7 @@ export const enterpriseSignUpSchema = Joi.object({
     .min(1)
     .max(30)
     .error(
-      (error) => new Error("A razão social deve ter entre 1 e 30 caracteres")
+      (error) => new Error("Company name must have between 1 and 30 characters")
     )
     .required(),
 

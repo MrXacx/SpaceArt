@@ -8,7 +8,7 @@ export class ImageCompressor {
 
   static toBase64 = (
     image: Blob,
-    callback = (result: string) => console.log("Conversão finalizada")
+    callback = (result: string) => console.log("Conversion completed")
   ) => {
     const reader = new FileReader();
 

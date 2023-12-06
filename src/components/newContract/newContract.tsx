@@ -53,14 +53,14 @@ function NewContract() {
 
   const fetchRecentChats = useCallback(
     () =>
-      fetchChats(0, 10) // Obtém conversas recentes
+      fetchChats(0, 10) // Obtain recent conversations
         .then((chats: any[]) =>
           Promise.all(
-            // Obtém os artistas dessas conversas
+            // Get artist chats
             chats.map((chat) => new Artist(chat.artist).fetch(false))
           )
         )
-        // Converte as instâncias em objetos literais
+        // Converts instances into literal objects.
         .then((artists: Artist[]) =>
           artists.map((artist) => artist.toObject())
         ),
@@ -78,7 +78,7 @@ function NewContract() {
             city: item.location.city,
           }))
         )
-        .then(setSearchResult) // Define artistas padrões
+        .then(setSearchResult) // Defines artist standards
         .catch((e: any) => console.log(e.message));
     }
   }, [fetchChats, fetchRecentChats, artist, setSearchResult, searchedName]);
@@ -94,7 +94,7 @@ function NewContract() {
   useEffect(() => {
     try {
       const { art, wage } = artist?.toObject();
-      // Substitui dados pelos valores do artista selecionado
+      // Substitui dados pelos valores do artista selecionado // Replace data for selected artist values
       setArt(ArtTypesUtil.parse(art));
       setPrice(wage);
     } catch (e: any) {
@@ -145,7 +145,7 @@ function NewContract() {
               setSkipSelectArtistToContract(false);
             }}
           />
-          <h1>{!selectedArtist ? "Selecione um artista" : "Novo contrato"}</h1>
+          <h1>{!selectedArtist ? "Select an artist" : "New contract"}</h1>
         </HeaderLogo>
         {!selectedArtist ? (
           // Antigo SelectArtist
@@ -158,7 +158,7 @@ function NewContract() {
             <SearchArtistInputContainer>
               <SearchArtistInput
                 type="text"
-                placeholder="Artista"
+                placeholder="Artist"
                 onChange={(e: any) => setSearchedName(e.target.value)}
               />
               <SearchArtistButton>
@@ -173,9 +173,9 @@ function NewContract() {
                   image={artist.image}
                   art={artist.art}
                   location={{
-                    CEP: artist.CEP ?? "Desconhecido",
-                    city: artist.city ?? "Desconhecido",
-                    state: artist.state ?? "Desconhecido",
+                    CEP: artist.CEP ?? "Unknown",
+                    city: artist.city ?? "Unknown",
+                    state: artist.state ?? "Unknown",
                   }}
                   wage={artist.wage}
                 />
@@ -184,11 +184,11 @@ function NewContract() {
             <FormInputButton
               onClick={() => setSelectedArtist(artist?.toObject())}
             >
-              AVANÇAR
+              NEXT
             </FormInputButton>
           </SignContainer>
         ) : (
-          // Formlário contendo o artista selecionado
+          // Form containing selected artist
           <SignContainer
             onSubmit={(e: any) => {
               e.preventDefault();
@@ -210,39 +210,39 @@ function NewContract() {
             <FormInputFullField
               value={art}
               type="text"
-              placeholder="Arte"
+              placeholder="Art"
               disabled
             />
             <FormInputFullField
               type="number"
-              placeholder="Valor"
+              placeholder="Value"
               value={price?.toFixed(2)}
               onChange={(e: any) => setPrice(parseFloat(e.target.value))}
             />
             <FormInputFullField
               type="date"
-              placeholder="Data do evento"
+              placeholder="Event date"
               value={date}
               onChange={(e: any) => setDate(e.target.value)}
             />
             <FormInputHalfField
               type="time"
-              placeholder="Horário de início"
+              placeholder="Initial hour"
               value={initialTime}
               onChange={(e: any) => setInitialTime(e.target.value)}
             />
             <FormInputHalfField
               type="time"
-              placeholder="Horário de encerramento"
+              placeholder="Closing time"
               value={finalTime}
               onChange={(e: any) => setFinalTime(e.target.value)}
             />
             <FormInputTextbox
-              placeholder="Descrição"
+              placeholder="Description"
               value={description}
               onChange={(e: any) => setDescription(e.target.value)}
             />
-            <FormInputButton>CRIAR CONTRATO</FormInputButton>
+            <FormInputButton>CREATE CONTRACT</FormInputButton>
           </SignContainer>
         )}
       </ModalContainer>

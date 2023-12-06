@@ -3,7 +3,7 @@ import { BrazilianState } from "../enums/BrazilianState";
 
 export class BrazilianCitiesWebClient extends APIClient {
   /**
-   *  Consulta dados associados ao CEP
+   *  Fetches data associated with the postal code (CEP).
    */
   fetch = async (state: BrazilianState) => {
     const response = await this.request.get(
@@ -11,7 +11,7 @@ export class BrazilianCitiesWebClient extends APIClient {
     );
 
     if (response.status !== 200) {
-      // Executa caso a resposta não seja de sucesso
+      // Executes if the response is not successful
       BrazilianCitiesWebClient.errorTypes.HTTPRequestError.throw();
     }
 

@@ -42,7 +42,7 @@ function MyContract(props: MyContractProps) {
       time: { start: "07:30", end: "16:00" },
       date: "17/11/2023",
       price: 500,
-      description: "testando",
+      description: "testing",
       status: "send",
     },
     {
@@ -53,7 +53,7 @@ function MyContract(props: MyContractProps) {
       time: { start: "17:30", end: "23:00" },
       date: "17/11/2023",
       price: 500,
-      description: "testando",
+      description: "testing",
       status: "accepted",
     },
     {
@@ -64,7 +64,7 @@ function MyContract(props: MyContractProps) {
       time: { start: "09:50", end: "17:00" },
       date: "17/11/2023",
       price: 500,
-      description: "testando",
+      description: "testing",
       status: "accepted",
     },
     {
@@ -75,7 +75,7 @@ function MyContract(props: MyContractProps) {
       time: { start: "10:00", end: "14:00" },
       date: "17/11/2023",
       price: 500,
-      description: "testando",
+      description: "testing",
       status: "refused",
     },
   ]);
@@ -103,7 +103,7 @@ function MyContract(props: MyContractProps) {
 
   useEffect(() => {
     if (agreement) {
-      fetchRatesFromAgreement(agreement.getID()).then(setRates); // Obtém avaliações do contrato
+      fetchRatesFromAgreement(agreement.getID()).then(setRates); // Get contract rate
     }
   }, [agreement, fetchRatesFromAgreement]);
 
@@ -116,7 +116,7 @@ function MyContract(props: MyContractProps) {
             src={XIcon}
             onClick={() => toogleMyContractVisibility()}
           />
-          <h1>Meus contratos</h1>
+          <h1>My contracts</h1>
         </HeaderLogo>
         <SignContainer>
           {contracts
@@ -141,7 +141,7 @@ function MyContract(props: MyContractProps) {
             src={XIcon}
             onClick={() => toogleLookRatesVisibility()}
           />
-          <h1>Selecione um artista</h1>
+          <h1>Select an artist</h1>
         </HeaderLogo>
         <SignContainer>
           <SearchResults>

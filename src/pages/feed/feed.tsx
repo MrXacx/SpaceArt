@@ -34,7 +34,7 @@ function Feed() {
             <ProfileContainer>
               <img
                 src={data.author.image}
-                alt={`Perfil de ${data.author.name}`}
+                alt={`${data.author.name}'s profile`}
                 onClick={() => navigate(`/user/${data.author.index}`)}
               />
               <div>
@@ -44,7 +44,7 @@ function Feed() {
             </ProfileContainer>
             <TextContentContainer>{data.message}</TextContentContainer>
             <ProfilePostImage>
-              <img src={data.media} alt="imagem" />
+              <img src={data.media} alt="image" />
             </ProfilePostImage>
           </PostContainer>
         ))}

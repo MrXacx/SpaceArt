@@ -96,11 +96,11 @@ function PrivateDataUpdate() {
                 src={XIcon}
                 onClick={() => tooglePrivateDataUpdateVisibility()}
               />
-              <h1>Alterar perfil</h1>
+              <h1>Alter profile</h1>
               <p>
-                Altere todos os campos que deseja atualizar. Caso não tenha
-                encontrado o campo desejado, isso significa que o dado informado
-                não pode ser modificado por questão de segurança.
+                Modify all fields you wish to update. If you haven't found the
+                desired field, it means that the provided data cannot be
+                modified for security reasons.
               </p>
             </HeaderLogo>
             <SignContainer
@@ -131,13 +131,13 @@ function PrivateDataUpdate() {
               />
               <FormInputHalfField
                 type="text"
-                placeholder="Cidade"
+                placeholder="City"
                 disabled
                 value={city}
               />
               <FormInputHalfField
                 type="text"
-                placeholder="UF"
+                placeholder="State"
                 disabled
                 value={state}
               />
@@ -145,13 +145,13 @@ function PrivateDataUpdate() {
                 <>
                   <FormInputFullField
                     type="text"
-                    placeholder="Bairro"
+                    placeholder="Neighborhood"
                     disabled
                     value={neighborhood}
                   />
                   <FormInputFullField
                     type="text"
-                    placeholder="Endereço"
+                    placeholder="Address"
                     value={address}
                     disabled={CEP.length < 8}
                     onChange={({ target }) => setAddress(target.value)}
@@ -163,17 +163,17 @@ function PrivateDataUpdate() {
 
               <FormInputHalfField
                 type="password"
-                placeholder="Nova senha"
+                placeholder="New password"
                 value={password}
                 onChange={({ target }) => setPassword(target.value)}
               />
               <FormInputHalfField
                 type="password"
-                placeholder="Repita a nova senha"
+                placeholder="Repeat new password"
                 value={repeatPassword}
                 onChange={({ target }) => setRepeatPassword(target.value)}
               />
-              <FormInputButton>Salvar Alterações</FormInputButton>
+              <FormInputButton>Save</FormInputButton>
             </SignContainer>
           </InnerContainer>
         </MainSignUpContainer>

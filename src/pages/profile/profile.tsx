@@ -44,14 +44,13 @@ import { UserContext } from "../../contexts/UserContext";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import portugueseLocale from "dayjs/locale/pt-br";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import calendar from "dayjs/plugin/calendar";
 
 function Profile() {
   dayjs.extend(customParseFormat);
   dayjs.extend(calendar);
-  dayjs.locale(portugueseLocale);
+
 
   const params = useParams();
   const {
@@ -70,12 +69,12 @@ function Profile() {
 
   const fetchProfileOwner = useCallback(() => {
     if (params.index === index) {
-      // Executa caso o index da url condizer com o do usuário logado
+      // Execute in case url index match with logged user
       setProfileData(user);
       return user.id;
     } else {
-      // Executa caso o perfil seja de outro usuário
-      return fetchAnotherUser(params.index) // busca dados do usuário
+      // Execute in case profile belongs to another user
+      return fetchAnotherUser(params.index) // search user data
         .then((data: any) => {
           setProfileData(data ?? {});
           return data.id;
@@ -101,25 +100,25 @@ function Profile() {
     let i = 0;
     const days: any = [];
     switch (date.format("dddd").toLowerCase()) {
-      case "domingo":
+      case "sunday":
         i = 0;
         break;
-      case "segunda-feira":
+      case "monday":
         i = -1;
         break;
-      case "terça-feira":
+      case "tuesday":
         i = -2;
         break;
-      case "quarta-feira":
+      case "wednesday":
         i = -3;
         break;
-      case "quinta-feira":
+      case "thursday":
         i = -4;
         break;
-      case "sexta-feira":
+      case "friday":
         i = -5;
         break;
-      case "sábado":
+      case "saturday":
         i = -6;
         break;
     }
@@ -162,40 +161,40 @@ function Profile() {
             <Blob>
               <img src={profileData.image} alt={profileData.name ?? ""} />
             </Blob>
-            <Icon src={ProfileImage} alt="Usuário com mais de 100 contratos" />
+            <Icon src={ProfileImage} alt="User with more than 100 contracts" />
           </UserImage>
           <UserInfo>
             <UserStats>
               <li>
                 {posts.length > 1
-                  ? `${posts.length} Publicações`
-                  : `${posts.length} Publicação`}
+                  ? `${posts.length} Posts`
+                  : `${posts.length} Post`}
               </li>
               <li>
                 {agreements.length > 1
-                  ? `${agreements.length} Contratos`
-                  : `${agreements.length} Contrato`}
+                  ? `${agreements.length} Contracts`
+                  : `${agreements.length} Contract`}
               </li>
             </UserStats>
 
             <UserDetails>
               <UserDetailsHeader>
                 <UserName>
-                  {profileData.name ?? "Usuário desconhecido"}
+                  {profileData.name ?? "Unknown user"}
                 </UserName>
                 <UserType>{profileData.art ?? profileData.type ?? ""}</UserType>
               </UserDetailsHeader>
 
               <ul>
                 <UserDetailsItem>
-                  <Icon src={LocationIcon} alt="localização" />
+                  <Icon src={LocationIcon} alt="location" />
                   <span>{`${profileData.location?.city ?? ""} - ${
                     profileData.location?.state ?? ""
                   }`}</span>
                 </UserDetailsItem>
 
                 <UserDetailsItem>
-                  <Icon src={StarIcon} alt="nota" />
+                  <Icon src={StarIcon} alt="grade" />
                   <span>{profileData.rate?.toFixed(2)}</span>
                 </UserDetailsItem>
 
@@ -207,7 +206,7 @@ function Profile() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Meu site
+                      my site
                     </a>
                   </UserDetailsItem>
                 ) : (
@@ -219,12 +218,12 @@ function Profile() {
             <ProfileTools>
               <Icon
                 src={ShareIcon}
-                alt="compartilhar"
+                alt="share"
                 onClick={() => {
                   window.navigator
                     .share({
                       title: `${profileData.name} | Space Art`,
-                      text: `Conheça o perfil de ${profileData.name} no Space Art`,
+                      text: `Discover ${profileData.name} profile in Space Art`,
                       url: window.location.href,
                     })
                     .catch(console.log);
@@ -235,7 +234,7 @@ function Profile() {
         </ProfileContent>
 
         <DescriptionContainer is_visible={profileData.description}>
-          <span>Descrição</span>
+          <span>Description</span>
           <p>{profileData.description}</p>
         </DescriptionContainer>
       </ProfileHeader>
@@ -243,7 +242,7 @@ function Profile() {
       <Wrapper>
         <CalendarContainer expanded={filteredAgreements.length > 0}>
           <h1>
-            {profileData.index === index ? "Sua agenda" : "Agenda do usuário"}
+            {profileData.index === index ? "Calendar" : "User calendar"}
           </h1>
           <div>
             <Calendar>
@@ -265,13 +264,13 @@ function Profile() {
                 </MonthNavbar>
 
                 <DaysOfWeek>
-                  <span>Dom</span>
-                  <span>Seg</span>
-                  <span>Ter</span>
-                  <span>Qua</span>
-                  <span>Qui</span>
-                  <span>Sex</span>
-                  <span>Sab</span>
+                  <span>SUN</span>
+                  <span>MON</span>
+                  <span>TUE</span>
+                  <span>WED</span>
+                  <span>THU</span>
+                  <span>FRI</span>
+                  <span>SAT</span>
                 </DaysOfWeek>
               </CalendarHeader>
               <CalendarNumberContainer>
@@ -281,9 +280,9 @@ function Profile() {
             <JobsDayContainer>
               <DateHeader>
                 {dayjs(selectedDate).calendar(null, {
-                  sameDay: "[Hoje]",
-                  nextDay: "[Amanhã] ",
-                  lastDay: "[Ontem]",
+                  sameDay: "[Today]",
+                  nextDay: "[Tomorrow] ",
+                  lastDay: "[Yesterday]",
                   nextWeek: "DD/MM/YYYY",
                   lastWeek: "DD/MM/YYYY",
                   sameElse: "DD/MM/YYYY",

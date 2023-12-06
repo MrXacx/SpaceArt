@@ -18,7 +18,7 @@ export const SearchProvider = ({ children }: SearchStoreProps) => {
     return users.map((user) => {
       const data = user.toObject();
 
-      // Obtém art e wage apenas caso a busca envolva artistas
+      // Obtain art and wage in case search include artist
       const { art, wage } =
         user instanceof Artist
           ? user.toObject()

@@ -120,15 +120,15 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       ImageCompressor.toBase64(
         image,
         (
-          result: string // Converte imagem em string
+          result: string // Convert image to string
         ) =>
           new Artist()
             .build({ ...artistData, image: result })
-            .signUp() // realiza cadastro
+            .signUp() // register
             .then(() => {
               //logOut();
               signIn(artistData.email, artistData.password);
-            }) // realiza login
+            }) // login
             .catch(console.log)
       )
     );
@@ -155,15 +155,15 @@ export const UserStorage = ({ children }: UserStoreProps) => {
       ImageCompressor.toBase64(
         image,
         (
-          result: string // Converte imagem em string
+          result: string // Convert image to string
         ) =>
           new Enterprise()
             .build({ ...enterpriseData, image: result })
-            .signUp() // Cadastra artista
+            .signUp() // Artist register
             .then(() => {
               logOut();
               signIn(enterpriseData.email, enterpriseData.password);
-            }) // Realiza login
+            }) // login
             .catch(console.log)
       )
     );
@@ -318,7 +318,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
           rates.map((item: Rate) => {
             const rate = item.toObject();
             return rate.author?.fetch().then((author) => {
-              rate.author = author; // Sobrepõe objeto de User por um objeto literal com dados buscados
+              rate.author = author; // Overwrites the User object with a literal object containing fetched data.
               return rate;
             });
           })
@@ -332,7 +332,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const deleteAgreement = (agreement: string) =>
     new Agreement(agreement).delete().catch(console.log);
 
-  // SELEÇÕES
+  // SELECTIONS
   const sendSelection = (data: {
     owner: string;
     price: number;
@@ -364,7 +364,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         selections.map((item) => item.toObject())
       )
       .catch((e: any) => {
-        console.log(`Erro ao buscar seleções de ${art}: ${e.message}`);
+        console.log(`Error finding selection of ${art}: ${e.message}`);
         return [];
       });
 
@@ -382,7 +382,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         })
       )
       .catch((e: any) => {
-        console.log("Erro ao buscar seleções do usuário: ", e.message);
+        console.log("Error finding user selection: ", e.message);
         return [];
       });
 
@@ -393,7 +393,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         Promise.all(applications.map((item) => item.toObject().artist?.fetch()))
       )
       .catch((e: any) => {
-        console.log(`Erro na busca por submissões: ${e.message}`);
+        console.log(`Error finding submitions: ${e.message}`);
         return [];
       });
 
@@ -401,7 +401,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
     new Selection(id)
       .delete()
       .catch((e: any) =>
-        console.log(`Erro na tentativa de deletar uma seleção: ${e.message}`)
+        console.log(`Error trying to delete selection: ${e.message}`)
       );
 
   // CONVERSAS

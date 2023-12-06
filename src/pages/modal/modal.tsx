@@ -14,7 +14,7 @@ function Modal() {
     <MainSignUpContainer>
       <InnerContainer>
         <HeaderLogo>
-          <h1>Nova seleção</h1>
+          <h1>New selection</h1>
         </HeaderLogo>
         <SignContainer>
           <FormInputFullField type="text" placeholder="Título" />
@@ -28,7 +28,7 @@ function Modal() {
             placeholder="Horário de encerramento"
           />
           <FormInputTextbox type="textbox" placeholder="Descrição" />
-          <FormInputButton>CRIAR CONTA</FormInputButton>
+          <FormInputButton>CREATE ACCOUNT</FormInputButton>
         </SignContainer>
       </InnerContainer>
     </MainSignUpContainer>

@@ -55,15 +55,15 @@ function SelectionBox(props: SelectionBoxProps) {
         </SelectionMask>
         <SelectionHiddenDetail opened={isOpened}>
           <SelectionHiddenDetailItem>
-            <span>Preço</span>
+            <span>Price</span>
             <span>{`R$${props.price.toFixed(2)}`}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Data de abertura</span>
+            <span>Opening date</span>
             <span>{`${props.date[0]} ${props.time[0]}`}</span>
           </SelectionHiddenDetailItem>
           <SelectionHiddenDetailItem>
-            <span>Data de encerramnto</span>
+            <span>End date</span>
             <span>{`${props.date[1]} ${props.time[1]}`}</span>
           </SelectionHiddenDetailItem>
 
@@ -77,7 +77,7 @@ function SelectionBox(props: SelectionBoxProps) {
                 setHidden(true);
               }}
             >
-              Deletar
+              Delete
             </SelectionOptionButton>
             <SelectionOptionButton
               type="button"
@@ -87,14 +87,14 @@ function SelectionBox(props: SelectionBoxProps) {
                 toogleSelectArtistVisibility();
               }}
             >
-              Obter resultados
+              Get result
             </SelectionOptionButton>
             <SelectionOptionButton
               type="button"
               hidden={type === AccountType.enterprise || !isAfter}
               onClick={() => submitApplication(props.id)}
             >
-              Aplicar para a vaga
+              Apply
             </SelectionOptionButton>
           </SelectionOptions>
         </SelectionHiddenDetail>

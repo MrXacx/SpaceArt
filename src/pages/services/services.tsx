@@ -38,23 +38,23 @@ function Services() {
   );
 
   const selectionServices = [
-    { title: "Criar seleção", toogle: () => toogleNewSelectionVisibility() },
+    { title: "Create selection", toogle: () => toogleNewSelectionVisibility() },
     {
-      title: "Ativas",
+      title: "Activ",
       toogle: () => {
         toogleMySelectionVisibility();
         setSelectionFilter(SelectionStatus.active);
       },
     },
     {
-      title: "Em espera",
+      title: "Waitlist",
       toogle: () => {
         toogleMySelectionVisibility();
         setSelectionFilter(SelectionStatus.onHold);
       },
     },
     {
-      title: "Histórico",
+      title: "History",
       toogle: () => {
         toogleMySelectionVisibility();
         setSelectionFilter(SelectionStatus.closed);
@@ -68,10 +68,10 @@ function Services() {
       <MainContainer>
         <BoxContainer>
           <ServicesContainer>
-            <h2>Contratos</h2>
+            <h2>Contracts</h2>
             {type === AccountType.enterprise ? (
               <ArrowContainer onClick={() => toogleNewContractVisibility()}>
-                <span>Criar contrato</span>
+                <span>Create contracts</span>
                 <img alt="Criar contrato" src={ArrowIcon} />
               </ArrowContainer>
             ) : (
@@ -84,7 +84,7 @@ function Services() {
                 setContractFilter(AgreementStatus.accepted);
               }}
             >
-              <span>Contratos ativos</span>
+              <span>Active contracts</span>
               <img alt="Contratos ativos" src={ArrowIcon} />
             </ArrowContainer>
             {type === AccountType.enterprise ? (
@@ -94,8 +94,8 @@ function Services() {
                   setContractFilter(AgreementStatus.accepted);
                 }}
               >
-                <span>Contratos pendentes</span>
-                <img alt="Contratos pendentes" src={ArrowIcon} />
+                <span>Pending contracts</span>
+                <img alt="Pending contracts" src={ArrowIcon} />
               </ArrowContainer>
             ) : (
               <></>
@@ -107,13 +107,13 @@ function Services() {
                 setContractFilter(AgreementStatus.pending);
               }}
             >
-              <span>Histórico</span>
-              <img alt="Histórico" src={ArrowIcon} />
+              <span>History</span>
+              <img alt="History" src={ArrowIcon} />
             </ArrowContainer>
           </ServicesContainer>
 
           <ServicesContainer>
-            <h2>Seleções</h2>
+            <h2>Selection</h2>
 
             {type === AccountType.enterprise ? (
               selectionServices.map((service) => (
@@ -124,7 +124,7 @@ function Services() {
               ))
             ) : (
               <ArrowContainer onClick={() => toogleSearchSelectionVisibility()}>
-                <span>Buscar seleções</span>
+                <span>Search selection</span>
                 <img alt="Buscar seleções" src={ArrowIcon} />
               </ArrowContainer>
             )}

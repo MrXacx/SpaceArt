@@ -54,20 +54,20 @@ function NewSelection() {
     const initialDayJS = dayjs(`${initialDate} ${initialTime}`);
 
     if (error) {
-      // Executa caso exista algum erro de formatação
+      // Execute in case exists format error
       setInputErrorMessage(error.message);
     } else if (!initialDayJS.isAfter()) {
-      // Executa caso o tempo de início não seja num período futuro
+      // Execute in case initial time doesn't be on a future period
       setInputErrorMessage(
-        `${initialDate} ${initialTime} remete-se a um período no passado`
+        `${initialDate} ${initialTime} refer to a period in the past`
       );
     } else if (initialDayJS.isAfter(`${finalDate} ${finalTime}`, "minute")) {
-      // Executa caso o tempo de encerramento não seja posterior o tempo de início
+      // Execute in case end time wouldn't be take place after initial time
       setInputErrorMessage(
-        `${finalDate} ${finalTime} remete-se a um período anterior a ${initialDate} ${initialTime}`
+        `${finalDate} ${finalTime} refer to a anterior period ${initialDate} ${initialTime}`
       );
     } else {
-      // Executa caso erros não sejam encontrados
+      // Execute in case error wouldn't be found
 
       sendSelection({
         owner: id,
@@ -97,7 +97,7 @@ function NewSelection() {
                 src={XIcon}
                 onClick={() => toogleNewSelectionVisibility()}
               />
-              <h1>Nova seleção</h1>
+              <h1>New selection</h1>
             </HeaderLogo>
             <SignContainer
               onSubmit={(e: any) => {
@@ -110,7 +110,7 @@ function NewSelection() {
               </FormInputErrorMessage>
               <FormInputFullField
                 type="text"
-                placeholder="Título"
+                placeholder="Title"
                 value={title}
                 onChange={(e: any) => setTitle(e.target.value)}
               />
@@ -119,7 +119,7 @@ function NewSelection() {
                 onChange={(e: any) => setArt(e.target.value)}
               >
                 <option disabled selected>
-                  Arte
+                  Art
                 </option>
                 {ArtTypesUtil.values().map((item) => (
                   <option value={item}>{item}</option>
@@ -155,7 +155,7 @@ function NewSelection() {
                 value={finalTime}
                 onChange={(e: any) => setFinalTime(e.target.value)}
               />
-              <FormInputButton>CRIAR CONTA</FormInputButton>
+              <FormInputButton>CREATE ACCOUNT</FormInputButton>
             </SignContainer>
           </InnerContainer>
         </MainSignUpContainer>

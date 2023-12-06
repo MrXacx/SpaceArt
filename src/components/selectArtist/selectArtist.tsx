@@ -11,7 +11,7 @@ import {
 import { useContext } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import XIcon from "../../assets/x.svg";
-import ArtistBoxCheck from "../artistBoxCheck/artistBoxCheck";
+
 import SearchWhiteIcon from "../../assets/search_white.svg"
 
 function SelectArtist() {
@@ -21,7 +21,7 @@ function SelectArtist() {
     <ModalContainer>
       <HeaderLogo>
         <Icon alt="X" src={XIcon} onClick={() => setHideModal(!hideModal)} />
-        <h1>Selecione um artista</h1>
+        <h1>Select artist</h1>
       </HeaderLogo>
       <SignContainer>
         <SearchArtistInputContainer>
@@ -31,7 +31,7 @@ function SelectArtist() {
           </SearchArtistButton>
         </SearchArtistInputContainer>
 
-        <FormInputButton>AVANÇAR</FormInputButton>
+        <FormInputButton>Next</FormInputButton>
       </SignContainer>
     </ModalContainer>
   );

@@ -22,35 +22,35 @@ function Footer() {
         <SocialMediaContainer>
           <img alt="Instagram logo" src={InstagramLogo} />
           <img alt="Facebook logo" src={FacebookLogo} />
-          <img alt="Compartilhar logo" src={ShareLogo} />
-          <Message>Siga-nos</Message>
+          <img alt="Share logo" src={ShareLogo} />
+          <Message>Follow us</Message>
         </SocialMediaContainer>
       </FirstRowContainer>
       <hr />
       <SecondRowContainer>
         <section>
-          <FooterTitle>Tipos de arte</FooterTitle>
+          <FooterTitle>Art types</FooterTitle>
           <ArtTypeContainer>
-            <ArtTypeItem>Artesanato</ArtTypeItem>
-            <ArtTypeItem>Canto</ArtTypeItem>
-            <ArtTypeItem>Composição</ArtTypeItem>
-            <ArtTypeItem>Dança</ArtTypeItem>
-            <ArtTypeItem>Escultura</ArtTypeItem>
-            <ArtTypeItem>Pintura</ArtTypeItem>
-            <ArtTypeItem>Sinfonismo</ArtTypeItem>
+            <ArtTypeItem>Craftmanship</ArtTypeItem>
+            <ArtTypeItem>Sing</ArtTypeItem>
+            <ArtTypeItem>Composition</ArtTypeItem>
+            <ArtTypeItem>Dance</ArtTypeItem>
+            <ArtTypeItem>Scupture</ArtTypeItem>
+            <ArtTypeItem>Paint</ArtTypeItem>
+            <ArtTypeItem>Symphonism</ArtTypeItem>
           </ArtTypeContainer>
         </section>
         <section>
-          <FooterTitle>Contatos</FooterTitle>
+          <FooterTitle>Contacts</FooterTitle>
           <ArtTypeContainer>
-            <ArtTypeItem>Telefone</ArtTypeItem>
+            <ArtTypeItem>Phone number</ArtTypeItem>
             <ArtTypeItem>E-mail</ArtTypeItem>
           </ArtTypeContainer>
         </section>
         <section>
-          <FooterTitle>Institucional</FooterTitle>
+          <FooterTitle>Institutional</FooterTitle>
           <ArtTypeContainer>
-            <ArtTypeItem>Termos e condições de uso</ArtTypeItem>
+            <ArtTypeItem>Terms and conditions</ArtTypeItem>
           </ArtTypeContainer>
         </section>
       </SecondRowContainer>

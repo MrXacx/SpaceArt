@@ -2,25 +2,25 @@ import { APIClient } from "../api/abstracts/APIClient";
 
 export class PostalCodeWebClient extends APIClient {
   /**
-   * Remove todos os caracteres não aceitos
+   * Remove all non-accepted characters
    */
   static sanitize = (code: string) => code.replaceAll(/\D/gi, "");
 
   /**
-   *  Confere se a string possui o formato correto
+   *  Checks if the string has the correct format
    */
   static matches = (code: string) => code.match(/^\d{8}$/);
 
   /**
-   *  Consulta dados associados ao CEP
+   *  Fetches data associated with the postal code (CEP)
    */
   fetch = async (code: string) => {
-    code = PostalCodeWebClient.sanitize(code); // Remove caracteres especiais
+    code = PostalCodeWebClient.sanitize(code); // Remove special characters
 
     if (!PostalCodeWebClient.matches(code)) {
-      // Executa se o CEP tiver um formato inválido
+      // Executes if the CEP has an invalid format
       PostalCodeWebClient.errorTypes.RegExpError.throw(
-        `Formato do CEP está inválido: ${code}.`
+        `Invalid CEP format: ${code}.`
       );
     }
 
@@ -29,7 +29,7 @@ export class PostalCodeWebClient extends APIClient {
     );
 
     if (response.status !== 200) {
-      // Executa caso a resposta não seja de sucesso
+      // Executes if the response is not successful
       PostalCodeWebClient.errorTypes.HTTPRequestError.throw();
     }
 

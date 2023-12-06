@@ -19,7 +19,7 @@ export class ArtTypesUtil {
         return ArtType.music;
       case "pintura":
         return ArtType.painting;
-      case "teatro":
+      case "teatro": // droga
         return ArtType.theater;
       default:
         return NotFoundEnumValueError.throw();

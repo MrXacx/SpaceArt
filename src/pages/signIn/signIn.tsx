@@ -22,12 +22,12 @@ function SignIn() {
   const [inputErrorMessage, setInputErrorMessage] = useState("");
 
   const userSignIn = () => {
-    const { error } = signInSchema.validate({ email, password }); // Valida email e senha
+    const { error } = signInSchema.validate({ email, password }); // Validates email and password
     if (error) {
-      // Executa se error contiver conteúdo
-      setInputErrorMessage(error.message); // Atualiza mensagem de erro
+      // Executes if error contains content
+      setInputErrorMessage(error.message); // Updates error message
     } else {
-      // Remove qualquer configuração de estado inválido
+      // Clears any invalid state settings
       setInputErrorMessage("");
 
       signIn(email, password).catch((e: any) =>
@@ -64,12 +64,12 @@ function SignIn() {
 
             <FormInputFullField
               type="password"
-              placeholder="Senha"
+              placeholder="Passowrd"
               value={password}
               onChange={(e: any) => setPassword(e.target.value)}
             />
 
-            <FormInputButton>Entrar</FormInputButton>
+            <FormInputButton>Login</FormInputButton>
           </SignContainer>
         </InnerContainer>
       </MainSignInContainer>

@@ -32,21 +32,21 @@ function Header() {
         <NavContainer>
           <NavItemContainer>
             <NavItems>
-              <a href="#about-us">QUEM SOMOS</a>
+              <a href="#about-us">HOW WE ARE</a>
             </NavItems>
             <NavItems>
-              <a href="#art-types">CATEGORIAS DE ARTE</a>
+              <a href="#art-types">ARTIST CATEGORY</a>
             </NavItems>
             <NavItems>
-              <a href="#search-artists">BUSQUE ARTISTAS</a>
+              <a href="#search-artists">SEARCH ARTIST</a>
             </NavItems>
           </NavItemContainer>
         </NavContainer>
         <NavContainer>
           <NavItemContainer>
-            <NavItems onClick={() => navigate("/signIn")}>ENTRAR</NavItems>
+            <NavItems onClick={() => navigate("/signIn")}>SIGN IN</NavItems>
             <SignUpButton onClick={() => navigate("/signUp/artist")}>
-              CADASTRAR
+              SIGN UP
             </SignUpButton>
           </NavItemContainer>
         </NavContainer>
@@ -59,7 +59,7 @@ function Header() {
             navigate("/signUp/enterprise");
           }}
         >
-          CADASTRAR COMO EMPRESA
+          SIGN UP AS ENTERPRISE
         </span>
         <span
           onClick={() => {
@@ -67,7 +67,7 @@ function Header() {
             navigate("/signUp/artist");
           }}
         >
-          CADASTRAR COMO ARTISTA
+          SIGN UP AS ARTIST
         </span>
         <span
           onClick={() => {
@@ -75,7 +75,7 @@ function Header() {
             navigate("/signIn");
           }}
         >
-          ENTRAR
+          SIGN IN
         </span>
       </HamburgerMenuContainer>
     </HeaderMainContainer>
