@@ -14,6 +14,7 @@ import Spaceart from "../../assets/spaceart.svg";
 import SearchBlackIcon from "../../assets/search_black.svg";
 import HomeIcon from "../../assets/house.svg";
 import PlusIcon from "../../assets/plus.svg";
+import WhitePlusIcon from "../../assets/white_plus.svg";
 import SuitcaseIcon from "../../assets/suitcase.svg";
 import SettingIcon from "../../assets/settings.svg";
 import { useNavigate } from "react-router-dom";
@@ -108,7 +109,7 @@ function HeaderLogged() {
           </span>
         </HamburgerMenuContainer>
       </HeaderMainContainer>
-      <FloatingButton src={PlusIcon} title="Nova publicação" />
+      <FloatingButton src={WhitePlusIcon} title="Nova publicação" />
     </>
   );
 }
