@@ -32,7 +32,7 @@ export class ArtTypesUtil {
       ArtType.sculpture,
       ArtType.music,
       ArtType.painting,
-      ArtType.theater,
+      ArtType.acting,
     ];
   }
 }
