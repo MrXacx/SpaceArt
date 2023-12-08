@@ -1,6 +1,7 @@
 import {
   ArtTypeContainer,
   ArtTypeItem,
+  Copyright,
   FirstRowContainer,
   FooterContainer,
   FooterTitle,
@@ -54,6 +55,9 @@ function Footer() {
           </ArtTypeContainer>
         </section>
       </SecondRowContainer>
+      <Copyright>
+        <span>© 2023 SpaceArt. All rights reserved.</span>
+      </Copyright>
     </FooterContainer>
   );
 }

@@ -3,6 +3,7 @@ import EclipseImage from "../../assets/eclipse.jpg";
 
 export const MainSignInContainer = styled.div`
   display: grid;
+  margin-top: -5rem;
   min-height: 100vh;
   background-image: url(${EclipseImage});
   background-position: 50% 45%;

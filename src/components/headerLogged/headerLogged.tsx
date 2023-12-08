@@ -28,7 +28,7 @@ function HeaderLogged() {
   const navigate = useNavigate();
 
   useEffect(() => {
-     if (!isLogged) navigate("/signIn");
+    if (!isLogged) navigate("/signIn");
   }, [isLogged, navigate]);
 
   return (
@@ -47,7 +47,7 @@ function HeaderLogged() {
               title="Go home"
               onClick={() => navigate("/feed")}
             />
-            <Icon src={PlusIcon} title="Nova publicação" />
+            <Icon src={PlusIcon} title="New post" />
             <Icon
               src={SearchBlackIcon}
               title="Search"
@@ -76,7 +76,7 @@ function HeaderLogged() {
         <HamburgerMenuContainer hide={hide}>
           <span
             onClick={() => {
-              setHide(true)
+              setHide(true);
               navigate("/feed");
             }}
           >

@@ -78,3 +78,7 @@ export const ArtTypeItem = styled.li`
   font-size: 14px;
   font-weight: 800;
 `;
+
+export const Copyright = styled.div`
+  color: #000;
+`;
