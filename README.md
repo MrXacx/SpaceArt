@@ -1,6 +1,6 @@
 # SpaceArt
 
-> A web application designed to streamline communication between independent artists and establishments in Brazil, simplifying the process of artist hiring.
+A web application designed to streamline communication between independent artists and establishments in Brazil, simplifying the process of artist hiring.
 
 ## Utilities
 
