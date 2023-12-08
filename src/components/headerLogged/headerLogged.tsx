@@ -35,9 +35,9 @@ function HeaderLogged() {
     <>
       <HeaderMainContainer>
         <HeaderContainer>
-          <SpaceartContainer>
+          <SpaceartContainer onClick={() => navigate("/")} >
             <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
-            <SpaceartTitle onClick={() => navigate("/")}>
+            <SpaceartTitle translate="no">
               <span>S</span>PACE ART
             </SpaceartTitle>
           </SpaceartContainer>

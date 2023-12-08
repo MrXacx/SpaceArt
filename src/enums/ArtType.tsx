@@ -1,26 +1,26 @@
 import { NotFoundEnumValueError } from "../errors/NotFoundEnumValueError";
 
 export enum ArtType {
-  dance = "dança",
-  sculpture = "escultura",
-  music = "música",
-  painting = "pintura",
-  theater = "teatro",
+  dance = "dance",
+  sculpture = "sculpture",
+  music = "music",
+  painting = "painting",
+  acting = "acting",
 }
 
 export class ArtTypesUtil {
   static parse(artType: string): ArtType | never {
     switch (artType) {
-      case "dança":
+      case "dance":
         return ArtType.dance;
-      case "escultura":
+      case "sculpture":
         return ArtType.sculpture;
-      case "música":
+      case "music":
         return ArtType.music;
-      case "pintura":
+      case "painting":
         return ArtType.painting;
-      case "teatro": // droga
-        return ArtType.theater;
+      case "acting":
+        return ArtType.acting;
       default:
         return NotFoundEnumValueError.throw();
     }
@@ -32,7 +32,7 @@ export class ArtTypesUtil {
       ArtType.sculpture,
       ArtType.music,
       ArtType.painting,
-      ArtType.theater,
+      ArtType.acting,
     ];
   }
 }

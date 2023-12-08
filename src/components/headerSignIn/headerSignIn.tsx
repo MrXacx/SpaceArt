@@ -30,7 +30,7 @@ function HeaderSignIn() {
       <HeaderContainer>
         <SpaceartContainer onClick={() => navigate("/")}>
           <SpaceartLogo alt="Spaceart logo" src={Spaceart} />
-          <SpaceartTitle>
+          <SpaceartTitle translate="no">
             <span>S</span>PACE ART
           </SpaceartTitle>
         </SpaceartContainer>

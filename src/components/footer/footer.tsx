@@ -56,7 +56,7 @@ function Footer() {
         </section>
       </SecondRowContainer>
       <Copyright>
-        <span>© 2023 SpaceArt. All rights reserved.</span>
+        <span>© 2023 <span translate="no">Space Art</span>. All rights reserved.</span>
       </Copyright>
     </FooterContainer>
   );

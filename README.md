@@ -8,7 +8,7 @@ A web application designed to streamline communication between independent artis
 
 ### Technologies
 
-React, TypeScript, styled-components, React Hooks (useState, useEffect, useContext, useCallback), React Router (useNavigate, useParams), Axios, Node.js, PHP, MySQL.
+React, TypeScript, styled-components, React Hooks (useState, useEffect, useContext, useCallback), React Router (useNavigate, useParams), Axios, Node.js.
 
 ## Features 
 
@@ -26,7 +26,7 @@ React, TypeScript, styled-components, React Hooks (useState, useEffect, useConte
 
 Before you begin, ensure you have met the following requirements:
 
-- PHP: Make sure you have PHP to run our API. You can download it [here](https://www.php.net/downloads.php).
+- API SpaceArt: Make sure you run our API. You can clone it [here](https://github.com/MrXacx/api-spaceart).
 
 - Node.js: Make sure you have Node.js installed on your system. You can download it [here](https://nodejs.org/).
 
