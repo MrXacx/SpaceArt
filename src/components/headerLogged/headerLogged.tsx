@@ -29,7 +29,7 @@ function HeaderLogged() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLogged) navigate("/signIn");
+    //if (!isLogged) navigate("/signIn"); 
   }, [isLogged, navigate]);
 
   return (
@@ -109,7 +109,7 @@ function HeaderLogged() {
           </span>
         </HamburgerMenuContainer>
       </HeaderMainContainer>
-      <FloatingButton src={WhitePlusIcon} title="Nova publicação" />
+      <FloatingButton src={WhitePlusIcon} title="New post" />
     </>
   );
 }

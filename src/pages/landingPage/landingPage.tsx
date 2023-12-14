@@ -20,18 +20,99 @@ import TheaterImage from "../../assets/theater_banner.png";
 import LocationFilterBar from "../../components/locationFilterBar/locationFilterBar";
 import CardProfile from "../../components/cardProfile/cardProfile";
 import Footer from "../../components/footer/footer";
-import { useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../contexts/SearchContext";
 import { AccountType } from "../../enums/AccountType";
+import { motion } from "framer-motion";
 
 function LandingPage() {
   const navigate = useNavigate();
-  let { searchResult, fetchRandomUsers, artFilter } = useContext(SearchContext);
+  const carousel = useRef<HTMLDivElement>(null);
+  const [carouselWidth, setCarouselWidth] = useState(0);
+  let { fetchRandomUsers, artFilter } = useContext(SearchContext);
+
+  const searchResult = [
+    {
+      id: "1",
+      index: 1,
+      image: DancerImage,
+      name: "Clóvis",
+      type: "Moreno",
+      city: "Salvador",
+      state: "BA",
+      art: "Paint",
+      wage: 16,
+    },
+    {
+      id: "1",
+      index: 1,
+      image: DancerImage,
+      name: "Clóvis",
+      type: "Moreno",
+      city: "Salvador",
+      state: "BA",
+      art: "Paint",
+      wage: 16,
+    },
+    {
+      id: "1",
+      index: 1,
+      image: DancerImage,
+      name: "Clóvis",
+      type: "Moreno",
+      city: "Salvador",
+      state: "BA",
+      art: "Paint",
+      wage: 16,
+    },
+    {
+      id: "1",
+      index: 1,
+      image: DancerImage,
+      name: "Clóvis",
+      type: "Moreno",
+      city: "Salvador",
+      state: "BA",
+      art: "Paint",
+      wage: 16,
+    },
+    {
+      id: "1",
+      index: 1,
+      image: DancerImage,
+      name: "Clóvis",
+      type: "Moreno",
+      city: "Salvador",
+      state: "BA",
+      art: "Paint",
+      wage: 16,
+    },
+  ];
+
+  /*
+                  id={data.id}
+                  index={data.index}
+                  image={data.image}
+                  name={data.name}
+                  type={data.type}
+                  city={data.city}
+                  state={data.state}
+                  art={data.art}
+                  wage={data.wage}
+  */
 
   useEffect(() => {
     if (searchResult.length === 0) fetchRandomUsers(AccountType.artist);
   }, [fetchRandomUsers, searchResult.length]);
+
+  useEffect(() => {
+    if (carousel.current) {
+      setCarouselWidth(
+        carousel.current.scrollWidth - carousel.current.offsetWidth
+      );
+    }
+  }, []);
 
   const artItems = [
     { image: MicImage, name: "MUSIC" },
@@ -90,7 +171,7 @@ function LandingPage() {
               (item: any) => item.art === artFilter || artFilter === undefined
             )
             .map(
-              // covert context states in components
+              // covert context states to components
               (data: any) => (
                 <CardProfile
                   id={data.id}
@@ -113,3 +194,26 @@ function LandingPage() {
 }
 
 export default LandingPage;
+
+/*
+          {searchResult
+            .filter(
+              (item: any) => item.art === artFilter || artFilter === undefined
+            )
+            .map(
+              // covert context states to components
+              (data: any) => (
+                <CardProfile
+                  id={data.id}
+                  index={data.index}
+                  image={data.image}
+                  name={data.name}
+                  type={data.type}
+                  city={data.city}
+                  state={data.state}
+                  art={data.art}
+                  wage={data.wage}
+                />
+              )
+            )}
+*/
