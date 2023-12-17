@@ -307,6 +307,16 @@ export class Artist extends User {
       birthday: this.birthday,
     };
   }
+
+  public async fetchStats() {
+    let response = await this.request.get(`/stats?type=artist`);
+
+    if (response.status !== User.httpStatusCode.OK) {
+      User.errorTypes.HTTPRequestError.throw(response.data);
+    }
+
+    return JSON.parse(response.data);
+  }
 }
 
 export class Enterprise extends User {
@@ -366,5 +376,15 @@ export class Enterprise extends User {
       companyName: this.companyName,
       section: this.section,
     };
+  }
+
+  public async fetchStats() {
+    let response = await this.request.get(`/stats?type=enterprise`);
+
+    if (response.status !== User.httpStatusCode.OK) {
+      User.errorTypes.HTTPRequestError.throw(response.data);
+    }
+
+    return JSON.parse(response.data);
   }
 }

@@ -161,4 +161,14 @@ export class Agreement extends IndexedAPIClient implements APIClientFactory {
       rates: this.rates,
     };
   }
+
+  public async fetchStats(user: User) {
+    let response = await this.request.get(`/stats?user=${user.getID()}`);
+
+    if (response.status !== Agreement.httpStatusCode.OK) {
+      Agreement.errorTypes.HTTPRequestError.throw(response.data);
+    }
+
+    return JSON.parse(response.data);
+  }
 }
