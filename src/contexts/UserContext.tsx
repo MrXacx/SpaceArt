@@ -332,6 +332,9 @@ export const UserStorage = ({ children }: UserStoreProps) => {
   const deleteAgreement = (agreement: string) =>
     new Agreement(agreement).delete().catch(console.log);
 
+  const fetchAgreementStatsByUser = (userID: string) =>
+    new Agreement().fetchStats(new User(userID));
+
   // SELECTIONS
   const sendSelection = (data: {
     owner: string;
@@ -424,6 +427,9 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         return [];
       });
 
+  const fetchArtistStats = () => new Artist().fetchStats();
+  const fetchEnterpriseStats = () => new Enterprise().fetchStats();
+
   useEffect(() => {
     if (isLogged && !isLoaded) {
       fetchLoggedUser();
@@ -452,6 +458,7 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchAgreementsByUser,
         fetchRatesFromAgreement,
         deleteAgreement,
+        fetchAgreementStatsByUser,
         sendSelection,
         submitApplication,
         fetchSelectionsByArt,
@@ -459,6 +466,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchArtistsInSelection,
         deleteSelection,
         fetchChats,
+        fetchArtistStats,
+        fetchEnterpriseStats,
       }}
     >
       {children}
