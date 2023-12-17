@@ -93,7 +93,7 @@ export const AboutUsContainer = styled.div`
   width: 80%;
   display: grid;
   place-items: center;
-  margin: 80px auto;
+  paddind: 3rem 0;
 
   @media (min-width: 960px) {
     margin: 100px auto;
@@ -130,7 +130,7 @@ export const ChooseArtistContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   background-color: #0e0e0e;
-  padding: 25px 0;
+  padding: 3rem 0;
 
   h2 {
     font-size: 1.25rem;
@@ -191,7 +191,7 @@ export const SearchArtistContainer = styled.div`
   color: #fa8b08;
   justify-content: center;
   flex-direction: column;
-  padding: 25px 0;
+  padding: 3rem 0;
 
   h2 {
     text-align: center;
@@ -221,5 +221,41 @@ export const CardProfileContainer = styled.div`
   }
   @media (min-width: 1920px) {
     grid-template-columns: repeat(4, 1fr);
+  }
+`;
+
+export const StatsContainer = styled.div`
+  background-color: #0e0e0e;
+  box-sizing: border-box;
+  padding: 3rem 0;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+  h2{
+    width: 100%;
+    color: #fa8b08;
+    text-align: center;
+  }
+  h3{
+    color: white;
+    text-align: center;
+  }
+
+  canvas {
+    width: 85%;
+  }
+
+  > div {
+    margin: 2rem 0;
+  }
+
+  @media (min-width: 1024px){
+    > div{
+      margin: 0;
+    }
+    canvas{
+      width: 300px;
+    }
   }
 `;
