@@ -9,8 +9,21 @@ import Profile from "./pages/profile/profile";
 import Search from "./pages/search/search";
 import { UserStorage } from "./contexts/UserContext";
 import Services from "./pages/services/services";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  ArcElement,
+  Legend,
+  Tooltip,
+} from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, ArcElement, Legend, Tooltip);
 
 function App() {
+  ChartJS.defaults.font.size = 20;
+  ChartJS.defaults.font.lineHeight = '1rem';
+
   return (
     <BrowserRouter>
       <UserStorage>
