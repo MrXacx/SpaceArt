@@ -309,7 +309,7 @@ export class Artist extends User {
   }
 
   public async fetchStats() {
-    let response = await this.request.get(`/stats?type=artist`);
+    let response = await this.request.get(`${this.path}/stats?type=artist`);
 
     if (response.status !== User.httpStatusCode.OK) {
       User.errorTypes.HTTPRequestError.throw(response.data);
@@ -379,7 +379,7 @@ export class Enterprise extends User {
   }
 
   public async fetchStats() {
-    let response = await this.request.get(`/stats?type=enterprise`);
+    let response = await this.request.get(`${this.path}/stats?type=enterprise`);
 
     if (response.status !== User.httpStatusCode.OK) {
       User.errorTypes.HTTPRequestError.throw(response.data);
