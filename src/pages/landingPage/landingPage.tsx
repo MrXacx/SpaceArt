@@ -240,8 +240,8 @@ function LandingPage() {
         </CardProfileContainer>
       </SearchArtistContainer>
 
-      <StatsContainer>
-        <h2>NOSSAS ESTATÍSTICAS</h2>
+      <StatsContainer id="stats">
+        <h2>LOOK OUR STATS</h2>
         <div>
           <h3>ARTISTS PER ART</h3>
           <Doughnut data={artistChartData} options={chartOptions}></Doughnut>

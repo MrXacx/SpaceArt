@@ -255,7 +255,8 @@ export const StatsContainer = styled.div`
       margin: 0;
     }
     canvas{
-      width: 300px;
+      min-width: 350px;
+      max-width: 350px;
     }
   }
 `;
