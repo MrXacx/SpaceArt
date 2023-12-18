@@ -7,7 +7,7 @@ export const Icon = styled.img`
 export const ArtistSelected = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 99%;
   height: 10vh;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.3);
