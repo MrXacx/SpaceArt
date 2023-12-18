@@ -33,6 +33,7 @@ export class Rate extends SpaceArtAPIClient implements APIClientFactory {
         agreement: this.agreement.getID(),
         author: this.author?.getID(),
         rate: this.rate,
+        description: this.description,
       })
     );
 

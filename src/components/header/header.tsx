@@ -40,6 +40,9 @@ function Header() {
             <NavItems>
               <a href="#search-artists">SEARCH ARTIST</a>
             </NavItems>
+            <NavItems>
+              <a href="#stats">OUR STATS</a>
+            </NavItems>
           </NavItemContainer>
         </NavContainer>
         <NavContainer>

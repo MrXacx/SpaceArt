@@ -15,12 +15,34 @@ import { UserContext } from "../../contexts/UserContext";
 import { AgreementStatus } from "../../enums/ServiceStatus";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { ArtType } from "../../enums/ArtType";
+import IsSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import RateBox from "../rateBox/rateBox";
 import { SelectAgreementContext } from "../../contexts/SelectAgreement";
+import { Agreement } from "../../api/Agreement";
+import { AccountType } from "../../enums/AccountType";
+import NewRate from "../newRate/newRate";
+
 interface MyContractProps {
   filter: AgreementStatus;
 }
+
+const isCompleted = (item: any) => item.status == "accepted" &&
+dayjs(`${item.date} ${item.time.end}`, "DD/MM/YYYY HH:mm").isBefore();
+
+const tryFilterFunction = (status: AgreementStatus) => {
+  switch(status){
+    case AgreementStatus.pending:
+      return (item: any) => item.status == "send";
+    case AgreementStatus.accepted:
+      return (item: any) => item.status == "accepted" && dayjs( `${item.date} ${item.time.end}`,"DD/MM/YYYY HH:mm" )
+      .isSameOrAfter();
+
+    case AgreementStatus.completed:
+      return isCompleted;
+
+  }
+}
+
 
 function MyContract(props: MyContractProps) {
   const {
@@ -29,74 +51,21 @@ function MyContract(props: MyContractProps) {
     hideLookRates,
     toogleLookRatesVisibility,
   } = useContext(ModalContext);
-  const { id, fetchAgreementsByUser, fetchRatesFromAgreement } =
+  const { id, type, fetchAgreementsByUser, fetchRatesFromAgreement } =
     useContext(UserContext);
   const { agreement } = useContext(SelectAgreementContext);
 
-  const [contracts, setContracts] = useState<any[]>([
-    {
-      id: "",
-      title: "",
-      locked: false,
-      art: ArtType.music,
-      time: { start: "07:30", end: "16:00" },
-      date: "17/11/2023",
-      price: 500,
-      description: "testing",
-      status: "send",
-    },
-    {
-      id: "",
-      title: "",
-      locked: false,
-      art: ArtType.music,
-      time: { start: "17:30", end: "23:00" },
-      date: "17/11/2023",
-      price: 500,
-      description: "testing",
-      status: "accepted",
-    },
-    {
-      id: "",
-      title: "",
-      locked: false,
-      art: ArtType.music,
-      time: { start: "09:50", end: "17:00" },
-      date: "17/11/2023",
-      price: 500,
-      description: "testing",
-      status: "accepted",
-    },
-    {
-      id: "",
-      title: "",
-      locked: false,
-      art: ArtType.music,
-      time: { start: "10:00", end: "14:00" },
-      date: "17/11/2023",
-      price: 500,
-      description: "testing",
-      status: "refused",
-    },
-  ]);
+  const [contracts, setContracts] = useState<any[]>([]);
   const [rates, setRates] = useState<any[]>([]);
+  const [alreadyPublishedRate, setAlreadyPublishedRate] =
+    useState<boolean>(true);
+  const [rated, setRatedUser] = useState<any>({});
 
   dayjs.extend(customParseFormat);
+  dayjs.extend(IsSameOrAfter);
 
-  const filter = [
-    (item: any): boolean => item.status == "send",
-    (item: any): boolean =>
-      item.status == "accepted" &&
-      dayjs(`${item.date} ${item.time.end}`, "DD/MM/YYYY HH:mm").isAfter(),
-    (item: any): boolean =>
-      (item.status == "accepted" &&
-        dayjs(
-          `${item.date} ${item.time.end}`,
-          "DD/MM/YYYY HH:mm"
-        ).isBefore()) ||
-      item.status == "refused",
-  ][props.filter];
-
+  const filter = tryFilterFunction(props.filter)
+  
   useEffect(() => {
     fetchAgreementsByUser(id).then(setContracts).catch(console.log);
   }, [fetchAgreementsByUser, id]);
@@ -105,7 +74,23 @@ function MyContract(props: MyContractProps) {
     if (agreement) {
       fetchRatesFromAgreement(agreement.getID()).then(setRates); // Get contract rate
     }
-  }, [agreement, fetchRatesFromAgreement]);
+  }, [agreement, fetchRatesFromAgreement, type]);
+
+  useEffect(() => {
+    setAlreadyPublishedRate(rates.some((rate) => rate.author.getID() === id));
+  }, [id, rates]);
+  useEffect(() => {
+    if (agreement && !alreadyPublishedRate) {
+      agreement
+        .fetch()
+        .then((response: Agreement) => response.toObject())
+        .then((reponse: any) =>
+          type == AccountType.artist ? reponse.hirer : reponse.hired
+        )
+        .then((user: any) => user.fetch())
+        .then(setRatedUser);
+    }
+  }, [agreement, alreadyPublishedRate, id, rates, type]);
 
   return (
     <Modal hidden={hideMyContract}>
@@ -124,12 +109,13 @@ function MyContract(props: MyContractProps) {
             .map((item: any) => (
               <ContractBox
                 id={item.id}
-                status={item.status ?? "t"}
+                status={item.status}
                 art={item.art}
                 time={item.time}
                 price={item.price}
                 date={item.date}
                 description={item.description}
+                rateable={isCompleted(item)}
               />
             ))}
         </SignContainer>
@@ -139,25 +125,45 @@ function MyContract(props: MyContractProps) {
           <Icon
             alt="X"
             src={XIcon}
-            onClick={() => toogleLookRatesVisibility()}
+            onClick={() => {
+              setRates([]);
+              setRatedUser({});
+              toogleLookRatesVisibility()
+            }}
           />
-          <h1>Select an artist</h1>
+          <h1>{alreadyPublishedRate ? "Rates" : "Publish a rate"}</h1>
         </HeaderLogo>
         <SignContainer>
-          <SearchResults>
-            {rates.map((rate) => (
-              <RateBox
-                author={{
-                  id: rate.author.id,
-                  index: rate.author.index,
-                  image: rate.author.image,
-                  name: rate.author.name,
-                }}
-                rate={rate.rate}
-                description={rate.description}
-              />
-            ))}
-          </SearchResults>
+          {alreadyPublishedRate ? (
+            <SearchResults>
+              {rates.map((rate) => (
+                <RateBox
+                  author={{
+                    id: rate.author.id,
+                    index: rate.author.index,
+                    image: rate.author.image,
+                    name: rate.author.name,
+                  }}
+                  rate={rate.rate}
+                  description={rate.description}
+                />
+              ))}
+            </SearchResults>
+          ) : (
+            <NewRate
+              agreement={agreement?.getID() ?? ""}
+              rated={{
+                name: rated.name,
+                image: rated.image,
+                art: rated.art,
+                type: rated.type,
+                location: {
+                  city: rated.location?.city ?? "",
+                  state: rated.location?.state ?? "",
+                },
+              }}
+            />
+          )}
         </SignContainer>
       </ModalContainer>
     </Modal>

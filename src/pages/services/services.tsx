@@ -3,6 +3,7 @@ import {
   BoxContainer,
   ServicesContainer,
   MainContainer,
+  StatsContainer,
 } from "./servicesStyles";
 import ArrowIcon from "../../assets/arrow.png";
 import Footer from "../../components/footer/footer";
@@ -13,13 +14,17 @@ import MyContract from "../../components/myContract/myContract";
 import NewSelection from "../../components/newSelection/newSelection";
 import MySelection from "../../components/mySelection/mySelection";
 import SearchSelection from "../../components/searchSelection/searchSelection";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AgreementStatus, SelectionStatus } from "../../enums/ServiceStatus";
 import { UserContext } from "../../contexts/UserContext";
 import { AccountType } from "../../enums/AccountType";
+import { Doughnut } from "react-chartjs-2";
+
+const randomColor = () =>
+  `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
 function Services() {
-  const { type } = useContext(UserContext);
+  const { id, type, fetchAgreementStatsByUser } = useContext(UserContext);
 
   const {
     toogleNewContractVisibility,
@@ -40,7 +45,7 @@ function Services() {
   const selectionServices = [
     { title: "Create selection", toogle: () => toogleNewSelectionVisibility() },
     {
-      title: "Activ",
+      title: "Active selections",
       toogle: () => {
         toogleMySelectionVisibility();
         setSelectionFilter(SelectionStatus.active);
@@ -62,11 +67,82 @@ function Services() {
     },
   ];
 
+  const [agreementChartData, setAgreementChartData] = useState<any>({
+    datasets: [],
+  });
+  const [agreementChartLabels, setAgreementChartLabels] = useState<string[]>(
+    []
+  );
+  const [agreementChartValues, setAgreementChartValues] = useState<string[]>(
+    []
+  );
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+      },
+      arc: {
+        borderAlign: "inner",
+        borderWidth: 1,
+      },
+      title: {
+        display: true,
+        text: "Agreement history",
+      },
+    },
+  };
+
+  useEffect(() => {
+    if (
+      agreementChartLabels.length === 0 &&
+      agreementChartValues.length === 0
+    ) {
+      const [labels, values]: any[] = [[], []];
+      fetchAgreementStatsByUser(id).then((stats: any[]) => {
+        stats
+          .sort((statA, statB) => statA.status.localeCompare(statB.status))
+          .forEach((value) => {
+            labels.push(value.status);
+            values.push(value.total);
+          });
+
+        setAgreementChartLabels(labels);
+        setAgreementChartValues(values);
+      });
+    }
+  }, [
+    agreementChartLabels,
+    agreementChartValues,
+    fetchAgreementStatsByUser,
+    id,
+  ]);
+
+  useEffect(() => {
+    setAgreementChartData({
+      labels: agreementChartLabels,
+      datasets: [
+        {
+          data: agreementChartValues,
+          backgroundColor: agreementChartValues.map(randomColor),
+        },
+      ],
+    });
+  }, [agreementChartLabels, agreementChartValues]);
+
   return (
     <>
       <HeaderLogged />
       <MainContainer>
         <BoxContainer>
+          <StatsContainer>
+            <h2>Your stats</h2>
+            <Doughnut
+              options={chartOptions}
+              data={agreementChartData}
+            ></Doughnut>
+          </StatsContainer>
+
           <ServicesContainer>
             <h2>Contracts</h2>
             {type === AccountType.enterprise ? (
@@ -87,11 +163,12 @@ function Services() {
               <span>Active contracts</span>
               <img alt="Contratos ativos" src={ArrowIcon} />
             </ArrowContainer>
+
             {type === AccountType.enterprise ? (
               <ArrowContainer
                 onClick={() => {
                   toogleMyContractVisibility();
-                  setContractFilter(AgreementStatus.accepted);
+                  setContractFilter(AgreementStatus.pending);
                 }}
               >
                 <span>Pending contracts</span>
@@ -104,7 +181,7 @@ function Services() {
             <ArrowContainer
               onClick={() => {
                 toogleMyContractVisibility();
-                setContractFilter(AgreementStatus.pending);
+                setContractFilter(AgreementStatus.completed);
               }}
             >
               <span>History</span>
@@ -113,7 +190,7 @@ function Services() {
           </ServicesContainer>
 
           <ServicesContainer>
-            <h2>Selection</h2>
+            <h2>Selections</h2>
 
             {type === AccountType.enterprise ? (
               selectionServices.map((service) => (
@@ -137,7 +214,7 @@ function Services() {
       <MyContract filter={contractFilter} />
       <NewSelection />
       <MySelection filter={selectionFilter} />
-      <SearchSelection />
+      {type === AccountType.enterprise ? <></> : <SearchSelection />}
     </>
   );
 }

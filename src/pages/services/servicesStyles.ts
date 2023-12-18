@@ -53,3 +53,15 @@ export const ArrowContainer = styled.div`
     }
   }
 `;
+
+export const StatsContainer = styled.div`
+  width: 250px;
+
+  margin: 1.5rem auto;
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+`;
