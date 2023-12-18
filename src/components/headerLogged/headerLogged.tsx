@@ -29,7 +29,7 @@ function HeaderLogged() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //if (!isLogged) navigate("/signIn"); 
+    if (!isLogged) navigate("/signIn"); 
   }, [isLogged, navigate]);
 
   return (
