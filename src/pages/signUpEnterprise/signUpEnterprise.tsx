@@ -128,6 +128,13 @@ function SignUpEnterprise() {
               placeholder="Nickname"
               value={name}
               onChange={(e: any) => setName(e.target.value)}
+            />
+
+            <FormInputFullField
+              type="text"
+              placeholder="Company name"
+              value={companyName}
+              onChange={(e: any) => setCompanyName(e.target.value)}
               disabled
             />
 
