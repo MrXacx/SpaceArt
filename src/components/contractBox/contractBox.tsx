@@ -45,7 +45,7 @@ function ContractBox(props: ContractBoxProps) {
             <span>{props.art}</span>
             <h3>{props.date}</h3>
           </ContractDetailHeader>
-          <input type="checkbox" checked={isOpened} />
+          <input type="checkbox" defaultChecked={false} checked={isOpened} />
         </ContractMask>
         <ContractHiddenDetail opened={isOpened}>
           <ContractHiddenDetailItem>
