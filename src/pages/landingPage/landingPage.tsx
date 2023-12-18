@@ -10,6 +10,7 @@ import {
   OpeningBannerContent,
   CardProfileContainer,
   SearchArtistContainer,
+  StatsContainer,
 } from "./landingPageStyles";
 import AboutUsImage from "../../assets/about_us_banner.png";
 import MicImage from "../../assets/mic_banner.png";
@@ -26,57 +27,15 @@ import { SearchContext } from "../../contexts/SearchContext";
 import { AccountType } from "../../enums/AccountType";
 import { motion } from "framer-motion";
 
-function LandingPage() {
-  const navigate = useNavigate();
-  const carousel = useRef<HTMLDivElement>(null);
-  const [carouselWidth, setCarouselWidth] = useState(0);
-  let { fetchRandomUsers, artFilter } = useContext(SearchContext);
+import { Doughnut } from "react-chartjs-2";
+import { UserContext } from "../../contexts/UserContext";
 
-  const searchResult = [
-    {
-      id: "1",
-      index: 1,
-      image: DancerImage,
-      name: "Clóvis",
-      type: "Moreno",
-      city: "Salvador",
-      state: "BA",
-      art: "Paint",
-      wage: 16,
-    },
-    {
-      id: "1",
-      index: 1,
-      image: DancerImage,
-      name: "Clóvis",
-      type: "Moreno",
-      city: "Salvador",
-      state: "BA",
-      art: "Paint",
-      wage: 16,
-    },
-    {
-      id: "1",
-      index: 1,
-      image: DancerImage,
-      name: "Clóvis",
-      type: "Moreno",
-      city: "Salvador",
-      state: "BA",
-      art: "Paint",
-      wage: 16,
-    },
-    {
-      id: "1",
-      index: 1,
-      image: DancerImage,
-      name: "Clóvis",
-      type: "Moreno",
-      city: "Salvador",
-      state: "BA",
-      art: "Paint",
-      wage: 16,
-    },
+const randomColor = () =>
+  `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+
+function LandingPage() {
+  // INÍCIO DO MOCKED
+  let searchResult = [
     {
       id: "1",
       index: 1,
@@ -89,18 +48,109 @@ function LandingPage() {
       wage: 16,
     },
   ];
+  searchResult = searchResult.concat(
+    searchResult,
+    searchResult,
+    searchResult,
+    searchResult
+  );
+  // FIM DO MOCKED
 
-  /*
-                  id={data.id}
-                  index={data.index}
-                  image={data.image}
-                  name={data.name}
-                  type={data.type}
-                  city={data.city}
-                  state={data.state}
-                  art={data.art}
-                  wage={data.wage}
-  */
+  const navigate = useNavigate();
+  let { fetchRandomUsers, artFilter } = useContext(SearchContext);
+  let { fetchArtistStats, fetchEnterpriseStats } = useContext(UserContext);
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+      },
+      arc: {
+        borderAlign: "inner",
+        borderWidth: 1,
+      },
+    },
+  };
+
+  const [artistChartData, setArtistChartData] = useState<any>({ datasets: [] });
+  const [enterpriseChartData, setEnterpriseChartData] = useState<any>({
+    datasets: [],
+  });
+  const [artistChartLabels, setArtistChartLabels] = useState<string[]>([]);
+  const [artistChartValues, setArtistChartValues] = useState<number[]>([]);
+  const [enterpriseChartLabels, setEnterpriseChartLabels] = useState<string[]>(
+    []
+  );
+  const [enterpriseChartValues, setEnterpriseChartValues] = useState<number[]>(
+    []
+  );
+
+  const carousel = useRef<HTMLDivElement>(null);
+  const [carouselWidth, setCarouselWidth] = useState(0);
+
+  useEffect(() => {
+    if (artistChartLabels.length === 0 && artistChartValues.length === 0) {
+      const [labels, values]: any[] = [[], []];
+      fetchArtistStats().then((stats: any[]) => {
+        stats
+          .sort((statA, statB) => statA.art.localeCompare(statB.art))
+          .forEach((value) => {
+            labels.push(value.art);
+            values.push(value.total);
+          });
+
+        setArtistChartLabels(labels);
+        setArtistChartValues(values);
+      });
+    }
+  }, [artistChartLabels, artistChartValues, fetchArtistStats]);
+
+  useEffect(() => {
+    setArtistChartData({
+      labels: artistChartLabels,
+      datasets: [
+        {
+          data: artistChartValues,
+
+          backgroundColor: artistChartValues.map(randomColor),
+        },
+      ],
+    });
+  }, [artistChartLabels, artistChartValues]);
+
+  useEffect(() => {
+    if (
+      enterpriseChartLabels.length === 0 &&
+      enterpriseChartValues.length === 0
+    ) {
+      const [labels, values]: any[] = [[], []];
+      fetchEnterpriseStats().then((stats: any[]) => {
+        stats
+          .sort((statA, statB) => statA.state.localeCompare(statB.state))
+          .forEach((value) => {
+            labels.push(value.state);
+            values.push(value.total);
+          });
+
+        setEnterpriseChartLabels(labels);
+        setEnterpriseChartValues(values);
+      });
+    }
+  }, [enterpriseChartLabels, enterpriseChartValues, fetchEnterpriseStats]);
+
+  useEffect(() => {
+    setEnterpriseChartData({
+      labels: enterpriseChartLabels,
+      datasets: [
+        {
+          data: enterpriseChartValues,
+
+          backgroundColor: enterpriseChartValues.map(randomColor),
+        },
+      ],
+    });
+  }, [enterpriseChartLabels, enterpriseChartValues]);
 
   useEffect(() => {
     if (searchResult.length === 0) fetchRandomUsers(AccountType.artist);
@@ -162,6 +212,7 @@ function LandingPage() {
           ))}
         </ChooseArtistCardContainer>
       </ChooseArtistContainer>
+      <StatsContainer></StatsContainer>
       <SearchArtistContainer id="search-artists">
         <h2>SEARCH ARTIST OF YOUR CITY</h2>
         <LocationFilterBar withArtField={true} />
@@ -188,32 +239,24 @@ function LandingPage() {
             )}
         </CardProfileContainer>
       </SearchArtistContainer>
+
+      <StatsContainer id="stats">
+        <h2>LOOK OUR STATS</h2>
+        <div>
+          <h3>ARTISTS PER ART</h3>
+          <Doughnut data={artistChartData} options={chartOptions}></Doughnut>
+        </div>
+        <div>
+          <h3>SUBSCRIBED ENTERPRISES PER STATE</h3>
+          <Doughnut
+            data={enterpriseChartData}
+            options={chartOptions}
+          ></Doughnut>
+        </div>
+      </StatsContainer>
       <Footer />
     </>
   );
 }
 
 export default LandingPage;
-
-/*
-          {searchResult
-            .filter(
-              (item: any) => item.art === artFilter || artFilter === undefined
-            )
-            .map(
-              // covert context states to components
-              (data: any) => (
-                <CardProfile
-                  id={data.id}
-                  index={data.index}
-                  image={data.image}
-                  name={data.name}
-                  type={data.type}
-                  city={data.city}
-                  state={data.state}
-                  art={data.art}
-                  wage={data.wage}
-                />
-              )
-            )}
-*/

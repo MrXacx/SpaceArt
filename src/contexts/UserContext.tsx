@@ -11,6 +11,7 @@ import { ImageCompressor } from "../services/ImageCompressor";
 import { Chat } from "../api/Chat";
 import { ArtType } from "../enums/ArtType";
 import { Rate } from "../api/Rate";
+import { Exception } from "sass";
 
 interface UserStoreProps {
   children: React.ReactNode;
@@ -329,8 +330,25 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         return [];
       });
 
+  const sendRate = (rateData: {
+    author: string;
+    agreement: string;
+    score: number;
+    description: string;
+  }) =>
+    new Rate(new Agreement(rateData.agreement))
+      .build({
+        author: new User(rateData.author),
+        rate: rateData.score,
+        description: rateData.description,
+      })
+      .create();
+
   const deleteAgreement = (agreement: string) =>
     new Agreement(agreement).delete().catch(console.log);
+
+  const fetchAgreementStatsByUser = (userID: string) =>
+    new Agreement().fetchStats(new User(userID));
 
   // SELECTIONS
   const sendSelection = (data: {
@@ -424,6 +442,9 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         return [];
       });
 
+  const fetchArtistStats = () => new Artist().fetchStats();
+  const fetchEnterpriseStats = () => new Enterprise().fetchStats();
+
   useEffect(() => {
     if (isLogged && !isLoaded) {
       fetchLoggedUser();
@@ -450,8 +471,10 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchPostsByUser,
         sendAgreement,
         fetchAgreementsByUser,
+        sendRate,
         fetchRatesFromAgreement,
         deleteAgreement,
+        fetchAgreementStatsByUser,
         sendSelection,
         submitApplication,
         fetchSelectionsByArt,
@@ -459,6 +482,8 @@ export const UserStorage = ({ children }: UserStoreProps) => {
         fetchArtistsInSelection,
         deleteSelection,
         fetchChats,
+        fetchArtistStats,
+        fetchEnterpriseStats,
       }}
     >
       {children}
