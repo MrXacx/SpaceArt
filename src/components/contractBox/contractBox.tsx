@@ -26,6 +26,7 @@ interface ContractBoxProps {
   };
   description: string;
   status: string;
+  rateable: boolean;
 }
 
 function ContractBox(props: ContractBoxProps) {
@@ -64,7 +65,7 @@ function ContractBox(props: ContractBoxProps) {
           <ContractOptions>
             <ContractOptionButton
               type="button"
-              hidden={false}
+              hidden={props.rateable}
               danger={true}
               onClick={() => {
                 if (
@@ -80,7 +81,7 @@ function ContractBox(props: ContractBoxProps) {
             </ContractOptionButton>
             <ContractOptionButton
               type="button"
-              hidden={false}
+              hidden={!props.rateable}
               onClick={() => {
                 setAgreement(
                   new Agreement().build({ id: props.id, status: props.status })

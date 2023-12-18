@@ -16,13 +16,22 @@ import {
   ArcElement,
   Legend,
   Tooltip,
+  Title,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, ArcElement, Legend, Tooltip);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  ArcElement,
+  Legend,
+  Tooltip,
+  Title
+);
 
 function App() {
-  ChartJS.defaults.font.size = 20;
-  ChartJS.defaults.font.lineHeight = '1rem';
+  ChartJS.defaults.font.size = 15;
+  ChartJS.defaults.font.lineHeight = "0.6rem";
+  ChartJS.defaults.font.family='roboto'
 
   return (
     <BrowserRouter>

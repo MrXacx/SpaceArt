@@ -9,13 +9,20 @@ import {
   ProfileInformationContainer,
   ProfileInnerContainer,
   ProfileDetail,
-  LocalContainer
+  LocalContainer,
 } from "./newRateStyles";
-import StarIcon from "../../assets/black_star.svg";
+
 import { ArtType } from "../../enums/ArtType";
 import LocalIcon from "../../assets/location.svg";
 import { AccountType } from "../../enums/AccountType";
+import { useContext, useState } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
+import { SelectAgreementContext } from "../../contexts/SelectAgreement";
+import { Agreement } from "../../api/Agreement";
 interface NewRateProps {
+  agreement: string;
   rated: {
     name: string;
     image: string;
@@ -29,35 +36,57 @@ interface NewRateProps {
 }
 
 function NewRate(props: NewRateProps) {
+  const [rate, setRate] = useState(0);
+  const [description, setDescription] = useState("");
+  const { setAgreement } = useContext(SelectAgreementContext);
+
+  const { id, sendRate } = useContext(UserContext);
+
+  const publish = () => {
+    sendRate({
+      author: id,
+      agreement: props.agreement,
+      score: rate,
+      description,
+    }).then(() => setAgreement(new Agreement(props.agreement)));
+  };
 
   return (
-    <SignContainer>
+    <SignContainer
+      onSubmit={(e) => {
+        e.preventDefault();
+        publish();
+      }}
+    >
       <ArtistSelected>
-      <ProfileImage alt={props.rated.name} src={props.rated.image} />
-      <ProfileInformationContainer>
-        <ProfileInnerContainer>
-          <ProfileDetail>
-            <h3>{props.rated.name}</h3>
-            <span>{props.rated.art}</span>
-          </ProfileDetail>
-          <LocalContainer>
-            <Icon alt="local" src={LocalIcon} />
-            <span>{`${props.rated.location.city} - ${props.rated.location.state}`}</span>
-          </LocalContainer>
-        </ProfileInnerContainer>
-        
-      </ProfileInformationContainer>
-    </ArtistSelected>
-      <div>
-        <Icon src={StarIcon} />
-        <Icon src={StarIcon} />
-        <Icon src={StarIcon} />
-        <Icon src={StarIcon} />
-        <Icon src={StarIcon} />
-      </div>
+        <ProfileImage alt={props.rated.name} src={props.rated.image} />
+        <ProfileInformationContainer>
+          <ProfileInnerContainer>
+            <ProfileDetail>
+              <h3>{props.rated.name}</h3>
+              <span>{props.rated.art}</span>
+            </ProfileDetail>
+            <LocalContainer>
+              <Icon alt="local" src={LocalIcon} />
+              <span>{`${props.rated.location.city} - ${props.rated.location.state}`}</span>
+            </LocalContainer>
+          </ProfileInnerContainer>
+        </ProfileInformationContainer>
+        <Rating
+          style={{ maxWidth: 125 }}
+          value={rate}
+          onChange={setRate}
+          isRequired
+        />
+      </ArtistSelected>
 
-      <FormInputTextbox placeholder="Describe the experience" />
-      <FormInputButton>CREATE CONTRACT</FormInputButton>
+      <FormInputTextbox
+        placeholder="Describe the experience"
+        onChange={(e: any) => setDescription(e.target.value)}
+      >
+        {description}
+      </FormInputTextbox>
+      <FormInputButton>CREATE RATING</FormInputButton>
     </SignContainer>
   );
 }

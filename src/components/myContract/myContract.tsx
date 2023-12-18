@@ -26,6 +26,24 @@ interface MyContractProps {
   filter: AgreementStatus;
 }
 
+const isCompleted = (item: any) => item.status == "accepted" &&
+dayjs(`${item.date} ${item.time.end}`, "DD/MM/YYYY HH:mm").isBefore();
+
+const tryFilterFunction = (status: AgreementStatus) => {
+  switch(status){
+    case AgreementStatus.pending:
+      return (item: any) => item.status == "send";
+    case AgreementStatus.accepted:
+      return (item: any) => item.status == "accepted" && dayjs( `${item.date} ${item.time.end}`,"DD/MM/YYYY HH:mm" )
+      .isSameOrAfter();
+
+    case AgreementStatus.completed:
+      return isCompleted;
+
+  }
+}
+
+
 function MyContract(props: MyContractProps) {
   const {
     hideMyContract,
@@ -33,30 +51,21 @@ function MyContract(props: MyContractProps) {
     hideLookRates,
     toogleLookRatesVisibility,
   } = useContext(ModalContext);
-  const { id, type, fetchAgreementsByUser, fetchRatesFromAgreement } = useContext(UserContext);
+  const { id, type, fetchAgreementsByUser, fetchRatesFromAgreement } =
+    useContext(UserContext);
   const { agreement } = useContext(SelectAgreementContext);
 
   const [contracts, setContracts] = useState<any[]>([]);
   const [rates, setRates] = useState<any[]>([]);
-  const [alreadyPublishedRate, setAlreadyPublishedRate] = useState<boolean>(true);
+  const [alreadyPublishedRate, setAlreadyPublishedRate] =
+    useState<boolean>(true);
   const [rated, setRatedUser] = useState<any>({});
 
   dayjs.extend(customParseFormat);
   dayjs.extend(IsSameOrAfter);
 
-  const filter = [
-    (item: any): boolean => item.status == "send",
-    (item: any): boolean =>
-      item.status == "accepted" &&
-      dayjs(
-        `${item.date} ${item.time.end}`,
-        "DD/MM/YYYY HH:mm"
-      ).isSameOrAfter(),
-    (item: any): boolean =>
-      item.status == "accepted" &&
-      dayjs(`${item.date} ${item.time.end}`, "DD/MM/YYYY HH:mm").isBefore(),
-  ][props.filter];
-
+  const filter = tryFilterFunction(props.filter)
+  
   useEffect(() => {
     fetchAgreementsByUser(id).then(setContracts).catch(console.log);
   }, [fetchAgreementsByUser, id]);
@@ -68,7 +77,7 @@ function MyContract(props: MyContractProps) {
   }, [agreement, fetchRatesFromAgreement, type]);
 
   useEffect(() => {
-    setAlreadyPublishedRate(rates.some((rate) => rate.author === id));
+    setAlreadyPublishedRate(rates.some((rate) => rate.author.getID() === id));
   }, [id, rates]);
   useEffect(() => {
     if (agreement && !alreadyPublishedRate) {
@@ -106,6 +115,7 @@ function MyContract(props: MyContractProps) {
                 price={item.price}
                 date={item.date}
                 description={item.description}
+                rateable={isCompleted(item)}
               />
             ))}
         </SignContainer>
@@ -115,7 +125,11 @@ function MyContract(props: MyContractProps) {
           <Icon
             alt="X"
             src={XIcon}
-            onClick={() => toogleLookRatesVisibility()}
+            onClick={() => {
+              setRates([]);
+              setRatedUser({});
+              toogleLookRatesVisibility()
+            }}
           />
           <h1>{alreadyPublishedRate ? "Rates" : "Publish a rate"}</h1>
         </HeaderLogo>
@@ -137,6 +151,7 @@ function MyContract(props: MyContractProps) {
             </SearchResults>
           ) : (
             <NewRate
+              agreement={agreement?.getID() ?? ""}
               rated={{
                 name: rated.name,
                 image: rated.image,
@@ -144,7 +159,7 @@ function MyContract(props: MyContractProps) {
                 type: rated.type,
                 location: {
                   city: rated.location?.city ?? "",
-                  state: rated.location?.state?? "",
+                  state: rated.location?.state ?? "",
                 },
               }}
             />
