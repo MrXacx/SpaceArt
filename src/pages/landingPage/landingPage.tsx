@@ -34,30 +34,9 @@ const randomColor = () =>
   `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
 function LandingPage() {
-  // INÍCIO DO MOCKED
-  let searchResult = [
-    {
-      id: "1",
-      index: 1,
-      image: DancerImage,
-      name: "Clóvis",
-      type: "Moreno",
-      city: "Salvador",
-      state: "BA",
-      art: "Paint",
-      wage: 16,
-    },
-  ];
-  searchResult = searchResult.concat(
-    searchResult,
-    searchResult,
-    searchResult,
-    searchResult
-  );
-  // FIM DO MOCKED
 
   const navigate = useNavigate();
-  let { fetchRandomUsers, artFilter } = useContext(SearchContext);
+  let { searchResult, fetchRandomUsers, artFilter } = useContext(SearchContext);
   let { fetchArtistStats, fetchEnterpriseStats } = useContext(UserContext);
 
   const chartOptions = {
@@ -79,12 +58,8 @@ function LandingPage() {
   });
   const [artistChartLabels, setArtistChartLabels] = useState<string[]>([]);
   const [artistChartValues, setArtistChartValues] = useState<number[]>([]);
-  const [enterpriseChartLabels, setEnterpriseChartLabels] = useState<string[]>(
-    []
-  );
-  const [enterpriseChartValues, setEnterpriseChartValues] = useState<number[]>(
-    []
-  );
+  const [enterpriseChartLabels, setEnterpriseChartLabels] = useState<string[]>([]);
+  const [enterpriseChartValues, setEnterpriseChartValues] = useState<number[]>([]);
 
   const carousel = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
@@ -190,7 +165,7 @@ function LandingPage() {
       </OpeningBannerContainer>
       <AboutUsContainer id="about-us">
         <AboutUsText>
-          <h2>HOW WE ARE</h2>
+          <h2>WHO WE ARE</h2>
           <p>
             Space Art is a project that has been developed to focus on the
             connection between informal artists and entrepreneurs, facilitating
