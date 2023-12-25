@@ -165,7 +165,7 @@ function LandingPage() {
       </OpeningBannerContainer>
       <AboutUsContainer id="about-us">
         <AboutUsText>
-          <h2>HOW WE ARE</h2>
+          <h2>WHO WE ARE</h2>
           <p>
             Space Art is a project that has been developed to focus on the
             connection between informal artists and entrepreneurs, facilitating

@@ -32,7 +32,7 @@ function Header() {
         <NavContainer>
           <NavItemContainer>
             <NavItems>
-              <a href="#about-us">HOW WE ARE</a>
+              <a href="#about-us">WHO WE ARE</a>
             </NavItems>
             <NavItems>
               <a href="#art-types">ARTIST CATEGORY</a>
